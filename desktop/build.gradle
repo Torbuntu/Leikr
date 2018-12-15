@@ -1,0 +1,17 @@
+apply plugin: "application"
+
+sourceCompatibility = 1.9
+sourceSets.main.java.srcDirs = [ "src/" ]
+
+mainClassName = "leikr.desktop.DesktopLauncher"
+project.ext.assetsDir = new File("$projectDir/../assets");
+
+sourceSets.main.resources.srcDirs = [project.ext.assetsDir.getAbsolutePath()]
+
+task launchDesktop(dependsOn: classes, type: JavaExec) {
+    main = project.mainClassName
+    classpath = sourceSets.main.runtimeClasspath
+    standardInput = System.in
+    workingDir = project.assetsDir
+    ignoreExitValue = true
+}
