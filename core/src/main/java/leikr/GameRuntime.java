@@ -26,11 +26,18 @@ public class GameRuntime extends BasicGame {
     ScriptBindings scriptBindings;
     File dir;
     LeikrEngine engine;
-
-    final String appName;
+    
+    File libraryDir;
+    String[] libraryList;
 
     public GameRuntime() {
-        appName = "test";
+        libraryDir = new File("./Games");
+        libraryList = libraryDir.list();
+        for(String file : libraryList){
+            System.out.println(file);
+        }
+        
+        
         dir = new File("./Code/main.groovy");
     }
 
@@ -53,7 +60,7 @@ public class GameRuntime extends BasicGame {
         // if all fails, return groovy scripting engine.
         return new GroovyGameScriptingEngine();
     }
-
+    
     @Override
     public void initialise() {
         scriptEngine = getEngine();
