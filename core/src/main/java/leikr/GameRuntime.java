@@ -28,7 +28,7 @@ public class GameRuntime extends BasicGame {
     GameScriptingEngine scriptEngine;
     ScriptBindings scriptBindings;
     File dir;
-    LeikrEngine engine;
+    Engine engine;
 
     File libraryDir;
     String[] libraryList;
@@ -77,7 +77,7 @@ public class GameRuntime extends BasicGame {
         try {
             int scriptId = scriptEngine.compileScript(new FileInputStream(dir));
             scriptEngine.invokeCompiledScriptLocally(scriptId, scriptBindings);
-            engine = (LeikrEngine) scriptBindings.get("game");
+            engine = (Engine) scriptBindings.get("game");
             engine.init();
         } catch (InsufficientCompilersException | IOException ex) {
             Logger.getLogger(GameRuntime.class.getName()).log(Level.SEVERE, null, ex);

@@ -14,7 +14,7 @@ import org.mini2Dx.core.graphics.Graphics;
  *
  * @author tor
  */
-public class LeikrEngine {
+public class Engine {
 
     Graphics g;
 
