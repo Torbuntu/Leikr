@@ -13,8 +13,6 @@ buildscript {
 }
 
 allprojects {
-    apply plugin: "eclipse"
-    apply plugin: "idea"
 
     version = '1.0.0'
     ext {
@@ -41,6 +39,7 @@ project(":core") {
         compile "org.mini2Dx:mini2Dx-tiled:$mini2DxVersion"
         compile "org.mini2Dx:mini2Dx-ui:$mini2DxVersion"
         compile "org.mini2Dx:mini2Dx-core:$minibusVersion"
+        compile "org.mini2Dx:miniscript-kotlin:$miniscriptVersion"
         compile "org.mini2Dx:miniscript-lua:$miniscriptVersion"
         compile "org.mini2Dx:miniscript-groovy:$miniscriptVersion"
         compile "org.mini2Dx:miniscript-python:$miniscriptVersion"

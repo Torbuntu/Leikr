@@ -13,7 +13,10 @@ import org.mini2Dx.miniscript.core.GameScriptingEngine;
 import org.mini2Dx.miniscript.core.ScriptBindings;
 import org.mini2Dx.miniscript.core.exception.InsufficientCompilersException;
 import org.mini2Dx.miniscript.groovy.GroovyGameScriptingEngine;
+import org.mini2Dx.miniscript.kotlin.KotlinGameScriptingEngine;
 import org.mini2Dx.miniscript.lua.LuaGameScriptingEngine;
+import org.mini2Dx.miniscript.python.PythonGameScriptingEngine;
+import org.mini2Dx.miniscript.ruby.RubyGameScriptingEngine;
 
 public class GameRuntime extends BasicGame {
 
@@ -26,18 +29,17 @@ public class GameRuntime extends BasicGame {
     ScriptBindings scriptBindings;
     File dir;
     LeikrEngine engine;
-    
+
     File libraryDir;
     String[] libraryList;
 
     public GameRuntime() {
         libraryDir = new File("./Games");
         libraryList = libraryDir.list();
-        for(String file : libraryList){
+        for (String file : libraryList) {
             System.out.println(file);
         }
-        
-        
+            
         dir = new File("./Code/main.groovy");
     }
 
@@ -48,8 +50,14 @@ public class GameRuntime extends BasicGame {
             stream = new FileInputStream(new File("./game.properties"));
             prop.load(stream);
             switch (prop.getProperty("runtime").toLowerCase()) {
+                case "kotlin":
+                    return new KotlinGameScriptingEngine();
                 case "lua":
                     return new LuaGameScriptingEngine();
+                case "python":
+                    return new PythonGameScriptingEngine();
+                case "ruby":
+                    return new RubyGameScriptingEngine();                    
                 case "groovy":
                 default:
                     return new GroovyGameScriptingEngine();
@@ -60,7 +68,7 @@ public class GameRuntime extends BasicGame {
         // if all fails, return groovy scripting engine.
         return new GroovyGameScriptingEngine();
     }
-    
+
     @Override
     public void initialise() {
         scriptEngine = getEngine();
