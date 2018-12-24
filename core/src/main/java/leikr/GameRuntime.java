@@ -73,6 +73,7 @@ public class GameRuntime extends BasicGame {
     public void initialise() {
         scriptEngine = getEngine();
         scriptBindings = new ScriptBindings();
+        engine = new Engine();// null pointer if this isn't pre-initialized...
         scriptBindings.put("game", engine);
         try {
             int scriptId = scriptEngine.compileScript(new FileInputStream(dir));
