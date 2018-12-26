@@ -24,4 +24,5 @@ public class GameRuntime extends ScreenBasedGame {
     public int getInitialScreenId() {
         return MenuScreen.ID;
     }
+    
 }
