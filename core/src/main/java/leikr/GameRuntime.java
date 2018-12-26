@@ -1,5 +1,6 @@
 package leikr;
 
+import com.badlogic.gdx.assets.AssetManager;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -7,7 +8,7 @@ import java.io.InputStream;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.mini2Dx.core.game.BasicGame;
+import org.mini2Dx.core.game.ScreenBasedGame;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.miniscript.core.GameScriptingEngine;
 import org.mini2Dx.miniscript.core.ScriptBindings;
@@ -17,13 +18,16 @@ import org.mini2Dx.miniscript.kotlin.KotlinGameScriptingEngine;
 import org.mini2Dx.miniscript.lua.LuaGameScriptingEngine;
 import org.mini2Dx.miniscript.python.PythonGameScriptingEngine;
 import org.mini2Dx.miniscript.ruby.RubyGameScriptingEngine;
+import org.mini2Dx.ui.UiContainer;
 
-public class GameRuntime extends BasicGame {
+public class GameRuntime extends ScreenBasedGame {
 
     public static final String GAME_IDENTIFIER = "torbuntu.leikr";
 
     public static int WIDTH = 320;
     public static int HEIGHT = 240;
+    
+    
 
     GameScriptingEngine scriptEngine;
     ScriptBindings scriptBindings;
@@ -101,5 +105,10 @@ public class GameRuntime extends BasicGame {
     public void render(Graphics g) {
         engine.preRender(g);
         engine.render();
+    }
+
+    @Override
+    public int getInitialScreenId() {
+        return 0;
     }
 }
