@@ -5,6 +5,7 @@
  */
 package leikr;
 
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
@@ -17,7 +18,7 @@ import org.mini2Dx.miniscript.core.GameScriptingEngine;
  *
  * @author tor
  */
-public class EngineScreen extends BasicGameScreen {
+public class EngineScreen extends BasicGameScreen implements InputProcessor{
 
     public static int ID = 1;
     AssetManager assetManager;
@@ -60,6 +61,49 @@ public class EngineScreen extends BasicGameScreen {
     @Override
     public int getId() {
         return ID;
+    }
+    
+    
+    
+
+    @Override
+    public boolean keyDown(int i) {
+        return true;
+    }
+
+    @Override
+    public boolean keyUp(int i) {
+        return true;
+    }
+
+    @Override
+    public boolean keyTyped(char c) {
+        return true;
+    }
+
+    @Override
+    public boolean touchDown(int i, int i1, int i2, int i3) {
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int i, int i1, int i2, int i3) {
+        return true;
+    }
+
+    @Override
+    public boolean touchDragged(int i, int i1, int i2) {
+        return true;
+    }
+
+    @Override
+    public boolean mouseMoved(int i, int i1) {
+        return true;
+    }
+
+    @Override
+    public boolean scrolled(int i) {
+        return true;
     }
 
 }

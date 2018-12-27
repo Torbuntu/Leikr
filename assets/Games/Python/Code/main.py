@@ -1,32 +1,32 @@
 from leikr import Engine
 
-class Python(Engine):
+class PythonGame(Engine):
 
     def __init__(self):
-        super(Python, self).__init__()
         self.x = 10
+        print("init from python")
     #
 
     def create(self):
         print("hey")
+        self.x = 10
     #
 
     def update(self):
         print("hey2")
-        #Do nothing yet
     #
 
     def render(self):
-        if(self.key("Right")):
+        if(key("Right")):
             self.x = self.x + 5
+            print("right")
 
-        if(self.key("Left")):
+        if(key("Left")):
             self.x = self.x - 5
-
-        square(self.x, 100, 25, 25)
+            print("left")
+        self.square(self.x, 100, 25, 25, "red")
     #
-
 
 #
 
-game = Python()
+game = PythonGame()

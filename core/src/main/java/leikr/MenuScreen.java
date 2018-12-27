@@ -58,6 +58,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
             int scriptId = scriptEngine.compileScript(new FileInputStream(new File("./Games/" + libraryList[cursor] + "/Code/main." + type)));
             scriptEngine.invokeCompiledScriptLocally(scriptId, scriptBindings);
             engine = (Engine) scriptBindings.get("game");
+            
         } catch (InsufficientCompilersException | IOException ex) {
             Logger.getLogger(GameRuntime.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -127,6 +128,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
             engine.create();
             System.out.println("init called");
             sm.enterGameScreen(EngineScreen.ID, null, null);
+            Gdx.input.setInputProcessor(screen);
         }
     }
 

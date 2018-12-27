@@ -1,6 +1,6 @@
 import leikr.Engine;
 class Groove extends Engine {
-	
+
 	def x;
 	def y;
 	void create(){

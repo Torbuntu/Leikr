@@ -82,8 +82,12 @@ public class Engine {
 
     void line(int x1, int y1, int x2, int y2) {
         g.drawLineSegment(x1, x2, y1, y2);
+    }    
+    
+    boolean button(String button){
+        return Gdx.input.isButtonPressed(0);
     }
-
+    
     boolean key(String key) {
         return Gdx.input.isKeyPressed(Keys.valueOf(key));
     }
