@@ -12,12 +12,26 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.Arrays;
+import java.util.Properties;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
+import org.mini2Dx.miniscript.core.GameScriptingEngine;
+import org.mini2Dx.miniscript.core.ScriptBindings;
+import org.mini2Dx.miniscript.core.exception.InsufficientCompilersException;
+import org.mini2Dx.miniscript.groovy.GroovyGameScriptingEngine;
+import org.mini2Dx.miniscript.kotlin.KotlinGameScriptingEngine;
+import org.mini2Dx.miniscript.lua.LuaGameScriptingEngine;
+import org.mini2Dx.miniscript.python.PythonGameScriptingEngine;
+import org.mini2Dx.miniscript.ruby.RubyGameScriptingEngine;
 
 /**
  *
@@ -29,9 +43,60 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
 
     AssetManager assetManager;
 
+    boolean start = false;
     String[] libraryList;
     int cursor;
+    String type;
+    GameScriptingEngine scriptEngine;
     
+    Engine getEngine(){
+        Engine engine;
+        scriptEngine = getScriptEngine();
+        ScriptBindings scriptBindings = new ScriptBindings();
+        engine = new Engine();// null pointer if this isn't pre-initialized...
+        scriptBindings.put("game", engine);
+        try {
+            int scriptId = scriptEngine.compileScript(new FileInputStream(new File("./Games/"+libraryList[cursor]+"/Code/main."+type)));
+            scriptEngine.invokeCompiledScriptLocally(scriptId, scriptBindings);
+            engine = (Engine) scriptBindings.get("game");
+            engine.init();
+        } catch (InsufficientCompilersException | IOException ex) {
+            Logger.getLogger(GameRuntime.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return engine;
+    }
+    
+    
+    GameScriptingEngine getScriptEngine() {
+        Properties prop = new Properties();
+        InputStream stream;
+        try {
+            stream = new FileInputStream(new File("./Games/"+libraryList[cursor]+"/game.properties"));
+            prop.load(stream);
+            switch (prop.getProperty("runtime").toLowerCase()) {
+                case "kotlin":
+                    type = "kt";
+                    return new KotlinGameScriptingEngine();
+                case "lua":
+                    type = "lua";
+                    return new LuaGameScriptingEngine();
+                case "python":
+                    return new PythonGameScriptingEngine();
+                case "ruby":
+                    return new RubyGameScriptingEngine();
+                case "groovy":
+                default:
+                    type = "groovy";
+                    return new GroovyGameScriptingEngine();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(GameRuntime.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        // if all fails, return groovy scripting engine.
+        return new GroovyGameScriptingEngine();
+    }
+    
+        
     MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
     }
@@ -58,11 +123,12 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
-        if (!assetManager.update()) {
-            //Wait for asset manager to finish loading assets
-            return;
+        if(start){
+            
+            EngineScreen screen = (EngineScreen)sm.getGameScreen(EngineScreen.ID);
+            screen.setEngines(getEngine(), scriptEngine);
+            sm.enterGameScreen(EngineScreen.ID, null, null);
         }
-        
     }
 
     @Override
@@ -106,6 +172,9 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
         }
         if(i == Keys.DOWN && cursor < libraryList.length-1){
             cursor++;
+        }
+        if(i == Keys.ENTER){
+            start = true;
         }
         System.out.println(libraryList.length + " : " + (cursor+1));
         return true;

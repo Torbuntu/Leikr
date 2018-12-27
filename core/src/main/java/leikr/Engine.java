@@ -59,9 +59,8 @@ public class Engine {
         }
     }
     
-    
-    
-    void square(int x, int y, int w, int h) {
+      
+    public void square(int x, int y, int w, int h) {
         g.drawRect(x, y, w, h);
     }
     void square(int x, int y, int w, int h, String fill){
