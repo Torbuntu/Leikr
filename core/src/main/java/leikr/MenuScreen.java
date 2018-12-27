@@ -48,30 +48,27 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
     int cursor;
     String type;
     GameScriptingEngine scriptEngine;
-    
-    Engine getEngine(){
-        Engine engine;
+    Engine engine = new Engine(); // avoid null pointer
+
+    Engine getEngine() {
         scriptEngine = getScriptEngine();
         ScriptBindings scriptBindings = new ScriptBindings();
-        engine = new Engine();// null pointer if this isn't pre-initialized...
         scriptBindings.put("game", engine);
         try {
-            int scriptId = scriptEngine.compileScript(new FileInputStream(new File("./Games/"+libraryList[cursor]+"/Code/main."+type)));
+            int scriptId = scriptEngine.compileScript(new FileInputStream(new File("./Games/" + libraryList[cursor] + "/Code/main." + type)));
             scriptEngine.invokeCompiledScriptLocally(scriptId, scriptBindings);
             engine = (Engine) scriptBindings.get("game");
-            engine.init();
         } catch (InsufficientCompilersException | IOException ex) {
             Logger.getLogger(GameRuntime.class.getName()).log(Level.SEVERE, null, ex);
         }
         return engine;
     }
-    
-    
+
     GameScriptingEngine getScriptEngine() {
         Properties prop = new Properties();
         InputStream stream;
         try {
-            stream = new FileInputStream(new File("./Games/"+libraryList[cursor]+"/game.properties"));
+            stream = new FileInputStream(new File("./Games/" + libraryList[cursor] + "/game.properties"));
             prop.load(stream);
             switch (prop.getProperty("runtime").toLowerCase()) {
                 case "kotlin":
@@ -81,8 +78,10 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
                     type = "lua";
                     return new LuaGameScriptingEngine();
                 case "python":
+                    type = "py";
                     return new PythonGameScriptingEngine();
                 case "ruby":
+                    type = "rb";
                     return new RubyGameScriptingEngine();
                 case "groovy":
                 default:
@@ -95,8 +94,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
         // if all fails, return groovy scripting engine.
         return new GroovyGameScriptingEngine();
     }
-    
-        
+
     MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
     }
@@ -123,10 +121,11 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
-        if(start){
-            
-            EngineScreen screen = (EngineScreen)sm.getGameScreen(EngineScreen.ID);
+        if (start) {
+            EngineScreen screen = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
             screen.setEngines(getEngine(), scriptEngine);
+            engine.create();
+            System.out.println("init called");
             sm.enterGameScreen(EngineScreen.ID, null, null);
         }
     }
@@ -138,21 +137,21 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
     @Override
     public void render(GameContainer gc, Graphics g) {
 //        g.scale(320/gc.getWidth(), 240/gc.getHeight());
-        
+
         g.setColor(Color.WHITE);
         if (null != libraryList) {
             int y = 14;
             int selec = 0;
             for (String file : libraryList) {
-                g.drawString(selec + ": "+file, 0, y);
-                if(selec == cursor){
+                g.drawString(selec + ": " + file, 0, y);
+                if (selec == cursor) {
                     g.drawString(" <=", 100, y);
                 }
                 selec++;
                 y += 12;
             }
         }
-        g.drawString("Selection...", 0, gc.getHeight()-16);
+        g.drawString("Selection...", 0, gc.getHeight() - 16);
     }
 
     @Override
@@ -167,16 +166,16 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public boolean keyUp(int i) {
-        if(i == Keys.UP && cursor > 0){
+        if (i == Keys.UP && cursor > 0) {
             cursor--;
         }
-        if(i == Keys.DOWN && cursor < libraryList.length-1){
+        if (i == Keys.DOWN && cursor < libraryList.length - 1) {
             cursor++;
         }
-        if(i == Keys.ENTER){
+        if (i == Keys.ENTER) {
             start = true;
         }
-        System.out.println(libraryList.length + " : " + (cursor+1));
+        System.out.println(libraryList.length + " : " + (cursor + 1));
         return true;
     }
 

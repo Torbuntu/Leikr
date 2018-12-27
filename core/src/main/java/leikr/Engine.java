@@ -17,27 +17,21 @@ import org.mini2Dx.core.graphics.Graphics;
 public class Engine {
 
     Graphics g;
-
-    public void init() {
-    }
-
-    public void update() {
-    }
-
-    public void update(float delta) {
-    }
-
+    
+    // Override functions for game scripting.
+    public void create() {}
+    public void update() {}
+    public void update(float delta) {}
     public void preRender(Graphics g) {
         this.g = g;
         this.g.setColor(Color.GREEN);
-        
     }
-
-    public void render() {
-    }
-
-    void setColor(String color){
-        switch(color.toLowerCase()){
+    public void render() {}
+    // end override functions
+    
+    
+    void setColor(String color) {
+        switch (color.toLowerCase()) {
             case "red":
                 g.setColor(Color.RED);
                 break;
@@ -58,35 +52,39 @@ public class Engine {
                 break;
         }
     }
-    
-      
+
     public void square(int x, int y, int w, int h) {
         g.drawRect(x, y, w, h);
     }
-    void square(int x, int y, int w, int h, String fill){
+
+    void square(int x, int y, int w, int h, String fill) {
         setColor(fill);
         g.fillRect(x, y, w, h);
     }
-    void circle(int x, int y, int r){
+
+    void circle(int x, int y, int r) {
         g.drawCircle(x, y, r);
     }
-    void circle(int x, int y, int r, String fill){
+
+    void circle(int x, int y, int r, String fill) {
         setColor(fill);
         g.fillCircle(x, y, r);
     }
-    void triangle(int x1, int y1, int x2, int y2, int x3, int y3){
+
+    void triangle(int x1, int y1, int x2, int y2, int x3, int y3) {
         g.drawTriangle(x1, y1, x2, y2, x3, y3);
     }
-    void triangle(int x1, int y1, int x2, int y2, int x3, int y3, String fill){
+
+    void triangle(int x1, int y1, int x2, int y2, int x3, int y3, String fill) {
         setColor(fill);
         g.fillTriangle(x1, y1, x2, y2, x3, y3);
     }
-        
+
     void line(int x1, int y1, int x2, int y2) {
         g.drawLineSegment(x1, x2, y1, y2);
     }
 
-    boolean key(String key) {        
+    boolean key(String key) {
         return Gdx.input.isKeyPressed(Keys.valueOf(key));
     }
 }

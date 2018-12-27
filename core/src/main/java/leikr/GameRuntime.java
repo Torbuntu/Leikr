@@ -9,9 +9,8 @@ public class GameRuntime extends ScreenBasedGame {
 
     public static int WIDTH = 320;
     public static int HEIGHT = 240;
-    
-    AssetManager assetManager;
 
+    AssetManager assetManager;
 
     @Override
     public void initialise() {
@@ -24,5 +23,5 @@ public class GameRuntime extends ScreenBasedGame {
     public int getInitialScreenId() {
         return MenuScreen.ID;
     }
-    
+
 }

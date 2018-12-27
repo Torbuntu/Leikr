@@ -6,14 +6,12 @@
 package leikr;
 
 import com.badlogic.gdx.assets.AssetManager;
-import java.io.File;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.miniscript.core.GameScriptingEngine;
-import org.mini2Dx.miniscript.core.ScriptBindings;
 
 /**
  *
@@ -23,27 +21,20 @@ public class EngineScreen extends BasicGameScreen {
 
     public static int ID = 1;
     AssetManager assetManager;
-    
+
     GameScriptingEngine scriptEngine;
-    ScriptBindings scriptBindings;
-    File dir;
     Engine engine;
 
-    File libraryDir;
-    String[] libraryList;
-    String gameName;
-
-    public void setEngines(Engine engine, GameScriptingEngine gsEngine){
+    public void setEngines(Engine engine, GameScriptingEngine gsEngine) {
         this.engine = engine;
         scriptEngine = gsEngine;
     }
-    
+
     EngineScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
-        
+
     }
 
-    
     @Override
     public void initialise(GameContainer gc) {
 
