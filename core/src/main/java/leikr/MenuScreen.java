@@ -62,9 +62,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
 
     GameScriptingEngine getScriptEngine() {
         Properties prop = new Properties();
-        InputStream stream;
-        try {
-            stream = new FileInputStream(new File("./Games/" + libraryList[cursor] + "/game.properties"));
+        try (InputStream stream = new FileInputStream(new File("./Games/" + libraryList[cursor] + "/game.properties"))){
             prop.load(stream);
             switch (prop.getProperty("runtime").toLowerCase()) {
                 case "groovy":
