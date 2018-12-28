@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.graphics.Sprite;
 
 /**
  *
@@ -19,6 +20,9 @@ public class Engine {
     Graphics g;
 
     // Override functions for game scripting.
+    void preCreate() {
+    }
+
     public void create() {
     }
 
