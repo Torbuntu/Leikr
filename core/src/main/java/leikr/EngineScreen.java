@@ -5,6 +5,9 @@
  */
 package leikr;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import org.mini2Dx.core.game.GameContainer;
@@ -26,10 +29,13 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
 
     GameScriptingEngine scriptEngine;
     Engine engine;
+    EngineUtil engineUtil;
+    boolean back = false;
 
     public void setEngines(Engine engine, GameScriptingEngine gsEngine) {
         this.engine = engine;
         scriptEngine = gsEngine;
+        engineUtil = new EngineUtil();
     }
 
     EngineScreen(AssetManager assetManager) {
@@ -50,6 +56,11 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
         scriptEngine.update(delta);
         engine.update();
         engine.update(delta);
+        if(back){
+            sm.enterGameScreen(MenuScreen.ID, null, null);
+            Gdx.input.setInputProcessor((MenuScreen)sm.getGameScreen(MenuScreen.ID));
+            back = false;
+        }
     }
 
     @Override
@@ -74,6 +85,9 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public boolean keyUp(int i) {
+        if(i == Keys.ESCAPE){
+            back = true;
+        }
         return true;
     }
 

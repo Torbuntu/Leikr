@@ -1,26 +1,28 @@
 import leikr.Engine;
 class Groove extends Engine {
 
-	def x;
-	def y;
+	def t;
+	int color;
 	void create(){
-		x = 10;
-		y = 100;
-		println("done creating groove");
+		t = 0;
+		color = 0;
 	}
 
-	void update(){
-
-	}
+	void update(){}
 
 	void render(){
-		if(key("Left")){
-			x= x - 10;
-		}
-		if(key("Right")){
-			x = x + 10;
-		}
-		square(x, y, 25, 25);
+		t += 0.1;
+		int count = 20;
+		
+		for(int i = 0; i < count; i++){
+			float angle = i/count+t;
+			float dis = 70;
+			float x = Math.cos(angle)*dis+100;
+			float y = Math.sin(angle)*dis+100;			
+			circle(x,y,2,color);
+			circle(y,x,2,color);
+			square(x,60,5,60,1);
+		}		
 	}
 }
 game = new Groove();

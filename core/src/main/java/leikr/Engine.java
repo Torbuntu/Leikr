@@ -17,19 +17,26 @@ import org.mini2Dx.core.graphics.Graphics;
 public class Engine {
 
     Graphics g;
-    
+
     // Override functions for game scripting.
-    public void create() {}
-    public void update() {}
-    public void update(float delta) {}
+    public void create() {
+    }
+
+    public void update() {
+    }
+
+    public void update(float delta) {
+    }
+
     public void preRender(Graphics g) {
         this.g = g;
         this.g.setColor(Color.GREEN);
     }
-    public void render() {}
+
+    public void render() {
+    }
     // end override functions
-    
-    
+
     void setColor(String color) {
         switch (color.toLowerCase()) {
             case "red":
@@ -53,20 +60,53 @@ public class Engine {
         }
     }
 
-    public void square(int x, int y, int w, int h) {
+    void setColor(int color) {
+        switch (color) {
+            case 0:
+                g.setColor(Color.RED);
+                break;
+            case 1:
+                g.setColor(Color.GREEN);
+                break;
+            case 2:
+                g.setColor(Color.BLUE);
+                break;
+            case 3:
+                g.setColor(Color.YELLOW);
+                break;
+            case 4:
+                g.setColor(Color.BLACK);
+                break;
+            case 5:
+                g.setColor(Color.WHITE);
+                break;
+        }
+    }
+
+    public void square(float x, float y, float w, float h) {
         g.drawRect(x, y, w, h);
     }
 
-    void square(int x, int y, int w, int h, String fill) {
+    void square(float x, float y, float w, float h, String fill) {
         setColor(fill);
         g.fillRect(x, y, w, h);
     }
 
-    void circle(int x, int y, int r) {
+    void square(float x, float y, float w, float h, int fill) {
+        setColor(fill);
+        g.fillRect(x, y, w, h);
+    }
+
+    void circle(float x, float y, float r) {
         g.drawCircle(x, y, r);
     }
 
-    void circle(int x, int y, int r, String fill) {
+    void circle(float x, float y, float r, String fill) {
+        setColor(fill);
+        g.fillCircle(x, y, r);
+    }
+
+    void circle(float x, float y, float r, int fill) {
         setColor(fill);
         g.fillCircle(x, y, r);
     }
@@ -82,12 +122,12 @@ public class Engine {
 
     void line(int x1, int y1, int x2, int y2) {
         g.drawLineSegment(x1, x2, y1, y2);
-    }    
-    
-    boolean button(String button){
+    }
+
+    boolean button(String button) {
         return Gdx.input.isButtonPressed(0);
     }
-    
+
     boolean key(String key) {
         return Gdx.input.isKeyPressed(Keys.valueOf(key));
     }
