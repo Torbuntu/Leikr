@@ -50,7 +50,6 @@ project(":desktop") {
     dependencies {
         compile project(":core")
         compile "org.mini2Dx:mini2Dx-desktop:$mini2DxVersion"
-        compile "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
     }
     parcl {
         exe {
@@ -72,7 +71,7 @@ project(":desktop") {
         }
     }
     butler {
-        user = "your-itchio-user"
+        user = "Torbuntu"
         game = "Leikr"
         windows {
             binDirectory = "$buildDir/windows"
