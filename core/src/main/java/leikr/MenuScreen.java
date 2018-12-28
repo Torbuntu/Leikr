@@ -6,7 +6,6 @@
 package leikr;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
@@ -28,10 +27,6 @@ import org.mini2Dx.miniscript.core.GameScriptingEngine;
 import org.mini2Dx.miniscript.core.ScriptBindings;
 import org.mini2Dx.miniscript.core.exception.InsufficientCompilersException;
 import org.mini2Dx.miniscript.groovy.GroovyGameScriptingEngine;
-import org.mini2Dx.miniscript.kotlin.KotlinGameScriptingEngine;
-import org.mini2Dx.miniscript.lua.LuaGameScriptingEngine;
-import org.mini2Dx.miniscript.python.PythonGameScriptingEngine;
-import org.mini2Dx.miniscript.ruby.RubyGameScriptingEngine;
 
 /**
  *
@@ -72,18 +67,6 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
             stream = new FileInputStream(new File("./Games/" + libraryList[cursor] + "/game.properties"));
             prop.load(stream);
             switch (prop.getProperty("runtime").toLowerCase()) {
-                case "kotlin":
-                    type = "kt";
-                    return new KotlinGameScriptingEngine();
-                case "lua":
-                    type = "lua";
-                    return new LuaGameScriptingEngine();
-                case "python":
-                    type = "py";
-                    return new PythonGameScriptingEngine();
-                case "ruby":
-                    type = "rb";
-                    return new RubyGameScriptingEngine();
                 case "groovy":
                 default:
                     type = "groovy";
