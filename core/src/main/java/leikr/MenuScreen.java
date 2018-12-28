@@ -106,8 +106,6 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
         if (start) {
             EngineScreen screen = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
             screen.setEngines(getEngine(), scriptEngine);
-            engine.create();
-            System.out.println("init called");
             sm.enterGameScreen(EngineScreen.ID, null, null);
             Gdx.input.setInputProcessor(screen);
         }
@@ -134,7 +132,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
                 y += 12;
             }
         }
-        g.drawString("Selection...", 0, gc.getHeight() - 16);
+        g.drawString("Selection: " +cursor , 0, gc.getHeight() - 16);
     }
 
     @Override

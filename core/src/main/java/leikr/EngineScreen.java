@@ -12,13 +12,14 @@ import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
+import org.mini2Dx.core.screen.Transition;
 import org.mini2Dx.miniscript.core.GameScriptingEngine;
 
 /**
  *
  * @author tor
  */
-public class EngineScreen extends BasicGameScreen implements InputProcessor{
+public class EngineScreen extends BasicGameScreen implements InputProcessor {
 
     public static int ID = 1;
     AssetManager assetManager;
@@ -37,8 +38,11 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor{
     }
 
     @Override
-    public void initialise(GameContainer gc) {
+    public void initialise(GameContainer gc) {}
 
+    @Override
+    public void postTransitionIn(Transition transition) {
+        engine.create();
     }
 
     @Override
@@ -62,9 +66,6 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor{
     public int getId() {
         return ID;
     }
-    
-    
-    
 
     @Override
     public boolean keyDown(int i) {
