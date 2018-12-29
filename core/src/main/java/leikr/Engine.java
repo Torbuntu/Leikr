@@ -95,6 +95,11 @@ public class Engine {
     public void sprite(int id, float x, float y){
         g.drawSprite(sprites.get(id), x, y);
     }
+    public void sprite(int id, float x, float y, boolean clockwise){
+        sprites.get(id).rotate90(clockwise);
+        g.drawSprite(sprites.get(id), x, y);
+        sprites.get(id).rotate90(!clockwise);
+    }
 
     public void square(float x, float y, float w, float h) {
         g.drawRect(x, y, w, h);

@@ -42,7 +42,8 @@ class Groove extends Engine {
 		sprite(0, x, y);
 		sprite(1, x, y-8);
 		sprite(255, x+8, y);
-		sprite(511, x+8, y+8);
+		sprite(511, x+8, y+8, true);
+		sprite(511, x+16, y+8);
 	}
 }
 game = new Groove();
