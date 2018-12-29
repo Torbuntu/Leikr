@@ -3,6 +3,9 @@ class Groove extends Engine {
 
 	def t;
 	int color;
+	
+	int x = 145;
+	int y = 145;
 	void create(){
 		t = 0;
 		color = 0;
@@ -23,6 +26,20 @@ class Groove extends Engine {
 			circle(y,x,2,color);
 			square(x,60,5,60,1);
 		}		
+		
+		if(key("Left")){
+			x -= 8;
+		}
+		if(key("Right")){
+			x += 8;
+		}
+		if(key("Up")){
+			y -= 8;
+		}
+		if(key("Down")){
+			y += 8;
+		}
+		sprite(0, x, y);
 	}
 }
 game = new Groove();

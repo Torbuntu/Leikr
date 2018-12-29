@@ -8,6 +8,7 @@ package leikr;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
+import java.util.ArrayList;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
 
@@ -18,9 +19,13 @@ import org.mini2Dx.core.graphics.Sprite;
 public class Engine {
 
     Graphics g;
+    SpriteLoader spriteLoader;
+    ArrayList<Sprite> sprites;
 
     // Override functions for game scripting.
     void preCreate() {
+        spriteLoader = new SpriteLoader();
+        sprites = spriteLoader.getSpriteBank();
     }
 
     public void create() {
@@ -85,6 +90,10 @@ public class Engine {
                 g.setColor(Color.WHITE);
                 break;
         }
+    }
+    
+    public void sprite(int id, float x, float y){
+        g.drawSprite(sprites.get(id), x, y);
     }
 
     public void square(float x, float y, float w, float h) {

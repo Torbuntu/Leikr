@@ -7,9 +7,10 @@ package leikr;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import java.util.ArrayList;
 import org.mini2Dx.core.graphics.Sprite;
-import org.mini2Dx.core.graphics.TextureRegion;
+//import org.mini2Dx.core.graphics.TextureRegion;
 
 /**
  *
@@ -21,11 +22,9 @@ public class SpriteLoader {
     TextureRegion[][] regions_0;
     TextureRegion[][] regions_1;
     ArrayList<Sprite> spriteBank;
-    Texture sheet_0;
-    Texture sheet_1;
 
-    SpriteLoader(AssetManager assetManager) {
-        this.assetManager = assetManager;
+    SpriteLoader() {
+        assetManager = new AssetManager();
         spriteBank = new ArrayList<>();
         loadSpriteSheets();
         splitSprites();
@@ -33,30 +32,35 @@ public class SpriteLoader {
     }
 
     private void loadSpriteSheets() {
-        sheet_0 = new Texture("./Games/" + MenuScreen.GAME_NAME + "/Sprites/Sprites_0.png");
-        sheet_1 = new Texture("./Games/" + MenuScreen.GAME_NAME + "/Sprites/Sprites_1.png");
+        assetManager.load("./Games/" + MenuScreen.GAME_NAME + "/Sprites/Sprites_0.png", Texture.class);
+        assetManager.load("./Games/" + MenuScreen.GAME_NAME + "/Sprites/Sprites_1.png", Texture.class);
+        assetManager.finishLoading();
     }
 
     private void splitSprites() {
-        regions_0 = (TextureRegion[][]) TextureRegion.split(sheet_0, 8, 8);
-        regions_1 = (TextureRegion[][]) TextureRegion.split(sheet_1, 8, 8);
+        regions_0 = TextureRegion.split(assetManager.get("./Games/" + MenuScreen.GAME_NAME + "/Sprites/Sprites_0.png", Texture.class), 8, 8);
+        regions_1 = TextureRegion.split(assetManager.get("./Games/" + MenuScreen.GAME_NAME + "/Sprites/Sprites_1.png", Texture.class), 8, 8);
     }
 
     private void addSpritesToSpriteBank() {
         for (TextureRegion[] regionC : regions_0) {
             for (TextureRegion regionR : regionC) {
-                spriteBank.add(new Sprite(regionR));                
+                spriteBank.add(new Sprite(regionR.getTexture()));                
             }
         }
         for (TextureRegion[] regionC : regions_1) {
             for (TextureRegion regionR : regionC) {
-                spriteBank.add(new Sprite(regionR));                
+                spriteBank.add(new Sprite(regionR.getTexture()));                
             }
         }
     }
     
     public ArrayList getSpriteBank(){
         return spriteBank;
+    }
+    
+    public void clearSpriteData(){
+        assetManager.dispose();
     }
     
 
