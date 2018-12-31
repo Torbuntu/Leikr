@@ -104,13 +104,52 @@ public class Engine {
                 break;
         }
     }
+    public Color getDrawColor(int color){
+        switch (color) {
+            case 0:
+                return (Color.BLACK);
+            case 1:
+                return (Color.WHITE);
+            case 2:
+                return (Color.RED);
+            case 3:
+                return (Color.GREEN);
+            case 4:
+                return (Color.BLUE);
+            case 5:
+                return (Color.YELLOW);
+            case 6:
+                return (Color.BROWN);
+            case 7:
+                return (Color.MAGENTA);
+            case 8:
+                return (Color.CYAN);
+            case 9:
+                return (Color.TEAL);
+            case 10:
+                return (Color.TAN);
+            case 11:
+                return (Color.FOREST);
+            case 12:
+                return (Color.PINK);
+            case 13:
+                return (Color.ORANGE);
+            case 14:
+                return (Color.PURPLE);
+            case 15:
+                return (Color.CORAL);
+            default:
+                return Color.BLACK;
+        }
+    }
 
     public void bgColor(int color) {
         setDrawColor(color);
-        g.fillRect(0, 0, 320, 240);
+        g.setBackgroundColor(getDrawColor(color));
     }
 
-    public void drawText(String text, float x, float y) {
+    public void drawText(String text, float x, float y, int color) {
+        setDrawColor(color);
         g.drawString(text, x, y);
     }
 
@@ -124,36 +163,48 @@ public class Engine {
         sprites.get(id).rotate90(!clockwise);
     }
 
-    public void square(float x, float y, float w, float h) {
+    public void square(float x, float y, float w, float h, int color) {
+        setDrawColor(color);
         g.drawRect(x, y, w, h);
     }
 
-    void square(float x, float y, float w, float h, int fill) {
-        setDrawColor(fill);
-        g.fillRect(x, y, w, h);
+    void square(float x, float y, float w, float h, int color, boolean fill) {
+        setDrawColor(color);
+        if (fill) {
+            g.fillRect(x, y, w, h);
+        } else {
+            g.drawRect(x, y, w, h);
+        }
     }
 
-    void circle(float x, float y, float r) {
+    void circle(float x, float y, float r, int color) {
+        setDrawColor(color);
         g.drawCircle(x, y, r);
     }
 
-    void circle(float x, float y, float r, int fill) {
-        setDrawColor(fill);
-        g.fillCircle(x, y, r);
+    void circle(float x, float y, float r, int color, boolean fill) {
+        setDrawColor(color);
+        if (fill) {
+            g.fillCircle(x, y, r);
+        } else {
+            g.drawCircle(x, y, r);
+        }
     }
 
-    void triangle(float x1, float y1, float x2, float y2, float x3, float y3) {
+    void triangle(float x1, float y1, float x2, float y2, float x3, float y3, int color) {
+        setDrawColor(color);
         g.drawTriangle(x1, y1, x2, y2, x3, y3);
     }
 
-    void triangle(float x1, float y1, float x2, float y2, float x3, float y3, int fill) {
-        setDrawColor(fill);
-        g.fillTriangle(x1, y1, x2, y2, x3, y3);
+    void triangle(float x1, float y1, float x2, float y2, float x3, float y3, int color, boolean fill) {
+        setDrawColor(color);
+        if (fill) {
+            g.fillTriangle(x1, y1, x2, y2, x3, y3);
+        } else {
+            g.drawTriangle(y3, y1, y2, y3, y3, y3);
+        }
     }
 
-    void line(float x1, float y1, float x2, float y2) {
-        g.drawLineSegment(x1, x2, y1, y2);
-    }
     void line(float x1, float y1, float x2, float y2, int color) {
         setDrawColor(color);
         g.drawLineSegment(x1, x2, y1, y2);
