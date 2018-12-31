@@ -2,30 +2,28 @@ import leikr.Engine;
 class Groove extends Engine {
 
 	def t;
-	int color;
+	int col;
 	
 	int x = 145;
 	int y = 145;
 	void create(){
 		t = 0;
-		color = 0;
 	}
 
 	void update(){}
 
 	void render(){
-		bgColor(1);
 		t += 0.1;
-		int count = 20;
+		int count = 15;
 		
 		for(int i = 0; i < count; i++){
 			float angle = i/count+t;
 			float dis = 70;
-			float x = Math.cos(angle)*dis+100;
-			float y = Math.sin(angle)*dis+100;			
-			circle(x,y,2,color);
-			circle(y,x,2,color);
-			square(x,60,5,60,1);
+			float x = Math.cos(angle)*dis+150;
+			float y = Math.sin(angle)*dis+100;		
+			setDrawColor(i)	
+			circle(x,y,12);
+			circle(y,x,12);
 		}		
 		
 		if(key("Left")){
@@ -40,12 +38,10 @@ class Groove extends Engine {
 		if(key("Down")){
 			y += 8;
 		}
-		sprite(0, x, y);
-		sprite(1, x, y-8);
-		sprite(255, x+8, y);
-		sprite(511, x+8, y+8, true);
-		sprite(511, x+16, y+8);
-		setColor(0);
+		if(key("Space")){
+			println(col);
+		}
+		
 		drawText("Hello, World!", 330, 30);
 	}
 }

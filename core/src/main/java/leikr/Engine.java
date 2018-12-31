@@ -52,7 +52,7 @@ public class Engine {
     }
     // end override functions
 
-    void setColor(int color) {
+    void setDrawColor(int color) {
         switch (color) {
             case 0:
                 g.setColor(Color.BLACK);
@@ -106,7 +106,7 @@ public class Engine {
     }
 
     public void bgColor(int color) {
-        setColor(color);
+        setDrawColor(color);
         g.fillRect(0, 0, 320, 240);
     }
 
@@ -129,7 +129,7 @@ public class Engine {
     }
 
     void square(float x, float y, float w, float h, int fill) {
-        setColor(fill);
+        setDrawColor(fill);
         g.fillRect(x, y, w, h);
     }
 
@@ -138,20 +138,24 @@ public class Engine {
     }
 
     void circle(float x, float y, float r, int fill) {
-        setColor(fill);
+        setDrawColor(fill);
         g.fillCircle(x, y, r);
     }
 
-    void triangle(int x1, int y1, int x2, int y2, int x3, int y3) {
+    void triangle(float x1, float y1, float x2, float y2, float x3, float y3) {
         g.drawTriangle(x1, y1, x2, y2, x3, y3);
     }
 
-    void triangle(int x1, int y1, int x2, int y2, int x3, int y3, int fill) {
-        setColor(fill);
+    void triangle(float x1, float y1, float x2, float y2, float x3, float y3, int fill) {
+        setDrawColor(fill);
         g.fillTriangle(x1, y1, x2, y2, x3, y3);
     }
 
-    void line(int x1, int y1, int x2, int y2) {
+    void line(float x1, float y1, float x2, float y2) {
+        g.drawLineSegment(x1, x2, y1, y2);
+    }
+    void line(float x1, float y1, float x2, float y2, int color) {
+        setDrawColor(color);
         g.drawLineSegment(x1, x2, y1, y2);
     }
 

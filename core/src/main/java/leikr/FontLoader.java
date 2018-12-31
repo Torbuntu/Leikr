@@ -25,7 +25,7 @@ public class FontLoader {
     public FontLoader() {
         //Generate a font object for font.ttf at size 40px
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        parameter.size = 8;
+        parameter.size = 16;
         parameter.flip = true;
 
         //The following settings allow the font to scale smoothly
