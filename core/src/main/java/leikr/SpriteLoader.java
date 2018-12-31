@@ -22,7 +22,7 @@ public class SpriteLoader {
     TextureRegion[][] regions_0;
     TextureRegion[][] regions_1;
     ArrayList<Sprite> spriteBank;
-
+    
     SpriteLoader() {
         assetManager = new AssetManager();
         spriteBank = new ArrayList<>();

@@ -14,6 +14,7 @@ class Groove extends Engine {
 	void update(){}
 
 	void render(){
+		bgColor(1);
 		t += 0.1;
 		int count = 20;
 		
@@ -44,6 +45,8 @@ class Groove extends Engine {
 		sprite(255, x+8, y);
 		sprite(511, x+8, y+8, true);
 		sprite(511, x+16, y+8);
+		setColor(0);
+		drawText("Hello, World!", 330, 30);
 	}
 }
 game = new Groove();
