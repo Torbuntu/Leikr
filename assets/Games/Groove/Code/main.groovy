@@ -13,6 +13,8 @@ class Groove extends Engine {
 	void update(){}
 
 	void render(){
+	
+		bgColor(6);
 		t += 0.1;
 		int count = 15;
 		
@@ -21,9 +23,9 @@ class Groove extends Engine {
 			float dis = 70;
 			float x = Math.cos(angle)*dis+150;
 			float y = Math.sin(angle)*dis+100;		
-			setDrawColor(i)	
-			circle(x,y,12);
-			circle(y,x,12);
+		
+			circle(x,y,12, i);
+			circle(y,x,12,i);
 		}		
 		
 		if(key("Left")){
@@ -42,7 +44,7 @@ class Groove extends Engine {
 			println(col);
 		}
 		
-		drawText("Hello, World!", 330, 30);
+		drawText("Hello, World!", 330, 30, 2);
 	}
 }
 game = new Groove();

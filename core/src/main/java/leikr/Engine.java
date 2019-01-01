@@ -7,6 +7,8 @@ package leikr;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import java.util.ArrayList;
@@ -24,6 +26,8 @@ public class Engine {
     ArrayList<Sprite> sprites;
     FontLoader fontLoader;
     BitmapFont font;
+    Controller p1Controller;
+    Controller p2Controller;
 
     // Override functions for game scripting.
     void preCreate() {
@@ -31,6 +35,8 @@ public class Engine {
         sprites = spriteLoader.getSpriteBank();
         fontLoader = new FontLoader();
         font = fontLoader.getFont();
+        p1Controller = Controllers.getControllers().get(0);
+        p2Controller = Controllers.getControllers().get(1);
     }
 
     public void create() {
@@ -45,7 +51,6 @@ public class Engine {
     public void preRender(Graphics g) {
         this.g = g;
         this.g.setFont(font);
-        this.g.setColor(Color.GREEN);
     }
 
     public void render() {
@@ -53,58 +58,10 @@ public class Engine {
     // end override functions
 
     void setDrawColor(int color) {
-        switch (color) {
-            case 0:
-                g.setColor(Color.BLACK);
-                break;
-            case 1:
-                g.setColor(Color.WHITE);
-                break;
-            case 2:
-                g.setColor(Color.RED);
-                break;
-            case 3:
-                g.setColor(Color.GREEN);
-                break;
-            case 4:
-                g.setColor(Color.BLUE);
-                break;
-            case 5:
-                g.setColor(Color.YELLOW);
-                break;
-            case 6:
-                g.setColor(Color.BROWN);
-                break;
-            case 7:
-                g.setColor(Color.MAGENTA);
-                break;
-            case 8:
-                g.setColor(Color.CYAN);
-                break;
-            case 9:
-                g.setColor(Color.TEAL);
-                break;
-            case 10:
-                g.setColor(Color.TAN);
-                break;
-            case 11:
-                g.setColor(Color.FOREST);
-                break;
-            case 12:
-                g.setColor(Color.PINK);
-                break;
-            case 13:
-                g.setColor(Color.ORANGE);
-                break;
-            case 14:
-                g.setColor(Color.PURPLE);
-                break;
-            case 15:
-                g.setColor(Color.CORAL);
-                break;
-        }
+        g.setColor(getDrawColor(color));
     }
-    public Color getDrawColor(int color){
+
+    public Color getDrawColor(int color) {
         switch (color) {
             case 0:
                 return (Color.BLACK);
@@ -210,8 +167,17 @@ public class Engine {
         g.drawLineSegment(x1, x2, y1, y2);
     }
 
-    boolean button(int button) {
-        return Gdx.input.isButtonPressed(button);
+    boolean button(int button, int player) {
+        if (player == 1) {
+            return p1Controller.getButton(button);
+
+        }
+        if (player == 2) {
+            return p2Controller.getButton(button);
+        }
+
+        //default search is player 1
+        return p1Controller.getButton(button);
     }
 
     boolean key(String key) {
