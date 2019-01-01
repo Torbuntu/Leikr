@@ -8,6 +8,7 @@ package leikr;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -26,8 +27,12 @@ public class Engine {
     ArrayList<Sprite> sprites;
     FontLoader fontLoader;
     BitmapFont font;
-    Controller p1Controller;
-    Controller p2Controller;
+    LeikrController p1Controller;
+    LeikrController p2Controller;
+
+    enum BTN {
+        X, A, B, Y, LEFT_BUMPER, RIGHT_BUMPER, nil6, nil7, SELECT, START, UP, RIGHT, DOWN, LEFT;
+    }
 
     // Override functions for game scripting.
     void preCreate() {
@@ -35,8 +40,18 @@ public class Engine {
         sprites = spriteLoader.getSpriteBank();
         fontLoader = new FontLoader();
         font = fontLoader.getFont();
-        p1Controller = Controllers.getControllers().get(0);
-        p2Controller = Controllers.getControllers().get(1);
+        try {
+            int nmc = Controllers.getControllers().size;
+            if (nmc > 0) {
+                p1Controller = new LeikrController(0);            
+                if (nmc > 1) {
+                    p2Controller = new LeikrController(1);
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println("No controllers active.");
+        }
+        
     }
 
     public void create() {
@@ -168,16 +183,18 @@ public class Engine {
     }
 
     boolean button(int button, int player) {
-        if (player == 1) {
-            return p1Controller.getButton(button);
-
+         if (null != p1Controller) {
+            if (player == 1) {
+                return p1Controller.button(button);
+            }
         }
-        if (player == 2) {
-            return p2Controller.getButton(button);
+        if (null != p2Controller) {
+            if (player == 2) {
+                return p2Controller.button(button);
+            }
         }
-
-        //default search is player 1
-        return p1Controller.getButton(button);
+        //default search is false
+        return false;
     }
 
     boolean key(String key) {
