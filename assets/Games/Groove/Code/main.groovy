@@ -47,4 +47,4 @@ class Groove extends Engine {
 		drawText("Hello, World!", 330, 30, 2);
 	}
 }
-game = new Groove();
+//game = new Groove();

@@ -34,9 +34,10 @@ project(":core") {
     apply plugin: "java"
 
     dependencies {
-        compile "org.mini2Dx:mini2Dx-core:$mini2DxVersion"
-        compile "org.mini2Dx:mini2Dx-tiled:$mini2DxVersion"
-        compile "org.mini2Dx:miniscript-groovy:$miniscriptVersion"
+        implementation "org.mini2Dx:mini2Dx-core:$mini2DxVersion"
+        implementation "org.mini2Dx:mini2Dx-tiled:$mini2DxVersion"
+        implementation "org.mini2Dx:miniscript-groovy:$miniscriptVersion"
+        implementation 'org.codehaus.groovy:groovy:3.0.0-alpha-4'
     }
 }
 
@@ -48,8 +49,8 @@ project(":desktop") {
 
 
     dependencies {
-        compile project(":core")
-        compile "org.mini2Dx:mini2Dx-desktop:$mini2DxVersion"
+        implementation project(":core")
+        implementation "org.mini2Dx:mini2Dx-desktop:$mini2DxVersion"
     }
     parcl {
         exe {
