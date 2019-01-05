@@ -10,13 +10,16 @@ import leikr.Engine;
 class MyGame extends Engine{
 
   void init(){
+      //initialize classes and variables here. Run on first load
   }
   
   void update(){
+      //Run every frame. Used for updating variables and game state
   }
   
   void render(){
+      //Draws to the screen after update.
   }
 }
-game = new MyGame();
+
 ```
