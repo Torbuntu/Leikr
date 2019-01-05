@@ -6,7 +6,10 @@ an executable in the `desktop/build/linux` directory and placing a Code/ directo
 main.groovy contents to be runnable should be similar to the following template:
 
 ```
-import leikr.Engine;
+//imports the leikr Engine class
+import leikr.Engine
+
+//extend the engine to get the API 
 class MyGame extends Engine{
 
   void init(){
