@@ -15,7 +15,6 @@ import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
-import org.mini2Dx.miniscript.core.GameScriptingEngine;
 
 /**
  *
@@ -26,15 +25,11 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
     public static int ID = 1;
     AssetManager assetManager;
 
-    GameScriptingEngine scriptEngine;
     Engine engine;
-    EngineUtil engineUtil;
     boolean back = false;
 
-    public void setEngines(Engine engine, GameScriptingEngine gsEngine) {
+    public void setEngines(Engine engine) {
         this.engine = engine;
-        scriptEngine = gsEngine;
-        engineUtil = new EngineUtil();
     }
 
     EngineScreen(AssetManager assetManager) {
@@ -42,7 +37,8 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
     }
 
     @Override
-    public void initialise(GameContainer gc) {}
+    public void initialise(GameContainer gc) {
+    }
 
     @Override
     public void postTransitionIn(Transition transition) {
@@ -52,13 +48,13 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
-        engine.update();
-        engine.update(delta);
-        if(back){
+        if (back) {
             sm.enterGameScreen(MenuScreen.ID, null, null);
-            Gdx.input.setInputProcessor((MenuScreen)sm.getGameScreen(MenuScreen.ID));
+            Gdx.input.setInputProcessor((MenuScreen) sm.getGameScreen(MenuScreen.ID));
             back = false;
         }
+        engine.update();
+        engine.update(delta);
     }
 
     @Override
@@ -83,7 +79,7 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public boolean keyUp(int i) {
-        if(i == Keys.ESCAPE){
+        if (i == Keys.ESCAPE) {
             back = true;
         }
         return true;

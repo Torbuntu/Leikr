@@ -19,7 +19,6 @@ allprojects {
         appName = 'Leikr'
         mini2DxVersion = '1.9.0-beta.3'
         gdxVersion = '1.9.8'
-        miniscriptVersion = '1.1.0'
     }
 
     repositories {
@@ -36,7 +35,6 @@ project(":core") {
     dependencies {
         implementation "org.mini2Dx:mini2Dx-core:$mini2DxVersion"
         implementation "org.mini2Dx:mini2Dx-tiled:$mini2DxVersion"
-        implementation "org.mini2Dx:miniscript-groovy:$miniscriptVersion"
         implementation 'org.codehaus.groovy:groovy:3.0.0-alpha-4'
     }
 }

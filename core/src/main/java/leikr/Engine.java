@@ -41,7 +41,7 @@ public class Engine {
         try {
             int nmc = Controllers.getControllers().size;
             if (nmc > 0) {
-                p1Controller = new LeikrController(0);            
+                p1Controller = new LeikrController(0);
                 if (nmc > 1) {
                     p2Controller = new LeikrController(1);
                 }
@@ -49,7 +49,7 @@ public class Engine {
         } catch (Exception ex) {
             System.out.println("No controllers active.");
         }
-        
+
     }
 
     public void create() {
@@ -126,12 +126,27 @@ public class Engine {
     public void sprite(int id, float x, float y) {
         g.drawSprite(sprites.get(id), x, y);
     }
-
+    public void sprite(int id, float x, float y, float degr) {
+        sprites.get(id).rotate(degr);
+        g.drawSprite(sprites.get(id), x, y);
+        sprites.get(id).rotate(-degr);
+    }
     public void sprite(int id, float x, float y, boolean clockwise) {
         sprites.get(id).rotate90(clockwise);
         g.drawSprite(sprites.get(id), x, y);
         sprites.get(id).rotate90(!clockwise);
     }
+    public void sprite(int id, float x, float y, boolean flipX, boolean flipY) {
+        sprites.get(id).setFlip(flipX, flipY);
+        g.drawSprite(sprites.get(id), x, y);
+        sprites.get(id).setFlip(!flipX, !flipY);
+    }
+    
+    public void tallSprite(int id, float x, float y) {
+        g.drawSprite(sprites.get(id), x, y);
+        g.drawSprite(sprites.get(id+1), x, y-8);
+    }
+       
 
     public void square(float x, float y, float w, float h, int color) {
         setDrawColor(color);
@@ -181,17 +196,13 @@ public class Engine {
     }
 
     boolean button(int button, int player) {
-         if (null != p1Controller) {
-            if (player == 1) {
-                return p1Controller.button(button);
-            }
+        if (null != p1Controller && player == 1) {
+            return p1Controller.button(button);
         }
-        if (null != p2Controller) {
-            if (player == 2) {
-                return p2Controller.button(button);
-            }
+        if (null != p2Controller && player == 2) {
+            return p2Controller.button(button);
         }
-        //default search is false
+        //default search is false, in case there are no controllers.
         return false;
     }
 

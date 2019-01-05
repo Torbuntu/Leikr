@@ -27,7 +27,6 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
     public static int ID = 0;
 
     AssetManager assetManager;
-    EngineUtil engineUtil;
     
     public static String GAME_NAME;
 
@@ -37,7 +36,6 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
    
     MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
-        engineUtil = new EngineUtil();
     }
 
     @Override
@@ -65,7 +63,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
         if (start) {
             GAME_NAME = gameList[cursor];
             EngineScreen screen = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
-            screen.setEngines(engineUtil.getEngine(GAME_NAME), engineUtil.getScriptEngine());
+            screen.setEngines(EngineUtil.getEngine(GAME_NAME));
             sm.enterGameScreen(EngineScreen.ID, null, null);
             Gdx.input.setInputProcessor(screen);
             start = false;
