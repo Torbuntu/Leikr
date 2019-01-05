@@ -78,7 +78,6 @@ public class Engine {
 
     public void render() {
     }
-    public void render(float delta){}
     // end override functions
     
     //Not a very helpful method, but I like to see how things perform.

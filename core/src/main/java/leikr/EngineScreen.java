@@ -27,8 +27,6 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
 
     Engine engine;
     boolean back = false;
-    
-    float delta;
 
     public void setEngines(Engine engine) {
         this.engine = engine;
@@ -61,14 +59,12 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public void interpolate(GameContainer gc, float alpha) {
-        delta = alpha;
     }
 
     @Override
     public void render(GameContainer gc, Graphics g) {
         engine.preRender(g);
         engine.render();
-        engine.render(delta);
     }
 
     @Override
