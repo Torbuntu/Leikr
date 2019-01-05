@@ -10,6 +10,9 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import java.util.ArrayList;
 import org.mini2Dx.core.graphics.Graphics;
@@ -38,6 +41,7 @@ public class Engine {
 
     // Override functions for game scripting.
     void preCreate() {
+        
         logger = new FPSLogger();
         BTN = new ButtonCodes();
         spriteLoader = new SpriteLoader();
@@ -219,12 +223,7 @@ public class Engine {
     }
 
     //start shape drawing methods
-    
-    void pixel(float x, float y, int color){
-        setDrawColor(color);
-        g.drawRect(x, y, 1, 1);// Kind of hacky since this is technically a square shape, not just a pixel. But it counts
-    }
-    
+        
     public void square(float x, float y, float w, float h, int color) {
         setDrawColor(color);
         g.drawRect(x, y, w, h);

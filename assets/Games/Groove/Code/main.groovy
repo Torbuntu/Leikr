@@ -8,9 +8,12 @@ class Groove extends Engine {
 	float x2 = 0;
 	float y2 = 0;
 
+	void update(float delta){
+		t+=delta
+	}
 	void render(){
 		FPS()
-		t+=1
+		
 		for(float i = 0; i < amnt; i+=0.5){
 			x = Math.cos(i / 32 + t / 40) * 50
 		    y = Math.sin(i / 32 + t / 40) * 50
@@ -19,11 +22,11 @@ class Groove extends Engine {
 		    y2 = (240 + Math.sin(y / 13 + t / 40) * 240)
 		    
 
-		    pixel(-x2, (y2), 9)
-		    pixel((x2 ), (y2 ), 9)
+		    sprite(0,-x2, (y2))
+		    sprite(0,(x2 ), (y2 ))
 		    
-		    pixel((x2 ), (- y2), 9)
-		    pixel(- x2, (- y2 ), 9)
+		    sprite(0,(x2 ), (- y2))
+		    sprite(0,- x2, (- y2 ))
 		    
 		}
 		
