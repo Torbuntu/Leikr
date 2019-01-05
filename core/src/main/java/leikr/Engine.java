@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import java.util.ArrayList;
 import org.mini2Dx.core.graphics.Graphics;
@@ -23,19 +24,28 @@ public class Engine {
     Graphics g;
     SpriteLoader spriteLoader;
     ArrayList<Sprite> sprites;
+    ArrayList<Sprite> mediumSprites;
+    ArrayList<Sprite> largeSprites;
     FontLoader fontLoader;
     BitmapFont font;
     LeikrController p1Controller;
     LeikrController p2Controller;
 
-    enum BTN {
-        X, A, B, Y, LEFT_BUMPER, RIGHT_BUMPER, nil6, nil7, SELECT, START, UP, RIGHT, DOWN, LEFT;
-    }
+    public static ButtonCodes BTN; //static codes for the buttons for readability
+    
+    
+    FPSLogger logger;
 
     // Override functions for game scripting.
     void preCreate() {
+        logger = new FPSLogger();
+        BTN = new ButtonCodes();
         spriteLoader = new SpriteLoader();
+
         sprites = spriteLoader.getSpriteBank();
+        mediumSprites = spriteLoader.getMediumSpriteBank();
+        largeSprites = spriteLoader.getLargeSpriteBank();
+
         fontLoader = new FontLoader();
         font = fontLoader.getFont();
         try {
@@ -68,8 +78,15 @@ public class Engine {
 
     public void render() {
     }
+    public void render(float delta){}
     // end override functions
+    
+    //Not a very helpful method, but I like to see how things perform.
+    void FPS(){
+        logger.log();
+    }
 
+    //start color methods
     void setDrawColor(int color) {
         g.setColor(getDrawColor(color));
     }
@@ -117,37 +134,98 @@ public class Engine {
         setDrawColor(color);
         g.setBackgroundColor(getDrawColor(color));
     }
+    //end color methods
+
+    //start 8x8 sprites
+    public void sprite(int id, float x, float y) {
+        g.drawSprite(sprites.get(id), x, y);
+    }
+
+    public void sprite(int id, float x, float y, float degr) {
+        sprites.get(id).rotate(degr);
+        g.drawSprite(sprites.get(id), x, y);
+        sprites.get(id).rotate(-degr);
+    }
+
+    public void sprite(int id, float x, float y, boolean clockwise) {
+        sprites.get(id).rotate90(clockwise);
+        g.drawSprite(sprites.get(id), x, y);
+        sprites.get(id).rotate90(!clockwise);
+    }
+
+    public void sprite(int id, float x, float y, boolean flipX, boolean flipY) {
+        sprites.get(id).setFlip(flipX, flipY);
+        g.drawSprite(sprites.get(id), x, y);
+        sprites.get(id).setFlip(!flipX, !flipY);
+    }
+    //end 8x8 sprites
+
+    //start 16x16 sprites
+    public void sprite16(int id, float x, float y) {
+        g.drawSprite(mediumSprites.get(id), x, y);
+    }
+
+    public void sprite16(int id, float x, float y, float degr) {
+        mediumSprites.get(id).rotate(degr);
+        g.drawSprite(mediumSprites.get(id), x, y);
+        mediumSprites.get(id).rotate(-degr);
+    }
+
+    public void sprite16(int id, float x, float y, boolean clockwise) {
+        mediumSprites.get(id).rotate90(clockwise);
+        g.drawSprite(mediumSprites.get(id), x, y);
+        mediumSprites.get(id).rotate90(!clockwise);
+    }
+
+    public void sprite16(int id, float x, float y, boolean flipX, boolean flipY) {
+        mediumSprites.get(id).setFlip(flipX, flipY);
+        g.drawSprite(mediumSprites.get(id), x, y);
+        mediumSprites.get(id).setFlip(!flipX, !flipY);
+    }
+    //end 16x16 sprites
+
+    //start 64x64 sprites
+    public void sprite64(int id, float x, float y) {
+        g.drawSprite(largeSprites.get(id), x, y);
+    }
+
+    public void sprite64(int id, float x, float y, float degr) {
+        largeSprites.get(id).rotate(degr);
+        g.drawSprite(largeSprites.get(id), x, y);
+        largeSprites.get(id).rotate(-degr);
+    }
+
+    public void sprite64(int id, float x, float y, boolean clockwise) {
+        largeSprites.get(id).rotate90(clockwise);
+        g.drawSprite(largeSprites.get(id), x, y);
+        largeSprites.get(id).rotate90(!clockwise);
+    }
+
+    public void sprite64(int id, float x, float y, boolean flipX, boolean flipY) {
+        largeSprites.get(id).setFlip(flipX, flipY);
+        g.drawSprite(largeSprites.get(id), x, y);
+        largeSprites.get(id).setFlip(!flipX, !flipY);
+    }
+    //end 64x64 sprites
+
+    //draws a sprite given the id, and the next sprite in the sequence on top of it.
+    public void tallSprite(int id, float x, float y) {
+        g.drawSprite(sprites.get(id), x, y);
+        g.drawSprite(sprites.get(id + 1), x, y - 8);
+    }
 
     public void drawText(String text, float x, float y, int color) {
         setDrawColor(color);
         g.drawString(text, x, y);
     }
 
-    public void sprite(int id, float x, float y) {
-        g.drawSprite(sprites.get(id), x, y);
-    }
-    public void sprite(int id, float x, float y, float degr) {
-        sprites.get(id).rotate(degr);
-        g.drawSprite(sprites.get(id), x, y);
-        sprites.get(id).rotate(-degr);
-    }
-    public void sprite(int id, float x, float y, boolean clockwise) {
-        sprites.get(id).rotate90(clockwise);
-        g.drawSprite(sprites.get(id), x, y);
-        sprites.get(id).rotate90(!clockwise);
-    }
-    public void sprite(int id, float x, float y, boolean flipX, boolean flipY) {
-        sprites.get(id).setFlip(flipX, flipY);
-        g.drawSprite(sprites.get(id), x, y);
-        sprites.get(id).setFlip(!flipX, !flipY);
+    //start shape drawing methods
+    
+    void pixel(float x, float y, int color){
+        setDrawColor(color);
+        g.drawRect(x, y, 1, 1);// Kind of hacky since this is technically a square shape, not just a pixel. But it counts
     }
     
-    public void tallSprite(int id, float x, float y) {
-        g.drawSprite(sprites.get(id), x, y);
-        g.drawSprite(sprites.get(id+1), x, y-8);
-    }
-       
-
     public void square(float x, float y, float w, float h, int color) {
         setDrawColor(color);
         g.drawRect(x, y, w, h);
@@ -194,7 +272,9 @@ public class Engine {
         setDrawColor(color);
         g.drawLineSegment(x1, x2, y1, y2);
     }
+    //end shape drawing methods
 
+    //start input handling
     boolean button(int button, int player) {
         if (null != p1Controller && player == 1) {
             return p1Controller.button(button);
@@ -209,4 +289,5 @@ public class Engine {
     boolean key(String key) {
         return Gdx.input.isKeyPressed(Keys.valueOf(key));
     }
+    //end input handling
 }

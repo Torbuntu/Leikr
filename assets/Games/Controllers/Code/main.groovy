@@ -7,7 +7,7 @@ class Groove extends Engine {
 	void update(){}
 
 	void render(){
-		if(button(10,1)){
+		if(button(BTN.UP,1)){
 			drawText("up", 1, 10, 1);
 		}
 		if(button(11,1)){
