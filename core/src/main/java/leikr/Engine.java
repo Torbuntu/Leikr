@@ -10,9 +10,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import java.util.ArrayList;
 import org.mini2Dx.core.graphics.Graphics;
@@ -84,10 +81,20 @@ public class Engine {
     }
     // end override functions
     
+    //Start Helper methods
     //Not a very helpful method, but I like to see how things perform.
     void FPS(){
         logger.log();
     }
+    
+    int getScreenWidth(){
+        return 240;
+    }
+    
+    int getScreenHeight(){
+        return 160;
+    }
+    //End helper methods.
 
     //start color methods
     void setDrawColor(int color) {
@@ -221,7 +228,6 @@ public class Engine {
         setDrawColor(color);
         g.drawString(text, x, y);
     }
-
     //start shape drawing methods
         
     public void square(float x, float y, float w, float h, int color) {

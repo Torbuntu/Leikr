@@ -1,12 +1,13 @@
 import leikr.Engine
 class Groove extends Engine {
 
-	float t = 0;
-	def amnt = 500;
-	float x = 0;
-	float y = 0;
-	float x2 = 0;
-	float y2 = 0;
+	float t = 0
+	float x = 0
+	float y = 0	
+	int len = 50
+	
+	float angle = 0.0
+	float step = 0.1
 
 	void update(float delta){
 		t+=delta
@@ -14,21 +15,24 @@ class Groove extends Engine {
 	void render(){
 		FPS()
 		
-		for(float i = 0; i < amnt; i+=0.5){
-			x = Math.cos(i / 32 + t / 40) * 50
-		    y = Math.sin(i / 32 + t / 40) * 50
-
-		    x2 = (240 + Math.cos(x / 13 + t / 40) * 240)
-		    y2 = (240 + Math.sin(y / 13 + t / 40) * 240)
+		float amnt = 2*Math.PI
+		angle = 0.0
+		while(angle < amnt){
+			x = len * Math.cos(angle+t)
+			y = len * Math.sin(angle+t)
+			
+			x = Math.cos(x/10 * angle/t) * 120
+			y = Math.sin(y/10 * angle/t) * 80
+			
+		    sprite(0,(x+120).toFloat(),(y+80).toFloat())
 		    
-
-		    sprite(0,-x2, (y2))
-		    sprite(0,(x2 ), (y2 ))
 		    
-		    sprite(0,(x2 ), (- y2))
-		    sprite(0,- x2, (- y2 ))
-		    
+		    angle += step
 		}
-		
+		drawText(x.toString(), 0, 20, 5) 
+		drawText(t.toString(), 0, 30, 5) 
+		if(t>20){
+			t = 0
+		}
 	}
 }
