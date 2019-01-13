@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import java.util.ArrayList;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
+import org.mini2Dx.core.graphics.viewport.FitViewport;
 
 /**
  *
@@ -32,13 +33,14 @@ public class Engine {
     LeikrController p2Controller;
 
     public static ButtonCodes BTN; //static codes for the buttons for readability
-    
-    
+
     FPSLogger logger;
+    FitViewport viewport;
 
     // Override functions for game scripting.
     void preCreate() {
-        
+        viewport = new FitViewport(240, 160);
+
         logger = new FPSLogger();
         BTN = new ButtonCodes();
         spriteLoader = new SpriteLoader();
@@ -75,23 +77,24 @@ public class Engine {
     public void preRender(Graphics g) {
         this.g = g;
         this.g.setFont(font);
+        viewport.apply(this.g);
     }
 
     public void render() {
     }
     // end override functions
-    
+
     //Start Helper methods
     //Not a very helpful method, but I like to see how things perform.
-    void FPS(){
+    void FPS() {
         logger.log();
     }
-    
-    int getScreenWidth(){
+
+    int getScreenWidth() {
         return 240;
     }
-    
-    int getScreenHeight(){
+
+    int getScreenHeight() {
         return 160;
     }
     //End helper methods.
@@ -229,7 +232,7 @@ public class Engine {
         g.drawString(text, x, y);
     }
     //start shape drawing methods
-        
+
     public void square(float x, float y, float w, float h, int color) {
         setDrawColor(color);
         g.drawRect(x, y, w, h);

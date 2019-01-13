@@ -14,6 +14,7 @@ class Groove extends Engine {
 	}
 	void render(){
 		FPS()
+		bgColor(0)
 		
 		float amnt = 2*Math.PI
 		angle = 0.0
@@ -25,7 +26,7 @@ class Groove extends Engine {
 			y = Math.sin(y/10 * angle/t) * 80
 			
 		    sprite(0,(x+120).toFloat(),(y+80).toFloat())
-		    
+		    sprite(0,(-x+120).toFloat(),(-y+80).toFloat())
 		    
 		    angle += step
 		}

@@ -14,6 +14,7 @@ import java.io.File;
 import java.util.Arrays;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
@@ -33,14 +34,17 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
     boolean start = false;
     String[] gameList;
     int cursor;
+    FitViewport viewport;
    
     MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
+        viewport = new FitViewport(240, 160);
     }
 
     @Override
     public void onResize(int width, int height) {
         Gdx.app.log("INFO", "Game window changed to " + width + "x" + height);
+        viewport.onResize(width, height);
     }
 
     @Override
@@ -76,6 +80,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public void render(GameContainer gc, Graphics g) {
+        viewport.apply(g);
         g.setColor(Color.WHITE);
         if (null != gameList) {
             int y = 14;
@@ -89,7 +94,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
                 y += 12;
             }
         }
-        g.drawString("Selection: " +cursor , 0, gc.getHeight() - 16);
+        g.drawString("Selection: " +cursor , 0, viewport.getHeight() - 16);
     }
 
     @Override
