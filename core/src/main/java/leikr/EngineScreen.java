@@ -11,7 +11,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
-import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
@@ -45,7 +44,7 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
     public void onResize(int width, int height) {
         engine.viewport.onResize(width, height);
     }
-
+    
     @Override
     public void postTransitionIn(Transition transition) {
         engine.preCreate();

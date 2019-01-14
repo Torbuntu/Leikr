@@ -61,6 +61,7 @@ public class Engine {
             }
         } catch (Exception ex) {
             System.out.println("No controllers active.");
+            System.out.println(ex.getMessage());
         }
 
     }
