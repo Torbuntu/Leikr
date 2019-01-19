@@ -17,10 +17,11 @@ class Groove extends Engine {
 	}
 	void render(){
 		FPS()
-		bgColor(2)
+		bgColor(0)
 		
-		float amnt = 20
+		float amnt = 2000
 		angle = 0.0
+		int spnm = 0
 		while(angle < amnt){
 			x = len * Math.cos(angle+t)
 			y = len * Math.sin(angle+t)
@@ -32,9 +33,11 @@ class Groove extends Engine {
 		    sprite(0,(-x+120).toFloat(),(-y+80).toFloat())
 		    
 		    angle += step
+		    spnm++
 		}
 		drawText(x.toString(), 0, 20, 5) 
 		drawText(t.toString(), 0, 30, 5) 
+		drawText(getUsedSprites().toString(), 0, 40, 5)
 		if(t>20){
 			t = 0
 		}

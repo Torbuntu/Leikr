@@ -16,14 +16,16 @@ import java.lang.reflect.InvocationTargetException;
  * @author tor
  */
 public class EngineUtil {
-
+    //TODO: Add support for more than one code file?
     public static Engine getEngine(String name) {
         Engine engine = null;
         GroovyClassLoader gcl = new GroovyClassLoader();
+        CustomProperties cp = new CustomProperties(name);
         try {
             Class game = gcl.parseClass(new File("./Games/" + name + "/Code/main.groovy"));//loads the game code  
             Constructor[] cnst = game.getConstructors();//gets the constructos
             engine = (Engine) cnst[0].newInstance();//instantiates based on first constructor
+            engine.setMaxSprites(cp.MAX_SPRITES);
         }catch(IllegalAccessException | IllegalArgumentException | InstantiationException | SecurityException | InvocationTargetException | IOException ex){
             System.out.println(ex);
         }

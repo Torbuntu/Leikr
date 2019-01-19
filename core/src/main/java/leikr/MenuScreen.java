@@ -23,9 +23,17 @@ import org.mini2Dx.core.screen.ScreenManager;
 /**
  *
  * @author tor
+ * 
  */
 public class MenuScreen extends BasicGameScreen implements InputProcessor {
-
+    /* TODO: Make a graphical menu list to display games. This will take in a 
+        This will take in a few items to use from the game's properties file.
+        Such as:
+            1. a custom icon which will be displayed in a selection box. 
+            2. a Title
+            3. a small one or two line description of the game.
+            4?. a genre?
+    */
     public static int ID = 0;
 
     AssetManager assetManager;
@@ -73,7 +81,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
         if (start) {
             GAME_NAME = gameList[cursor];
             EngineScreen screen = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
-            screen.setEngines(EngineUtil.getEngine(GAME_NAME));
+            screen.setEngine(EngineUtil.getEngine(GAME_NAME));
             sm.enterGameScreen(EngineScreen.ID, null, null);
             Gdx.input.setInputProcessor(screen);
             start = false;

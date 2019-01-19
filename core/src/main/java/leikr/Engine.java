@@ -32,12 +32,22 @@ public class Engine {
     LeikrController p1Controller;
     LeikrController p2Controller;
     
-    
+    private int MAX_SPRITES;
+    private int USED_SPRITES;
 
     public static ButtonCodes BTN; //static codes for the buttons for readability
 
     FPSLogger logger;
     FitViewport viewport;
+    
+    //custom prop functions
+    public void setMaxSprites(int ms){
+        this.MAX_SPRITES = ms;
+    }
+    public int getUsedSprites(){
+        return USED_SPRITES;
+    }
+    //end custom prop functions
 
     // Override functions for game scripting.
     void preCreate() {
@@ -81,6 +91,8 @@ public class Engine {
     public void preRender(Graphics g) {
         this.g = g;
         viewport.apply(this.g);
+        //set to 0 before drawing anything
+        USED_SPRITES = 0;
     }
 
     public void render() {
@@ -154,73 +166,97 @@ public class Engine {
 
     //start 8x8 sprites
     public void sprite(int id, float x, float y) {
+        if(USED_SPRITES >= MAX_SPRITES) return;
         g.drawSprite(sprites.get(id), x, y);
+        USED_SPRITES++;
     }
 
     public void sprite(int id, float x, float y, float degr) {
+        if(USED_SPRITES >= MAX_SPRITES) return;
         sprites.get(id).rotate(degr);
         g.drawSprite(sprites.get(id), x, y);
         sprites.get(id).rotate(-degr);
+        USED_SPRITES++;
     }
 
     public void sprite(int id, float x, float y, boolean clockwise) {
+        if(USED_SPRITES >= MAX_SPRITES) return;
         sprites.get(id).rotate90(clockwise);
         g.drawSprite(sprites.get(id), x, y);
         sprites.get(id).rotate90(!clockwise);
+        USED_SPRITES++;
     }
 
     public void sprite(int id, float x, float y, boolean flipX, boolean flipY) {
+        if(USED_SPRITES >= MAX_SPRITES) return;
         sprites.get(id).setFlip(flipX, flipY);
         g.drawSprite(sprites.get(id), x, y);
         sprites.get(id).setFlip(!flipX, !flipY);
+        USED_SPRITES++;
     }
     //end 8x8 sprites
 
     //start 16x16 sprites
     public void sprite16(int id, float x, float y) {
+        if(USED_SPRITES >= MAX_SPRITES) return;
         g.drawSprite(mediumSprites.get(id), x, y);
+        USED_SPRITES++;
     }
 
     public void sprite16(int id, float x, float y, float degr) {
+        if(USED_SPRITES >= MAX_SPRITES) return;
         mediumSprites.get(id).rotate(degr);
         g.drawSprite(mediumSprites.get(id), x, y);
         mediumSprites.get(id).rotate(-degr);
+        USED_SPRITES++;
     }
 
     public void sprite16(int id, float x, float y, boolean clockwise) {
+        if(USED_SPRITES >= MAX_SPRITES) return;
         mediumSprites.get(id).rotate90(clockwise);
         g.drawSprite(mediumSprites.get(id), x, y);
         mediumSprites.get(id).rotate90(!clockwise);
+        USED_SPRITES++;
     }
 
     public void sprite16(int id, float x, float y, boolean flipX, boolean flipY) {
+        if(USED_SPRITES >= MAX_SPRITES) return;
         mediumSprites.get(id).setFlip(flipX, flipY);
         g.drawSprite(mediumSprites.get(id), x, y);
         mediumSprites.get(id).setFlip(!flipX, !flipY);
+        USED_SPRITES++;
     }
     //end 16x16 sprites
 
     //start 64x64 sprites
     public void sprite64(int id, float x, float y) {
+        if(USED_SPRITES >= MAX_SPRITES) return;
         g.drawSprite(largeSprites.get(id), x, y);
+        USED_SPRITES++;
     }
 
     public void sprite64(int id, float x, float y, float degr) {
+        if(USED_SPRITES >= MAX_SPRITES) return;
         largeSprites.get(id).rotate(degr);
         g.drawSprite(largeSprites.get(id), x, y);
         largeSprites.get(id).rotate(-degr);
+        USED_SPRITES++;
     }
 
     public void sprite64(int id, float x, float y, boolean clockwise) {
+        if(USED_SPRITES >= MAX_SPRITES) return;
         largeSprites.get(id).rotate90(clockwise);
         g.drawSprite(largeSprites.get(id), x, y);
         largeSprites.get(id).rotate90(!clockwise);
+        USED_SPRITES++;
     }
 
     public void sprite64(int id, float x, float y, boolean flipX, boolean flipY) {
+        if(USED_SPRITES >= MAX_SPRITES) return;
         largeSprites.get(id).setFlip(flipX, flipY);
         g.drawSprite(largeSprites.get(id), x, y);
         largeSprites.get(id).setFlip(!flipX, !flipY);
+        USED_SPRITES++;
     }
     //end 64x64 sprites
 

@@ -28,7 +28,7 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
     Engine engine;
     boolean back = false;
 
-    public void setEngines(Engine engine) {
+    public void setEngine(Engine engine) {
         this.engine = engine;
     }
 
