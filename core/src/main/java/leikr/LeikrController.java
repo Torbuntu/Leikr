@@ -2,16 +2,18 @@ package leikr;
 
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
+import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.math.Vector3;
 
 /**
  *
  * @author tor
  */
-public class LeikrController {
+public class LeikrController implements ControllerListener {
 
-    Controller controller;
-
+    int cID;
     //controller buttons
     boolean buttonAisPressed = false;
     boolean buttonBisPressed = false;
@@ -29,110 +31,7 @@ public class LeikrController {
     boolean downButtonPressed = false;
 
     LeikrController(int id) {
-        try {
-            controller = Controllers.getControllers().get(id);
-            setupController(controller);
-        } catch (Exception ex) {
-            System.out.println(ex + " : Controller doesn't exist");
-        }
-    }
-
-    private void setupController(Controller cont) {
-        cont.addListener(new ControllerAdapter() {
-
-            @Override
-            public boolean buttonDown(Controller controller, int buttonCode) {
-                System.out.println(controller.getName() + " : " + buttonCode);
-                switch (buttonCode) {
-                    case 0:
-                        buttonXisPressed = true;
-                        return true;
-                    case 1:
-                        buttonAisPressed = true;
-                        return true;
-                    case 2:
-                        buttonBisPressed = true;
-                        return true;
-                    case 3:
-                        buttonYisPressed = true;
-                        return true;
-                    case 4:
-                        bumperLeftPressed = true;
-                        return true;
-                    case 5:
-                        bumperRightPressed = true;
-                        return true;
-                    case 8:
-                        buttonSelect = true;
-                        return true;
-                    case 9:
-                        buttonStart = true;
-                        return true;
-                }
-                return false;
-            }
-
-            @Override
-            public boolean buttonUp(Controller controller, int buttonCode) {
-                System.out.println(controller.getName() + " : " + buttonCode);
-                switch (buttonCode) {
-                    case 0:
-                        buttonXisPressed = false;
-                        return true;
-                    case 1:
-                        buttonAisPressed = false;
-                        return true;
-                    case 2:
-                        buttonBisPressed = false;
-                        return true;
-                    case 3:
-                        buttonYisPressed = false;
-                        return true;
-                    case 4:
-                        bumperLeftPressed = false;
-                        return true;
-                    case 5:
-                        bumperRightPressed = false;
-                        return true;
-                    case 8:
-                        buttonSelect = false;
-                        return true;
-                    case 9:
-                        buttonStart = false;
-                        return true;
-                }
-                return false;
-            }
-
-            @Override
-            public boolean axisMoved(Controller controller, int axisCode, float value) {
-                //axis 0 = x axis -1 = left 1 = right
-                //axis 1 = y axis -1 = up 1 = down
-                System.out.println("Axis moved: " + axisCode + " : " + (int) value);
-
-                if ((int) value == 0) {
-                    leftButtonPressed = false;
-                    rightButtonPressed = false;
-                    upButtonPressed = false;
-                    downButtonPressed = false;
-                }
-                if (axisCode == 1) {
-                    if (value == 1) {
-                        downButtonPressed = true;
-                    } else if (value == -1) {
-                        upButtonPressed = true;
-                    }
-                    return true;
-                } else {
-                    if (value == 1) {
-                        rightButtonPressed = true;
-                    } else if (value == -1) {
-                        leftButtonPressed = true;
-                    }
-                    return true;
-                }
-            }
-        });
+        cID = id;
     }
 
     public boolean button(int button) {
@@ -164,6 +63,121 @@ public class LeikrController {
             default:
                 return false;
         }
+    }
+
+    public void connected(Controller controller) {
+    }
+
+    public void disconnected(Controller controller) {
+    }
+
+    public boolean buttonDown(Controller controller, int buttonCode) {
+        System.out.println(controller.getName() + " : " + buttonCode);
+        switch (buttonCode) {
+            case 0:
+                buttonXisPressed = true;
+                return true;
+            case 1:
+                buttonAisPressed = true;
+                return true;
+            case 2:
+                buttonBisPressed = true;
+                return true;
+            case 3:
+                buttonYisPressed = true;
+                return true;
+            case 4:
+                bumperLeftPressed = true;
+                return true;
+            case 5:
+                bumperRightPressed = true;
+                return true;
+            case 8:
+                buttonSelect = true;
+                return true;
+            case 9:
+                buttonStart = true;
+                return true;
+        }
+        return false;
+    }
+
+    public boolean buttonUp(Controller controller, int buttonCode) {
+        System.out.println(controller.getName() + " : " + buttonCode);
+        switch (buttonCode) {
+            case 0:
+                buttonXisPressed = false;
+                return true;
+            case 1:
+                buttonAisPressed = false;
+                return true;
+            case 2:
+                buttonBisPressed = false;
+                return true;
+            case 3:
+                buttonYisPressed = false;
+                return true;
+            case 4:
+                bumperLeftPressed = false;
+                return true;
+            case 5:
+                bumperRightPressed = false;
+                return true;
+            case 8:
+                buttonSelect = false;
+                return true;
+            case 9:
+                buttonStart = false;
+                return true;
+        }
+        return false;
+    }
+
+    public boolean axisMoved(Controller controller, int axisCode, float value) {
+        //axis 0 = x axis -1 = left 1 = right
+        //axis 1 = y axis -1 = up 1 = down
+        System.out.println("Axis moved: " + axisCode + " : " + (int) value);
+
+        if ((int) value == 0) {
+            leftButtonPressed = false;
+            rightButtonPressed = false;
+            upButtonPressed = false;
+            downButtonPressed = false;
+        }
+        if (axisCode == 1) {
+            if (value == 1) {
+                downButtonPressed = true;
+            } else if (value == -1) {
+                upButtonPressed = true;
+            }
+            return true;
+        } else {
+            if (value == 1) {
+                rightButtonPressed = true;
+            } else if (value == -1) {
+                leftButtonPressed = true;
+            }
+            return true;
+        }
+    }
+
+    
+    
+    //Unused methods
+    public boolean povMoved(Controller cntrlr, int i, PovDirection pd) {
+        return false;
+    }
+
+    public boolean xSliderMoved(Controller cntrlr, int i, boolean bln) {
+        return false;
+    }
+
+    public boolean ySliderMoved(Controller cntrlr, int i, boolean bln) {
+        return false;
+    }
+
+    public boolean accelerometerMoved(Controller cntrlr, int i, Vector3 vctr) {
+        return false;
     }
 
 }

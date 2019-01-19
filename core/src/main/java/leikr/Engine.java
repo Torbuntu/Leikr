@@ -7,13 +7,12 @@ package leikr;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.utils.Array;
 import java.util.ArrayList;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
@@ -35,13 +34,12 @@ public class Engine {
     LeikrController p2Controller;
 
     public static ButtonCodes BTN; //static codes for the buttons for readability
-    
-    
+
     FPSLogger logger;
 
     // Override functions for game scripting.
     void preCreate() {
-        
+
         logger = new FPSLogger();
         BTN = new ButtonCodes();
         spriteLoader = new SpriteLoader();
@@ -53,12 +51,12 @@ public class Engine {
         fontLoader = new FontLoader();
         font = fontLoader.getFont();
         try {
-            int nmc = Controllers.getControllers().size;
-            if (nmc > 0) {
+            Array<Controller> nmc = Controllers.getControllers();
+            if (null != nmc.get(0)) {
                 p1Controller = new LeikrController(0);
-                if (nmc > 1) {
-                    p2Controller = new LeikrController(1);
-                }
+            }
+            if (null != nmc.get(1)) {
+                p2Controller = new LeikrController(1);
             }
         } catch (Exception ex) {
             System.out.println("No controllers active.");
@@ -83,9 +81,9 @@ public class Engine {
     public void render() {
     }
     // end override functions
-    
+
     //Not a very helpful method, but I like to see how things perform.
-    void FPS(){
+    void FPS() {
         logger.log();
     }
 
@@ -223,7 +221,6 @@ public class Engine {
     }
 
     //start shape drawing methods
-        
     public void square(float x, float y, float w, float h, int color) {
         setDrawColor(color);
         g.drawRect(x, y, w, h);
@@ -273,6 +270,11 @@ public class Engine {
     //end shape drawing methods
 
     //start input handling
+    boolean button(int button){
+        //assume single player game, only p1Controller
+        return p1Controller.button(button);
+    }
+    
     boolean button(int button, int player) {
         if (null != p1Controller && player == 1) {
             return p1Controller.button(button);
