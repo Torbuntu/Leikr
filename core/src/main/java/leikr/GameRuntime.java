@@ -7,8 +7,8 @@ public class GameRuntime extends ScreenBasedGame {
 
     public static final String GAME_IDENTIFIER = "torbuntu.leikr";
 
-    public static int WIDTH = 320;
-    public static int HEIGHT = 240;
+    public static int WIDTH = 240;
+    public static int HEIGHT = 160;
 
     AssetManager assetManager;
 

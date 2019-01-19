@@ -11,7 +11,6 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Array;
 import java.util.ArrayList;
 import org.mini2Dx.core.graphics.Graphics;
@@ -42,7 +41,7 @@ public class Engine {
 
     // Override functions for game scripting.
     void preCreate() {
-        viewport = new FitViewport(240, 160);
+        viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
 
         logger = new FPSLogger();
         BTN = new ButtonCodes();
@@ -65,8 +64,7 @@ public class Engine {
                 p2c.addListener(p2Controller);
             }
         } catch (Exception ex) {
-            System.out.println("No controllers active.");
-            System.out.println(ex.getMessage());
+            System.out.println("Controllers: "+ex.getMessage());
         }
 
     }
@@ -96,11 +94,11 @@ public class Engine {
     }
 
     int getScreenWidth() {
-        return 240;
+        return GameRuntime.WIDTH;
     }
 
     int getScreenHeight() {
-        return 160;
+        return GameRuntime.HEIGHT;
     }
     //End helper methods.
 
@@ -150,7 +148,7 @@ public class Engine {
 
     public void bgColor(int color) {
         setDrawColor(color);
-        g.setBackgroundColor(getDrawColor(color));
+        g.fillRect(-1, -1, GameRuntime.WIDTH+1, GameRuntime.HEIGHT+1);
     }
     //end color methods
 

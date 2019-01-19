@@ -17,9 +17,9 @@ class Groove extends Engine {
 	}
 	void render(){
 		FPS()
-		bgColor(0)
+		bgColor(2)
 		
-		float amnt = 2*Math.PI
+		float amnt = 20
 		angle = 0.0
 		while(angle < amnt){
 			x = len * Math.cos(angle+t)
@@ -40,10 +40,16 @@ class Groove extends Engine {
 		}
 		
 		if(key("Right")){
-			xp++
+			xp+=5
 		}
 		if(key("Left")){
-			xp--
+			xp-=5
+		}
+		if(key("Up")){
+			yp-=5
+		}
+		if(key("Down")){
+			yp+=5
 		}
 		sprite(1, xp, yp)
 	}
