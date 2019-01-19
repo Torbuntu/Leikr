@@ -1,4 +1,4 @@
-import leikr.Engine;
+import leikr.Engine
 class Groove extends Engine {
 
 	void create(){
@@ -35,4 +35,3 @@ class Groove extends Engine {
 		
 	}
 }
-game = new Groove();

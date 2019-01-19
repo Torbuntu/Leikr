@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Array;
 import java.util.ArrayList;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
+import org.mini2Dx.core.graphics.viewport.FitViewport;
 
 /**
  *
@@ -28,17 +29,20 @@ public class Engine {
     ArrayList<Sprite> sprites;
     ArrayList<Sprite> mediumSprites;
     ArrayList<Sprite> largeSprites;
-    FontLoader fontLoader;
-    BitmapFont font;
+
     LeikrController p1Controller;
     LeikrController p2Controller;
+    
+    
 
     public static ButtonCodes BTN; //static codes for the buttons for readability
 
     FPSLogger logger;
+    FitViewport viewport;
 
     // Override functions for game scripting.
     void preCreate() {
+        viewport = new FitViewport(240, 160);
 
         logger = new FPSLogger();
         BTN = new ButtonCodes();
@@ -48,18 +52,21 @@ public class Engine {
         mediumSprites = spriteLoader.getMediumSpriteBank();
         largeSprites = spriteLoader.getLargeSpriteBank();
 
-        fontLoader = new FontLoader();
-        font = fontLoader.getFont();
         try {
             Array<Controller> nmc = Controllers.getControllers();
             if (null != nmc.get(0)) {
-                p1Controller = new LeikrController(0);
+                Controller p1c = nmc.get(0);
+                p1Controller = new LeikrController();
+                p1c.addListener(p1Controller);
             }
             if (null != nmc.get(1)) {
-                p2Controller = new LeikrController(1);
+                Controller p2c = nmc.get(1);
+                p2Controller = new LeikrController();
+                p2c.addListener(p2Controller);
             }
         } catch (Exception ex) {
             System.out.println("No controllers active.");
+            System.out.println(ex.getMessage());
         }
 
     }
@@ -75,17 +82,27 @@ public class Engine {
 
     public void preRender(Graphics g) {
         this.g = g;
-        this.g.setFont(font);
+        viewport.apply(this.g);
     }
 
     public void render() {
     }
     // end override functions
 
+    //Start Helper methods
     //Not a very helpful method, but I like to see how things perform.
     void FPS() {
         logger.log();
     }
+
+    int getScreenWidth() {
+        return 240;
+    }
+
+    int getScreenHeight() {
+        return 160;
+    }
+    //End helper methods.
 
     //start color methods
     void setDrawColor(int color) {
@@ -219,8 +236,8 @@ public class Engine {
         setDrawColor(color);
         g.drawString(text, x, y);
     }
-
     //start shape drawing methods
+
     public void square(float x, float y, float w, float h, int color) {
         setDrawColor(color);
         g.drawRect(x, y, w, h);
@@ -270,11 +287,11 @@ public class Engine {
     //end shape drawing methods
 
     //start input handling
-    boolean button(int button){
+    boolean button(int button) {
         //assume single player game, only p1Controller
         return p1Controller.button(button);
     }
-    
+
     boolean button(int button, int player) {
         if (null != p1Controller && player == 1) {
             return p1Controller.button(button);
@@ -286,6 +303,7 @@ public class Engine {
         return false;
     }
 
+    //detect keyboard key presses
     boolean key(String key) {
         return Gdx.input.isKeyPressed(Keys.valueOf(key));
     }

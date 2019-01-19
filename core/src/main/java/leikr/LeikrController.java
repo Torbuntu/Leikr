@@ -1,9 +1,7 @@
 package leikr;
 
 import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.ControllerListener;
-import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
 
@@ -13,7 +11,6 @@ import com.badlogic.gdx.math.Vector3;
  */
 public class LeikrController implements ControllerListener {
 
-    int cID;
     //controller buttons
     boolean buttonAisPressed = false;
     boolean buttonBisPressed = false;
@@ -30,10 +27,7 @@ public class LeikrController implements ControllerListener {
     boolean upButtonPressed = false;
     boolean downButtonPressed = false;
 
-    LeikrController(int id) {
-        cID = id;
-    }
-
+    //engine api for returning boolean status of button presses on snes style controller
     public boolean button(int button) {
         switch (button) {
             case 0:
@@ -65,14 +59,10 @@ public class LeikrController implements ControllerListener {
         }
     }
 
-    public void connected(Controller controller) {
-    }
 
-    public void disconnected(Controller controller) {
-    }
-
+    @Override
     public boolean buttonDown(Controller controller, int buttonCode) {
-        System.out.println(controller.getName() + " : " + buttonCode);
+        System.out.println(controller.getName() +  " : " + buttonCode);
         switch (buttonCode) {
             case 0:
                 buttonXisPressed = true;
@@ -102,6 +92,7 @@ public class LeikrController implements ControllerListener {
         return false;
     }
 
+    @Override
     public boolean buttonUp(Controller controller, int buttonCode) {
         System.out.println(controller.getName() + " : " + buttonCode);
         switch (buttonCode) {
@@ -133,6 +124,8 @@ public class LeikrController implements ControllerListener {
         return false;
     }
 
+    //Keypad
+    @Override
     public boolean axisMoved(Controller controller, int axisCode, float value) {
         //axis 0 = x axis -1 = left 1 = right
         //axis 1 = y axis -1 = up 1 = down
@@ -164,18 +157,25 @@ public class LeikrController implements ControllerListener {
     
     
     //Unused methods
+    @Override
+    public void connected(Controller controller) {
+    }
+    @Override
+    public void disconnected(Controller controller) {
+    }
+    @Override
     public boolean povMoved(Controller cntrlr, int i, PovDirection pd) {
         return false;
     }
-
+    @Override
     public boolean xSliderMoved(Controller cntrlr, int i, boolean bln) {
         return false;
     }
-
+    @Override
     public boolean ySliderMoved(Controller cntrlr, int i, boolean bln) {
         return false;
     }
-
+    @Override
     public boolean accelerometerMoved(Controller cntrlr, int i, Vector3 vctr) {
         return false;
     }
