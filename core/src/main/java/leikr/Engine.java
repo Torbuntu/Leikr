@@ -128,6 +128,9 @@ public class Engine {
     void map(float x, float y){
         mapLoader.drawMap(g, Math.round(x), Math.round(y));
     }
+    int mapCellId(float x, float y){
+        return mapLoader.getMapTile(x, y);
+    }
     //end Map methods
     
 

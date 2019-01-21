@@ -20,7 +20,7 @@ class Groove extends Engine {
 		t+=delta
 	}
 	void render(){
-		FPS()
+		//FPS()
 		bgColor(0)
 		map(xp,yp)
 		
@@ -55,6 +55,7 @@ class Groove extends Engine {
 		}
 		if(key("Down")){
 			yp-=5
+			println(mapCellId(xp, yp))
 		}
 		sprite(1, 120, 80)
 	}

@@ -19,6 +19,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.tiled.Tile;
 import org.mini2Dx.tiled.TiledMap;
 
 /**
@@ -27,32 +28,38 @@ import org.mini2Dx.tiled.TiledMap;
  */
 public class MapLoader {
 
-    
     //TODO: Implement tile editing functions.
-    
     TiledMap tiledMap;
-    
+
     TiledMapTileLayer tiledMapLayer;
-    
-    MapLoader(){
+
+    MapLoader() {
     }
-    
-    void loadMap(String name){
-        tiledMap = new TiledMap(new FileHandle("./Games/"+MenuScreen.GAME_NAME+"/Map/"+name+".tmx"));
+
+    void loadMap(String name) {
+        tiledMap = new TiledMap(new FileHandle("./Games/" + MenuScreen.GAME_NAME + "/Map/" + name + ".tmx"));
     }
-    
-    TiledMap getMap(){
+
+    TiledMap getMap() {
         return tiledMap;
     }
-    
-    void drawMap(Graphics g){
+
+    void drawMap(Graphics g) {
         tiledMap.draw(g, 0, 0);
     }
-    void drawMap(Graphics g, int x, int y){
+
+    void drawMap(Graphics g, int x, int y) {
         tiledMap.draw(g, x, y);
     }
-    
-    
-    
-    
+
+    int getMapTile(float x, float y) {
+        try {
+            Tile tmp = tiledMap.getTile((int) x, (int) y, 0);
+            System.out.println(tmp.getTileId(1));
+        }catch(Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        return 0;
+    }
+
 }
