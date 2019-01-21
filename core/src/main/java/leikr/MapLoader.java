@@ -18,7 +18,6 @@ package leikr;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import org.mini2Dx.core.graphics.Graphics;
-import org.mini2Dx.tiled.Tile;
 import org.mini2Dx.tiled.TiledMap;
 
 /**

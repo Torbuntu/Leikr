@@ -33,14 +33,13 @@ public class Engine {
     LeikrController p2Controller;
 
     MapLoader mapLoader;
+    FPSLogger logger;
+    FitViewport viewport;
 
     private int MAX_SPRITES;
     private int USED_SPRITES;
 
     public static ButtonCodes BTN; //static codes for the buttons for readability
-
-    FPSLogger logger;
-    FitViewport viewport;
 
     //custom prop functions
     public void setMaxSprites(int ms) {
@@ -135,14 +134,16 @@ public class Engine {
     int mapCellId(float x, float y) {
         return mapLoader.getMapTileId(x, y);
     }
-    void setCellId(float x, float y, int id){
+
+    void setCellId(float x, float y, int id) {
         mapLoader.setMapTile(x, y, id);
     }
-    
-    int getMapHeight(){
+
+    int getMapHeight() {
         return mapLoader.getMap().getHeight();
     }
-    int getMapWidth(){
+
+    int getMapWidth() {
         return mapLoader.getMap().getWidth();
     }
     //end Map methods

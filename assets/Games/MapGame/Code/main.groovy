@@ -4,7 +4,6 @@ class MapGame extends Engine {
 	float mapX = 0;
 	float mapY = 0;
 
-	
 	def solid(x,y){
     	int nx = -(mapX-120-x)/8;
     	int ny = -(mapY-80-y)/8;

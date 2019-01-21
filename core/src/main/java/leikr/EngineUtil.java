@@ -10,12 +10,14 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import org.codehaus.groovy.control.CompilationFailedException;
 
 /**
  *
  * @author tor
  */
 public class EngineUtil {
+
     //TODO: Add support for more than one code file?
     public static Engine getEngine(String name) {
         Engine engine = null;
@@ -26,10 +28,11 @@ public class EngineUtil {
             Constructor[] cnst = game.getConstructors();//gets the constructos
             engine = (Engine) cnst[0].newInstance();//instantiates based on first constructor
             engine.setMaxSprites(cp.MAX_SPRITES);
-        }catch(IllegalAccessException | IllegalArgumentException | InstantiationException | SecurityException | InvocationTargetException | IOException ex){
-            System.out.println(ex);
+        } catch (IOException | IllegalAccessException | IllegalArgumentException | InstantiationException | SecurityException | InvocationTargetException | CompilationFailedException ex) {
+            System.out.println(ex.getMessage());
+            return engine;
         }
         return engine;
-    } 
+    }
 
 }
