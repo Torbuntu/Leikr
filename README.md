@@ -30,3 +30,11 @@ class MyGame extends Engine{
 }
 
 ```
+
+
+WIP specs:
+screen: 240x160 
+Sprites: 1,024. 4 128x128 sprite sheets (256 sprites per sheet). Each sheet gets split into 8x8, 16x16 and 64x64 pixel sprites.
+Maps: TBD (currently unlimited)
+Audio: TBD (currently unavailable). Audio will eventually be loading WAV files from an Audio directory, not sure if this will be limited to a certain type or unlimited.
+Controls: 2xUSB controllers/Keyboard. Tested using SNES style controllers. Mouse TBD.
