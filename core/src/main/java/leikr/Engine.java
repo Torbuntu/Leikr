@@ -123,7 +123,7 @@ public class Engine {
         mapLoader.drawMap(g);
     }
     void map(float x, float y){
-        mapLoader.drawMap(g, (int)x, (int)y);
+        mapLoader.drawMap(g, Math.round(x), Math.round(y));
     }
     //end Map methods
     
