@@ -33,7 +33,7 @@ public class Engine {
     LeikrController p2Controller;
 
     MapLoader mapLoader;
-    
+
     private int MAX_SPRITES;
     private int USED_SPRITES;
 
@@ -56,7 +56,7 @@ public class Engine {
     void preCreate() {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         mapLoader = new MapLoader();
-        
+
         logger = new FPSLogger();
         BTN = new ButtonCodes();
         spriteLoader = new SpriteLoader();
@@ -90,9 +90,10 @@ public class Engine {
     }
 
     public void update(float delta) {
+        mapLoader.getMap().update(delta);
     }
 
-    public void preRender(Graphics g) {
+    void preRender(Graphics g) {
         this.g = g;
         viewport.apply(this.g);
         //set to 0 before drawing anything
@@ -117,22 +118,34 @@ public class Engine {
         return GameRuntime.HEIGHT;
     }
     //End helper methods.
-    
+
     //Map methods
-    void loadMap(String map){
+    void loadMap(String map) {
         mapLoader.loadMap(map);
     }
-    void map(){
+
+    void map() {
         mapLoader.drawMap(g);
     }
-    void map(float x, float y){
+
+    void map(float x, float y) {
         mapLoader.drawMap(g, Math.round(x), Math.round(y));
     }
-    int mapCellId(float x, float y){
-        return mapLoader.getMapTile(x, y);
+
+    int mapCellId(float x, float y) {
+        return mapLoader.getMapTileId(x, y);
+    }
+    void setCellId(float x, float y, int id){
+        mapLoader.setMapTile(x, y, id);
+    }
+    
+    int getMapHeight(){
+        return mapLoader.getMap().getHeight();
+    }
+    int getMapWidth(){
+        return mapLoader.getMap().getWidth();
     }
     //end Map methods
-    
 
     //start color methods
     void setDrawColor(int color) {

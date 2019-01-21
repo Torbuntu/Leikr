@@ -16,7 +16,6 @@
 package leikr;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.tiled.Tile;
@@ -52,14 +51,18 @@ public class MapLoader {
         tiledMap.draw(g, x, y);
     }
 
-    int getMapTile(float x, float y) {
+    // Gets the tileId of the cell located at x and y. 
+    int getMapTileId(float x, float y) {
         try {
-            Tile tmp = tiledMap.getTile((int) x, (int) y, 0);
-            System.out.println(tmp.getTileId(1));
-        }catch(Exception ex){
-            System.out.println(ex.getMessage());
+             return tiledMap.getTile((int)x, (int)y, 0).getTileId(1);
+        } catch (Exception ex) {
+            System.out.println(ex);
+            return -1;
         }
-        return 0;
+    }
+    
+    void setMapTile(float x, float y, int id){
+        tiledMap.getTileLayer(0).setTileId((int)x, (int)y, id);
     }
 
 }
