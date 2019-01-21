@@ -135,6 +135,9 @@ public class Engine {
     int mapCellId(float x, float y) {
         return mapLoader.getMapTileId(x, y);
     }
+    void setCellId(float x, float y, int id){
+        mapLoader.setMapTile(x, y, id);
+    }
     
     int getMapHeight(){
         return mapLoader.getMap().getHeight();

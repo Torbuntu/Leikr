@@ -59,5 +59,9 @@ public class MapLoader {
             return -1;
         }
     }
+    
+    void setMapTile(float x, float y, int id){
+        tiledMap.getTileLayer(0).setTileId((int)x, (int)y, id);
+    }
 
 }

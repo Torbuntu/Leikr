@@ -16,7 +16,7 @@ class MapGame extends Engine {
 	
 	void create(){
 		loadMap("map")
-		mapY = getMapHeight()
+		mapY = getMapHeight()-160
 	}
 
 	void update(float delta){
@@ -30,6 +30,7 @@ class MapGame extends Engine {
 				
 		if(key("Right") && !solid(1,0)){
 			mapX-=1
+			setCellId((-(mapX-120-1)/8).toFloat(), (-(mapY-80)/8).toFloat(), 1)
 		}
 		if(key("Left") && !solid(-1,0)){
 			mapX+=1
