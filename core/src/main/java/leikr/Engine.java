@@ -31,6 +31,8 @@ public class Engine {
 
     LeikrController p1Controller;
     LeikrController p2Controller;
+
+    MapLoader mapLoader;
     
     private int MAX_SPRITES;
     private int USED_SPRITES;
@@ -39,12 +41,13 @@ public class Engine {
 
     FPSLogger logger;
     FitViewport viewport;
-    
+
     //custom prop functions
-    public void setMaxSprites(int ms){
+    public void setMaxSprites(int ms) {
         this.MAX_SPRITES = ms;
     }
-    public int getUsedSprites(){
+
+    public int getUsedSprites() {
         return USED_SPRITES;
     }
     //end custom prop functions
@@ -52,7 +55,8 @@ public class Engine {
     // Override functions for game scripting.
     void preCreate() {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
-
+        mapLoader = new MapLoader();
+        
         logger = new FPSLogger();
         BTN = new ButtonCodes();
         spriteLoader = new SpriteLoader();
@@ -74,7 +78,7 @@ public class Engine {
                 p2c.addListener(p2Controller);
             }
         } catch (Exception ex) {
-            System.out.println("Controllers: "+ex.getMessage());
+            System.out.println("Controllers: " + ex.getMessage());
         }
 
     }
@@ -113,6 +117,16 @@ public class Engine {
         return GameRuntime.HEIGHT;
     }
     //End helper methods.
+    
+    //Map methods
+    void map(){
+        mapLoader.drawMap(g);
+    }
+    void map(float x, float y){
+        mapLoader.drawMap(g, (int)x, (int)y);
+    }
+    //end Map methods
+    
 
     //start color methods
     void setDrawColor(int color) {
@@ -160,19 +174,23 @@ public class Engine {
 
     public void bgColor(int color) {
         setDrawColor(color);
-        g.fillRect(-1, -1, GameRuntime.WIDTH+1, GameRuntime.HEIGHT+1);
+        g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
     }
     //end color methods
 
     //start 8x8 sprites
     public void sprite(int id, float x, float y) {
-        if(USED_SPRITES >= MAX_SPRITES) return;
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
         g.drawSprite(sprites.get(id), x, y);
         USED_SPRITES++;
     }
 
     public void sprite(int id, float x, float y, float degr) {
-        if(USED_SPRITES >= MAX_SPRITES) return;
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
         sprites.get(id).rotate(degr);
         g.drawSprite(sprites.get(id), x, y);
         sprites.get(id).rotate(-degr);
@@ -180,7 +198,9 @@ public class Engine {
     }
 
     public void sprite(int id, float x, float y, boolean clockwise) {
-        if(USED_SPRITES >= MAX_SPRITES) return;
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
         sprites.get(id).rotate90(clockwise);
         g.drawSprite(sprites.get(id), x, y);
         sprites.get(id).rotate90(!clockwise);
@@ -188,7 +208,9 @@ public class Engine {
     }
 
     public void sprite(int id, float x, float y, boolean flipX, boolean flipY) {
-        if(USED_SPRITES >= MAX_SPRITES) return;
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
         sprites.get(id).setFlip(flipX, flipY);
         g.drawSprite(sprites.get(id), x, y);
         sprites.get(id).setFlip(!flipX, !flipY);
@@ -198,13 +220,17 @@ public class Engine {
 
     //start 16x16 sprites
     public void sprite16(int id, float x, float y) {
-        if(USED_SPRITES >= MAX_SPRITES) return;
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
         g.drawSprite(mediumSprites.get(id), x, y);
         USED_SPRITES++;
     }
 
     public void sprite16(int id, float x, float y, float degr) {
-        if(USED_SPRITES >= MAX_SPRITES) return;
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
         mediumSprites.get(id).rotate(degr);
         g.drawSprite(mediumSprites.get(id), x, y);
         mediumSprites.get(id).rotate(-degr);
@@ -212,7 +238,9 @@ public class Engine {
     }
 
     public void sprite16(int id, float x, float y, boolean clockwise) {
-        if(USED_SPRITES >= MAX_SPRITES) return;
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
         mediumSprites.get(id).rotate90(clockwise);
         g.drawSprite(mediumSprites.get(id), x, y);
         mediumSprites.get(id).rotate90(!clockwise);
@@ -220,7 +248,9 @@ public class Engine {
     }
 
     public void sprite16(int id, float x, float y, boolean flipX, boolean flipY) {
-        if(USED_SPRITES >= MAX_SPRITES) return;
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
         mediumSprites.get(id).setFlip(flipX, flipY);
         g.drawSprite(mediumSprites.get(id), x, y);
         mediumSprites.get(id).setFlip(!flipX, !flipY);
@@ -230,13 +260,17 @@ public class Engine {
 
     //start 64x64 sprites
     public void sprite64(int id, float x, float y) {
-        if(USED_SPRITES >= MAX_SPRITES) return;
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
         g.drawSprite(largeSprites.get(id), x, y);
         USED_SPRITES++;
     }
 
     public void sprite64(int id, float x, float y, float degr) {
-        if(USED_SPRITES >= MAX_SPRITES) return;
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
         largeSprites.get(id).rotate(degr);
         g.drawSprite(largeSprites.get(id), x, y);
         largeSprites.get(id).rotate(-degr);
@@ -244,7 +278,9 @@ public class Engine {
     }
 
     public void sprite64(int id, float x, float y, boolean clockwise) {
-        if(USED_SPRITES >= MAX_SPRITES) return;
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
         largeSprites.get(id).rotate90(clockwise);
         g.drawSprite(largeSprites.get(id), x, y);
         largeSprites.get(id).rotate90(!clockwise);
@@ -252,7 +288,9 @@ public class Engine {
     }
 
     public void sprite64(int id, float x, float y, boolean flipX, boolean flipY) {
-        if(USED_SPRITES >= MAX_SPRITES) return;
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
         largeSprites.get(id).setFlip(flipX, flipY);
         g.drawSprite(largeSprites.get(id), x, y);
         largeSprites.get(id).setFlip(!flipX, !flipY);

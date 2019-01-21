@@ -9,8 +9,8 @@ class Groove extends Engine {
 	float angle = 0.0
 	float step = 0.1
 	
-	float xp = 20;
-	float yp = 20;
+	float xp = 0;
+	float yp = 0;
 
 	void update(float delta){
 		t+=delta
@@ -18,6 +18,7 @@ class Groove extends Engine {
 	void render(){
 		FPS()
 		bgColor(0)
+		map(xp,yp)
 		
 		float amnt = 2000
 		angle = 0.0
