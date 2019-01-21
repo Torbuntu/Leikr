@@ -35,11 +35,10 @@ public class MapLoader {
     TiledMapTileLayer tiledMapLayer;
     
     MapLoader(){
-        loadMap();
     }
     
-    void loadMap(){
-        tiledMap = new TiledMap(new FileHandle("./Games/"+MenuScreen.GAME_NAME+"/Map/map.tmx"));
+    void loadMap(String name){
+        tiledMap = new TiledMap(new FileHandle("./Games/"+MenuScreen.GAME_NAME+"/Map/"+name+".tmx"));
     }
     
     TiledMap getMap(){

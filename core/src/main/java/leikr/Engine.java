@@ -119,6 +119,9 @@ public class Engine {
     //End helper methods.
     
     //Map methods
+    void loadMap(String map){
+        mapLoader.loadMap(map);
+    }
     void map(){
         mapLoader.drawMap(g);
     }

@@ -11,6 +11,10 @@ class Groove extends Engine {
 	
 	float xp = 0;
 	float yp = 0;
+	
+	void create(){
+		loadMap("map")
+	}
 
 	void update(float delta){
 		t+=delta
@@ -20,16 +24,13 @@ class Groove extends Engine {
 		bgColor(0)
 		map(xp,yp)
 		
-		float amnt = 2000
+		float amnt = 1
 		angle = 0.0
 		int spnm = 0
 		while(angle < amnt){
 			x = len * Math.cos(angle+t)
 			y = len * Math.sin(angle+t)
-			
-			x = Math.cos(x/10 * angle/t) * 120
-			y = Math.sin(y/10 * angle/t) * 80
-			
+						
 		    sprite(0,(x+120).toFloat(),(y+80).toFloat())
 		    sprite(0,(-x+120).toFloat(),(-y+80).toFloat())
 		    
@@ -44,17 +45,17 @@ class Groove extends Engine {
 		}
 		
 		if(key("Right")){
-			xp+=5
-		}
-		if(key("Left")){
 			xp-=5
 		}
-		if(key("Up")){
-			yp-=5
+		if(key("Left")){
+			xp+=5
 		}
-		if(key("Down")){
+		if(key("Up")){
 			yp+=5
 		}
-		sprite(1, xp, yp)
+		if(key("Down")){
+			yp-=5
+		}
+		sprite(1, 120, 80)
 	}
 }
