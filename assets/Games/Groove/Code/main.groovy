@@ -20,9 +20,9 @@ class Groove extends Engine {
 		t+=delta
 	}
 	void render(){
-		FPS()
+		//FPS()
 		bgColor(0)
-		map(xp,yp)
+		map(xp,yp)		
 		
 		float amnt = 1
 		angle = 0.0
@@ -37,9 +37,6 @@ class Groove extends Engine {
 		    angle += step
 		    spnm++
 		}
-		drawText(x.toString(), 0, 20, 5) 
-		drawText(t.toString(), 0, 30, 5) 
-		drawText(getUsedSprites().toString(), 0, 40, 5)
 		if(t>20){
 			t = 0
 		}
@@ -54,8 +51,13 @@ class Groove extends Engine {
 			yp+=5
 		}
 		if(key("Down")){
-			yp-=5
+			yp-=5			
+			println mapCellId(((xp+120-xp)/8).toFloat(), ((yp+140-yp)/8).toFloat())
 		}
-		sprite(1, 120, 80)
+		if(key("Space")){		
+			sprite16(0,((xp+120-xp)).toFloat(), ((yp+140-yp)).toFloat()) 
+		}
+		
+		sprite(4, 120, 140)
 	}
 }
