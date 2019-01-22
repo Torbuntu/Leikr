@@ -35,6 +35,7 @@ public class MapLoader {
     }
 
     void loadMap(String name) {
+        tiledMap.dispose();
         tiledMap = new TiledMap(new FileHandle("./Games/" + MenuScreen.GAME_NAME + "/Map/" + name + ".tmx"));
     }
 
