@@ -49,6 +49,15 @@ public class MapLoader {
     void drawMap(Graphics g, int x, int y) {
         tiledMap.draw(g, x, y);
     }
+    void drawMap(Graphics g, int x, int y, int layer){
+        tiledMap.draw(g, x, y, layer);
+    }
+    void drawMap(Graphics g, int x, int y, int sx, int sy, int w, int h){
+        tiledMap.draw(g, x, y, sx, sy, w, h);
+    }
+    void drawMap(Graphics g, int x, int y, int sx, int sy, int w, int h, int layer){
+        tiledMap.draw(g, x, y, sx, sy, w, h, layer);
+    }
 
     // Gets the tileId of the cell located at x and y. 
     int getMapTileId(float x, float y) {

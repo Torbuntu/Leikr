@@ -47,7 +47,6 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
     
     @Override
     public void postTransitionIn(Transition transition) {
-        engine.preCreate();
         engine.create();
     }
 

@@ -55,7 +55,6 @@ public class Engine {
     void preCreate() {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         mapLoader = new MapLoader();
-
         logger = new FPSLogger();
         BTN = new ButtonCodes();
         spriteLoader = new SpriteLoader();
@@ -129,6 +128,18 @@ public class Engine {
 
     void map(float x, float y) {
         mapLoader.drawMap(g, Math.round(x), Math.round(y));
+    }
+
+    void map(float x, float y, int layer) {
+        mapLoader.drawMap(g, Math.round(x), Math.round(y), layer);
+    }
+
+    void map(float x, float y, float sx, float sy, float w, float h) {
+        mapLoader.drawMap(g, Math.round(x), Math.round(y), Math.round(sx), Math.round(sy), Math.round(w), Math.round(h));
+    }
+
+    void map(float x, float y, float sx, float sy, float w, float h, int layer) {
+        mapLoader.drawMap(g, Math.round(x), Math.round(y), Math.round(sx), Math.round(sy), Math.round(w), Math.round(h), layer);
     }
 
     int mapCellId(float x, float y) {
