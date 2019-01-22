@@ -35,7 +35,9 @@ public class MapLoader {
     }
 
     void loadMap(String name) {
-        tiledMap.dispose();
+        if (null != tiledMap) {
+            tiledMap.dispose();
+        }
         tiledMap = new TiledMap(new FileHandle("./Games/" + MenuScreen.GAME_NAME + "/Map/" + name + ".tmx"));
     }
 
@@ -50,28 +52,31 @@ public class MapLoader {
     void drawMap(Graphics g, int x, int y) {
         tiledMap.draw(g, x, y);
     }
-    void drawMap(Graphics g, int x, int y, int layer){
+
+    void drawMap(Graphics g, int x, int y, int layer) {
         tiledMap.draw(g, x, y, layer);
     }
-    void drawMap(Graphics g, int x, int y, int sx, int sy, int w, int h){
+
+    void drawMap(Graphics g, int x, int y, int sx, int sy, int w, int h) {
         tiledMap.draw(g, x, y, sx, sy, w, h);
     }
-    void drawMap(Graphics g, int x, int y, int sx, int sy, int w, int h, int layer){
+
+    void drawMap(Graphics g, int x, int y, int sx, int sy, int w, int h, int layer) {
         tiledMap.draw(g, x, y, sx, sy, w, h, layer);
     }
 
     // Gets the tileId of the cell located at x and y. 
     int getMapTileId(float x, float y) {
         try {
-             return tiledMap.getTile((int)x, (int)y, 0).getTileId(1);
+            return tiledMap.getTile((int) x, (int) y, 0).getTileId(1);
         } catch (Exception ex) {
             System.out.println(ex);
             return -1;
         }
     }
-    
-    void setMapTile(float x, float y, int id){
-        tiledMap.getTileLayer(0).setTileId((int)x, (int)y, id);
+
+    void setMapTile(float x, float y, int id) {
+        tiledMap.getTileLayer(0).setTileId((int) x, (int) y, id);
     }
 
 }
