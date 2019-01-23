@@ -27,7 +27,7 @@ public class ImageLoader {
 
     AssetManager assetManager;
     String[] images;
-    String rootPath = "./Games/" + MenuScreen.GAME_NAME + "/Images/";
+    String rootPath = "./Games/" + MenuScreen.GAME_NAME + "/Art/";
 
     ImageLoader() {
         assetManager = new AssetManager();
