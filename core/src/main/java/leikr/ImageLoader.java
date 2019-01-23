@@ -15,10 +15,13 @@
  */
 package leikr;
 
+import com.badlogic.gdx.assets.AssetManager;
+
 /**
  *
  * @author tor
  */
 public class ImageLoader {
+    AssetManager assetManager;
     
 }
