@@ -23,11 +23,12 @@ public class Engine {
 
     Graphics g;
     SpriteLoader spriteLoader;
-    
+
     LeikrController p1Controller;
     LeikrController p2Controller;
 
     MapLoader mapLoader;
+    ImageLoader imageLoader;
     FPSLogger logger;
     FitViewport viewport;
 
@@ -49,10 +50,11 @@ public class Engine {
     // Override functions for game scripting.
     void preCreate() {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
-        mapLoader = new MapLoader();
         logger = new FPSLogger();
         BTN = new ButtonCodes();
         spriteLoader = new SpriteLoader();
+        imageLoader = new ImageLoader();
+        mapLoader = new MapLoader();
 
         try {
             Array<Controller> nmc = Controllers.getControllers();
@@ -108,6 +110,15 @@ public class Engine {
     }
     //End helper methods.
 
+    //Image methods
+        void loadImages() {
+            imageLoader.load();
+    }
+    void drawImage(String name, float x, float y){
+        g.drawTexture(imageLoader.getImage(name), x, y);
+    }
+    //end Image methods
+    
     //Map methods
     void loadMap(String map) {
         mapLoader.loadMap(map);
@@ -279,7 +290,7 @@ public class Engine {
         USED_SPRITES++;
     }
     //end 16x16 sprites
-    
+
     //start 32x32 sprites
     public void sprite32(int id, float x, float y) {
         if (USED_SPRITES >= MAX_SPRITES) {

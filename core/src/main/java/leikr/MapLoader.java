@@ -78,5 +78,9 @@ public class MapLoader {
     void setMapTile(float x, float y, int id) {
         tiledMap.getTileLayer(0).setTileId((int) x, (int) y, id);
     }
+    
+    void disposeMap(){
+        tiledMap.dispose();
+    }
 
 }

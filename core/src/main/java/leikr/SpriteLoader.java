@@ -114,5 +114,9 @@ public class SpriteLoader {
                 return largeSpriteBank.get(id);
         }
     }
+    
+    void disposeSprites(){
+        assetManager.dispose();
+    }
 
 }

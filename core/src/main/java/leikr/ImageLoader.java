@@ -16,12 +16,38 @@
 package leikr;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
+import java.io.File;
 
 /**
  *
  * @author tor
  */
 public class ImageLoader {
+
     AssetManager assetManager;
-    
+    String[] images;
+    String rootPath = "./Games/" + MenuScreen.GAME_NAME + "/Images/";
+
+    ImageLoader() {
+        assetManager = new AssetManager();
+        images = new File(rootPath).list();
+        for (String path : images) {
+            assetManager.load(rootPath + path, Texture.class);
+        }
+        assetManager.finishLoading();
+    }
+
+    void load() {
+        assetManager.finishLoading();//just to make sure we are done before calling getImage
+    }
+
+    Texture getImage(String fileName) {
+        return assetManager.get(rootPath+fileName);
+    }
+
+    void disposeImages() {
+        assetManager.dispose();
+    }
+
 }
