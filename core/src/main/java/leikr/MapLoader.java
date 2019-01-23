@@ -30,6 +30,8 @@ public class MapLoader {
     TiledMap tiledMap;
 
     TiledMapTileLayer tiledMapLayer;
+    
+    String rootPath = "./Games/" + MenuScreen.GAME_NAME + "/Maps/";
 
     MapLoader() {
     }
@@ -38,7 +40,7 @@ public class MapLoader {
         if (null != tiledMap) {
             tiledMap.dispose();
         }
-        tiledMap = new TiledMap(new FileHandle("./Games/" + MenuScreen.GAME_NAME + "/Map/" + name + ".tmx"));
+        tiledMap = new TiledMap(new FileHandle( rootPath + name + ".tmx"));
     }
 
     TiledMap getMap() {
