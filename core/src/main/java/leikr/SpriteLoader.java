@@ -20,6 +20,7 @@ public class SpriteLoader {
     AssetManager assetManager;
     ArrayList<Sprite> spriteBank;
     ArrayList<Sprite> mediumSpriteBank;
+    ArrayList<Sprite> bigSpriteBank;
     ArrayList<Sprite> largeSpriteBank;
 
     String sheet1;
@@ -31,8 +32,9 @@ public class SpriteLoader {
         assetManager = new AssetManager();
         spriteBank = new ArrayList<>();
         mediumSpriteBank = new ArrayList<>();
+        bigSpriteBank = new ArrayList<>();
         largeSpriteBank = new ArrayList<>();
-        
+
         sheet1 = "./Games/" + MenuScreen.GAME_NAME + "/Sprites/Sprites_0.png";
         sheet2 = "./Games/" + MenuScreen.GAME_NAME + "/Sprites/Sprites_1.png";
         sheet3 = "./Games/" + MenuScreen.GAME_NAME + "/Sprites/Sprites_2.png";
@@ -50,6 +52,11 @@ public class SpriteLoader {
         addMediumSpritesToSpriteBank(sheet2);
         addMediumSpritesToSpriteBank(sheet3);
         addMediumSpritesToSpriteBank(sheet4);
+
+        addBigSpritesToSpriteBank(sheet1);
+        addBigSpritesToSpriteBank(sheet2);
+        addBigSpritesToSpriteBank(sheet3);
+        addBigSpritesToSpriteBank(sheet4);
 
         addLargeSpritesToSpriteBank(sheet1);
         addLargeSpritesToSpriteBank(sheet2);
@@ -84,6 +91,15 @@ public class SpriteLoader {
         }
     }
 
+    private void addBigSpritesToSpriteBank(String sheet) {
+
+        for (int i = 0; i < 128; i += 32) {
+            for (int j = 0; j < 128; j += 32) {
+                bigSpriteBank.add(new Sprite(new TextureRegion(assetManager.get(sheet, Texture.class), j, i, 32, 32)));
+            }
+        }
+    }
+
     private void addLargeSpritesToSpriteBank(String sheet) {
 
         for (int i = 0; i < 128; i += 64) {
@@ -107,6 +123,20 @@ public class SpriteLoader {
 
     public void clearSpriteData() {
         assetManager.dispose();
+    }
+
+    Sprite getSprite(int id, int size) {
+        switch (size) {
+            case 0:
+            default:
+                return spriteBank.get(id);
+            case 1:
+                return mediumSpriteBank.get(id);
+            case 2:
+                return bigSpriteBank.get(id);
+            case 3:
+                return largeSpriteBank.get(id);
+        }
     }
 
 }

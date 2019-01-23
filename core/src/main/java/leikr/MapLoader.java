@@ -25,8 +25,8 @@ import org.mini2Dx.tiled.TiledMap;
  * @author tor
  */
 public class MapLoader {
-
-    //TODO: Implement tile editing functions.
+    //TODO: Add handlers for animation tiles and object layers for collisions.  
+    
     TiledMap tiledMap;
 
     TiledMapTileLayer tiledMapLayer;

@@ -12,9 +12,7 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.utils.Array;
-import java.util.ArrayList;
 import org.mini2Dx.core.graphics.Graphics;
-import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 
 /**
@@ -25,10 +23,7 @@ public class Engine {
 
     Graphics g;
     SpriteLoader spriteLoader;
-    ArrayList<Sprite> sprites;
-    ArrayList<Sprite> mediumSprites;
-    ArrayList<Sprite> largeSprites;
-
+    
     LeikrController p1Controller;
     LeikrController p2Controller;
 
@@ -58,10 +53,6 @@ public class Engine {
         logger = new FPSLogger();
         BTN = new ButtonCodes();
         spriteLoader = new SpriteLoader();
-
-        sprites = spriteLoader.getSpriteBank();
-        mediumSprites = spriteLoader.getMediumSpriteBank();
-        largeSprites = spriteLoader.getLargeSpriteBank();
 
         try {
             Array<Controller> nmc = Controllers.getControllers();
@@ -214,7 +205,7 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        g.drawSprite(sprites.get(id), x, y);
+        g.drawSprite(spriteLoader.getSprite(id, 0), x, y);
         USED_SPRITES++;
     }
 
@@ -222,9 +213,9 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        sprites.get(id).rotate(degr);
-        g.drawSprite(sprites.get(id), x, y);
-        sprites.get(id).rotate(-degr);
+        spriteLoader.getSprite(id, 0).rotate(degr);
+        g.drawSprite(spriteLoader.getSprite(id, 0), x, y);
+        spriteLoader.getSprite(id, 0).rotate(-degr);
         USED_SPRITES++;
     }
 
@@ -232,9 +223,9 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        sprites.get(id).rotate90(clockwise);
-        g.drawSprite(sprites.get(id), x, y);
-        sprites.get(id).rotate90(!clockwise);
+        spriteLoader.getSprite(id, 0).rotate90(clockwise);
+        g.drawSprite(spriteLoader.getSprite(id, 0), x, y);
+        spriteLoader.getSprite(id, 0).rotate90(!clockwise);
         USED_SPRITES++;
     }
 
@@ -242,9 +233,9 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        sprites.get(id).setFlip(flipX, flipY);
-        g.drawSprite(sprites.get(id), x, y);
-        sprites.get(id).setFlip(!flipX, !flipY);
+        spriteLoader.getSprite(id, 0).setFlip(flipX, flipY);
+        g.drawSprite(spriteLoader.getSprite(id, 0), x, y);
+        spriteLoader.getSprite(id, 0).setFlip(!flipX, !flipY);
         USED_SPRITES++;
     }
     //end 8x8 sprites
@@ -254,7 +245,7 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        g.drawSprite(mediumSprites.get(id), x, y);
+        g.drawSprite(spriteLoader.getSprite(id, 1), x, y);
         USED_SPRITES++;
     }
 
@@ -262,9 +253,9 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        mediumSprites.get(id).rotate(degr);
-        g.drawSprite(mediumSprites.get(id), x, y);
-        mediumSprites.get(id).rotate(-degr);
+        spriteLoader.getSprite(id, 1).rotate(degr);
+        g.drawSprite(spriteLoader.getSprite(id, 1), x, y);
+        spriteLoader.getSprite(id, 1).rotate(-degr);
         USED_SPRITES++;
     }
 
@@ -272,9 +263,9 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        mediumSprites.get(id).rotate90(clockwise);
-        g.drawSprite(mediumSprites.get(id), x, y);
-        mediumSprites.get(id).rotate90(!clockwise);
+        spriteLoader.getSprite(id, 1).rotate90(clockwise);
+        g.drawSprite(spriteLoader.getSprite(id, 1), x, y);
+        spriteLoader.getSprite(id, 1).rotate90(!clockwise);
         USED_SPRITES++;
     }
 
@@ -282,19 +273,60 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        mediumSprites.get(id).setFlip(flipX, flipY);
-        g.drawSprite(mediumSprites.get(id), x, y);
-        mediumSprites.get(id).setFlip(!flipX, !flipY);
+        spriteLoader.getSprite(id, 1).setFlip(flipX, flipY);
+        g.drawSprite(spriteLoader.getSprite(id, 1), x, y);
+        spriteLoader.getSprite(id, 1).setFlip(!flipX, !flipY);
         USED_SPRITES++;
     }
     //end 16x16 sprites
+    
+    //start 32x32 sprites
+    public void sprite32(int id, float x, float y) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        g.drawSprite(spriteLoader.getSprite(id, 2), x, y);
+        USED_SPRITES++;
+    }
+
+    public void sprite32(int id, float x, float y, float degr) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        spriteLoader.getSprite(id, 2).rotate(degr);
+        g.drawSprite(spriteLoader.getSprite(id, 2), x, y);
+        spriteLoader.getSprite(id, 2).rotate(-degr);
+        USED_SPRITES++;
+    }
+
+    public void sprite32(int id, float x, float y, boolean clockwise) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        spriteLoader.getSprite(id, 2).rotate90(clockwise);
+        g.drawSprite(spriteLoader.getSprite(id, 2), x, y);
+        spriteLoader.getSprite(id, 2).rotate90(!clockwise);
+        USED_SPRITES++;
+    }
+
+    public void sprite32(int id, float x, float y, boolean flipX, boolean flipY) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        spriteLoader.getSprite(id, 2).setFlip(flipX, flipY);
+        g.drawSprite(spriteLoader.getSprite(id, 2), x, y);
+        spriteLoader.getSprite(id, 2).setFlip(!flipX, !flipY);
+        USED_SPRITES++;
+    }
+    //end 32x32 sprites
 
     //start 64x64 sprites
     public void sprite64(int id, float x, float y) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        g.drawSprite(largeSprites.get(id), x, y);
+        g.drawSprite(spriteLoader.getSprite(id, 3
+        ), x, y);
         USED_SPRITES++;
     }
 
@@ -302,9 +334,9 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        largeSprites.get(id).rotate(degr);
-        g.drawSprite(largeSprites.get(id), x, y);
-        largeSprites.get(id).rotate(-degr);
+        spriteLoader.getSprite(id, 3).rotate(degr);
+        g.drawSprite(spriteLoader.getSprite(id, 3), x, y);
+        spriteLoader.getSprite(id, 3).rotate(-degr);
         USED_SPRITES++;
     }
 
@@ -312,9 +344,9 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        largeSprites.get(id).rotate90(clockwise);
-        g.drawSprite(largeSprites.get(id), x, y);
-        largeSprites.get(id).rotate90(!clockwise);
+        spriteLoader.getSprite(id, 3).rotate90(clockwise);
+        g.drawSprite(spriteLoader.getSprite(id, 3), x, y);
+        spriteLoader.getSprite(id, 3).rotate90(!clockwise);
         USED_SPRITES++;
     }
 
@@ -322,17 +354,17 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        largeSprites.get(id).setFlip(flipX, flipY);
-        g.drawSprite(largeSprites.get(id), x, y);
-        largeSprites.get(id).setFlip(!flipX, !flipY);
+        spriteLoader.getSprite(id, 3).setFlip(flipX, flipY);
+        g.drawSprite(spriteLoader.getSprite(id, 3), x, y);
+        spriteLoader.getSprite(id, 3).setFlip(!flipX, !flipY);
         USED_SPRITES++;
     }
     //end 64x64 sprites
 
     //draws a sprite given the id, and the next sprite in the sequence on top of it.
     public void tallSprite(int id, float x, float y) {
-        g.drawSprite(sprites.get(id), x, y);
-        g.drawSprite(sprites.get(id + 1), x, y - 8);
+        g.drawSprite(spriteLoader.getSprite(id, 0), x, y);
+        g.drawSprite(spriteLoader.getSprite(id + 1, 0), x, y - 8);
     }
 
     public void drawText(String text, float x, float y, int color) {
