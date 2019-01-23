@@ -8,6 +8,7 @@ package leikr;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
+import java.io.File;
 import java.util.ArrayList;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.TextureRegion;
@@ -25,13 +26,11 @@ public class SpriteLoader {
     ArrayList<Sprite> largeSpriteBank;
 
     Array<Texture> allSheets;
+    
+    String rootPath;
+    String[] sheets;
 
-    String sheet1;
-    String sheet2;
-    String sheet3;
-    String sheet4;
-
-    SpriteLoader() {
+    SpriteLoader(int numberSpriteSheets) {
         assetManager = new AssetManager();
         spriteBank = new ArrayList<>();
         mediumSpriteBank = new ArrayList<>();
@@ -39,10 +38,7 @@ public class SpriteLoader {
         largeSpriteBank = new ArrayList<>();
         allSheets = new Array<>();
 
-        sheet1 = "./Games/" + MenuScreen.GAME_NAME + "/Sprites/Sprites_0.png";
-        sheet2 = "./Games/" + MenuScreen.GAME_NAME + "/Sprites/Sprites_1.png";
-        sheet3 = "./Games/" + MenuScreen.GAME_NAME + "/Sprites/Sprites_2.png";
-        sheet4 = "./Games/" + MenuScreen.GAME_NAME + "/Sprites/Sprites_3.png";
+        rootPath = "./Games/" + MenuScreen.GAME_NAME + "/Sprites/";
         
         loadSpriteSheets();
 
@@ -51,11 +47,11 @@ public class SpriteLoader {
     }
 
     private void loadSpriteSheets() {
-        assetManager.load(sheet1, Texture.class);
-        assetManager.load(sheet2, Texture.class);
-        assetManager.load(sheet3, Texture.class);
-        assetManager.load(sheet4, Texture.class);
-
+        sheets = new File(rootPath).list();
+        for (String path : sheets) {
+            assetManager.load(rootPath + path, Texture.class);
+        }
+        
         assetManager.finishLoading();
     }
 

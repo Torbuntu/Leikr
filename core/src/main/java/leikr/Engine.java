@@ -31,28 +31,24 @@ public class Engine {
     ImageLoader imageLoader;
     FPSLogger logger;
     FitViewport viewport;
-
     private int MAX_SPRITES;
     private int USED_SPRITES;
 
     public static ButtonCodes BTN; //static codes for the buttons for readability
 
     //custom prop functions
-    public void setMaxSprites(int ms) {
-        this.MAX_SPRITES = ms;
-    }
-
     public int getUsedSprites() {
         return USED_SPRITES;
     }
     //end custom prop functions
 
     // Override functions for game scripting.
-    void preCreate() {
+    void preCreate(int mSprites, int mSpriteSheets) {
+        MAX_SPRITES = mSprites;
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         logger = new FPSLogger();
         BTN = new ButtonCodes();
-        spriteLoader = new SpriteLoader();
+        spriteLoader = new SpriteLoader(mSpriteSheets);
         imageLoader = new ImageLoader();
         mapLoader = new MapLoader();
 
