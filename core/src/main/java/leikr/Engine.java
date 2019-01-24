@@ -450,4 +450,10 @@ public class Engine {
         return Gdx.input.isKeyPressed(Keys.valueOf(key));
     }
     //end input handling
+    
+    //Graphics methods
+    void cam(double x, double y){
+        g.setTranslation((float)x, (float)y);        
+    }
+    //end graphics methods
 }
