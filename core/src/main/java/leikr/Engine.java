@@ -82,7 +82,6 @@ public class Engine {
 
     void preRender(Graphics g) {
         this.g = g;
-        viewport.apply(this.g);
         //set to 0 before drawing anything
         USED_SPRITES = 0;
     }
@@ -107,14 +106,15 @@ public class Engine {
     //End helper methods.
 
     //Image methods
-        void loadImages() {
-            imageLoader.load();
+    void loadImages() {
+        imageLoader.load();
     }
-    void drawImage(String name, float x, float y){
+
+    void drawImage(String name, float x, float y) {
         g.drawTexture(imageLoader.getImage(name), x, y);
     }
     //end Image methods
-    
+
     //Map methods
     void loadMap(String map) {
         mapLoader.loadMap(map);
@@ -374,7 +374,7 @@ public class Engine {
         g.drawSprite(spriteLoader.getSprite(id + 1, 0), x, y - 8);
     }
 
-    public void drawText(String text, float x, float y, int color) {
+    public void text(String text, float x, float y, int color) {
         setDrawColor(color);
         g.drawString(text, x, y);
     }
@@ -450,10 +450,5 @@ public class Engine {
         return Gdx.input.isKeyPressed(Keys.valueOf(key));
     }
     //end input handling
-    
-    //Graphics methods
-    void cam(double x, double y){
-        g.setTranslation((float)x, (float)y);        
-    }
-    //end graphics methods
+
 }

@@ -67,6 +67,7 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public void render(GameContainer gc, Graphics g) {
+        engine.viewport.apply(g);
         engine.preRender(g);
         engine.render();
     }

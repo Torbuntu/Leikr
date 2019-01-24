@@ -18,6 +18,25 @@ class Groove extends Engine {
 
 	void update(float delta){
 		t+=delta
+		if(key("Right")){
+			xp-=5
+		}
+		if(key("Left")){
+			xp+=5
+		}
+		if(key("Up")){
+			yp+=5
+		}
+		if(key("Down")){
+			yp-=5			
+			println mapCellId(((xp+120-xp)/8).toFloat(), ((yp+140-yp)/8).toFloat())
+		}
+		if(key("Space")){		
+			sprite16(0,((xp+120-xp)).toFloat(), ((yp+140-yp)).toFloat()) 
+		}
+		if(t>20){
+			t = 0
+		}
 	}
 	void render(){
 		//FPS()
@@ -37,27 +56,7 @@ class Groove extends Engine {
 		    angle += step
 		    spnm++
 		}
-		if(t>20){
-			t = 0
-		}
 		
-		if(key("Right")){
-			xp-=5
-		}
-		if(key("Left")){
-			xp+=5
-		}
-		if(key("Up")){
-			yp+=5
-		}
-		if(key("Down")){
-			yp-=5			
-			println mapCellId(((xp+120-xp)/8).toFloat(), ((yp+140-yp)/8).toFloat())
-		}
-		if(key("Space")){		
-			sprite16(0,((xp+120-xp)).toFloat(), ((yp+140-yp)).toFloat()) 
-		}
-		
-		sprite(4, 120, 140)
+		sprite(4, 120, 80)
 	}
 }
