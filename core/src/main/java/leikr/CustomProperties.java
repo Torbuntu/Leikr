@@ -16,10 +16,10 @@ import java.util.Properties;
  */
 public class CustomProperties {
 
-    int MAX_SPRITES;
-    int MAX_SPRITE_SHEETS;
+    public int MAX_SPRITES;
+    public int MAX_SPRITE_SHEETS;
 
-    CustomProperties(String gameName) {
+    public CustomProperties(String gameName) {
 
         Properties prop = new Properties();
         try {

@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package leikr;
+package leikr.loaders;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import java.io.File;
 import java.util.ArrayList;
+import leikr.MenuScreen;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.TextureRegion;
 
@@ -30,7 +31,7 @@ public class SpriteLoader {
     String rootPath;
     String[] sheets;
 
-    SpriteLoader(int numberSpriteSheets) {
+    public SpriteLoader(int numberSpriteSheets) {
         assetManager = new AssetManager();
         spriteBank = new ArrayList<>();
         mediumSpriteBank = new ArrayList<>();
@@ -81,23 +82,7 @@ public class SpriteLoader {
         }
     }
 
-    public ArrayList getSpriteBank() {
-        return spriteBank;
-    }
-
-    public ArrayList getMediumSpriteBank() {
-        return mediumSpriteBank;
-    }
-
-    public ArrayList getLargeSpriteBank() {
-        return largeSpriteBank;
-    }
-
-    public void clearSpriteData() {
-        assetManager.dispose();
-    }
-
-    Sprite getSprite(int id, int size) {
+    public Sprite getSprite(int id, int size) {
         switch (size) {
             case 0:
             default:

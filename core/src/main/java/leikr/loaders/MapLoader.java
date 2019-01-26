@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr;
+package leikr.loaders;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import leikr.MenuScreen;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.tiled.TiledMap;
 
@@ -33,42 +34,39 @@ public class MapLoader {
     
     String rootPath = "./Games/" + MenuScreen.GAME_NAME + "/Maps/";
 
-    MapLoader() {
-    }
-
-    void loadMap(String name) {
+    public void loadMap(String name) {
         if (null != tiledMap) {
             tiledMap.dispose();
         }
         tiledMap = new TiledMap(new FileHandle( rootPath + name + ".tmx"));
     }
 
-    TiledMap getMap() {
+    public TiledMap getMap() {
         return tiledMap;
     }
 
-    void drawMap(Graphics g) {
+    public void drawMap(Graphics g) {
         tiledMap.draw(g, 0, 0);
     }
 
-    void drawMap(Graphics g, int x, int y) {
+    public void drawMap(Graphics g, int x, int y) {
         tiledMap.draw(g, x, y);
     }
 
-    void drawMap(Graphics g, int x, int y, int layer) {
+    public void drawMap(Graphics g, int x, int y, int layer) {
         tiledMap.draw(g, x, y, layer);
     }
 
-    void drawMap(Graphics g, int x, int y, int sx, int sy, int w, int h) {
+    public void drawMap(Graphics g, int x, int y, int sx, int sy, int w, int h) {
         tiledMap.draw(g, x, y, sx, sy, w, h);
     }
 
-    void drawMap(Graphics g, int x, int y, int sx, int sy, int w, int h, int layer) {
+    public void drawMap(Graphics g, int x, int y, int sx, int sy, int w, int h, int layer) {
         tiledMap.draw(g, x, y, sx, sy, w, h, layer);
     }
 
     // Gets the tileId of the cell located at x and y. 
-    int getMapTileId(float x, float y) {
+    public int getMapTileId(float x, float y) {
         try {
             return tiledMap.getTile((int) x, (int) y, 0).getTileId(1);
         } catch (Exception ex) {
@@ -77,11 +75,11 @@ public class MapLoader {
         }
     }
 
-    void setMapTile(float x, float y, int id) {
+    public void setMapTile(float x, float y, int id) {
         tiledMap.getTileLayer(0).setTileId((int) x, (int) y, id);
     }
     
-    void disposeMap(){
+    public void disposeMap(){
         tiledMap.dispose();
     }
 

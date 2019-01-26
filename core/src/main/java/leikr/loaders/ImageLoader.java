@@ -13,11 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr;
+package leikr.loaders;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import java.io.File;
+import leikr.MenuScreen;
 
 /**
  *
@@ -29,7 +30,7 @@ public class ImageLoader {
     String[] images;
     String rootPath = "./Games/" + MenuScreen.GAME_NAME + "/Art/";
 
-    ImageLoader() {
+    public ImageLoader() {
         assetManager = new AssetManager();
         images = new File(rootPath).list();
         for (String path : images) {
@@ -38,15 +39,15 @@ public class ImageLoader {
         assetManager.finishLoading();
     }
 
-    void load() {
+    public void load() {
         assetManager.finishLoading();//just to make sure we are done before calling getImage
     }
 
-    Texture getImage(String fileName) {
+    public Texture getImage(String fileName) {
         return assetManager.get(rootPath+fileName);
     }
 
-    void disposeImages() {
+    public void disposeImages() {
         assetManager.dispose();
     }
 

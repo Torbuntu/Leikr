@@ -1,4 +1,4 @@
-package leikr;
+package leikr.controls;
 
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;

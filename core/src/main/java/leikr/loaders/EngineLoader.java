@@ -3,20 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package leikr;
+package leikr.loaders;
 
 import groovy.lang.GroovyClassLoader;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import leikr.CustomProperties;
+import leikr.Engine;
 import org.codehaus.groovy.control.CompilationFailedException;
 
 /**
  *
  * @author tor
  */
-public class EngineUtil {
+public class EngineLoader {
 
     //TODO: Add support for more than one code file?
     public static Engine getEngine(String name) {

@@ -5,6 +5,11 @@
  */
 package leikr;
 
+import leikr.controls.LeikrController;
+import leikr.controls.ButtonCodes;
+import leikr.loaders.SpriteLoader;
+import leikr.loaders.ImageLoader;
+import leikr.loaders.MapLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
@@ -34,7 +39,7 @@ public class Engine {
     private int MAX_SPRITES;
     private int USED_SPRITES;
 
-    public static ButtonCodes BTN; //static codes for the buttons for readability
+    static ButtonCodes BTN; //static codes for the buttons for readability
 
     //custom prop functions
     public int getUsedSprites() {
@@ -43,7 +48,7 @@ public class Engine {
     //end custom prop functions
 
     // Override functions for game scripting.
-    void preCreate(int mSprites, int mSpriteSheets) {
+    public void preCreate(int mSprites, int mSpriteSheets) {
         MAX_SPRITES = mSprites;
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         logger = new FPSLogger();
@@ -162,7 +167,7 @@ public class Engine {
         g.setColor(getDrawColor(color));
     }
 
-    public Color getDrawColor(int color) {
+    Color getDrawColor(int color) {
         switch (color) {
             case 0:
                 return (Color.BLACK);
@@ -201,14 +206,14 @@ public class Engine {
         }
     }
 
-    public void bgColor(int color) {
+    void bgColor(int color) {
         setDrawColor(color);
         g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
     }
     //end color methods
 
     //start 8x8 sprites
-    public void sprite(int id, float x, float y) {
+    void sprite(int id, float x, float y) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -216,7 +221,7 @@ public class Engine {
         USED_SPRITES++;
     }
 
-    public void sprite(int id, float x, float y, float degr) {
+    void sprite(int id, float x, float y, float degr) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -226,7 +231,7 @@ public class Engine {
         USED_SPRITES++;
     }
 
-    public void sprite(int id, float x, float y, boolean clockwise) {
+    void sprite(int id, float x, float y, boolean clockwise) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -236,7 +241,7 @@ public class Engine {
         USED_SPRITES++;
     }
 
-    public void sprite(int id, float x, float y, boolean flipX, boolean flipY) {
+    void sprite(int id, float x, float y, boolean flipX, boolean flipY) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -248,7 +253,7 @@ public class Engine {
     //end 8x8 sprites
 
     //start 16x16 sprites
-    public void sprite16(int id, float x, float y) {
+    void sprite16(int id, float x, float y) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -256,7 +261,7 @@ public class Engine {
         USED_SPRITES++;
     }
 
-    public void sprite16(int id, float x, float y, float degr) {
+    void sprite16(int id, float x, float y, float degr) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -266,7 +271,7 @@ public class Engine {
         USED_SPRITES++;
     }
 
-    public void sprite16(int id, float x, float y, boolean clockwise) {
+    void sprite16(int id, float x, float y, boolean clockwise) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -276,7 +281,7 @@ public class Engine {
         USED_SPRITES++;
     }
 
-    public void sprite16(int id, float x, float y, boolean flipX, boolean flipY) {
+    void sprite16(int id, float x, float y, boolean flipX, boolean flipY) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -288,7 +293,7 @@ public class Engine {
     //end 16x16 sprites
 
     //start 32x32 sprites
-    public void sprite32(int id, float x, float y) {
+    void sprite32(int id, float x, float y) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -296,7 +301,7 @@ public class Engine {
         USED_SPRITES++;
     }
 
-    public void sprite32(int id, float x, float y, float degr) {
+    void sprite32(int id, float x, float y, float degr) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -306,7 +311,7 @@ public class Engine {
         USED_SPRITES++;
     }
 
-    public void sprite32(int id, float x, float y, boolean clockwise) {
+    void sprite32(int id, float x, float y, boolean clockwise) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -316,7 +321,7 @@ public class Engine {
         USED_SPRITES++;
     }
 
-    public void sprite32(int id, float x, float y, boolean flipX, boolean flipY) {
+    void sprite32(int id, float x, float y, boolean flipX, boolean flipY) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -328,7 +333,7 @@ public class Engine {
     //end 32x32 sprites
 
     //start 64x64 sprites
-    public void sprite64(int id, float x, float y) {
+    void sprite64(int id, float x, float y) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -337,7 +342,7 @@ public class Engine {
         USED_SPRITES++;
     }
 
-    public void sprite64(int id, float x, float y, float degr) {
+    void sprite64(int id, float x, float y, float degr) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -347,7 +352,7 @@ public class Engine {
         USED_SPRITES++;
     }
 
-    public void sprite64(int id, float x, float y, boolean clockwise) {
+    void sprite64(int id, float x, float y, boolean clockwise) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -357,7 +362,7 @@ public class Engine {
         USED_SPRITES++;
     }
 
-    public void sprite64(int id, float x, float y, boolean flipX, boolean flipY) {
+    void sprite64(int id, float x, float y, boolean flipX, boolean flipY) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -369,18 +374,18 @@ public class Engine {
     //end 64x64 sprites
 
     //draws a sprite given the id, and the next sprite in the sequence on top of it.
-    public void tallSprite(int id, float x, float y) {
+    void tallSprite(int id, float x, float y) {
         g.drawSprite(spriteLoader.getSprite(id, 0), x, y);
         g.drawSprite(spriteLoader.getSprite(id + 1, 0), x, y - 8);
     }
 
-    public void text(String text, float x, float y, int color) {
+    void text(String text, float x, float y, int color) {
         setDrawColor(color);
         g.drawString(text, x, y);
     }
     //start shape drawing methods
 
-    public void square(float x, float y, float w, float h, int color) {
+    void square(float x, float y, float w, float h, int color) {
         setDrawColor(color);
         g.drawRect(x, y, w, h);
     }

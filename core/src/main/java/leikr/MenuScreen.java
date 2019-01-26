@@ -5,6 +5,8 @@
  */
 package leikr;
 
+import leikr.loaders.FontLoader;
+import leikr.loaders.EngineLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
@@ -82,9 +84,9 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
         if (start) {
             GAME_NAME = gameList[cursor];
             EngineScreen screen = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
-            Engine engine = EngineUtil.getEngine(GAME_NAME);
+            Engine engine = EngineLoader.getEngine(GAME_NAME);
             if (null != engine) {
-                screen.setEngine(EngineUtil.getEngine(GAME_NAME));
+                screen.setEngine(EngineLoader.getEngine(GAME_NAME));
                 sm.enterGameScreen(EngineScreen.ID, null, null);
                 Gdx.input.setInputProcessor(screen);
                 start = false;
