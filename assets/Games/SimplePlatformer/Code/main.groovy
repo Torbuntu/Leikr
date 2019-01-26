@@ -18,6 +18,7 @@ class SimplePlatformer extends Engine {
 		
 		if(key("Up") && p.vy==0){
 			p.vy=-2.5
+			sfx("jump")
 		}	
 		
 		if( p.vy<0 && (solid(p.x+p.vx,p.y+p.vy) || solid(p.x+7+p.vx,p.y+p.vy)) ){

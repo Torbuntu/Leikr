@@ -17,6 +17,7 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.utils.Array;
+import leikr.loaders.AudioLoader;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 
@@ -27,13 +28,15 @@ import org.mini2Dx.core.graphics.viewport.FitViewport;
 public class Engine {
 
     Graphics g;
-    SpriteLoader spriteLoader;
 
     LeikrController p1Controller;
     LeikrController p2Controller;
 
     MapLoader mapLoader;
     ImageLoader imageLoader;
+    SpriteLoader spriteLoader;
+    AudioLoader audioLoader;
+    
     FPSLogger logger;
     FitViewport viewport;
     private int MAX_SPRITES;
@@ -56,6 +59,7 @@ public class Engine {
         spriteLoader = new SpriteLoader(mSpriteSheets);
         imageLoader = new ImageLoader();
         mapLoader = new MapLoader();
+        audioLoader = new AudioLoader();
 
         try {
             Array<Controller> nmc = Controllers.getControllers();
@@ -433,6 +437,16 @@ public class Engine {
     }
     //end shape drawing methods
 
+    //start Audio handling
+    void sfx(String name){
+        audioLoader.sound(name);
+    }
+    void music(String name){
+        audioLoader.music(name);
+    }
+    //end audio handling
+    
+    
     //start input handling
     boolean button(int button) {
         //assume single player game, only p1Controller

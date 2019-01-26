@@ -59,5 +59,14 @@ public class AudioLoader {
         soundManager.finishLoading();
         musicManager.finishLoading();
     }
+    
+    public void sound(String fileName){
+        Sound tmp = soundManager.get(soundRootPath+fileName+".wav");
+        tmp.play();
+    }
+    public void music(String fileName){
+        Music tmp = musicManager.get(musicRootPath+fileName+".wav");
+        tmp.play();
+    }
 
 }
