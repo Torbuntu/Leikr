@@ -68,5 +68,11 @@ public class AudioLoader {
         Music tmp = musicManager.get(musicRootPath+fileName+".wav");
         tmp.play();
     }
+    
+    
+    void disposeAudioLoader(){
+        musicManager.dispose();
+        soundManager.dispose();
+    }
 
 }
