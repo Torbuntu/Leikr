@@ -15,10 +15,49 @@
  */
 package leikr.loaders;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
+import java.io.File;
+import leikr.MenuScreen;
+
 /**
  *
  * @author tor
  */
 public class AudioLoader {
-    
+
+    AssetManager soundManager;
+    AssetManager musicManager;
+
+    String musicRootPath = "./Games/" + MenuScreen.GAME_NAME + "/Audio/Music/";
+    String soundRootPath = "./Games/" + MenuScreen.GAME_NAME + "/Audio/Sound/";
+
+    public AudioLoader() {
+        soundManager = new AssetManager();
+        musicManager = new AssetManager();
+        loadAudio();
+    }
+
+    private void loadAudio() {
+        String[] sounds = new File(soundRootPath).list();
+        String[] musics = new File(musicRootPath).list();
+
+        for (String path : sounds) {
+            soundManager.load(soundRootPath + path, Sound.class);
+        }
+        for (String path : musics) {
+            musicManager.load(musicRootPath + path, Music.class);
+        }
+        soundManager.finishLoading();
+        musicManager.finishLoading();
+    }
+
+    //probably useless, but makes me feel safe. 
+    public void load() {
+        soundManager.finishLoading();
+        musicManager.finishLoading();
+    }
+
 }
