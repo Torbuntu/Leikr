@@ -2,14 +2,22 @@ import leikr.Engine
 class SimplePlatformer extends Engine {
 	
 	def p = [:]
+	def i = [:]
 	
 	int mid = 0
 		
 	void move(){
 		p.vx = 0
-		if(key("Left")) p.vx =-1
-		if(key("Right")) p.vx = 1
-		
+		if(key("Left")){		
+			p.vx =-1
+			i.x += 0.5
+			p.f = 0
+		}
+		if(key("Right")){
+			p.vx = 1
+			i.x -= 0.5
+			p.f = 1
+		}
 		if( solid(p.x,p.y+8+p.vy) || solid(p.x+7,p.y+8+p.vy) ){
         	p.vy=0
 		}else{
@@ -42,11 +50,16 @@ class SimplePlatformer extends Engine {
 	
 	void create(){		
 		loadMap("map")
+		loadImages()
 		p.sid = 4
 		p.x = 100
 		p.y = 120
 		p.vx = 0
 		p.vy = 0
+		p.f = 1
+		
+		i.x = 40
+		i.y = 0
 	}
 
 	void update(float delta){
@@ -54,12 +67,17 @@ class SimplePlatformer extends Engine {
 	}
 	
 	void render(){
-		bgColor(0)
+		bgColor(0.1f,0.1f,0.1f)
 		//FPS()
-		
+		image("moon", i.x.toFloat(),i.y.toFloat())
 		map(0,0)
-					
-		sprite(p.sid, p.x, p.y)		
+		
+		if(p.f == 1) {
+			sprite(p.sid, p.x, p.y, false, false)
+		}else{
+			sprite(p.sid, p.x, p.y, true, false)
+		}
+						
 		text("ID: "+mid, 0, 20, 13)
 	}
 	

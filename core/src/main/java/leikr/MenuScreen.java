@@ -112,7 +112,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
             for (String file : gameList) {
                 g.drawString(selec + ": " + file, 0, y);
                 if (selec == cursor) {
-                    g.drawString(" <=", 100, y);
+                    g.drawString(" <=", 180, y);
                 }
                 selec++;
                 y += 12;

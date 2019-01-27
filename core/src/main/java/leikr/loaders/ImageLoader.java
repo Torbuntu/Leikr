@@ -44,7 +44,7 @@ public class ImageLoader {
     }
 
     public Texture getImage(String fileName) {
-        return assetManager.get(rootPath+fileName);
+        return assetManager.get(rootPath+fileName+".png");
     }
 
     public void disposeImages() {

@@ -14,7 +14,7 @@ class ImageGame extends Engine {
 		//FPS()
 		bgColor(0)
 	
-		drawImage("moon.png", 0,0)
+		drawImage("moon", 0,0)
 		sprite(4, 20,20)
 	}
 	

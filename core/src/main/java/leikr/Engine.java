@@ -119,8 +119,14 @@ public class Engine {
         imageLoader.load();
     }
 
-    void drawImage(String name, float x, float y) {
+    void image(String name, float x, float y) {
         g.drawTexture(imageLoader.getImage(name), x, y);
+    }
+    void image(String name, float x, float y, float w, float h){
+        g.drawTexture(imageLoader.getImage(name), x, y, w, h);
+    }
+    void image(String name, float x, float y, float w, float h, boolean flipv){
+        g.drawTexture(imageLoader.getImage(name), x, y, w, h, flipv);
     }
     //end Image methods
 
@@ -167,8 +173,12 @@ public class Engine {
     //end Map methods
 
     //start color methods
-    void setDrawColor(int color) {
+    void drawColor(int color) {
         g.setColor(getDrawColor(color));
+    }
+    void drawColor(float r, float gr, float b){
+        Color tmp = new Color(r, gr, b, 1f);
+        g.setColor(tmp);
     }
 
     Color getDrawColor(int color) {
@@ -211,7 +221,11 @@ public class Engine {
     }
 
     void bgColor(int color) {
-        setDrawColor(color);
+        drawColor(color);
+        g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
+    }
+    void bgColor(float r, float gr, float b) {
+        drawColor(r,gr,b);
         g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
     }
     //end color methods
@@ -384,18 +398,18 @@ public class Engine {
     }
 
     void text(String text, float x, float y, int color) {
-        setDrawColor(color);
+        drawColor(color);
         g.drawString(text, x, y);
     }
     //start shape drawing methods
 
     void square(float x, float y, float w, float h, int color) {
-        setDrawColor(color);
+        drawColor(color);
         g.drawRect(x, y, w, h);
     }
 
     void square(float x, float y, float w, float h, int color, boolean fill) {
-        setDrawColor(color);
+        drawColor(color);
         if (fill) {
             g.fillRect(x, y, w, h);
         } else {
@@ -404,12 +418,12 @@ public class Engine {
     }
 
     void circle(float x, float y, float r, int color) {
-        setDrawColor(color);
+        drawColor(color);
         g.drawCircle(x, y, r);
     }
 
     void circle(float x, float y, float r, int color, boolean fill) {
-        setDrawColor(color);
+        drawColor(color);
         if (fill) {
             g.fillCircle(x, y, r);
         } else {
@@ -418,12 +432,12 @@ public class Engine {
     }
 
     void triangle(float x1, float y1, float x2, float y2, float x3, float y3, int color) {
-        setDrawColor(color);
+        drawColor(color);
         g.drawTriangle(x1, y1, x2, y2, x3, y3);
     }
 
     void triangle(float x1, float y1, float x2, float y2, float x3, float y3, int color, boolean fill) {
-        setDrawColor(color);
+        drawColor(color);
         if (fill) {
             g.fillTriangle(x1, y1, x2, y2, x3, y3);
         } else {
@@ -432,7 +446,7 @@ public class Engine {
     }
 
     void line(float x1, float y1, float x2, float y2, int color) {
-        setDrawColor(color);
+        drawColor(color);
         g.drawLineSegment(x1, x2, y1, y2);
     }
     //end shape drawing methods
