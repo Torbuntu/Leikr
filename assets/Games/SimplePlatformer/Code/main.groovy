@@ -7,21 +7,19 @@ class SimplePlatformer extends Engine {
 	def sc = [:]
 	
 	int mid = 0
+	int height = 15
 		
+	Random rand
 	void move(){
 		p.vx = 0
 		if(key("Left")){		
 			p.vx =-1
 			i.x += 0.5
-			bc.x -= 0.2
-			sc.x += 0.2
 			p.f = 0
 		}
 		if(key("Right")){
 			p.vx = 1
 			i.x -= 0.5
-			bc.x += 0.2
-			sc.x -= 0.2
 			p.f = 1
 		}
 		if( solid(p.x,p.y+8+p.vy) || solid(p.x+7,p.y+8+p.vy) ){
@@ -57,6 +55,9 @@ class SimplePlatformer extends Engine {
 	void create(){		
 		loadMap("map")
 		loadImages()
+		
+		rand = new Random()
+		
 		p.sid = 4
 		p.x = 100
 		p.y = 120
@@ -68,7 +69,10 @@ class SimplePlatformer extends Engine {
 		i.y = 0
 		
 		bc.x = 30
-		sc.x = 210
+		sc.x = 180
+		
+		bc.y = (rand.nextInt(height)*10).toFloat()
+		sc.y = (rand.nextInt(height)*10).toFloat()
 	}
 
 	void update(float delta){
@@ -87,8 +91,20 @@ class SimplePlatformer extends Engine {
 			sprite(p.sid, p.x, p.y, true, false)
 		}
 		
-		sprite16(3, bc.x.toFloat(), 100)
-		sprite16(4, sc.x.toFloat(), 200)
+		bc.x -= 0.2
+		sc.x -= 0.2
+		if(bc.x < -8) {
+			bc.x = 240
+			bc.y = (rand.nextInt(height)*10).toFloat()
+		}
+		if(sc.x < -8){
+			sc.x = 240
+			sc.y = (rand.nextInt(height)*10).toFloat()
+		}
+		
+		sprite16(3, bc.x.toFloat(), bc.y)
+		sprite16(4, sc.x.toFloat(), sc.y)
+		
 						
 		text("ID: "+mid, 0, 20, 13)
 	}
