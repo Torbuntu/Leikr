@@ -12,11 +12,14 @@ Games/
   /SomeGame
   /SomeGame2
   /SomeGame3
-     /Art
-     /Code
+     /Art/
+     /Audio/
+        /Sound/
+        /Music/
+     /Code/     
+     /Maps/
+     /Sprites/
      game.properties
-     /Maps
-     /Sprites
 ```
 
 Add `main.groovy` in the `Code/` directory. 
