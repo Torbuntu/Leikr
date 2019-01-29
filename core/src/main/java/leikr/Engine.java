@@ -403,9 +403,9 @@ public class Engine {
     }
     //start shape drawing methods
 
-    void square(float x, float y, float w, float h, int color) {
+    void square(double x, double y, double w, double h, int color) {
         drawColor(color);
-        g.drawRect(x, y, w, h);
+        g.drawRect((float)x, (float)y, (float)w, (float)h);
     }
 
     void square(float x, float y, float w, float h, int color, boolean fill) {
