@@ -11,6 +11,7 @@ class SimplePlatformer extends Engine {
 		
 	Random rand
 	void move(){
+		def play = false
 		p.vx = 0
 		if(key("Left")){		
 			p.vx =-1
@@ -30,15 +31,18 @@ class SimplePlatformer extends Engine {
 		
 		if(key("Up") && p.vy==0){
 			p.vy=-2.5
-			sfx("jump")
+			play = true
 		}	
 		
 		if( p.vy<0 && (solid(p.x+p.vx,p.y+p.vy) || solid(p.x+7+p.vx,p.y+p.vy)) ){
 		    p.vy=0
+		    play = false
 		}   
+		
+		if(play) sfx("jump")
 
 		p.x=p.x+p.vx
-		p.y=p.y+p.vy
+		p.y=p.y+p.vy		
 	}
 	
 	def solid(x,y){
@@ -74,23 +78,8 @@ class SimplePlatformer extends Engine {
 		bc.y = (rand.nextInt(height)*10).toFloat()
 		sc.y = (rand.nextInt(height)*10).toFloat()
 	}
-
-	void update(float delta){
-		move()
-	}
 	
-	void render(){
-		bgColor(0.1f,0.1f,0.1f)
-		//FPS()
-		image("moon", i.x.toFloat(),i.y.toFloat())
-		map(0,0)
-		
-		if(p.f == 1) {
-			sprite(p.sid, p.x, p.y, false, false)
-		}else{
-			sprite(p.sid, p.x, p.y, true, false)
-		}
-		
+	void moveClouds(){
 		bc.x -= 0.2
 		sc.x -= 0.2
 		if(bc.x < -8) {
@@ -101,10 +90,27 @@ class SimplePlatformer extends Engine {
 			sc.x = 240
 			sc.y = (rand.nextInt(height)*10).toFloat()
 		}
-		
+	}
+
+	void update(float delta){
+		moveClouds()
+		move()
+	}
+	
+	void render(){
+		bgColor(0.1f,0.1f,0.1f)
+		//FPS()
+		image("moon", i.x.toFloat(),i.y.toFloat())
+		map(0,0)
+			
+		if(p.f == 1) {
+			sprite(p.sid, p.x, p.y, false, false)
+		}else{
+			sprite(p.sid, p.x, p.y, true, false)
+		}
+				
 		sprite16(3, bc.x.toFloat(), bc.y)
-		sprite16(4, sc.x.toFloat(), sc.y)
-		
+		sprite16(4, sc.x.toFloat(), sc.y)		
 						
 		text("ID: "+mid, 0, 20, 13)
 	}
