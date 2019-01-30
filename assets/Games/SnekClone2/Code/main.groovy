@@ -60,29 +60,29 @@ class SnekClone extends Engine {
 		def last_dir = direction
 		def last_dir2 = direction2
 		
-		if(key("Up")){
+		if(key("Up")||button(BTN.UP,0)){
 			direction = dirs.up
 		}
-		if(key("Down")){
+		if(key("Down")||button(BTN.DOWN,0)){
 			direction = dirs.down
 		}
-		if(key("Left")){
+		if(key("Left")||button(BTN.LEFT,0)){
 			direction = dirs.left
 		}
-		if(key("Right")){
+		if(key("Right")||button(BTN.RIGHT,0)){
 			direction = dirs.right
 		}
 		
-		if(key("W")){
+		if(key("W")||button(BTN.UP,1)){
 			direction2 = dirs.up
 		}
-		if(key("S")){
+		if(key("S")||button(BTN.DOWN,1)){
 			direction2 = dirs.down
 		}
-		if(key("A")){
+		if(key("A")||button(BTN.LEFT,1)){
 			direction2 = dirs.left
 		}
-		if(key("D")){
+		if(key("D")||button(BTN.RIGHT,1)){
 			direction2 = dirs.right
 		}
 		
@@ -126,7 +126,7 @@ class SnekClone extends Engine {
 	}
 	
 	void render(){
-		if(gameOver && key("Space")){
+		if(gameOver && key("Space") || button(BTN.START)){
 			gameOver = false
 			first = false
 			newGame()

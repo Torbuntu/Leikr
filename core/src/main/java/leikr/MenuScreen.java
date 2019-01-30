@@ -11,8 +11,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerAdapter;
+import com.badlogic.gdx.controllers.ControllerListener;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.utils.Array;
 import java.io.File;
 import java.util.Arrays;
 import org.mini2Dx.core.game.GameContainer;
@@ -76,6 +81,42 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
                 System.out.println(file);
             }
         }
+
+        Controller menuController;
+        Array<Controller> nmc = Controllers.getControllers();
+        if (null != nmc.get(0)) {
+            menuController = nmc.get(0);
+            menuController.addListener(new ControllerAdapter() {
+                //10 up
+                //12 down
+                //1 A
+                //9 start
+                @Override
+                public boolean buttonUp(Controller controller, int buttonIndex) {
+                    switch (buttonIndex) {
+                        case 1:
+                        case 9:
+                            start = true;
+                            break;
+                    }
+                    return false;
+                }
+
+                @Override
+                public boolean axisMoved(Controller controller, int axisCode, float value) {
+                    if (axisCode == 1) {
+                        if (value == 1 && cursor < gameList.length - 1) {
+                            cursor++;
+                        } else if (value == -1 && cursor > 0) {
+                            cursor--;
+                        }
+                        return true;
+                    }
+                    return false;
+                }
+            });
+        }
+
         Gdx.input.setInputProcessor(this);
     }
 
@@ -90,7 +131,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
                 sm.enterGameScreen(EngineScreen.ID, null, null);
                 Gdx.input.setInputProcessor(screen);
                 start = false;
-            }else{
+            } else {
                 start = false;
             }
         }

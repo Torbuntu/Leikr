@@ -42,7 +42,7 @@ public class Engine {
     private int MAX_SPRITES;
     private int USED_SPRITES;
 
-    static ButtonCodes BTN; //static codes for the buttons for readability
+    public ButtonCodes BTN; //codes for the buttons for readability
 
     //custom prop functions
     public int getUsedSprites() {
@@ -522,10 +522,10 @@ public class Engine {
     }
 
     boolean button(int button, int player) {
-        if (null != p1Controller && player == 1) {
+        if (null != p1Controller && player == 0) {
             return p1Controller.button(button);
         }
-        if (null != p2Controller && player == 2) {
+        if (null != p2Controller && player == 1) {
             return p2Controller.button(button);
         }
         //default search is false, in case there are no controllers.
