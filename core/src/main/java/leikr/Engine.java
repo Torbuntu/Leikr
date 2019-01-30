@@ -119,14 +119,14 @@ public class Engine {
         imageLoader.load();
     }
 
-    void image(String name, float x, float y) {
-        g.drawTexture(imageLoader.getImage(name), x, y);
+    void image(String name, double x, double y) {
+        g.drawTexture(imageLoader.getImage(name), (float)x, (float)y);
     }
-    void image(String name, float x, float y, float w, float h){
-        g.drawTexture(imageLoader.getImage(name), x, y, w, h);
+    void image(String name, double x, double y, double w, double h){
+        g.drawTexture(imageLoader.getImage(name), (float)x, (float)y, (float)w, (float)h);
     }
-    void image(String name, float x, float y, float w, float h, boolean flipv){
-        g.drawTexture(imageLoader.getImage(name), x, y, w, h, flipv);
+    void image(String name, double x, double y, double w, double h, boolean flipv){
+        g.drawTexture(imageLoader.getImage(name), (float)x, (float)y, (float)w, (float)h, flipv);
     }
     //end Image methods
 
@@ -279,12 +279,12 @@ public class Engine {
         USED_SPRITES++;
     }
 
-    void sprite16(int id, float x, float y, float degr) {
+    void sprite16(int id, double x, double y, float degr) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
         spriteLoader.getSprite(id, 1).rotate(degr);
-        g.drawSprite(spriteLoader.getSprite(id, 1), x, y);
+        g.drawSprite(spriteLoader.getSprite(id, 1), (float)x, (float)y);
         spriteLoader.getSprite(id, 1).rotate(-degr);
         USED_SPRITES++;
     }
@@ -397,9 +397,13 @@ public class Engine {
         g.drawSprite(spriteLoader.getSprite(id + 1, 0), x, y - 8);
     }
 
-    void text(String text, float x, float y, int color) {
+    void text(String text, double x, double y, int color) {
         drawColor(color);
-        g.drawString(text, x, y);
+        g.drawString(text, (float)x, (float)y);
+    }
+    void text(String text, double x, double y, double[] color) {
+        drawColor((float)color[0], (float)color[1], (float)color[2]);
+        g.drawString(text, (float)x, (float)y);
     }
     //start shape drawing methods
 
@@ -408,26 +412,26 @@ public class Engine {
         g.drawRect((float)x, (float)y, (float)w, (float)h);
     }
 
-    void square(float x, float y, float w, float h, int color, boolean fill) {
+    void square(double x, double y, double w, double h, int color, boolean fill) {
         drawColor(color);
         if (fill) {
-            g.fillRect(x, y, w, h);
+            g.fillRect((float)x, (float)y, (float)w, (float)h);
         } else {
-            g.drawRect(x, y, w, h);
+            g.drawRect((float)x, (float)y, (float)w, (float)h);
         }
     }
 
-    void circle(float x, float y, float r, int color) {
+    void circle(double x, double y, double r, int color) {
         drawColor(color);
-        g.drawCircle(x, y, r);
+        g.drawCircle((float)x, (float)y, (float)r);
     }
 
-    void circle(float x, float y, float r, int color, boolean fill) {
+    void circle(double x, double y, double r, int color, boolean fill) {
         drawColor(color);
         if (fill) {
-            g.fillCircle(x, y, r);
+            g.fillCircle((float)x, (float)y, (float)r);
         } else {
-            g.drawCircle(x, y, r);
+            g.drawCircle((float)x, (float)y, (float)r);
         }
     }
 

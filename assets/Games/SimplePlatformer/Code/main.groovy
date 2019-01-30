@@ -6,7 +6,6 @@ class SimplePlatformer extends Engine {
 	def bc = [:]
 	def sc = [:]
 	
-	int mid = 0
 	int height = 15
 		
 	Random rand
@@ -48,9 +47,7 @@ class SimplePlatformer extends Engine {
 	def solid(x,y){
 		float mx = (x)/8 
 		float my = (y)/8
-		int id = mapCellId(mx,my)	
-		mid = id	
-		if(id > 0){
+		if(mapCellId(mx,my)	 > 0){
 			return true
 		}
 		return false
@@ -61,34 +58,22 @@ class SimplePlatformer extends Engine {
 		loadImages()
 		
 		rand = new Random()
+		p = [sid: 4, x: 100, y:120, vx: 0, vy: 0, f: 1]
+		i = [x:40, y:0]	
+		bc = [x:30, y:(rand.nextInt(height)*10).toFloat()]
+		sc = [x:180, y:(rand.nextInt(height)*10).toFloat()]
 		
-		p.sid = 4
-		p.x = 100
-		p.y = 120
-		p.vx = 0
-		p.vy = 0
-		p.f = 1
-		
-		i.x = 40
-		i.y = 0
-		
-		bc.x = 30
-		sc.x = 180
-		
-		bc.y = (rand.nextInt(height)*10).toFloat()
-		sc.y = (rand.nextInt(height)*10).toFloat()
 	}
 	
 	void moveClouds(){
 		bc.x -= 0.2
 		sc.x -= 0.2
 		if(bc.x < -8) {
-			bc.x = 240
-			bc.y = (rand.nextInt(height)*10).toFloat()
+			bc = [x: 240, y:(rand.nextInt(height)*10).toFloat()]
+			
 		}
 		if(sc.x < -8){
-			sc.x = 240
-			sc.y = (rand.nextInt(height)*10).toFloat()
+			sc = [x: 240, y: (rand.nextInt(height)*10).toFloat()]
 		}
 	}
 
@@ -100,7 +85,7 @@ class SimplePlatformer extends Engine {
 	void render(){
 		bgColor(0.1f,0.1f,0.1f)
 		//FPS()
-		image("moon", i.x.toFloat(),i.y.toFloat())
+		image("moon", i.x,i.y)
 		map(0,0)
 			
 		if(p.f == 1) {
@@ -109,11 +94,7 @@ class SimplePlatformer extends Engine {
 			sprite(p.sid, p.x, p.y, true, false)
 		}
 				
-		sprite16(3, bc.x.toFloat(), bc.y)
-		sprite16(4, sc.x.toFloat(), sc.y)		
-						
-		text("ID: "+mid, 0, 20, 13)
+		sprite16(3, bc.x, bc.y)
+		sprite16(4, sc.x, sc.y)		
 	}
-	
-	
 }

@@ -12,6 +12,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import leikr.CustomProperties;
 import leikr.Engine;
+import leikr.MenuScreen;
 import org.codehaus.groovy.control.CompilationFailedException;
 
 /**
@@ -21,12 +22,19 @@ import org.codehaus.groovy.control.CompilationFailedException;
 public class EngineLoader {
 
     //TODO: Add support for more than one code file?
-    public static Engine getEngine(String name) {
+    public static Engine getEngine() {
         Engine engine = null;
         GroovyClassLoader gcl = new GroovyClassLoader();
-        CustomProperties cp = new CustomProperties(name);
-        try {
-            Class game = gcl.parseClass(new File("./Games/" + name + "/Code/main.groovy"));//loads the game code  
+        CustomProperties cp = new CustomProperties(MenuScreen.GAME_NAME);
+        String rootPath = "./Games/" + MenuScreen.GAME_NAME + "/Code/";
+        String[] codes = new File(rootPath).list();
+        try {            
+            for(String path : codes){
+                if(!path.equals("main.groovy")){
+                    gcl.parseClass(new File(rootPath+path));                
+                }
+            }
+            Class game = gcl.parseClass(new File(rootPath + "main.groovy"));//loads the game code  
             Constructor[] cnst = game.getConstructors();//gets the constructos
             engine = (Engine) cnst[0].newInstance();//instantiates based on first constructor
             engine.preCreate(cp.MAX_SPRITES, cp.MAX_SPRITE_SHEETS);//pre create here to instantiate objects

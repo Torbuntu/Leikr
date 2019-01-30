@@ -70,7 +70,7 @@ public class MapLoader {
         try {
             return tiledMap.getTile((int) x, (int) y, 0).getTileId(1);
         } catch (Exception ex) {
-            System.out.println(ex);
+            //System.out.println(ex);
             return -1;
         }
     }

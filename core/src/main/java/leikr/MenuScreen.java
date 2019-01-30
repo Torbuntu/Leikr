@@ -84,9 +84,9 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
         if (start) {
             GAME_NAME = gameList[cursor];
             EngineScreen screen = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
-            Engine engine = EngineLoader.getEngine(GAME_NAME);
+            Engine engine = EngineLoader.getEngine();
             if (null != engine) {
-                screen.setEngine(EngineLoader.getEngine(GAME_NAME));
+                screen.setEngine(engine);
                 sm.enterGameScreen(EngineScreen.ID, null, null);
                 Gdx.input.setInputProcessor(screen);
                 start = false;

@@ -1,3 +1,4 @@
+//With help from: https://github.com/nesbox/TIC-80/wiki/Snake-Clone-tutorial
 import leikr.Engine
 class SnekClone extends Engine {
 
@@ -36,11 +37,8 @@ class SnekClone extends Engine {
 		setFood()
 	}
 	
-	boolean gotFood(){
-		return snake[0].x == food.x && snake[0].y == food.y
-	}
-	boolean gotFood2(){
-		return snake2[0].x == food.x && snake2[0].y == food.y
+	boolean gotFood(snek){
+		return snek[0].x == food.x && snek[0].y == food.y
 	}
 	
 	void setFood(){
@@ -96,6 +94,24 @@ class SnekClone extends Engine {
 		}
 	}
 	
+	void drawSneks(){
+		if(score>score2){
+			snake.each{
+				square((it.x*8), (it.y*8),8,8,9)
+			}	
+			snake2.each{
+				square((it.x*8), (it.y*8),8,8,2)
+			}
+		}else{			
+			snake2.each{
+				square((it.x*8), (it.y*8),8,8,2)
+			}	
+			snake.each{
+				square((it.x*8), (it.y*8),8,8,9)
+			}
+		}
+	}
+	
 	void create(){				
 		rand = new Random()
 		dirs.up = [x:0, y:-1]		
@@ -120,6 +136,8 @@ class SnekClone extends Engine {
 			if(!first){
 				text("Game Over, "+loser+" ate themselves!", 0, 10, 10)
 				text("Final Score, p1:" + score + " , p2: "+score2, 0, 20, 10)
+			}else{
+				text("Snek 2 Clone!", 0, 20, 10)
 			}
 			text("Press `Space` to play", 0, 30, 10)
 		}else{
@@ -150,13 +168,13 @@ class SnekClone extends Engine {
 				snake.add(0,mbdy)
 				snake2.add(0,mbdy2)
 				
-				if(!gotFood()){
+				if(!gotFood(snake)){
 					snake.remove(snake.size()-1)
 				}else{
 					setFood()
 					score++
 				}
-				if(!gotFood2()){
+				if(!gotFood(snake2)){
 					snake2.remove(snake2.size()-1)
 				}else{
 					setFood()
@@ -167,16 +185,11 @@ class SnekClone extends Engine {
 			
 			move()
 					
-			snake.each{
-				square((it.x*8), (it.y*8),8,8,9)
-			}	
-			snake2.each{
-				square((it.x*8), (it.y*8),8,8,2)
-			}	
+			drawSneks()
 			square((food.x*8), (food.y*8), 8, 8, 11)
 			
-			text("p1: "+score, 0, 10, 10)
-			text("p2: "+score2, 0, 20, 10)
+			text("p1: "+score, 0, 0, 10)
+			text("p2: "+score2, 0, 150, 10)
 		}
 	}	
 }
