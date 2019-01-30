@@ -147,19 +147,19 @@ public class Engine {
         mapLoader.drawMap(g, Math.round((float)x), Math.round((float)y), layer);
     }
 
-    void map(float x, float y, float sx, float sy, float w, float h) {
-        mapLoader.drawMap(g, Math.round(x), Math.round(y), Math.round(sx), Math.round(sy), Math.round(w), Math.round(h));
+    void map(double x, double y, double sx, double sy, double w, double h) {
+        mapLoader.drawMap(g, Math.round((float)x), Math.round((float)y), Math.round((float)sx), Math.round((float)sy), Math.round((float)w), Math.round((float)h));
     }
 
-    void map(float x, float y, float sx, float sy, float w, float h, int layer) {
-        mapLoader.drawMap(g, Math.round(x), Math.round(y), Math.round(sx), Math.round(sy), Math.round(w), Math.round(h), layer);
+    void map(double x, double y, double sx, double sy, double w, double h, int layer) {
+        mapLoader.drawMap(g, Math.round((float)x), Math.round((float)y), Math.round((float)sx), Math.round((float)sy), Math.round((float)w), Math.round((float)h), layer);
     }
 
-    int mapCellId(float x, float y) {
+    int mapCellId(double x, double y) {
         return mapLoader.getMapTileId(x, y);
     }
 
-    void setCellId(float x, float y, int id) {
+    void setCellId(double x, double y, int id) {
         mapLoader.setMapTile(x, y, id);
     }
 
@@ -224,10 +224,14 @@ public class Engine {
         drawColor(color);
         g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
     }
-    void bgColor(float r, float gr, float b) {
-        drawColor(r,gr,b);
+    void bgColor(double r, double gr, double b) {
+        drawColor((float)r,(float)gr,(float)b);
         g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
     }
+    void bgColor(double[] color) {
+        drawColor((float)color[0],(float)color[1],(float)color[2]);
+        g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
+    }    
     //end color methods
 
     //start 8x8 sprites
@@ -239,32 +243,32 @@ public class Engine {
         USED_SPRITES++;
     }
 
-    void sprite(int id, float x, float y, float degr) {
+    void sprite(int id, double x, double y, double degr) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        spriteLoader.getSprite(id, 0).rotate(degr);
-        g.drawSprite(spriteLoader.getSprite(id, 0), x, y);
-        spriteLoader.getSprite(id, 0).rotate(-degr);
+        spriteLoader.getSprite(id, 0).rotate((float)degr);
+        g.drawSprite(spriteLoader.getSprite(id, 0), (float)x, (float)y);
+        spriteLoader.getSprite(id, 0).rotate((float)-degr);
         USED_SPRITES++;
     }
 
-    void sprite(int id, float x, float y, boolean clockwise) {
+    void sprite(int id, double x, double y, boolean clockwise) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
         spriteLoader.getSprite(id, 0).rotate90(clockwise);
-        g.drawSprite(spriteLoader.getSprite(id, 0), x, y);
+        g.drawSprite(spriteLoader.getSprite(id, 0), (float)x, (float)y);
         spriteLoader.getSprite(id, 0).rotate90(!clockwise);
         USED_SPRITES++;
     }
 
-    void sprite(int id, float x, float y, boolean flipX, boolean flipY) {
+    void sprite(int id, double x, double y, boolean flipX, boolean flipY) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
         spriteLoader.getSprite(id, 0).setFlip(flipX, flipY);
-        g.drawSprite(spriteLoader.getSprite(id, 0), x, y);
+        g.drawSprite(spriteLoader.getSprite(id, 0), (float)x, (float)y);
         spriteLoader.getSprite(id, 0).setFlip(!flipX, !flipY);
         USED_SPRITES++;
     }
@@ -289,112 +293,112 @@ public class Engine {
         USED_SPRITES++;
     }
 
-    void sprite16(int id, float x, float y, boolean clockwise) {
+    void sprite16(int id, double x, double y, boolean clockwise) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
         spriteLoader.getSprite(id, 1).rotate90(clockwise);
-        g.drawSprite(spriteLoader.getSprite(id, 1), x, y);
+        g.drawSprite(spriteLoader.getSprite(id, 1), (float)x, (float)y);
         spriteLoader.getSprite(id, 1).rotate90(!clockwise);
         USED_SPRITES++;
     }
 
-    void sprite16(int id, float x, float y, boolean flipX, boolean flipY) {
+    void sprite16(int id, double x, double y, boolean flipX, boolean flipY) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
         spriteLoader.getSprite(id, 1).setFlip(flipX, flipY);
-        g.drawSprite(spriteLoader.getSprite(id, 1), x, y);
+        g.drawSprite(spriteLoader.getSprite(id, 1), (float)x, (float)y);
         spriteLoader.getSprite(id, 1).setFlip(!flipX, !flipY);
         USED_SPRITES++;
     }
     //end 16x16 sprites
 
     //start 32x32 sprites
-    void sprite32(int id, float x, float y) {
+    void sprite32(int id, double x, double y) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        g.drawSprite(spriteLoader.getSprite(id, 2), x, y);
+        g.drawSprite(spriteLoader.getSprite(id, 2), (float)x, (float)y);
         USED_SPRITES++;
     }
 
-    void sprite32(int id, float x, float y, float degr) {
+    void sprite32(int id, double x, double y, float degr) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
         spriteLoader.getSprite(id, 2).rotate(degr);
-        g.drawSprite(spriteLoader.getSprite(id, 2), x, y);
+        g.drawSprite(spriteLoader.getSprite(id, 2), (float)x, (float)y);
         spriteLoader.getSprite(id, 2).rotate(-degr);
         USED_SPRITES++;
     }
 
-    void sprite32(int id, float x, float y, boolean clockwise) {
+    void sprite32(int id, double x, double y, boolean clockwise) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
         spriteLoader.getSprite(id, 2).rotate90(clockwise);
-        g.drawSprite(spriteLoader.getSprite(id, 2), x, y);
+        g.drawSprite(spriteLoader.getSprite(id, 2), (float)x, (float)y);
         spriteLoader.getSprite(id, 2).rotate90(!clockwise);
         USED_SPRITES++;
     }
 
-    void sprite32(int id, float x, float y, boolean flipX, boolean flipY) {
+    void sprite32(int id, double x, double y, boolean flipX, boolean flipY) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
         spriteLoader.getSprite(id, 2).setFlip(flipX, flipY);
-        g.drawSprite(spriteLoader.getSprite(id, 2), x, y);
+        g.drawSprite(spriteLoader.getSprite(id, 2), (float)x, (float)y);
         spriteLoader.getSprite(id, 2).setFlip(!flipX, !flipY);
         USED_SPRITES++;
     }
     //end 32x32 sprites
 
     //start 64x64 sprites
-    void sprite64(int id, float x, float y) {
+    void sprite64(int id, double x, double y) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
         g.drawSprite(spriteLoader.getSprite(id, 3
-        ), x, y);
+        ), (float)x, (float)y);
         USED_SPRITES++;
     }
 
-    void sprite64(int id, float x, float y, float degr) {
+    void sprite64(int id, double x, double y, float degr) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
         spriteLoader.getSprite(id, 3).rotate(degr);
-        g.drawSprite(spriteLoader.getSprite(id, 3), x, y);
+        g.drawSprite(spriteLoader.getSprite(id, 3), (float)x, (float)y);
         spriteLoader.getSprite(id, 3).rotate(-degr);
         USED_SPRITES++;
     }
 
-    void sprite64(int id, float x, float y, boolean clockwise) {
+    void sprite64(int id, double x, double y, boolean clockwise) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
         spriteLoader.getSprite(id, 3).rotate90(clockwise);
-        g.drawSprite(spriteLoader.getSprite(id, 3), x, y);
+        g.drawSprite(spriteLoader.getSprite(id, 3), (float)x, (float)y);
         spriteLoader.getSprite(id, 3).rotate90(!clockwise);
         USED_SPRITES++;
     }
 
-    void sprite64(int id, float x, float y, boolean flipX, boolean flipY) {
+    void sprite64(int id, double x, double y, boolean flipX, boolean flipY) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
         spriteLoader.getSprite(id, 3).setFlip(flipX, flipY);
-        g.drawSprite(spriteLoader.getSprite(id, 3), x, y);
+        g.drawSprite(spriteLoader.getSprite(id, 3), (float)x, (float)y);
         spriteLoader.getSprite(id, 3).setFlip(!flipX, !flipY);
         USED_SPRITES++;
     }
     //end 64x64 sprites
 
     //draws a sprite given the id, and the next sprite in the sequence on top of it.
-    void tallSprite(int id, float x, float y) {
-        g.drawSprite(spriteLoader.getSprite(id, 0), x, y);
-        g.drawSprite(spriteLoader.getSprite(id + 1, 0), x, y - 8);
+    void tallSprite(int id, double x, double y) {
+        g.drawSprite(spriteLoader.getSprite(id, 0), (float)x, (float)y);
+        g.drawSprite(spriteLoader.getSprite(id + 1, 0), (float)x, (float)y - 8);
     }
 
     void text(String text, double x, double y, int color) {
@@ -420,9 +424,28 @@ public class Engine {
             g.drawRect((float)x, (float)y, (float)w, (float)h);
         }
     }
+    
+    void square(double x, double y, double w, double h, double[] color) {
+        drawColor((float)color[0], (float)color[1], (float)color[2]);
+        g.drawRect((float)x, (float)y, (float)w, (float)h);
+    }
 
+    void square(double x, double y, double w, double h, double[] color, boolean fill) {
+        drawColor((float)color[0], (float)color[1], (float)color[2]);
+        if (fill) {
+            g.fillRect((float)x, (float)y, (float)w, (float)h);
+        } else {
+            g.drawRect((float)x, (float)y, (float)w, (float)h);
+        }
+    }
+    
     void circle(double x, double y, double r, int color) {
         drawColor(color);
+        g.drawCircle((float)x, (float)y, (float)r);
+    }
+
+    void circle(double x, double y, double r, double[] color) {
+        drawColor((float)color[0], (float)color[1], (float)color[2]);
         g.drawCircle((float)x, (float)y, (float)r);
     }
 
@@ -434,24 +457,45 @@ public class Engine {
             g.drawCircle((float)x, (float)y, (float)r);
         }
     }
-
-    void triangle(float x1, float y1, float x2, float y2, float x3, float y3, int color) {
-        drawColor(color);
-        g.drawTriangle(x1, y1, x2, y2, x3, y3);
-    }
-
-    void triangle(float x1, float y1, float x2, float y2, float x3, float y3, int color, boolean fill) {
-        drawColor(color);
+    void circle(double x, double y, double r, double[] color, boolean fill) {
+        drawColor((float)color[0], (float)color[1], (float)color[2]);
         if (fill) {
-            g.fillTriangle(x1, y1, x2, y2, x3, y3);
+            g.fillCircle((float)x, (float)y, (float)r);
         } else {
-            g.drawTriangle(y3, y1, y2, y3, y3, y3);
+            g.drawCircle((float)x, (float)y, (float)r);
         }
     }
 
-    void line(float x1, float y1, float x2, float y2, int color) {
+    void triangle(double x1, double y1, double x2, double y2, double x3, double y3, int color) {
         drawColor(color);
-        g.drawLineSegment(x1, x2, y1, y2);
+        g.drawTriangle((float)x1, (float)y1, (float)x2, (float)y2, (float)x3, (float)y3);
+    }
+
+    void triangle(double x1, double y1, double x2, double y2, double x3, double y3, int color, boolean fill) {
+        drawColor(color);
+        if (fill) {
+            g.fillTriangle((float)x1, (float)y1, (float)x2, (float)y2, (float)x3, (float)y3);
+        } else {
+            g.drawTriangle((float)x1, (float)y1, (float)x2, (float)y2, (float)x3, (float)y3);
+        }
+    }
+    void triangle(double x1, double y1, double x2, double y2, double x3, double y3, double[] color) {
+        drawColor((float)color[0], (float)color[1], (float)color[2]);
+        g.drawTriangle((float)x1, (float)y1, (float)x2, (float)y2, (float)x3, (float)y3);
+    }
+
+    void triangle(double x1, double y1, double x2, double y2, double x3, double y3, double[] color, boolean fill) {
+        drawColor((float)color[0], (float)color[1], (float)color[2]);
+        if (fill) {
+            g.fillTriangle((float)x1, (float)y1, (float)x2, (float)y2, (float)x3, (float)y3);
+        } else {
+            g.drawTriangle((float)x1, (float)y1, (float)x2, (float)y2, (float)x3, (float)y3);
+        }
+    }
+
+    void line(double x1, double y1, double x2, double y2, int color) {
+        drawColor(color);
+        g.drawLineSegment((float)x1, (float)x2, (float)y1, (float)y2);
     }
     //end shape drawing methods
 

@@ -66,7 +66,7 @@ public class MapLoader {
     }
 
     // Gets the tileId of the cell located at x and y. 
-    public int getMapTileId(float x, float y) {
+    public int getMapTileId(double x, double y) {
         try {
             return tiledMap.getTile((int) x, (int) y, 0).getTileId(1);
         } catch (Exception ex) {
@@ -75,7 +75,7 @@ public class MapLoader {
         }
     }
 
-    public void setMapTile(float x, float y, int id) {
+    public void setMapTile(double x, double y, int id) {
         tiledMap.getTileLayer(0).setTileId((int) x, (int) y, id);
     }
     
