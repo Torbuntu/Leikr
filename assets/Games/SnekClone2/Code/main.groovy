@@ -139,7 +139,7 @@ class SnekClone extends Engine {
 			}else{
 				text("Snek 2 Clone!", 0, 20, 10)
 			}
-			text("Press `Space` to play", 0, 30, 10)
+			text("Press `START` to play", 0, 30, 10)
 		}else{
 			bgColor(0.1f,0.1f,0.1f)
 			
