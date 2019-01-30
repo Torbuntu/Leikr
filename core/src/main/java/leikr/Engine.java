@@ -139,12 +139,12 @@ public class Engine {
         mapLoader.drawMap(g);
     }
 
-    void map(float x, float y) {
-        mapLoader.drawMap(g, Math.round(x), Math.round(y));
+    void map(double x, double y) {
+        mapLoader.drawMap(g, Math.round((float)x), Math.round((float)y));
     }
 
-    void map(float x, float y, int layer) {
-        mapLoader.drawMap(g, Math.round(x), Math.round(y), layer);
+    void map(double x, double y, int layer) {
+        mapLoader.drawMap(g, Math.round((float)x), Math.round((float)y), layer);
     }
 
     void map(float x, float y, float sx, float sy, float w, float h) {
@@ -231,11 +231,11 @@ public class Engine {
     //end color methods
 
     //start 8x8 sprites
-    void sprite(int id, float x, float y) {
+    void sprite(int id, double x, double y) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        g.drawSprite(spriteLoader.getSprite(id, 0), x, y);
+        g.drawSprite(spriteLoader.getSprite(id, 0), (float)x, (float)y);
         USED_SPRITES++;
     }
 
@@ -271,11 +271,11 @@ public class Engine {
     //end 8x8 sprites
 
     //start 16x16 sprites
-    void sprite16(int id, float x, float y) {
+    void sprite16(int id, double x, double y) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        g.drawSprite(spriteLoader.getSprite(id, 1), x, y);
+        g.drawSprite(spriteLoader.getSprite(id, 1), (float)x, (float)y);
         USED_SPRITES++;
     }
 
