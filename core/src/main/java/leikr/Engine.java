@@ -233,6 +233,17 @@ public class Engine {
         g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
     }    
     //end color methods
+    
+    //text methods
+    void text(String text, double x, double y, int color) {
+        drawColor(color);
+        g.drawString(text, (float)x, (float)y);
+    }
+    void text(String text, double x, double y, double[] color) {
+        drawColor((float)color[0], (float)color[1], (float)color[2]);
+        g.drawString(text, (float)x, (float)y);
+    }
+    //end text methods
 
     //start 8x8 sprites
     void sprite(int id, double x, double y) {
@@ -400,17 +411,8 @@ public class Engine {
         g.drawSprite(spriteLoader.getSprite(id, 0), (float)x, (float)y);
         g.drawSprite(spriteLoader.getSprite(id + 1, 0), (float)x, (float)y - 8);
     }
-
-    void text(String text, double x, double y, int color) {
-        drawColor(color);
-        g.drawString(text, (float)x, (float)y);
-    }
-    void text(String text, double x, double y, double[] color) {
-        drawColor((float)color[0], (float)color[1], (float)color[2]);
-        g.drawString(text, (float)x, (float)y);
-    }
+    
     //start shape drawing methods
-
     void square(double x, double y, double w, double h, int color) {
         drawColor(color);
         g.drawRect((float)x, (float)y, (float)w, (float)h);
@@ -495,6 +497,10 @@ public class Engine {
 
     void line(double x1, double y1, double x2, double y2, int color) {
         drawColor(color);
+        g.drawLineSegment((float)x1, (float)x2, (float)y1, (float)y2);
+    }
+    void line(double x1, double y1, double x2, double y2, double[] color) {
+        drawColor((float)color[0], (float)color[1], (float)color[2]);
         g.drawLineSegment((float)x1, (float)x2, (float)y1, (float)y2);
     }
     //end shape drawing methods
