@@ -15,10 +15,10 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Array;
 import java.io.File;
-import java.util.Arrays;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -42,12 +42,12 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
             4?. a genre?
      */
     public static int ID = 0;
+    public static String GAME_NAME;
 
     AssetManager assetManager;
     FontLoader fontLoader;
     BitmapFont font;
 
-    public static String GAME_NAME;
 
     boolean start = false;
     String[] gameList;
@@ -57,6 +57,15 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
     MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
         viewport = new FitViewport(240, 160);
+        gameList = new File("./Games").list();
+        loadIcons();
+    }
+
+    private void loadIcons() {
+        for (String game : gameList) {
+            assetManager.load("./Games/" + game + "/Art/icon.png", Texture.class);
+        }
+        assetManager.finishLoading();
     }
 
     @Override
@@ -68,12 +77,9 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
     @Override
     public void initialise(GameContainer gc) {
         cursor = 0;
-
         fontLoader = new FontLoader();
         font = fontLoader.getFont();
 
-        gameList = new File("./Games").list();
-        
         try {
             Controller menuController;
             Array<Controller> nmc = Controllers.getControllers();
@@ -142,6 +148,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
         viewport.apply(g);
         g.setColor(Color.WHITE);
         if (null != gameList) {
+            g.drawTexture(assetManager.get("./Games/" + gameList[cursor] + "/Art/icon.png"), ID, ID);
             int y = 14;
             int selec = 0;
             for (String file : gameList) {
@@ -153,7 +160,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
                 y += 12;
             }
         }
-        g.drawString("Selection: " + cursor, 0, viewport.getHeight() - 16);
+        g.drawString("Selection: " + cursor, 0, viewport.getHeight() - 10);
     }
 
     @Override
