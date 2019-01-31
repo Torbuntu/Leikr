@@ -36,7 +36,7 @@ public class Engine {
     ImageLoader imageLoader;
     SpriteLoader spriteLoader;
     AudioLoader audioLoader;
-    
+
     FPSLogger logger;
     FitViewport viewport;
     private int MAX_SPRITES;
@@ -122,10 +122,12 @@ public class Engine {
     void image(String name, float x, float y) {
         g.drawTexture(imageLoader.getImage(name), x, y);
     }
-    void image(String name, float x, float y, float w, float h){
+
+    void image(String name, float x, float y, float w, float h) {
         g.drawTexture(imageLoader.getImage(name), x, y, w, h);
     }
-    void image(String name, float x, float y, float w, float h, boolean flipv){
+
+    void image(String name, float x, float y, float w, float h, boolean flipv) {
         g.drawTexture(imageLoader.getImage(name), x, y, w, h, flipv);
     }
     //end Image methods
@@ -176,7 +178,8 @@ public class Engine {
     void drawColor(int color) {
         g.setColor(getDrawColor(color));
     }
-    void drawColor(float r, float gr, float b){
+
+    void drawColor(float r, float gr, float b) {
         Color tmp = new Color(r, gr, b, 1f);
         g.setColor(tmp);
     }
@@ -224,21 +227,24 @@ public class Engine {
         drawColor(color);
         g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
     }
+
     void bgColor(float r, float gr, float b) {
-        drawColor(r,gr,b);
+        drawColor(r, gr, b);
         g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
     }
+
     void bgColor(float[] color) {
-        drawColor(color[0],color[1],color[2]);
+        drawColor(color[0], color[1], color[2]);
         g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
-    }    
+    }
     //end color methods
-    
+
     //text methods
     void text(String text, float x, float y, int color) {
         drawColor(color);
         g.drawString(text, x, y);
     }
+
     void text(String text, float x, float y, float[] color) {
         drawColor(color[0], color[1], color[2]);
         g.drawString(text, x, y);
@@ -411,7 +417,7 @@ public class Engine {
         g.drawSprite(spriteLoader.getSprite(id, 0), x, y);
         g.drawSprite(spriteLoader.getSprite(id + 1, 0), x, y - 8);
     }
-    
+
     //start shape drawing methods
     void square(float x, float y, float w, float h, int color) {
         drawColor(color);
@@ -426,7 +432,7 @@ public class Engine {
             g.drawRect(x, y, w, h);
         }
     }
-    
+
     void square(float x, float y, float w, float h, float[] color) {
         drawColor(color[0], color[1], color[2]);
         g.drawRect(x, y, w, h);
@@ -440,7 +446,7 @@ public class Engine {
             g.drawRect(x, y, w, h);
         }
     }
-    
+
     void circle(float x, float y, float r, int color) {
         drawColor(color);
         g.drawCircle(x, y, r);
@@ -459,6 +465,7 @@ public class Engine {
             g.drawCircle(x, y, r);
         }
     }
+
     void circle(float x, float y, float r, float[] color, boolean fill) {
         drawColor(color[0], color[1], color[2]);
         if (fill) {
@@ -481,6 +488,7 @@ public class Engine {
             g.drawTriangle(x1, y1, x2, y2, x3, y3);
         }
     }
+
     void triangle(float x1, float y1, float x2, float y2, float x3, float y3, float[] color) {
         drawColor(color[0], color[1], color[2]);
         g.drawTriangle(x1, y1, x2, y2, x3, y3);
@@ -499,6 +507,7 @@ public class Engine {
         drawColor(color);
         g.drawLineSegment(x1, x2, y1, y2);
     }
+
     void line(float x1, float y1, float x2, float y2, float[] color) {
         drawColor(color[0], color[1], color[2]);
         g.drawLineSegment(x1, x2, y1, y2);
@@ -506,19 +515,19 @@ public class Engine {
     //end shape drawing methods
 
     //start Audio handling
-    void sfx(String name){
+    void sfx(String name) {
         audioLoader.sound(name);
     }
-    void music(String name){
+
+    void music(String name) {
         audioLoader.music(name);
     }
     //end audio handling
-    
-    
+
     //start input handling
     boolean button(int button) {
         //assume single player game, only p1Controller
-        return p1Controller.button(button);
+        return (null != p1Controller) ? p1Controller.button(button) : false;
     }
 
     boolean button(int button, int player) {

@@ -82,39 +82,43 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
             }
         }
 
-        Controller menuController;
-        Array<Controller> nmc = Controllers.getControllers();
-        if (null != nmc.get(0)) {
-            menuController = nmc.get(0);
-            menuController.addListener(new ControllerAdapter() {
-                //10 up
-                //12 down
-                //1 A
-                //9 start
-                @Override
-                public boolean buttonUp(Controller controller, int buttonIndex) {
-                    switch (buttonIndex) {
-                        case 1:
-                        case 9:
-                            start = true;
-                            break;
-                    }
-                    return false;
-                }
-
-                @Override
-                public boolean axisMoved(Controller controller, int axisCode, float value) {
-                    if (axisCode == 1) {
-                        if (value == 1 && cursor < gameList.length - 1) {
-                            cursor++;
-                        } else if (value == -1 && cursor > 0) {
-                            cursor--;
+        try {
+            Controller menuController;
+            Array<Controller> nmc = Controllers.getControllers();
+            if (null != nmc.get(0)) {
+                menuController = nmc.get(0);
+                menuController.addListener(new ControllerAdapter() {
+                    //10 up
+                    //12 down
+                    //1 A
+                    //9 start
+                    @Override
+                    public boolean buttonUp(Controller controller, int buttonIndex) {
+                        switch (buttonIndex) {
+                            case 1:
+                            case 9:
+                                start = true;
+                                break;
                         }
-                        return true;
+                        return false;
                     }
-                    return false;
-                }
-            });
+
+                    @Override
+                    public boolean axisMoved(Controller controller, int axisCode, float value) {
+                        if (axisCode == 1) {
+                            if (value == 1 && cursor < gameList.length - 1) {
+                                cursor++;
+                            } else if (value == -1 && cursor > 0) {
+                                cursor--;
+                            }
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+            }
+        } catch (Exception ex) {
+            System.out.println("No controllers active. " + ex.getMessage());
         }
 
         Gdx.input.setInputProcessor(this);
