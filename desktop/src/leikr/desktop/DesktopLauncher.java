@@ -8,10 +8,11 @@ public class DesktopLauncher {
 
     public static void main(String[] arg) {
         DesktopMini2DxConfig config = new DesktopMini2DxConfig(GameRuntime.GAME_IDENTIFIER);
-        config.vSyncEnabled = true;
+        config.vSyncEnabled = false;
         config.title = "Leikr";
-        config.width = 240;
-        config.height = 160;
+        config.width = 720;
+        config.height = 480;
+        config.fullscreen = true;
         new DesktopMini2DxGame(new GameRuntime(), config);
     }
 }

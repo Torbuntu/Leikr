@@ -44,21 +44,37 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
     public void onResize(int width, int height) {
         engine.viewport.onResize(width, height);
     }
-    
+
+    @Override
+    public void preTransitionOut(Transition transition) {
+        System.out.println("Game engine classes disposed.");
+        engine.dispose();
+    }
+
     @Override
     public void postTransitionIn(Transition transition) {
-        engine.create();
+        try {
+            engine.create();
+        } catch (Exception ex) {
+            System.out.println("Error in game `create` method. " + ex.getMessage());
+        }
     }
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         if (back) {
+            back = false;
+            engine.active = false;
             sm.enterGameScreen(MenuScreen.ID, null, null);
             Gdx.input.setInputProcessor((MenuScreen) sm.getGameScreen(MenuScreen.ID));
-            back = false;
+            return;
         }
-        engine.update();
-        engine.update(delta);
+        try {
+            engine.update(delta);
+        } catch (Exception ex) {
+            System.out.println("Error in game `update` method. " + ex.getMessage());
+        }
+
     }
 
     @Override
@@ -67,9 +83,16 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public void render(GameContainer gc, Graphics g) {
-        engine.viewport.apply(g);
-        engine.preRender(g);
-        engine.render();
+        if (!engine.active) {
+            return;
+        }
+        try {
+            engine.viewport.apply(g);
+            engine.preRender(g);
+            engine.render();
+        } catch (Exception ex) {
+            System.out.println("Error in game `render` method. " + ex.getMessage());
+        }
     }
 
     @Override

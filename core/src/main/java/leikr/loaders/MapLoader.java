@@ -27,18 +27,18 @@ import org.mini2Dx.tiled.TiledMap;
  */
 public class MapLoader {
     //TODO: Add handlers for animation tiles and object layers for collisions.  
-    
+
     TiledMap tiledMap;
 
     TiledMapTileLayer tiledMapLayer;
-    
+
     String rootPath = "./Games/" + MenuScreen.GAME_NAME + "/Maps/";
 
     public void loadMap(String name) {
         if (null != tiledMap) {
             tiledMap.dispose();
         }
-        tiledMap = new TiledMap(new FileHandle( rootPath + name + ".tmx"));
+        tiledMap = new TiledMap(new FileHandle(rootPath + name + ".tmx"));
     }
 
     public TiledMap getMap() {
@@ -78,9 +78,11 @@ public class MapLoader {
     public void setMapTile(double x, double y, int id) {
         tiledMap.getTileLayer(0).setTileId((int) x, (int) y, id);
     }
-    
-    public void disposeMap(){
-        tiledMap.dispose();
+
+    public void disposeMap() {
+        if (null != tiledMap) {
+            tiledMap.dispose();
+        }
     }
 
 }

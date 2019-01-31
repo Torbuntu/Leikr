@@ -69,7 +69,7 @@ public class AudioLoader {
     }
     
     
-    void disposeAudioLoader(){
+    public void disposeAudioLoader(){
         musicManager.dispose();
         soundManager.dispose();
     }

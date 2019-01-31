@@ -28,6 +28,9 @@ import org.mini2Dx.core.graphics.viewport.FitViewport;
 public class Engine {
 
     Graphics g;
+    
+    //used by the Engine Screen to determine if the game is actively running.
+    boolean active;
 
     LeikrController p1Controller;
     LeikrController p2Controller;
@@ -60,6 +63,7 @@ public class Engine {
         imageLoader = new ImageLoader();
         mapLoader = new MapLoader();
         audioLoader = new AudioLoader();
+        active = true;
 
         try {
             Array<Controller> nmc = Controllers.getControllers();
@@ -81,10 +85,6 @@ public class Engine {
 
     public void create() {
     }
-
-    public void update() {
-    }
-
     public void update(float delta) {
         mapLoader.getMap().update(delta);
     }
@@ -98,7 +98,16 @@ public class Engine {
     public void render() {
     }
     // end override functions
-
+    
+    //dispose
+    public void dispose(){
+        audioLoader.disposeAudioLoader();
+        mapLoader.disposeMap();
+        spriteLoader.disposeSprites();
+        imageLoader.disposeImages();        
+    }
+    //dispose
+    
     //Start Helper methods
     //Not a very helpful method, but I like to see how things perform.
     void FPS() {

@@ -96,7 +96,7 @@ public class SpriteLoader {
         }
     }
     
-    void disposeSprites(){
+    public void disposeSprites(){
         assetManager.dispose();
     }
 

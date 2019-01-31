@@ -22,6 +22,9 @@ public class FontLoader {
     BitmapFont font;
     
     public FontLoader() {
+    }
+    
+    public BitmapFont getFont(){
         //Generate a font object for font.ttf at size 40px
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = 16;
@@ -35,9 +38,22 @@ public class FontLoader {
 
         font = generator.generateFont(parameter);
         font.setUseIntegerPositions(false);
+        return font;
     }
-    
-    public BitmapFont getFont(){
+    public BitmapFont getFont(String path){
+        //Generate a font object for font.ttf at size 40px
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.size = 8;
+        parameter.flip = true;
+
+        //The following settings allow the font to scale smoothly
+        parameter.magFilter = TextureFilter.Linear;
+        parameter.minFilter = TextureFilter.Linear;
+
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(new FileHandle(path));
+
+        font = generator.generateFont(parameter);
+        font.setUseIntegerPositions(false);
         return font;
     }
 

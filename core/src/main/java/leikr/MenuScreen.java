@@ -13,7 +13,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
-import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -69,19 +68,12 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
     @Override
     public void initialise(GameContainer gc) {
         cursor = 0;
-        File test = new File("./");
-        System.out.println(Arrays.toString(test.list()));
 
         fontLoader = new FontLoader();
         font = fontLoader.getFont();
 
         gameList = new File("./Games").list();
-        if (null != gameList) {
-            for (String file : gameList) {
-                System.out.println(file);
-            }
-        }
-
+        
         try {
             Controller menuController;
             Array<Controller> nmc = Controllers.getControllers();
@@ -131,12 +123,10 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
             EngineScreen screen = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
             Engine engine = EngineLoader.getEngine();
             if (null != engine) {
+                start = false;
                 screen.setEngine(engine);
                 sm.enterGameScreen(EngineScreen.ID, null, null);
                 Gdx.input.setInputProcessor(screen);
-                start = false;
-            } else {
-                start = false;
             }
         }
     }
@@ -186,6 +176,10 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
         }
         if (i == Keys.ENTER) {
             start = true;
+        }
+        if (i == Keys.ESCAPE) {
+            System.out.println("Good bye!");
+            System.exit(0);
         }
         System.out.println(gameList.length + " : " + (cursor + 1));
         return true;
