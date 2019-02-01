@@ -96,22 +96,26 @@ class SnekClone extends Engine {
 	
 	void drawSneks(){
 		if(score>score2){
-			drawColor(4)
+			//drawColor(4)
 			snake.each{
-				square((it.x*8), (it.y*8),8,8)
+				sprite(0, (it.x*8), (it.y*8))
+				//square((it.x*8), (it.y*8),8,8)
 			}	
-			drawColor(2)
+			//drawColor(2)
 			snake2.each{
-				square((it.x*8), (it.y*8),8,8)
+				sprite(1, (it.x*8), (it.y*8))
+				//square((it.x*8), (it.y*8),8,8)
 			}
 		}else{		
-			drawColor(2)	
+			//drawColor(2)	
 			snake2.each{
-				square((it.x*8), (it.y*8),8,8)
+				sprite(1, (it.x*8), (it.y*8))
+				//square((it.x*8), (it.y*8),8,8)
 			}	
-			drawColor(4)
+			//drawColor(4)
 			snake.each{
-				square((it.x*8), (it.y*8),8,8)
+				sprite(0, (it.x*8), (it.y*8))
+				//square((it.x*8), (it.y*8),8,8)
 			}
 		}
 	}
