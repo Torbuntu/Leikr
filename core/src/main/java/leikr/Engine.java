@@ -28,7 +28,7 @@ import org.mini2Dx.core.graphics.viewport.FitViewport;
 public class Engine {
 
     Graphics g;
-    
+
     //used by the Engine Screen to determine if the game is actively running.
     boolean active;
 
@@ -78,13 +78,14 @@ public class Engine {
                 p2c.addListener(p2Controller);
             }
         } catch (Exception ex) {
-            System.out.println("Controllers: " + ex.getMessage());
+            System.out.println("Controllers not active: " + ex.getMessage());
         }
 
     }
 
     public void create() {
     }
+
     public void update(float delta) {
         mapLoader.getMap().update(delta);
     }
@@ -98,16 +99,16 @@ public class Engine {
     public void render() {
     }
     // end override functions
-    
+
     //dispose
-    public void dispose(){
+    public void dispose() {
         audioLoader.disposeAudioLoader();
         mapLoader.disposeMap();
         spriteLoader.disposeSprites();
-        imageLoader.disposeImages();        
+        imageLoader.disposeImages();
     }
     //dispose
-    
+
     //Start Helper methods
     //Not a very helpful method, but I like to see how things perform.
     void FPS() {
@@ -428,13 +429,11 @@ public class Engine {
     }
 
     //start shape drawing methods
-    void square(float x, float y, float w, float h, int color) {
-        drawColor(color);
+    void square(float x, float y, float w, float h) {
         g.drawRect(x, y, w, h);
     }
 
-    void square(float x, float y, float w, float h, int color, boolean fill) {
-        drawColor(color);
+    void square(float x, float y, float w, float h, boolean fill) {
         if (fill) {
             g.fillRect(x, y, w, h);
         } else {
@@ -442,32 +441,11 @@ public class Engine {
         }
     }
 
-    void square(float x, float y, float w, float h, float[] color) {
-        drawColor(color[0], color[1], color[2]);
-        g.drawRect(x, y, w, h);
-    }
-
-    void square(float x, float y, float w, float h, float[] color, boolean fill) {
-        drawColor(color[0], color[1], color[2]);
-        if (fill) {
-            g.fillRect(x, y, w, h);
-        } else {
-            g.drawRect(x, y, w, h);
-        }
-    }
-
-    void circle(float x, float y, float r, int color) {
-        drawColor(color);
+    void circle(float x, float y, float r) {
         g.drawCircle(x, y, r);
     }
 
-    void circle(float x, float y, float r, float[] color) {
-        drawColor(color[0], color[1], color[2]);
-        g.drawCircle(x, y, r);
-    }
-
-    void circle(float x, float y, float r, int color, boolean fill) {
-        drawColor(color);
+    void circle(float x, float y, float r, boolean fill) {
         if (fill) {
             g.fillCircle(x, y, r);
         } else {
@@ -475,22 +453,11 @@ public class Engine {
         }
     }
 
-    void circle(float x, float y, float r, float[] color, boolean fill) {
-        drawColor(color[0], color[1], color[2]);
-        if (fill) {
-            g.fillCircle(x, y, r);
-        } else {
-            g.drawCircle(x, y, r);
-        }
-    }
-
-    void triangle(float x1, float y1, float x2, float y2, float x3, float y3, int color) {
-        drawColor(color);
+    void triangle(float x1, float y1, float x2, float y2, float x3, float y3) {
         g.drawTriangle(x1, y1, x2, y2, x3, y3);
     }
 
-    void triangle(float x1, float y1, float x2, float y2, float x3, float y3, int color, boolean fill) {
-        drawColor(color);
+    void triangle(float x1, float y1, float x2, float y2, float x3, float y3, boolean fill) {
         if (fill) {
             g.fillTriangle(x1, y1, x2, y2, x3, y3);
         } else {
@@ -498,27 +465,7 @@ public class Engine {
         }
     }
 
-    void triangle(float x1, float y1, float x2, float y2, float x3, float y3, float[] color) {
-        drawColor(color[0], color[1], color[2]);
-        g.drawTriangle(x1, y1, x2, y2, x3, y3);
-    }
-
-    void triangle(float x1, float y1, float x2, float y2, float x3, float y3, float[] color, boolean fill) {
-        drawColor(color[0], color[1], color[2]);
-        if (fill) {
-            g.fillTriangle(x1, y1, x2, y2, x3, y3);
-        } else {
-            g.drawTriangle(x1, y1, x2, y2, x3, y3);
-        }
-    }
-
-    void line(float x1, float y1, float x2, float y2, int color) {
-        drawColor(color);
-        g.drawLineSegment(x1, x2, y1, y2);
-    }
-
-    void line(float x1, float y1, float x2, float y2, float[] color) {
-        drawColor(color[0], color[1], color[2]);
+    void line(float x1, float y1, float x2, float y2) {
         g.drawLineSegment(x1, x2, y1, y2);
     }
     //end shape drawing methods
