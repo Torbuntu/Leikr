@@ -96,18 +96,22 @@ class SnekClone extends Engine {
 	
 	void drawSneks(){
 		if(score>score2){
+			drawColor(4)
 			snake.each{
-				square((it.x*8), (it.y*8),8,8,9)
+				square((it.x*8), (it.y*8),8,8)
 			}	
+			drawColor(2)
 			snake2.each{
-				square((it.x*8), (it.y*8),8,8,2)
+				square((it.x*8), (it.y*8),8,8)
 			}
-		}else{			
+		}else{		
+			drawColor(2)	
 			snake2.each{
-				square((it.x*8), (it.y*8),8,8,2)
+				square((it.x*8), (it.y*8),8,8)
 			}	
+			drawColor(4)
 			snake.each{
-				square((it.x*8), (it.y*8),8,8,9)
+				square((it.x*8), (it.y*8),8,8)
 			}
 		}
 	}
@@ -122,16 +126,57 @@ class SnekClone extends Engine {
 	}
 
 	void update(float delta){
-		t+=delta
-	}
-	
-	void render(){
+		FPS()
 		if(gameOver && key("Space") || button(BTN.START)){
 			gameOver = false
 			first = false
 			newGame()
-		}	
+		}
+		t+=delta
 		
+		if(!gameOver && t>0.1){
+			mbdy = [x: (snake[0].x+direction.x)%30, y: (snake[0].y+direction.y)%20]
+			if(mbdy.x < 0) mbdy.x = 29
+			if(mbdy.y < 0) mbdy.y = 19
+				
+			mbdy2 = [x: (snake2[0].x+direction2.x)%30, y: (snake2[0].y+direction2.y)%20]
+			if(mbdy2.x < 0) mbdy2.x = 29				
+			if(mbdy2.y < 0) mbdy2.y = 19
+				
+			snake.each{
+				if(mbdy.x == it.x && mbdy.y == it.y && mbdy != snake[snake.size()-1]){
+					gameOver = true
+					loser = "Player 1"
+				}
+			}			
+			snake2.each{
+				if(mbdy2.x == it.x && mbdy2.y == it.y && mbdy2 != snake2[snake2.size()-1]){
+					gameOver = true
+						loser = "Player 2"
+				}
+			}
+				
+			snake.add(0,mbdy)
+			snake2.add(0,mbdy2)
+				
+			if(!gotFood(snake)){
+				snake.remove(snake.size()-1)
+			}else{
+				setFood()
+				score++
+			}
+			if(!gotFood(snake2)){
+				snake2.remove(snake2.size()-1)
+			}else{
+				setFood()
+				score2++
+			}
+			t=0
+		}
+		move()
+	}
+	
+	void render(){	
 		if(gameOver){
 			if(!first){
 				text("Game Over, "+loser+" ate themselves!", 0, 10, 10)
@@ -142,51 +187,10 @@ class SnekClone extends Engine {
 			text("Press `START` to play", 0, 30, 10)
 		}else{
 			bgColor(0.1f,0.1f,0.1f)
-			
-			if(t>0.1){	
-				mbdy = [x: (snake[0].x+direction.x)%30, y: (snake[0].y+direction.y)%20]
-				if(mbdy.x < 0) mbdy.x = 29
-				if(mbdy.y < 0) mbdy.y = 19
-				
-				mbdy2 = [x: (snake2[0].x+direction2.x)%30, y: (snake2[0].y+direction2.y)%20]
-				if(mbdy2.x < 0) mbdy2.x = 29				
-				if(mbdy2.y < 0) mbdy2.y = 19
-				
-				snake.each{
-					if(mbdy.x == it.x && mbdy.y == it.y && mbdy != snake[snake.size()-1]){
-						gameOver = true
-						loser = "Player 1"
-					}
-				}			
-				snake2.each{
-					if(mbdy2.x == it.x && mbdy2.y == it.y && mbdy2 != snake2[snake2.size()-1]){
-						gameOver = true
-						loser = "Player 2"
-					}
-				}
-				
-				snake.add(0,mbdy)
-				snake2.add(0,mbdy2)
-				
-				if(!gotFood(snake)){
-					snake.remove(snake.size()-1)
-				}else{
-					setFood()
-					score++
-				}
-				if(!gotFood(snake2)){
-					snake2.remove(snake2.size()-1)
-				}else{
-					setFood()
-					score2++
-				}
-				t=0
-			}
-			
-			move()
 					
 			drawSneks()
-			square((food.x*8), (food.y*8), 8, 8, 11)
+			drawColor(11)
+			square((food.x*8), (food.y*8), 8, 8)
 			
 			text("p1: "+score, 0, 0, 10)
 			text("p2: "+score2, 0, 150, 10)

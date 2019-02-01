@@ -16,6 +16,7 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.graphics.profiling.GLProfiler;
 import com.badlogic.gdx.utils.Array;
 import leikr.loaders.AudioLoader;
 import org.mini2Dx.core.graphics.Graphics;
@@ -28,7 +29,6 @@ import org.mini2Dx.core.graphics.viewport.FitViewport;
 public class Engine {
 
     Graphics g;
-
     //used by the Engine Screen to determine if the game is actively running.
     boolean active;
 
@@ -467,7 +467,7 @@ public class Engine {
 
     void line(float x1, float y1, float x2, float y2) {
         g.drawLineSegment(x1, x2, y1, y2);
-    }
+    }    
     //end shape drawing methods
 
     //start Audio handling
