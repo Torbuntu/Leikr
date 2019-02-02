@@ -144,23 +144,13 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
     @Override
     public void render(GameContainer gc, Graphics g) {
         g.setFont(font);
-
-        viewport.apply(g);
         g.setColor(Color.WHITE);
+        viewport.apply(g);
+        
         if (null != gameList) {
             g.drawTexture(assetManager.get("./Games/" + gameList[cursor] + "/Art/icon.png"), ID, ID);
-            int y = 14;
-            int selec = 0;
-            for (String file : gameList) {
-                g.drawString(selec + ": " + file, 0, y);
-                if (selec == cursor) {
-                    g.drawString(" <=", 180, y);
-                }
-                selec++;
-                y += 12;
-            }
+            g.drawString("Selection: " + gameList[cursor], 0, viewport.getHeight() - 8);
         }
-        g.drawString("Selection: " + cursor, 0, viewport.getHeight() - 10);
     }
 
     @Override
