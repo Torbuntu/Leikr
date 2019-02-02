@@ -473,9 +473,20 @@ public class Engine {
     void sfx(String name) {
         audioLoader.sound(name);
     }
-
+    void sfx(String name, float vol, float pit, float pan){
+        audioLoader.sound(name, vol, pit, pan);
+    }
     void music(String name) {
         audioLoader.music(name);
+    }
+    void music(String name, boolean loop){
+        audioLoader.music(name, loop);
+    }
+    void stopAllMusic(){
+        audioLoader.stopMusic();
+    }
+    void stopMusic(String fileName){
+        audioLoader.stopMusic(fileName);
     }
     //end audio handling
 

@@ -17,7 +17,9 @@ package leikr.loaders;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Music.OnCompletionListener;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.utils.Array;
 import java.io.File;
 import leikr.MenuScreen;
 
@@ -63,9 +65,31 @@ public class AudioLoader {
         Sound tmp = soundManager.get(soundRootPath+fileName+".wav");
         tmp.play();
     }
+    public void sound(String fileName, float vol, float pit, float pan){
+        //vol: range [0,1]
+        //pit: 0.5 and 2.0
+        //pan: panning in the range -1 (full left) to 1 (full right). 0 is center position.
+        Sound tmp = soundManager.get(soundRootPath+fileName+".wav");
+        tmp.play(vol, pit, pan);
+    }
     public void music(String fileName){
-        Music tmp = musicManager.get(musicRootPath+fileName+".wav");
+        Music tmp = musicManager.get(musicRootPath+fileName+".wav");        
         tmp.play();
+    }
+    public void music(String fileName, boolean loop){
+        Music tmp = musicManager.get(musicRootPath+fileName+".wav");
+        tmp.setLooping(loop);
+        tmp.play();
+    }
+    public void stopMusic(){
+        Array<Music> allMusic = new Array<>();
+        for(Music m : musicManager.getAll(Music.class, allMusic)){
+            m.stop();
+        }
+    }
+    public void stopMusic(String fileName){
+        Music m = musicManager.get(musicRootPath+fileName+".wav");
+        m.stop();
     }
     
     
