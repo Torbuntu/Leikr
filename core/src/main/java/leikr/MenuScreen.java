@@ -48,7 +48,6 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
     FontLoader fontLoader;
     BitmapFont font;
 
-
     boolean start = false;
     String[] gameList;
     int cursor;
@@ -146,10 +145,12 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
         g.setFont(font);
         g.setColor(Color.WHITE);
         viewport.apply(g);
-        
+
         if (null != gameList) {
             g.drawTexture(assetManager.get("./Games/" + gameList[cursor] + "/Art/icon.png"), ID, ID);
             g.drawString("Selection: " + gameList[cursor], 0, viewport.getHeight() - 8);
+        } else {
+            g.drawString("No game chips detected... ", 0, viewport.getHeight() - 8);
         }
     }
 
