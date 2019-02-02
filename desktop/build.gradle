@@ -1,6 +1,6 @@
 apply plugin: "application"
 
-sourceCompatibility = 1.9
+//sourceCompatibility = 1.9
 sourceSets.main.java.srcDirs = [ "src/" ]
 
 mainClassName = "leikr.desktop.DesktopLauncher"
