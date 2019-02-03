@@ -27,11 +27,11 @@ import leikr.Engine
 //extend the engine to get the API 
 class MyGame extends Engine{
 
-  void init(){
+  void create(){
       //initialize classes and variables here. Run on first load
   }
   
-  void update(){
+  void update(float delta){
       //Run every frame. Used for updating variables and game state
   }
   
