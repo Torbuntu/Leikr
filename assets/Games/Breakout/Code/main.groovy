@@ -17,7 +17,7 @@ class Breakout extends Engine {
  		score = 0
  		lives = 3
 		player = [ x: (240/2)-12, y: 120, width: 24, height: 4, color: 3, speed: [x: 0, max: 4]]
-		ball = [x: player.x+(player.width/2)-1.5, y: player.y-5, width: 3, height: 3, color: 14, deactive: true, speed: [x: 0, y: 0, max: 1.5]]
+		ball = [x: player.x+(player.width/2)-1.5, y: player.y-5, width: 3, height: 3, color: 14, deactive: true, speed: [x: 0, y: 0, max: 0.8]]
 		brickCountWidth = 19
  		brickCountHeight = 12
  		bricks = []
@@ -193,11 +193,11 @@ class Breakout extends Engine {
 			// check collision
 			if (collide(ball, it)) {
 				// collide left or right side
-				if (y < ball.y && ball.y < y+h && ball.x < x || x+w > ball.x) {
+				if ((y < ball.y && ball.y < y+h) && (x < ball.x || ball.x < x+w)) {
 					ball.speed.x = -ball.speed.x
 				}
 				// collide top or bottom side		
-				if (ball.y < y || ball.y > y && x < ball.x && ball.x < x+w ){
+				if ((ball.y < y+h || ball.y > y) && (x < ball.x && ball.x < x+w) ){
 				 	ball.speed.y = -ball.speed.y
 				}
 				score++
