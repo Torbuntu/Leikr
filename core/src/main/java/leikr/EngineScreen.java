@@ -58,6 +58,7 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
             engine = EngineLoader.getEngine();
             setEngine(engine);
         } catch (Exception ex) {
+            back = true;
             System.out.println("Error parsing game class. " + ex.getMessage());
         }
     }
@@ -68,6 +69,7 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
         try {
             engine.create();
         } catch (Exception ex) {
+            back = true;
             System.out.println("Error in game `create` method. " + ex.getMessage());
         }
     }
@@ -84,6 +86,7 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
         try {
             engine.update(delta);
         } catch (Exception ex) {
+            back = true;
             System.out.println("Error in game `update` method. " + ex.getMessage());
         }
 
@@ -103,6 +106,7 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
             engine.preRender(g);
             engine.render();
         } catch (Exception ex) {
+            back = true;
             System.out.println("Error in game `render` method. " + ex.getMessage());
         }
     }
