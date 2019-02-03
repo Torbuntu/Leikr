@@ -9,6 +9,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
+import leikr.loaders.EngineLoader;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.screen.BasicGameScreen;
@@ -50,9 +51,20 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
         System.out.println("Game engine classes disposed.");
         engine.dispose();
     }
+    
+    @Override
+    public void preTransitionIn(Transition transition) {
+        try {
+            engine = EngineLoader.getEngine();
+            setEngine(engine);            
+        } catch (Exception ex) {
+            System.out.println("Error parsing game class. " + ex.getMessage());
+        }
+    }
 
     @Override
     public void postTransitionIn(Transition transition) {
+        MenuScreen.finishLoading();
         try {
             engine.create();
         } catch (Exception ex) {

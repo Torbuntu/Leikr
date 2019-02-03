@@ -6,7 +6,6 @@
 package leikr;
 
 import leikr.loaders.FontLoader;
-import leikr.loaders.EngineLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
@@ -43,21 +42,26 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
      */
     public static int ID = 0;
     public static String GAME_NAME;
+    static boolean LOADING = false;
+    boolean start = false;
+    int cursor;
 
     AssetManager assetManager;
     FontLoader fontLoader;
     BitmapFont font;
-
-    boolean start = false;
-    String[] gameList;
-    int cursor;
     FitViewport viewport;
+
+    String[] gameList;
 
     MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
         viewport = new FitViewport(240, 160);
         gameList = new File("./Games").list();
         loadIcons();
+    }
+
+    public static void finishLoading() {
+        LOADING = false;
     }
 
     private void loadIcons() {
@@ -124,15 +128,11 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         if (start) {
+            start = false;
             GAME_NAME = gameList[cursor];
             EngineScreen screen = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
-            Engine engine = EngineLoader.getEngine();
-            if (null != engine) {
-                start = false;
-                screen.setEngine(engine);
-                sm.enterGameScreen(EngineScreen.ID, null, null);
-                Gdx.input.setInputProcessor(screen);
-            }
+            sm.enterGameScreen(EngineScreen.ID, null, null);
+            Gdx.input.setInputProcessor(screen);
         }
     }
 
@@ -145,12 +145,15 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
         g.setFont(font);
         g.setColor(Color.WHITE);
         viewport.apply(g);
-
-        if (null != gameList) {
+        if (LOADING) {
+            g.setColor(Color.MAGENTA);
+            g.drawCircle(120, 80, 15);
+            g.drawString("Loading... ", 0, viewport.getHeight() - 9);
+        } else if (null != gameList) {
             g.drawTexture(assetManager.get("./Games/" + gameList[cursor] + "/Art/icon.png"), ID, ID);
-            g.drawString("Selection: " + gameList[cursor], 0, viewport.getHeight() - 8);
+            g.drawString("Selection: " + gameList[cursor], 0, viewport.getHeight() - 9);
         } else {
-            g.drawString("No game chips detected... ", 0, viewport.getHeight() - 8);
+            g.drawString("No game chips detected... ", 0, viewport.getHeight() - 9);
         }
     }
 
@@ -173,13 +176,14 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
             cursor++;
         }
         if (i == Keys.ENTER) {
+            System.out.println("Loading game: " + GAME_NAME);
             start = true;
+            LOADING = true;
         }
         if (i == Keys.ESCAPE) {
             System.out.println("Good bye!");
             System.exit(0);
         }
-        System.out.println(gameList.length + " : " + (cursor + 1));
         return true;
     }
 
