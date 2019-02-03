@@ -176,7 +176,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
             cursor++;
         }
         if (i == Keys.ENTER) {
-            System.out.println("Loading game: " + GAME_NAME);
+            System.out.println("Loading game: " + gameList[cursor]);
             start = true;
             LOADING = true;
         }

@@ -1,6 +1,6 @@
 //With help from: https://github.com/digitsensitive/tic-80-tutorials/tree/master/tutorials/breakout
 import leikr.Engine
-class Breakout ext}s Engine {
+class Breakout extends Engine {
 
 	int bgColor 
  	int score 
@@ -10,6 +10,7 @@ class Breakout ext}s Engine {
 	def bricks = [:]
 	int brickCountWidth
  	int brickCountHeight 
+ 	Random rand
 	
 	void newGame(){
 		bgColor = 0
@@ -63,8 +64,8 @@ class Breakout ext}s Engine {
    			ball.x = player.x+(player.width/2)-1.5
    			ball.y = player.y-5
 
-  			if (btn(5) ){
-   				ball.speed.x = Math.floor(math.random())*2-1
+  			if (key("Space") ){
+   				ball.speed.x = Math.floor(Math.random())*2-1
    				ball.speed.y = -1.5
    				ball.deactive = false
   			}
@@ -147,22 +148,19 @@ class Breakout ext}s Engine {
   			ball.deactive = true
   			// loss a life
   			if (lives > 0 ){
-   				lives = lives - 1
-  			}else if (lives == 0 ){
-   				// game over
-   				gameOver()
+   				lives--
   			}
  		}
 	}
 
-	void playerBallCollision()
+	void playerBallCollision(){
 	 	if (collide(player,ball)) {
 	  		ball.speed.y = -ball.speed.y
 	  		ball.speed.x = ball.speed.x + 0.3*player.speed.x
 	 	}
 	}
 
-	void collide(a,b)
+	def collide(a,b){
  		// get parameters from a and b
  		float ax = a.x
  		float ay = a.y
@@ -182,9 +180,11 @@ class Breakout ext}s Engine {
 	 	return false
 	}
 
-	void ballBrickCollision()
-		bricks.each{
+	void ballBrickCollision(){
+		def iter = bricks.iterator()
+		while (iter.hasNext()) {
 			// get parameters
+			def it = iter.next()
 			float x = it.x
 			float y = it.y
 			float w = it.width
@@ -193,84 +193,73 @@ class Breakout ext}s Engine {
 			// check collision
 			if (collide(ball, it)) {
 				// collide left or right side
-			  	if (y < ball.y && ball.y < y+h && ball.x < x || x+w < ball.x) {
+				if (y < ball.y && ball.y < y+h && ball.x < x || x+w > ball.x) {
 					ball.speed.x = -ball.speed.x
-			  	}
-			  	// collide top or bottom side		
-			   	if (ball.y < y || ball.y > y && x < ball.x && ball.x < x+w ){
+				}
+				// collide top or bottom side		
+				if (ball.y < y || ball.y > y && x < ball.x && ball.x < x+w ){
 				 	ball.speed.y = -ball.speed.y
-			   	}
-			   	bricks.remove(it)
-			   	score = score + 1
+				}
+				score++
+				bricks.remove(it)	
+				return // This has to return or else null is thrown 
 			}
-		 }
+		}
 	}
 
-	void draw()
+	void draw(){
 		drawGameObjects()
 		drawGUI()
 	}
 
-	void drawGameObjects()
+	void drawGameObjects(){
  		// draw player
- 		rect(player.x,
-  player.y,
-  player.width,
-  player.height,
-  player.color)
+ 		drawColor(player.color)
+ 		rect(player.x.toFloat(), player.y.toFloat(), player.width.toFloat(), player.height.toFloat())
 
 	 	// draw ball
-	 	rect(ball.x, ball.y, ball.width, ball.height, ball.color)
-
+	 	drawColor(ball.color)
+	 	rect(ball.x.toFloat(), ball.y.toFloat(), ball.width.toFloat(), ball.height.toFloat())
+	 	
 	 	// draw bricks
 	 	bricks.each{
-	 
-			rect(it.x, it.y, it.width, it.height, bricks[i].color)
+	 		drawColor(it.color)
+			rect(it.x.toFloat(), it.y.toFloat(), it.width.toFloat(), it.height.toFloat())
 		}
+	
 	}
 
-void drawGUI()
- print("Score ",5,1,7)
- print(score,40,1,7)
- print("Score ",5,0,15)
- print(score,40,0,15)
- print("Lives ",190,1,7)
- print(lives,225,1,7)
- print("Lives ",190,0,15)
- print(lives,225,0,15)
-}
+	void drawGUI(){
+		text("Score: "+ score,5,1,7)
+		text("Lives: "+ lives,100,0,15)
+	}
 
-void gameOver()
- print("Game Over",(240/2)-6*4.5,136/2)
- spr(0,240/2-4,136/2+10)
-  if btn(5) {
-   init()
-  }
-}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	void create(){				
+	void gameOver(){
+		text("Game Over",((200/2)-6*4.5).toFloat(),(100/2).toFloat(), 15)
+	 	sprite(0,(240/2-4).toFloat(),(136/2+10).toFloat())
+	  	if (key("Space")) {
+	   		newGame()
+	  	}
+	}
+
+	void create(){	
+		rand = new Random()		
 		newGame()
 	}
 
 	void update(float delta){
-	
+		input()
+		if (lives>0){
+			lupdate()
+			collisions()		
+		}
 	}
 	
-	void r}er(){	
-		
+	void render(){	
+		if(lives>0){
+			draw()
+		}else{
+			gameOver()
+		}
 	}	
 }
