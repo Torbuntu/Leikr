@@ -428,11 +428,11 @@ public class Engine {
     }
 
     //start shape drawing methods
-    void square(float x, float y, float w, float h) {
+    void rect(float x, float y, float w, float h) {
         g.drawRect(x, y, w, h);
     }
 
-    void square(float x, float y, float w, float h, boolean fill) {
+    void rect(float x, float y, float w, float h, boolean fill) {
         if (fill) {
             g.fillRect(x, y, w, h);
         } else {
