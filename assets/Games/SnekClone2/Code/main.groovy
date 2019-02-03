@@ -1,6 +1,6 @@
 //With help from: https://github.com/nesbox/TIC-80/wiki/Snake-Clone-tutorial
 import leikr.Engine
-class SnekClone extends Engine {
+class SnekClone2 extends Engine {
 
 	def dirs = [:]
 	def direction = [:]	

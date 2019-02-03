@@ -48,15 +48,15 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public void preTransitionOut(Transition transition) {
-        System.out.println("Game engine classes disposed.");
         engine.dispose();
+        System.out.println("Game engine classes disposed.");
     }
-    
+
     @Override
     public void preTransitionIn(Transition transition) {
         try {
             engine = EngineLoader.getEngine();
-            setEngine(engine);            
+            setEngine(engine);
         } catch (Exception ex) {
             System.out.println("Error parsing game class. " + ex.getMessage());
         }
