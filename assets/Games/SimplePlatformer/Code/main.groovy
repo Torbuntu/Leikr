@@ -101,9 +101,9 @@ class SimplePlatformer extends Engine {
 		if(key("X") && !p.attack){
 			p.attack = true
 			if(p.f == 1){
-				p.vx = 0.5
+				p.vx = 1
 			}else{
-				p.vx = -0.5
+				p.vx = -1
 			}
 			p.vy = 0
 			p.w = false	
@@ -113,9 +113,9 @@ class SimplePlatformer extends Engine {
 		if(key("Z") && !p.attack){
 			p.attack = true
 			if(p.f == 1){
-				p.vx = -0.5
+				p.vx = -1
 			}else{
-				p.vx = 0.5
+				p.vx = 1
 			}
 			p.vy = 0
 			p.w = false
@@ -181,17 +181,6 @@ class SimplePlatformer extends Engine {
 		setCellId(mx,my, 16)
 	}
 	
-	void create(){		
-		loadMap("map")
-		loadImages()
-		
-		rand = new Random()
-		p = [sid: 4, x: 100, y:120, vx: 0, vy: 0, f: 1, g: true, w: false, attack: false, swd: false, gun:false]
-		i = [x:40, y:0]	
-		bc = [x:30, y:(rand.nextInt(height)*10).toFloat()]
-		sc = [x:180, y:(rand.nextInt(height)*10).toFloat()]
-		
-	}
 	
 	void moveClouds(){
 		bc.x -= 0.2
@@ -243,6 +232,19 @@ class SimplePlatformer extends Engine {
 		}
 		bullets.removeAll{it.hit == true}
 	}
+	
+	
+	
+	void create(){		
+		loadMap("map")
+		loadImages()
+		
+		rand = new Random()
+		p = [sid: 4, x: 100, y:120, vx: 0, vy: 0, f: 1, g: true, w: false, attack: false, swd: false, gun:false]
+		i = [x:40, y:0]	
+		bc = [x:30, y:(rand.nextInt(height)*10).toFloat()]
+		sc = [x:180, y:(rand.nextInt(height)*10).toFloat()]
+	}
 
 	void update(float delta){
 		moveClouds()
@@ -254,8 +256,9 @@ class SimplePlatformer extends Engine {
 		bgColor(0.1f,0.1f,0.1f)
 		//FPS()
 		image("moon", i.x,i.y)
+		
 		map(0,0, offX, offY, 240, 160)
-			
+		
 		if(p.f == 1) {
 			if(p.attack){
 				sprite(attackSprite, p.x+7, p.y, false, false)

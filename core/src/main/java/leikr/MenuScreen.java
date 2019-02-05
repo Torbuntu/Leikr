@@ -142,6 +142,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public void render(GameContainer gc, Graphics g) {
+        //font is broken in beta .7
         g.setFont(font);
         g.setColor(Color.WHITE);
         viewport.apply(g);

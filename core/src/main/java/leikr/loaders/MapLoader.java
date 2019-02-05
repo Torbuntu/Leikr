@@ -16,10 +16,9 @@
 package leikr.loaders;
 
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import leikr.MenuScreen;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.tiled.TiledMap;
+import leikr.MenuScreen;
 
 /**
  *
@@ -29,8 +28,6 @@ public class MapLoader {
     //TODO: Add handlers for animation tiles and object layers for collisions.  
 
     TiledMap tiledMap;
-
-    TiledMapTileLayer tiledMapLayer;
 
     String rootPath = "./Games/" + MenuScreen.GAME_NAME + "/Maps/";
 
