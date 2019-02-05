@@ -146,10 +146,10 @@ class SimplePlatformer extends Engine {
 					gunIndex = 0
 					p.attack = false
 					attackSprite = gunAnim[gunIndex]
-					int bspeed = -1
+					int bspeed = -2
 					int fx = -15
 					if(p.f == 1){
-						bspeed = 1
+						bspeed = 2
 						fx = 15
 					}
 					
