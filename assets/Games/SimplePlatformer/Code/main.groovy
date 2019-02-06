@@ -163,7 +163,7 @@ class SimplePlatformer extends Engine {
 	def solid(x,y){
 		float mx = (x)/8+offX 
 		float my = (y)/8+offY
-		int cellid = mapCellId(mx,my)
+		int cellid = mapGet(mx,my)
 		if(	cellid > 0 && cellid != 4){
 			return true
 		}
@@ -173,13 +173,13 @@ class SimplePlatformer extends Engine {
 	def getSolid(x,y){
 		float mx = (x)/8+offX 
 		float my = (y)/8+offY
-		return mapCellId(mx,my)
+		return mapGet(mx,my)
 	}
 	
 	void setSolid(x,y){
 		float mx = (x)/8+offX 
 		float my = (y)/8+offY
-		setCellId(mx,my, 16)
+		mapSet(mx,my, 16)
 	}
 	
 	

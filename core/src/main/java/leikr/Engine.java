@@ -166,11 +166,11 @@ public class Engine {
         mapLoader.drawMap(g, Math.round(x), Math.round(y), Math.round(sx), Math.round(sy), Math.round(w), Math.round(h), layer);
     }
 
-    int mapCellId(float x, float y) {
+    int mapGet(float x, float y) {
         return mapLoader.getMapTileId(x, y);
     }
 
-    void setCellId(float x, float y, int id) {
+    void mapSet(float x, float y, int id) {
         mapLoader.setMapTile(x, y, id);
     }
 
