@@ -18,6 +18,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Array;
 import java.io.File;
+import org.mini2Dx.core.font.GameFont;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -142,8 +143,8 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public void render(GameContainer gc, Graphics g) {
-        //font is broken in beta .7
-        g.setFont(font);
+        //font is broken in beta .7+
+        //g.setFont(font);
         g.setColor(Color.WHITE);
         viewport.apply(g);
         if (LOADING) {

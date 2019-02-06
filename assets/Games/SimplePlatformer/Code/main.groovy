@@ -163,7 +163,8 @@ class SimplePlatformer extends Engine {
 	def solid(x,y){
 		float mx = (x)/8+offX 
 		float my = (y)/8+offY
-		if(mapCellId(mx,my)	 > 0){
+		int cellid = mapCellId(mx,my)
+		if(	cellid > 0 && cellid != 4){
 			return true
 		}
 		return false
@@ -270,7 +271,7 @@ class SimplePlatformer extends Engine {
 			}
 			sprite(p.sid, p.x, p.y, true, false)
 		}
-						
+				
 		sprite16(3, bc.x, bc.y)
 		sprite16(4, sc.x, sc.y)	
 		drawBullets()	

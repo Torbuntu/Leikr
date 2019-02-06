@@ -259,7 +259,7 @@ public class Engine {
         g.drawString(text, x, y);
     }
     //end text methods
-
+    
     //start 8x8 sprites
     void sprite(int id, float x, float y) {
         if (USED_SPRITES >= MAX_SPRITES) {

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import leikr.MenuScreen;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.TextureRegion;
@@ -49,10 +50,10 @@ public class SpriteLoader {
 
     private void loadSpriteSheets() {
         sheets = new File(rootPath).list();
+        Arrays.sort(sheets);
         for (String path : sheets) {
             assetManager.load(rootPath + path, Texture.class);
-        }
-        
+        }        
         assetManager.finishLoading();
     }
 
