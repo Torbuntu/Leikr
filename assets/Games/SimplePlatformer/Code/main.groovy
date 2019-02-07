@@ -258,7 +258,7 @@ class SimplePlatformer extends Engine {
 		//FPS()
 		image("moon", i.x,i.y)
 		
-		map(0,0, offX, offY, 240f, 160f)
+		map(0,0, offX, offY, 240, 160)
 		
 		if(p.f == 1) {
 			if(p.attack){

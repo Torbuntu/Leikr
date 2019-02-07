@@ -21,6 +21,7 @@ import leikr.loaders.AudioLoader;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
+import org.mini2Dx.core.graphics.viewport.ScalingViewport;
 
 /**
  *
@@ -29,7 +30,7 @@ import org.mini2Dx.core.graphics.viewport.FitViewport;
 public class Engine {
 
     Graphics g;
-    FitViewport viewport;
+    ScalingViewport viewport;
 
     //used by the Engine Screen to determine if the game is actively running.
     boolean active;
@@ -52,7 +53,7 @@ public class Engine {
         return USED_SPRITES;
     }
     //end custom prop functions
-
+    
     // Override functions for game scripting.
     public void preCreate(int mSprites) {
         MAX_SPRITES = mSprites;
@@ -95,6 +96,7 @@ public class Engine {
 
     void preRender(Graphics g) {
         this.g = g;
+        viewport.apply(this.g);
         //set to 0 before drawing anything
         USED_SPRITES = 0;
     }
@@ -154,20 +156,20 @@ public class Engine {
         mapLoader.drawMap(g);
     }
 
-    void map(float x, float y) {
-        mapLoader.drawMap(g, Math.round(x), Math.round(y));
+    void map(int x, int y) {
+        mapLoader.drawMap(g, x, y);
     }
 
-    void map(float x, float y, int layer) {
-        mapLoader.drawMap(g, Math.round(x), Math.round(y), layer);
+    void map(int x, int y, int layer) {
+        mapLoader.drawMap(g, x, y, layer);
     }
 
-    void map(float x, float y, float sx, float sy, float w, float h) {
-        mapLoader.drawMap(g, Math.round(x), Math.round(y), Math.round(sx), Math.round(sy), Math.round(w), Math.round(h));
+    void map(int x, int y, int sx, int sy, int w, int h) {
+        mapLoader.drawMap(g, x, y, sx, sy, w, h);
     }
 
-    void map(float x, float y, float sx, float sy, float w, float h, int layer) {
-        mapLoader.drawMap(g, Math.round(x), Math.round(y), Math.round(sx), Math.round(sy), Math.round(w), Math.round(h), layer);
+    void map(int x, int y, int sx, int sy, int w, int h, int layer) {
+        mapLoader.drawMap(g, x, y, sx, sy, w, h, layer);
     }
 
     int mapGet(float x, float y) {

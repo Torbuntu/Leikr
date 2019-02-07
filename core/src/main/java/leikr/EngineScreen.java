@@ -102,7 +102,6 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
             return;
         }
         try {
-            engine.viewport.apply(g);
             engine.preRender(g);
             engine.render();
         } catch (Exception ex) {
