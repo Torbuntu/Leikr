@@ -194,7 +194,7 @@ class SnekClone2 extends Engine {
 					
 			drawSneks()
 			drawColor(11)
-			square((food.x*8), (food.y*8), 8, 8)
+			rect((food.x*8), (food.y*8), 8, 8)
 			
 			text("p1: "+score, 0, 0, 10)
 			text("p2: "+score2, 0, 150, 10)

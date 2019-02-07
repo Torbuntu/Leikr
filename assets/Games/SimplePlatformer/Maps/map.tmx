@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" tiledversion="1.1.6" orientation="orthogonal" renderorder="left-down" width="60" height="20" tilewidth="8" tileheight="8" infinite="0" nextobjectid="9">
  <tileset firstgid="1" name="Sprite_0" tilewidth="8" tileheight="8" tilecount="256" columns="16">
-  <image source="../Sprites/Sprites_0.png" width="128" height="128"/>
+  <image source="../Sprites/Sprites.png" width="128" height="128"/>
   <tile id="18">
    <animation>
     <frame tileid="4" duration="100"/>
