@@ -258,7 +258,7 @@ class SimplePlatformer extends Engine {
 		//FPS()
 		image("moon", i.x,i.y)
 		
-		map(0,0, offX, offY, 240, 160)
+		map(0,0, offX, offY, 240f, 160f)
 		
 		if(p.f == 1) {
 			if(p.attack){
@@ -274,7 +274,6 @@ class SimplePlatformer extends Engine {
 				
 		sprite16(3, bc.x, bc.y)
 		sprite16(4, sc.x, sc.y)	
-		sprite32(0, 100, 80)
 		drawBullets()	
 	}
 }
