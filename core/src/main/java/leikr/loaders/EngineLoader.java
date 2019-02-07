@@ -37,7 +37,7 @@ public class EngineLoader {
             Class game = gcl.parseClass(new File(rootPath + "main.groovy"));//loads the game code  
             Constructor[] cnst = game.getConstructors();//gets the constructos
             engine = (Engine) cnst[0].newInstance();//instantiates based on first constructor
-            engine.preCreate(cp.MAX_SPRITES, cp.MAX_SPRITE_SHEETS);//pre create here to instantiate objects
+            engine.preCreate(cp.MAX_SPRITES);//pre create here to instantiate objects
         } catch (IOException | IllegalAccessException | IllegalArgumentException | InstantiationException | SecurityException | InvocationTargetException | CompilationFailedException ex) {
             System.out.println(ex.getMessage());
             return engine;

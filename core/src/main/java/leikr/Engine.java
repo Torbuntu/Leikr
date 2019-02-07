@@ -54,12 +54,12 @@ public class Engine {
     //end custom prop functions
 
     // Override functions for game scripting.
-    public void preCreate(int mSprites, int mSpriteSheets) {
+    public void preCreate(int mSprites) {
         MAX_SPRITES = mSprites;
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         logger = new FPSLogger();
         BTN = new ButtonCodes();
-        spriteLoader = new SpriteLoader(mSpriteSheets);
+        spriteLoader = new SpriteLoader();
         imageLoader = new ImageLoader();
         mapLoader = new MapLoader();
         audioLoader = new AudioLoader();
@@ -274,9 +274,10 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        spriteLoader.getSprite(id, 0).rotate(degr);
-        g.drawSprite(spriteLoader.getSprite(id, 0), x, y);
-        spriteLoader.getSprite(id, 0).rotate(-degr);
+        Sprite t = spriteLoader.getSprite(id, 0);
+        t.rotate(degr);
+        g.drawSprite(t, x, y);
+        t.rotate(-degr);
         USED_SPRITES++;
     }
 
@@ -284,9 +285,10 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        spriteLoader.getSprite(id, 0).rotate90(clockwise);
-        g.drawSprite(spriteLoader.getSprite(id, 0), x, y);
-        spriteLoader.getSprite(id, 0).rotate90(!clockwise);
+        Sprite t = spriteLoader.getSprite(id, 0);
+        t.rotate90(clockwise);
+        g.drawSprite(t, x, y);
+        t.rotate90(!clockwise);
         USED_SPRITES++;
     }
 
@@ -294,9 +296,10 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        spriteLoader.getSprite(id, 0).setFlip(flipX, flipY);
-        g.drawSprite(spriteLoader.getSprite(id, 0), x, y);
-        spriteLoader.getSprite(id, 0).setFlip(!flipX, !flipY);
+        Sprite t = spriteLoader.getSprite(id, 0);
+        t.setFlip(flipX, flipY);
+        g.drawSprite(t, x, y);
+        t.setFlip(!flipX, !flipY);
         USED_SPRITES++;
     }
     //end 8x8 sprites
@@ -314,9 +317,10 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        spriteLoader.getSprite(id, 1).rotate(degr);
-        g.drawSprite(spriteLoader.getSprite(id, 1), x, y);
-        spriteLoader.getSprite(id, 1).rotate(-degr);
+        Sprite t = spriteLoader.getSprite(id, 1);
+        t.rotate(degr);
+        g.drawSprite(t, x, y);
+        t.rotate(-degr);
         USED_SPRITES++;
     }
 
@@ -324,9 +328,10 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        spriteLoader.getSprite(id, 1).rotate90(clockwise);
-        g.drawSprite(spriteLoader.getSprite(id, 1), x, y);
-        spriteLoader.getSprite(id, 1).rotate90(!clockwise);
+        Sprite t = spriteLoader.getSprite(id, 1);
+        t.rotate90(clockwise);
+        g.drawSprite(t, x, y);
+        t.rotate90(!clockwise);
         USED_SPRITES++;
     }
 
@@ -334,9 +339,10 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        spriteLoader.getSprite(id, 1).setFlip(flipX, flipY);
-        g.drawSprite(spriteLoader.getSprite(id, 1), x, y);
-        spriteLoader.getSprite(id, 1).setFlip(!flipX, !flipY);
+        Sprite t = spriteLoader.getSprite(id, 1);
+        t.setFlip(flipX, flipY);
+        g.drawSprite(t, x, y);
+        t.setFlip(!flipX, !flipY);
         USED_SPRITES++;
     }
     //end 16x16 sprites
@@ -354,9 +360,10 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        spriteLoader.getSprite(id, 2).rotate(degr);
-        g.drawSprite(spriteLoader.getSprite(id, 2), x, y);
-        spriteLoader.getSprite(id, 2).rotate(-degr);
+        Sprite t = spriteLoader.getSprite(id, 2);
+        t.rotate(degr);
+        g.drawSprite(t, x, y);
+        t.rotate(-degr);
         USED_SPRITES++;
     }
 
@@ -364,9 +371,10 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        spriteLoader.getSprite(id, 2).rotate90(clockwise);
-        g.drawSprite(spriteLoader.getSprite(id, 2), x, y);
-        spriteLoader.getSprite(id, 2).rotate90(!clockwise);
+        Sprite t = spriteLoader.getSprite(id, 2);
+        t.rotate90(clockwise);
+        g.drawSprite(t, x, y);
+        t.rotate90(!clockwise);
         USED_SPRITES++;
     }
 
@@ -387,8 +395,7 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        g.drawSprite(spriteLoader.getSprite(id, 3
-        ), x, y);
+        g.drawSprite(spriteLoader.getSprite(id, 3), x, y);
         USED_SPRITES++;
     }
 
@@ -396,9 +403,10 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        spriteLoader.getSprite(id, 3).rotate(degr);
-        g.drawSprite(spriteLoader.getSprite(id, 3), x, y);
-        spriteLoader.getSprite(id, 3).rotate(-degr);
+        Sprite t = spriteLoader.getSprite(id, 3);
+        t.rotate(degr);
+        g.drawSprite(t, x, y);
+        t.rotate(-degr);
         USED_SPRITES++;
     }
 
@@ -406,9 +414,10 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        spriteLoader.getSprite(id, 3).rotate90(clockwise);
-        g.drawSprite(spriteLoader.getSprite(id, 3), x, y);
-        spriteLoader.getSprite(id, 3).rotate90(!clockwise);
+        Sprite t = spriteLoader.getSprite(id, 3);
+        t.rotate90(clockwise);
+        g.drawSprite(t, x, y);
+        t.rotate90(!clockwise);
         USED_SPRITES++;
     }
 
@@ -416,18 +425,13 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        spriteLoader.getSprite(id, 3).setFlip(flipX, flipY);
-        g.drawSprite(spriteLoader.getSprite(id, 3), x, y);
-        spriteLoader.getSprite(id, 3).setFlip(!flipX, !flipY);
+        Sprite t = spriteLoader.getSprite(id, 3);
+        t.setFlip(flipX, flipY);
+        g.drawSprite(t, x, y);
+        t.setFlip(!flipX, !flipY);
         USED_SPRITES++;
     }
     //end 64x64 sprites
-
-    //draws a sprite given the id, and the next sprite in the sequence on top of it.
-    void tallSprite(int id, float x, float y) {
-        g.drawSprite(spriteLoader.getSprite(id, 0), x, y);
-        g.drawSprite(spriteLoader.getSprite(id + 1, 0), x, y - 8);
-    }
 
     //start shape drawing methods
     void rect(float x, float y, float w, float h) {

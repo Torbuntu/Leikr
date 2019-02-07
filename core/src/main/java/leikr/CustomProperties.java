@@ -18,7 +18,6 @@ import java.util.Properties;
 public class CustomProperties {
 
     public int MAX_SPRITES;
-    public int MAX_SPRITE_SHEETS;
 
     public CustomProperties(String gameName) {
 
@@ -29,16 +28,11 @@ public class CustomProperties {
             //String example for later
             //customPalette = (prop.getProperty("customPalette") != null) ? prop.getProperty("customPalette") : "";
             //2048 is maximum, 120 is default
-            MAX_SPRITES = (prop.getProperty("max_sprites") != null) ? Integer.parseInt(prop.getProperty("max_sprites")) : 120;
+            MAX_SPRITES = (prop.getProperty("max_sprites") != null) ? Integer.parseInt(prop.getProperty("max_sprites")) : 128;
             if (MAX_SPRITES > 2048) {
                 MAX_SPRITES = 2048;
             }
 
-            //16 is maximum, 4 is default
-            MAX_SPRITE_SHEETS = (prop.getProperty("max_sprite_sheets") != null) ? Integer.parseInt(prop.getProperty("max_sprite_sheets")) : 4;
-            if (MAX_SPRITE_SHEETS > 16) {
-                MAX_SPRITE_SHEETS = 16;
-            }
         } catch (IOException | NumberFormatException ex) {
             System.out.println(ex.getMessage());
         }
