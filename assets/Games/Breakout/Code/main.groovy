@@ -7,7 +7,7 @@ class Breakout extends Engine {
  	int lives 
 	def player = [:]
 	def ball = [:]
-	def bricks = [:]
+	def bricks = []
 	int brickCountWidth
  	int brickCountHeight 
  	Random rand
@@ -171,13 +171,8 @@ class Breakout extends Engine {
  		float bw = b.width
  		float bh = b.height
 
-		 // check collision    
-		 if (ax < bx+bw && ax+aw > bx && ay < by+bh && ah+ay > by) {
-			 // collision
-			 return true
-		 }
 	 	// no collision
-	 	return false
+	 	return ax < bx + bw && ax + aw > bx && ay < by + bh && ah + ay > by
 	}
 
 	void ballBrickCollision(){

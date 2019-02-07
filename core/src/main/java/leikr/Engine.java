@@ -19,6 +19,7 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.utils.Array;
 import leikr.loaders.AudioLoader;
 import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 
 /**
@@ -259,7 +260,7 @@ public class Engine {
         g.drawString(text, x, y);
     }
     //end text methods
-    
+
     //start 8x8 sprites
     void sprite(int id, float x, float y) {
         if (USED_SPRITES >= MAX_SPRITES) {
@@ -373,9 +374,10 @@ public class Engine {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        spriteLoader.getSprite(id, 2).setFlip(flipX, flipY);
-        g.drawSprite(spriteLoader.getSprite(id, 2), x, y);
-        spriteLoader.getSprite(id, 2).setFlip(!flipX, !flipY);
+        Sprite t = spriteLoader.getSprite(id, 2);
+        t.setFlip(flipX, flipY);
+        g.drawSprite(t, x, y);
+        t.setFlip(!flipX, !flipY);
         USED_SPRITES++;
     }
     //end 32x32 sprites
@@ -473,19 +475,24 @@ public class Engine {
     void sfx(String name) {
         audioLoader.sound(name);
     }
-    void sfx(String name, float vol, float pit, float pan){
+
+    void sfx(String name, float vol, float pit, float pan) {
         audioLoader.sound(name, vol, pit, pan);
     }
+
     void music(String name) {
         audioLoader.music(name);
     }
-    void music(String name, boolean loop){
+
+    void music(String name, boolean loop) {
         audioLoader.music(name, loop);
     }
-    void stopAllMusic(){
+
+    void stopAllMusic() {
         audioLoader.stopMusic();
     }
-    void stopMusic(String fileName){
+
+    void stopMusic(String fileName) {
         audioLoader.stopMusic(fileName);
     }
     //end audio handling

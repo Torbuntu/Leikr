@@ -1,5 +1,5 @@
 import leikr.Engine
-class SimplePlatformer extends Engine {
+class Megadude extends Engine {
 	
 	def p = [:]
 	def i = [:]
@@ -9,7 +9,7 @@ class SimplePlatformer extends Engine {
 	int height = 15
 	int offX = 0
 	int offY = 0
-	def anim = [32,4,5,33]
+	def anim = [1,2,3]
 	def animIndex = 0
 	def time = 0
 	
@@ -28,14 +28,14 @@ class SimplePlatformer extends Engine {
 	void move(){
 		def play = false		
 		p.vx = 0
-		p.sid = 4
+		p.sid = 0
 		if(key("Left") && !solid(p.x+1, p.y)){		
 			p.vx =-1
 			i.x += 0.5
 			p.f = 0
 			p.w = true
 		}
-		if(key("Right") && !solid(p.x+7,p.y)){
+		if(key("Right") && !solid(p.x+31,p.y)){
 			p.vx = 1
 			i.x -= 0.5
 			p.f = 1
@@ -44,7 +44,7 @@ class SimplePlatformer extends Engine {
 		if(p.vx == 0){
 			p.w = false
 		}
-		if( solid(p.x,p.y+8+p.vy) || solid(p.x+7,p.y+8+p.vy) ){
+		if( solid(p.x,p.y+32+p.vy) || solid(p.x+31,p.y+32+p.vy) ){
         	p.vy=0
         	p.g = true
 		}else{
@@ -58,7 +58,7 @@ class SimplePlatformer extends Engine {
 			p.g = false
 		}	
 		
-		if( p.vy<0 && (solid(p.x+p.vx,p.y+p.vy) || solid(p.x+7+p.vx,p.y+p.vy)) ){
+		if( p.vy<0 && (solid(p.x+p.vx,p.y+p.vy) || solid(p.x+31+p.vx,p.y+p.vy)) ){
 		    p.vy=0
 		    p.g = true
 		    play = false
@@ -69,7 +69,7 @@ class SimplePlatformer extends Engine {
 			p.sid = 5
 		}
 		if(p.g && !p.w){
-			p.sid = 4
+			p.sid = 0
 		}
 		
 		if(p.g && p.w){
@@ -79,7 +79,7 @@ class SimplePlatformer extends Engine {
 				time = 0
 			}
 		}
-		if(animIndex > 3){
+		if(animIndex > 2){
 			animIndex = 0
 		}
 		
@@ -241,7 +241,7 @@ class SimplePlatformer extends Engine {
 		loadImages()
 		
 		rand = new Random()
-		p = [sid: 4, x: 100, y:120, vx: 0, vy: 0, f: 1, g: true, w: false, attack: false, swd: false, gun:false]
+		p = [sid: 0, x: 10, y:12, vx: 0, vy: 0, f: 1, g: true, w: false, attack: false, swd: false, gun:false]
 		i = [x:40, y:0]	
 		bc = [x:30, y:(rand.nextInt(height)*10).toFloat()]
 		sc = [x:180, y:(rand.nextInt(height)*10).toFloat()]
@@ -262,19 +262,18 @@ class SimplePlatformer extends Engine {
 		
 		if(p.f == 1) {
 			if(p.attack){
-				sprite(attackSprite, p.x+7, p.y, false, false)
+				sprite32(attackSprite, p.x+7, p.y, false, false)
 			}
-			sprite(p.sid, p.x, p.y, false, false)
+			sprite32(p.sid, p.x.toFloat(), p.y.toFloat(), false, false)
 		}else{
 			if(p.attack){
-				sprite(attackSprite, p.x-7, p.y, true, false)
+				sprite32(attackSprite, p.x-7, p.y, true, false)
 			}
-			sprite(p.sid, p.x, p.y, true, false)
+			sprite32(p.sid, p.x.toFloat(), p.y.toFloat(), true, false)
 		}
-				
-		sprite16(3, bc.x, bc.y)
-		sprite16(4, sc.x, sc.y)	
-		sprite32(0, 100, 80)
+		
+		//sprite16(3, bc.x, bc.y)
+		//sprite16(4, sc.x, sc.y)	
 		drawBullets()	
 	}
 }

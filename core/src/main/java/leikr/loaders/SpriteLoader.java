@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import leikr.MenuScreen;
 import org.mini2Dx.core.graphics.Sprite;
+import org.mini2Dx.core.graphics.SpriteSheet;
 import org.mini2Dx.core.graphics.TextureRegion;
 
 /**
@@ -22,10 +23,15 @@ import org.mini2Dx.core.graphics.TextureRegion;
 public class SpriteLoader {
 
     AssetManager assetManager;
-    ArrayList<Sprite> spriteBank;
-    ArrayList<Sprite> mediumSpriteBank;
-    ArrayList<Sprite> bigSpriteBank;
-    ArrayList<Sprite> largeSpriteBank;
+//    ArrayList<Sprite> spriteBank;
+//    ArrayList<Sprite> spriteBank16;
+//    ArrayList<Sprite> spriteBank32;
+//    ArrayList<Sprite> spriteBank64;
+    
+    SpriteSheet spriteBank;
+    SpriteSheet spriteBank16;
+    SpriteSheet spriteBank32;
+    SpriteSheet spriteBank64;
 
     Array<Texture> allSheets;
     
@@ -34,13 +40,13 @@ public class SpriteLoader {
 
     public SpriteLoader(int numberSpriteSheets) {
         assetManager = new AssetManager();
-        spriteBank = new ArrayList<>();
-        mediumSpriteBank = new ArrayList<>();
-        bigSpriteBank = new ArrayList<>();
-        largeSpriteBank = new ArrayList<>();
-        allSheets = new Array<>();
+//        spriteBank = new ArrayList<>();
+//        spriteBank16 = new ArrayList<>();
+//        spriteBank32 = new ArrayList<>();
+//        spriteBank64 = new ArrayList<>();
+//        allSheets = new Array<>();
 
-        rootPath = "./Games/" + MenuScreen.GAME_NAME + "/Sprites/";
+        rootPath = "./Games/" + MenuScreen.GAME_NAME + "/Sprites/Sprites.png";
         
         loadSpriteSheets();
 
@@ -49,51 +55,56 @@ public class SpriteLoader {
     }
 
     private void loadSpriteSheets() {
-        sheets = new File(rootPath).list();
-        Arrays.sort(sheets);
-        for (String path : sheets) {
-            assetManager.load(rootPath + path, Texture.class);
-        }        
+//        sheets = new File(rootPath).list();
+//        Arrays.sort(sheets);
+//        for (String path : sheets) {
+            assetManager.load(rootPath, Texture.class);
+//        }        
         assetManager.finishLoading();
     }
 
     private void addSpritesToSpriteBank() {
-        allSheets.clear();
-        for (Texture tex : assetManager.getAll(Texture.class, allSheets)) {
-            for (int i = 0; i < 128; i += 8) {
-                for (int j = 0; j < 128; j += 8) {
-                    spriteBank.add(new Sprite(new TextureRegion(tex, j, i, 8, 8)));
-                }
-            }
-            for (int i = 0; i < 128; i += 16) {
-                for (int j = 0; j < 128; j += 16) {
-                    mediumSpriteBank.add(new Sprite(new TextureRegion(tex, j, i, 16, 16)));
-                }
-            }
-            for (int i = 0; i < 128; i += 32) {
-                for (int j = 0; j < 128; j += 32) {
-                    bigSpriteBank.add(new Sprite(new TextureRegion(tex, j, i, 32, 32)));
-                }
-            }
-            for (int i = 0; i < 128; i += 64) {
-                for (int j = 0; j < 128; j += 64) {
-                    largeSpriteBank.add(new Sprite(new TextureRegion(tex, j, i, 64, 64)));
-                }
-            }
-        }
+        spriteBank = new SpriteSheet(assetManager.get(rootPath, Texture.class), 8,8);
+        spriteBank16 = new SpriteSheet(assetManager.get(rootPath, Texture.class), 16,16);
+        spriteBank32 = new SpriteSheet(assetManager.get(rootPath, Texture.class), 32,32);
+        spriteBank64 = new SpriteSheet(assetManager.get(rootPath, Texture.class), 64,64);
+//        
+//        allSheets.clear();
+//        for (Texture tex : assetManager.getAll(Texture.class, allSheets)) {            
+//            for (int i = 0; i < 128; i += 8) {
+//                for (int j = 0; j < 128; j += 8) {
+//                    spriteBank.add(new Sprite(new TextureRegion(tex, j, i, 8, 8)));
+//                }
+//            }
+//            for (int i = 0; i < 128; i += 16) {
+//                for (int j = 0; j < 128; j += 16) {
+//                    spriteBank16.add(new Sprite(new TextureRegion(tex, j, i, 16, 16)));
+//                }
+//            }
+//            for (int i = 0; i < 128; i += 32) {
+//                for (int j = 0; j < 128; j += 32) {
+//                    spriteBank32.add(new Sprite(new TextureRegion(tex, j, i, 32, 32)));
+//                }
+//            }
+//            for (int i = 0; i < 128; i += 64) {
+//                for (int j = 0; j < 128; j += 64) {
+//                    spriteBank64.add(new Sprite(new TextureRegion(tex, j, i, 64, 64)));
+//                }
+//            }
+//        }
     }
 
     public Sprite getSprite(int id, int size) {
         switch (size) {
             case 0:
             default:
-                return spriteBank.get(id);
+                return spriteBank.getSprite(id);
             case 1:
-                return mediumSpriteBank.get(id);
+                return spriteBank16.getSprite(id);
             case 2:
-                return bigSpriteBank.get(id);
+                return spriteBank32.getSprite(id);
             case 3:
-                return largeSpriteBank.get(id);
+                return spriteBank64.getSprite(id);
         }
     }
     
