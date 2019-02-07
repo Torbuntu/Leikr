@@ -84,6 +84,7 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
             return;
         }
         try {
+            engine.preUpdate(delta);
             engine.update(delta);
         } catch (Exception ex) {
             back = true;

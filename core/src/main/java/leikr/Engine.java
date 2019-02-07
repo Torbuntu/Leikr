@@ -86,8 +86,11 @@ public class Engine {
     public void create() {
     }
 
-    public void update(float delta) {
+    public void preUpdate(float delta) {
         mapLoader.getMap().update(delta);
+    }
+
+    public void update(float delta) {
     }
 
     void preRender(Graphics g) {
