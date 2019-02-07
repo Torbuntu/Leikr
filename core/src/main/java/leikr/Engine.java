@@ -53,7 +53,7 @@ public class Engine {
         return USED_SPRITES;
     }
     //end custom prop functions
-    
+
     // Override functions for game scripting.
     public void preCreate(int mSprites) {
         MAX_SPRITES = mSprites;
@@ -88,6 +88,9 @@ public class Engine {
     }
 
     public void preUpdate(float delta) {
+        if (null == mapLoader.getMap()) {
+            return;//don't update the map if it is null
+        }
         mapLoader.getMap().update(delta);
     }
 

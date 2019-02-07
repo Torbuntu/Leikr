@@ -13,6 +13,10 @@ class SimplePlatformer extends Engine {
 	def animIndex = 0
 	def time = 0
 	
+	def climbAnim = [48,49,50]
+	def climbIndex = 0;
+	def climbTime = 0;
+	
 	def attackSprite = 35
 	def swdAnim = [35,36,37,38]
 	def swdIndex = 0
@@ -44,7 +48,7 @@ class SimplePlatformer extends Engine {
 		if(p.vx == 0){
 			p.w = false
 		}
-		if( solid(p.x,p.y+8+p.vy) || solid(p.x+7,p.y+8+p.vy) ){
+		if( solid(p.x,p.y+8+p.vy) || solid(p.x+7,p.y+8+p.vy)){
         	p.vy=0
         	p.g = true
 		}else{
@@ -58,7 +62,7 @@ class SimplePlatformer extends Engine {
 			p.g = false
 		}	
 		
-		if( p.vy<0 && (solid(p.x+p.vx,p.y+p.vy) || solid(p.x+7+p.vx,p.y+p.vy)) ){
+		if( p.vy<0 && (solid(p.x+p.vx,p.y+p.vy) || solid(p.x+7+p.vx,p.y+p.vy)) || isLadder(p.x,p.y+8+p.vy) || isLadder(p.x+7,p.y+8+p.vy) ){
 		    p.vy=0
 		    p.g = true
 		    play = false
@@ -83,7 +87,26 @@ class SimplePlatformer extends Engine {
 			animIndex = 0
 		}
 		
-		attack()		
+		attack()
+		
+		if(isLadder(p.x,p.y+8+p.vy) || isLadder(p.x+7,p.y+8+p.vy)){
+			if(climbTime > 5){
+				climbIndex++
+				climbTime = 0
+			}
+			if(key("Down")){
+				p.vy = 0.4
+				if(climbIndex > 2) climbIndex = 0
+				p.sid = climbAnim[climbIndex]
+				climbTime++
+			}
+			if(key("Up")){
+				p.vy = -0.4
+				if(climbIndex > 2) climbIndex = 0
+				p.sid = climbAnim[climbIndex]
+				climbTime++
+			}
+		}	
 		
 		p.x=p.x+p.vx
 		p.y=p.y+p.vy
@@ -164,10 +187,14 @@ class SimplePlatformer extends Engine {
 		float mx = (x)/8+offX 
 		float my = (y)/8+offY
 		int cellid = mapGet(mx,my)
-		if(	cellid > 0 && cellid != 4){
+		if(	cellid < 4 && cellid >= 0 ){
 			return true
 		}
 		return false
+	}
+	
+	def isLadder(x,y){
+		return getSolid(x,y) == 18
 	}
 	
 	def getSolid(x,y){
@@ -198,9 +225,11 @@ class SimplePlatformer extends Engine {
 		time++
 		swdTime++
 		gunTime++
+		climbTime++
 		if(time > 20) time = 0
 		if(swdTime > 20) swdTime = 0
 		if(gunTime > 20) gunTime = 0
+		if(climbTime > 20) climbTime = 0
 	}
 	
 	void drawBullets(){

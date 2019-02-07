@@ -118,6 +118,7 @@ class Breakout extends Engine {
 
  		// ball <-> brick collision
  		ballBrickCollision()
+ 		
 	}
 	
 	
@@ -172,7 +173,7 @@ class Breakout extends Engine {
  		float bh = b.height
 
 	 	// no collision
-	 	return ax < bx + bw && ax + aw > bx && ay < by + bh && ah + ay > by
+	 	return (ax < bx + bw) && (ax + aw > bx) && (ay < by + bh) && (ah + ay > by)
 	}
 
 	void ballBrickCollision(){
