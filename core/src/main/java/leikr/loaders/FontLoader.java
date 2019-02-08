@@ -27,10 +27,10 @@ public class FontLoader {
     }
 
     public MonospaceFont getFont(AssetManager manager){
-        manager.load("./LeikrFontA.png", Texture.class);
+        manager.load("./Data/LeikrFontA.png", Texture.class);
         manager.finishLoading();
         MonospaceFont.FontParameters params = new MonospaceFont.FontParameters();
-        params.texturePath = "./LeikrFontA.png";
+        params.texturePath = "./Data/LeikrFontA.png";
         params.spacing = 0;
         params.frameWidth = 8;
         params.frameHeight = 8;
