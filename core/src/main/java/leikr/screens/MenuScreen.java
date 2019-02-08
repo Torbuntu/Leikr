@@ -5,7 +5,6 @@
  */
 package leikr.screens;
 
-import leikr.loaders.FontLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
@@ -17,13 +16,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import java.io.File;
-import org.mini2Dx.core.font.MonospaceFont;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
+import org.mini2Dx.core.screen.Transition;
 
 /**
  *
@@ -47,8 +46,6 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
     int cursor;
 
     AssetManager assetManager;
-    FontLoader fontLoader;
-    MonospaceFont font;
     FitViewport viewport;
 
     String[] gameList;
@@ -80,9 +77,6 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
     @Override
     public void initialise(GameContainer gc) {
         cursor = 0;
-        fontLoader = new FontLoader();
-        font = fontLoader.getFont(assetManager);
-
         try {
             Controller menuController;
             Array<Controller> nmc = Controllers.getControllers();
@@ -121,8 +115,12 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
         } catch (Exception ex) {
             System.out.println("No controllers active. " + ex.getMessage());
         }
+    }
 
+    @Override
+    public void postTransitionIn(Transition transitionOut) {
         Gdx.input.setInputProcessor(this);
+
     }
 
     @Override
@@ -133,8 +131,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
             EngineScreen screen = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
             sm.enterGameScreen(EngineScreen.ID, null, null);
             Gdx.input.setInputProcessor(screen);
-        }    
-        font.load(assetManager);
+        }
     }
 
     @Override
@@ -144,7 +141,6 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
     @Override
     public void render(GameContainer gc, Graphics g) {
         g.setColor(Color.WHITE);
-        g.setFont(font);
         viewport.apply(g);
         if (LOADING) {
             g.setColor(Color.MAGENTA);

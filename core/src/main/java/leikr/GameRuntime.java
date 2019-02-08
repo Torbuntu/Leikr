@@ -3,6 +3,7 @@ package leikr;
 import leikr.screens.EngineScreen;
 import leikr.screens.MenuScreen;
 import com.badlogic.gdx.assets.AssetManager;
+import leikr.screens.TitleScreen;
 import org.mini2Dx.core.game.ScreenBasedGame;
 
 public class GameRuntime extends ScreenBasedGame {
@@ -19,11 +20,12 @@ public class GameRuntime extends ScreenBasedGame {
         assetManager = new AssetManager();
         this.addScreen(new MenuScreen(assetManager));
         this.addScreen(new EngineScreen(assetManager));
+        this.addScreen(new TitleScreen(assetManager));
     }
 
     @Override
     public int getInitialScreenId() {
-        return MenuScreen.ID;
+        return TitleScreen.ID;
     }
 
 }
