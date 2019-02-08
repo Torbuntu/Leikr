@@ -123,13 +123,6 @@ public class Engine {
         logger.log();
     }
 
-    int getScreenWidth() {
-        return GameRuntime.WIDTH;
-    }
-
-    int getScreenHeight() {
-        return GameRuntime.HEIGHT;
-    }
     //End helper methods.
 
     //Image methods
