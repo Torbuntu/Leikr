@@ -97,7 +97,7 @@ public class Engine {
     public void update(float delta) {
     }
 
-    void preRender(Graphics g) {
+    public void preRender(Graphics g) {
         this.g = g;
         viewport.apply(this.g);
         //set to 0 before drawing anything
@@ -122,7 +122,12 @@ public class Engine {
     void FPS() {
         logger.log();
     }
-
+    public boolean getActive(){
+        return active;
+    }
+    public void setActive(boolean state){
+        this.active = state;
+    }
     //End helper methods.
 
     //Image methods

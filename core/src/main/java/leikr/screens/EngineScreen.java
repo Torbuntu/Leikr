@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package leikr;
+package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
+import leikr.Engine;
 import leikr.loaders.EngineLoader;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
@@ -29,7 +30,7 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
     Engine engine;
     boolean back = false;
 
-    EngineScreen(AssetManager assetManager) {
+    public EngineScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
     }
 
@@ -77,7 +78,7 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         if (back) {
             back = false;
-            engine.active = false;
+            engine.setActive(false);
             sm.enterGameScreen(MenuScreen.ID, null, null);
             Gdx.input.setInputProcessor((MenuScreen) sm.getGameScreen(MenuScreen.ID));
             return;
@@ -98,7 +99,7 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public void render(GameContainer gc, Graphics g) {
-        if (!engine.active) {
+        if (!engine.getActive()) {
             return;
         }
         try {

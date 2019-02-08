@@ -18,7 +18,7 @@ package leikr.loaders;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import java.io.File;
-import leikr.MenuScreen;
+import leikr.screens.MenuScreen;
 
 /**
  *

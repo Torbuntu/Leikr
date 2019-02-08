@@ -20,7 +20,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.Array;
 import java.io.File;
-import leikr.MenuScreen;
+import leikr.screens.MenuScreen;
 
 /**
  *

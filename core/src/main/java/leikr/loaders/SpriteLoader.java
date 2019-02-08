@@ -7,7 +7,7 @@ package leikr.loaders;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import leikr.MenuScreen;
+import leikr.screens.MenuScreen;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.SpriteSheet;
 

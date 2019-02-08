@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package leikr;
+package leikr.screens;
 
 import leikr.loaders.FontLoader;
 import com.badlogic.gdx.Gdx;
@@ -53,7 +53,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
 
     String[] gameList;
 
-    MenuScreen(AssetManager assetManager) {
+    public MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
         viewport = new FitViewport(240, 160);
         gameList = new File("./Games").list();

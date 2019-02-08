@@ -18,7 +18,7 @@ package leikr.loaders;
 import com.badlogic.gdx.files.FileHandle;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.tiled.TiledMap;
-import leikr.MenuScreen;
+import leikr.screens.MenuScreen;
 
 /**
  *

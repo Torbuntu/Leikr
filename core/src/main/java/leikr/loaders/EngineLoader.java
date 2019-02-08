@@ -12,7 +12,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import leikr.CustomProperties;
 import leikr.Engine;
-import leikr.MenuScreen;
+import leikr.screens.MenuScreen;
 import org.codehaus.groovy.control.CompilationFailedException;
 
 /**
