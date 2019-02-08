@@ -300,7 +300,7 @@ public class Engine {
         Sprite t = spriteLoader.getSprite(id, 0);
         t.setFlip(flipX, flipY);
         g.drawSprite(t, x, y);
-        t.setFlip(!flipX, !flipY);
+        t.setFlip(false, false);
         USED_SPRITES++;
     }
     //end 8x8 sprites
@@ -343,7 +343,7 @@ public class Engine {
         Sprite t = spriteLoader.getSprite(id, 1);
         t.setFlip(flipX, flipY);
         g.drawSprite(t, x, y);
-        t.setFlip(!flipX, !flipY);
+        t.setFlip(false, false);
         USED_SPRITES++;
     }
     //end 16x16 sprites
@@ -386,7 +386,7 @@ public class Engine {
         Sprite t = spriteLoader.getSprite(id, 2);
         t.setFlip(flipX, flipY);
         g.drawSprite(t, x, y);
-        t.setFlip(!flipX, !flipY);
+        t.setFlip(false, false);
         USED_SPRITES++;
     }
     //end 32x32 sprites
@@ -429,7 +429,7 @@ public class Engine {
         Sprite t = spriteLoader.getSprite(id, 3);
         t.setFlip(flipX, flipY);
         g.drawSprite(t, x, y);
-        t.setFlip(!flipX, !flipY);
+        t.setFlip(false, false);
         USED_SPRITES++;
     }
     //end 64x64 sprites
