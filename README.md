@@ -47,11 +47,11 @@ class MyGame extends Engine{
 WIP specs:
 screen: 240x160
 
-Sprites: 1,024. 4 128x128 sprite sheets (256 sprites per sheet). Each sheet gets split into 8x8, 16x16 and 64x64 pixel sprites.
+Sprites: 2,048 max. Each sprite gets split into 8x8, 16x16, 32x32 and 64x64 pixel sprites.
 
 Art: Can load images to be used as backgrounds or however else you wish.
 
-Maps: .tmx maps loadabled from `Maps` directory. (currently unlimited)
+Maps: .tmx maps loadabled from `Maps` directory. (currently unlimited) Animated tiles supported.
 
 Audio: .WAV files loaded from `Audio/Sound` and `Audio/Music`  (Limitations TBD)
 
