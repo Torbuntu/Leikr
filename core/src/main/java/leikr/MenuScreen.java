@@ -17,7 +17,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import java.io.File;
-import org.mini2Dx.core.font.BitmapFont;
 import org.mini2Dx.core.font.MonospaceFont;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;

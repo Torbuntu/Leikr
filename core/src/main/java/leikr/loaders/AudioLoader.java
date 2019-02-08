@@ -17,7 +17,6 @@ package leikr.loaders;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Music.OnCompletionListener;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.Array;
 import java.io.File;
@@ -42,17 +41,25 @@ public class AudioLoader {
     }
 
     private void loadAudio() {
-        String[] sounds = new File(soundRootPath).list();
-        String[] musics = new File(musicRootPath).list();
+        try {
+            String[] sounds = new File(soundRootPath).list();
+            for (String path : sounds) {
+                soundManager.load(soundRootPath + path, Sound.class);
+            }
+            soundManager.finishLoading();
+        } catch (Exception ex) {
+            System.out.println("Sound load err: " + ex.getMessage());
+        }
 
-        for (String path : sounds) {
-            soundManager.load(soundRootPath + path, Sound.class);
+        try {
+            String[] musics = new File(musicRootPath).list();
+            for (String path : musics) {
+                musicManager.load(musicRootPath + path, Music.class);
+            }
+            musicManager.finishLoading();
+        } catch (Exception ex) {
+            System.out.println("Music load err: " + ex.getMessage());
         }
-        for (String path : musics) {
-            musicManager.load(musicRootPath + path, Music.class);
-        }
-        soundManager.finishLoading();
-        musicManager.finishLoading();
     }
 
     //probably useless, but makes me feel safe. 
@@ -60,40 +67,44 @@ public class AudioLoader {
         soundManager.finishLoading();
         musicManager.finishLoading();
     }
-    
-    public void sound(String fileName){
-        Sound tmp = soundManager.get(soundRootPath+fileName+".wav");
+
+    public void sound(String fileName) {
+        Sound tmp = soundManager.get(soundRootPath + fileName + ".wav");
         tmp.play();
     }
-    public void sound(String fileName, float vol, float pit, float pan){
+
+    public void sound(String fileName, float vol, float pit, float pan) {
         //vol: range [0,1]
         //pit: 0.5 and 2.0
         //pan: panning in the range -1 (full left) to 1 (full right). 0 is center position.
-        Sound tmp = soundManager.get(soundRootPath+fileName+".wav");
+        Sound tmp = soundManager.get(soundRootPath + fileName + ".wav");
         tmp.play(vol, pit, pan);
     }
-    public void music(String fileName){
-        Music tmp = musicManager.get(musicRootPath+fileName+".wav");        
+
+    public void music(String fileName) {
+        Music tmp = musicManager.get(musicRootPath + fileName + ".wav");
         tmp.play();
     }
-    public void music(String fileName, boolean loop){
-        Music tmp = musicManager.get(musicRootPath+fileName+".wav");
+
+    public void music(String fileName, boolean loop) {
+        Music tmp = musicManager.get(musicRootPath + fileName + ".wav");
         tmp.setLooping(loop);
         tmp.play();
     }
-    public void stopMusic(){
+
+    public void stopMusic() {
         Array<Music> allMusic = new Array<>();
-        for(Music m : musicManager.getAll(Music.class, allMusic)){
+        for (Music m : musicManager.getAll(Music.class, allMusic)) {
             m.stop();
         }
     }
-    public void stopMusic(String fileName){
-        Music m = musicManager.get(musicRootPath+fileName+".wav");
+
+    public void stopMusic(String fileName) {
+        Music m = musicManager.get(musicRootPath + fileName + ".wav");
         m.stop();
     }
-    
-    
-    public void disposeAudioLoader(){
+
+    public void disposeAudioLoader() {
         musicManager.dispose();
         soundManager.dispose();
     }
