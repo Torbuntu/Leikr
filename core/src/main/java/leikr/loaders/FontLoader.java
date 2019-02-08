@@ -5,11 +5,14 @@
  */
 package leikr.loaders;
 
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import org.mini2Dx.core.font.MonospaceFont;
 
 /**
  *
@@ -19,41 +22,19 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
  */
 public class FontLoader {
 
-    BitmapFont font;
-    
+    MonospaceFont font;
     public FontLoader() {
     }
-    
-    public BitmapFont getFont(){
-        //Generate a font object for font.ttf at size 40px
-        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        parameter.size = 16;
-        parameter.flip = true;
 
-        //The following settings allow the font to scale smoothly
-        parameter.magFilter = TextureFilter.Linear;
-        parameter.minFilter = TextureFilter.Linear;
-
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(new FileHandle("./ProggySquareSZ.ttf"));
-
-        font = generator.generateFont(parameter);
-        font.setUseIntegerPositions(false);
-        return font;
-    }
-    public BitmapFont getFont(String path){
-        //Generate a font object for font.ttf at size 40px
-        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        parameter.size = 8;
-        parameter.flip = true;
-
-        //The following settings allow the font to scale smoothly
-        parameter.magFilter = TextureFilter.Linear;
-        parameter.minFilter = TextureFilter.Linear;
-
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(new FileHandle(path));
-
-        font = generator.generateFont(parameter);
-        font.setUseIntegerPositions(false);
+    public MonospaceFont getFont(AssetManager manager){
+        manager.load("./LeikrFontA.png", Texture.class);
+        manager.finishLoading();
+        MonospaceFont.FontParameters params = new MonospaceFont.FontParameters();
+        params.texturePath = "./LeikrFontA.png";
+        params.spacing = 0;
+        params.frameWidth = 8;
+        params.frameHeight = 8;
+        font = new MonospaceFont(params);
         return font;
     }
 

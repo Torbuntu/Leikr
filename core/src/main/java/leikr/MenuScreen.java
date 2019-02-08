@@ -15,9 +15,10 @@ import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.Array;
 import java.io.File;
+import org.mini2Dx.core.font.BitmapFont;
+import org.mini2Dx.core.font.MonospaceFont;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -48,7 +49,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
 
     AssetManager assetManager;
     FontLoader fontLoader;
-    BitmapFont font;
+    MonospaceFont font;
     FitViewport viewport;
 
     String[] gameList;
@@ -81,7 +82,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
     public void initialise(GameContainer gc) {
         cursor = 0;
         fontLoader = new FontLoader();
-        font = fontLoader.getFont();
+        font = fontLoader.getFont(assetManager);
 
         try {
             Controller menuController;
@@ -133,7 +134,8 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
             EngineScreen screen = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
             sm.enterGameScreen(EngineScreen.ID, null, null);
             Gdx.input.setInputProcessor(screen);
-        }
+        }    
+        font.load(assetManager);
     }
 
     @Override
@@ -142,9 +144,8 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public void render(GameContainer gc, Graphics g) {
-        //font is broken in beta .7+
-        //g.setFont(font);
         g.setColor(Color.WHITE);
+        g.setFont(font);
         viewport.apply(g);
         if (LOADING) {
             g.setColor(Color.MAGENTA);
