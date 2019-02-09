@@ -18,9 +18,14 @@ package leikr.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerAdapter;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Array;
 import leikr.loaders.FontLoader;
+import static leikr.screens.MenuScreen.LOADING;
 import org.mini2Dx.core.font.MonospaceFont;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
@@ -40,6 +45,7 @@ public class TitleScreen extends BasicGameScreen {
     AssetManager assetManager;
     FontLoader fontLoader;
     MonospaceFont font;
+    boolean MENU = false;
 
     public TitleScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
@@ -52,7 +58,7 @@ public class TitleScreen extends BasicGameScreen {
     }
 
     void checkInput(ScreenManager sm) {
-        if (Gdx.input.isKeyPressed(Keys.SPACE) || Gdx.input.isKeyPressed(Keys.ENTER)) {
+        if (Gdx.input.isKeyPressed(Keys.SPACE) || Gdx.input.isKeyPressed(Keys.ENTER) || MENU) {
             sm.enterGameScreen(MenuScreen.ID, new FadeOutTransition(Color.TEAL), new FadeInTransition(Color.FOREST));
         }
     }
@@ -61,6 +67,30 @@ public class TitleScreen extends BasicGameScreen {
     public void initialise(GameContainer gc) {
         fontLoader = new FontLoader();
         font = fontLoader.getFont(assetManager);
+        try {
+            Controller menuController;
+            Array<Controller> nmc = Controllers.getControllers();
+            if (null != nmc.get(0)) {
+                menuController = nmc.get(0);
+                menuController.addListener(new ControllerAdapter() {
+                    //1 A
+                    //9 start
+                    @Override
+                    public boolean buttonUp(Controller controller, int buttonIndex) {
+                        switch (buttonIndex) {
+                            case 1:
+                            case 9:
+                                MENU = true;
+                                break;
+                        }
+                        return false;
+                    }
+
+                });
+            }
+        } catch (Exception ex) {
+            System.out.println("No controllers active. " + ex.getMessage());
+        }
     }
 
     @Override

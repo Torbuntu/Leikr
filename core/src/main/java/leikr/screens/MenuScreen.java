@@ -77,6 +77,31 @@ public class MenuScreen extends BasicGameScreen {
     @Override
     public void initialise(GameContainer gc) {
         cursor = 0;
+    }
+
+    @Override
+    public void postTransitionIn(Transition transitionOut) {
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean keyUp(int i) {
+                if (i == Keys.UP && cursor > 0) {
+                    cursor--;
+                }
+                if (i == Keys.DOWN && cursor < gameList.length - 1) {
+                    cursor++;
+                }
+                if (i == Keys.ENTER) {
+                    System.out.println("Loading game: " + gameList[cursor]);
+                    START = true;
+                    LOADING = true;
+                }
+                if (i == Keys.ESCAPE) {
+                    System.out.println("Good bye!");
+                    System.exit(0);
+                }
+                return false;
+            }
+        });
         try {
             Controller menuController;
             Array<Controller> nmc = Controllers.getControllers();
@@ -116,31 +141,6 @@ public class MenuScreen extends BasicGameScreen {
         } catch (Exception ex) {
             System.out.println("No controllers active. " + ex.getMessage());
         }
-    }
-
-    @Override
-    public void postTransitionIn(Transition transitionOut) {
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean keyUp(int i) {
-                if (i == Keys.UP && cursor > 0) {
-                    cursor--;
-                }
-                if (i == Keys.DOWN && cursor < gameList.length - 1) {
-                    cursor++;
-                }
-                if (i == Keys.ENTER) {
-                    System.out.println("Loading game: " + gameList[cursor]);
-                    START = true;
-                    LOADING = true;
-                }
-                if (i == Keys.ESCAPE) {
-                    System.out.println("Good bye!");
-                    System.exit(0);
-                }
-                return false;
-            }
-        });
     }
 
     @Override
