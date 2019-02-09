@@ -37,6 +37,8 @@ public class Engine {
 
     LeikrController p1Controller;
     LeikrController p2Controller;
+    Controller p1c;
+    Controller p2c;
 
     MapLoader mapLoader;
     ImageLoader imageLoader;
@@ -69,12 +71,12 @@ public class Engine {
         try {
             Array<Controller> nmc = Controllers.getControllers();
             if (null != nmc.get(0)) {
-                Controller p1c = nmc.get(0);
+                p1c = nmc.get(0);
                 p1Controller = new LeikrController();
                 p1c.addListener(p1Controller);
             }
             if (null != nmc.get(1)) {
-                Controller p2c = nmc.get(1);
+                p2c = nmc.get(1);
                 p2Controller = new LeikrController();
                 p2c.addListener(p2Controller);
             }
@@ -114,6 +116,12 @@ public class Engine {
         mapLoader.disposeMap();
         spriteLoader.disposeSprites();
         imageLoader.disposeImages();
+        if(null != p1c){
+            p1c.removeListener(p1Controller);
+        }
+        if(null!= p2c){
+            p2c.removeListener(p2Controller);
+        }
     }
     //dispose
 

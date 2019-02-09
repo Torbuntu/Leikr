@@ -47,6 +47,8 @@ public class MenuScreen extends BasicGameScreen {
 
     AssetManager assetManager;
     FitViewport viewport;
+    Controller menuController;
+    ControllerAdapter controllerAdapter;
 
     String[] gameList;
 
@@ -80,7 +82,14 @@ public class MenuScreen extends BasicGameScreen {
     }
 
     @Override
-    public void postTransitionIn(Transition transitionOut) {
+    public void preTransitionOut(Transition transitionOut) {
+        if (null != menuController) {
+            menuController.removeListener(controllerAdapter);
+        }
+    }
+
+    @Override
+    public void postTransitionIn(Transition transitionIn) {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyUp(int i) {
@@ -103,11 +112,10 @@ public class MenuScreen extends BasicGameScreen {
             }
         });
         try {
-            Controller menuController;
             Array<Controller> nmc = Controllers.getControllers();
             if (null != nmc.get(0)) {
                 menuController = nmc.get(0);
-                menuController.addListener(new ControllerAdapter() {
+                controllerAdapter = new ControllerAdapter() {
                     //10 up
                     //12 down
                     //1 A
@@ -136,7 +144,9 @@ public class MenuScreen extends BasicGameScreen {
                         }
                         return false;
                     }
-                });
+                };
+                menuController.addListener(controllerAdapter);
+
             }
         } catch (Exception ex) {
             System.out.println("No controllers active. " + ex.getMessage());
