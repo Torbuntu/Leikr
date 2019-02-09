@@ -25,7 +25,7 @@ public class EngineLoader {
     public static Engine getEngine() {
         Engine engine = null;
         GroovyClassLoader gcl = new GroovyClassLoader();
-        CustomProperties cp = new CustomProperties(GameRuntime.GAME_NAME);
+        CustomProperties cp = new CustomProperties(GameRuntime.getGamePath());
         String rootPath = GameRuntime.getGamePath() + "/Code/";
         String[] codes = new File(rootPath).list();
         try {            

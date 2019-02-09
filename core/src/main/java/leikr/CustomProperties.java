@@ -19,10 +19,10 @@ public class CustomProperties {
 
     public int MAX_SPRITES;
 
-    public CustomProperties(String gameName) {
+    public CustomProperties(String gamePath) {
 
         Properties prop = new Properties();
-        try (InputStream stream = new FileInputStream(new File("./Games/" + gameName + "/game.properties"))) {
+        try (InputStream stream = new FileInputStream(new File(gamePath + "/game.properties"))) {
             prop.load(stream);
 
             //String example for later

@@ -53,7 +53,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
     public MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
         viewport = new FitViewport(240, 160);
-        gameList = new File("./Games").list();
+        gameList = new File("./Programs").list();
         loadIcons();
     }
 
@@ -63,7 +63,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
 
     private void loadIcons() {
         for (String game : gameList) {
-            assetManager.load("./Games/" + game + "/Art/icon.png", Texture.class);
+            assetManager.load("./Programs/" + game + "/Art/icon.png", Texture.class);
         }
         assetManager.finishLoading();
     }
@@ -127,7 +127,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         if (start) {
             start = false;
-            GameRuntime.setGameName(gameList[cursor]);
+            GameRuntime.setGamePath("./Programs/"+gameList[cursor]);
             EngineScreen screen = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
             sm.enterGameScreen(EngineScreen.ID, null, null);
             Gdx.input.setInputProcessor(screen);
@@ -147,7 +147,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
             g.drawCircle(120, 80, 15);
             g.drawString("Loading... ", 0, viewport.getHeight() - 9);
         } else if (null != gameList) {
-            g.drawTexture(assetManager.get("./Games/" + gameList[cursor] + "/Art/icon.png"), ID, ID);
+            g.drawTexture(assetManager.get("./Programs/" + gameList[cursor] + "/Art/icon.png"), ID, ID);
             g.drawString("Selection: " + gameList[cursor], 0, viewport.getHeight() - 9);
         } else {
             g.drawString("No game chips detected... ", 0, viewport.getHeight() - 9);

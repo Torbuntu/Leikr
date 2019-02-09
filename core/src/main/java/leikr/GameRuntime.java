@@ -16,12 +16,12 @@ public class GameRuntime extends ScreenBasedGame {
     AssetManager assetManager;
     
     public static String GAME_NAME;
-    public static void setGameName(String name){
-        GAME_NAME = name;
-    }
-    
+    private static String GAME_PATH;
+    public static void setGamePath(String name){
+        GAME_PATH = name;
+    }    
     public static String getGamePath(){
-        return "./Games/"+GAME_NAME;
+        return GAME_PATH;
     }
 
     @Override
