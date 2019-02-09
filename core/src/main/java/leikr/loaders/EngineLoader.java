@@ -12,7 +12,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import leikr.CustomProperties;
 import leikr.Engine;
-import leikr.screens.MenuScreen;
+import leikr.GameRuntime;
 import org.codehaus.groovy.control.CompilationFailedException;
 
 /**
@@ -25,8 +25,8 @@ public class EngineLoader {
     public static Engine getEngine() {
         Engine engine = null;
         GroovyClassLoader gcl = new GroovyClassLoader();
-        CustomProperties cp = new CustomProperties(MenuScreen.GAME_NAME);
-        String rootPath = "./Games/" + MenuScreen.GAME_NAME + "/Code/";
+        CustomProperties cp = new CustomProperties(GameRuntime.GAME_NAME);
+        String rootPath = GameRuntime.getGamePath() + "/Code/";
         String[] codes = new File(rootPath).list();
         try {            
             for(String path : codes){

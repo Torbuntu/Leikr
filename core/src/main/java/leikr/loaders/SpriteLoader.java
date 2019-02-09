@@ -7,7 +7,7 @@ package leikr.loaders;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import leikr.screens.MenuScreen;
+import leikr.GameRuntime;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.SpriteSheet;
 
@@ -29,7 +29,7 @@ public class SpriteLoader {
     public SpriteLoader() {
         assetManager = new AssetManager();
 
-        rootPath = "./Games/" + MenuScreen.GAME_NAME + "/Sprites/Sprites.png";
+        rootPath = GameRuntime.getGamePath() + "/Sprites/Sprites.png";
 
         loadSpriteSheets();
 

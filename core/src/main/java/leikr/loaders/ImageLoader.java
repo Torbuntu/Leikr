@@ -18,7 +18,7 @@ package leikr.loaders;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import java.io.File;
-import leikr.screens.MenuScreen;
+import leikr.GameRuntime;
 
 /**
  *
@@ -28,7 +28,7 @@ public class ImageLoader {
 
     AssetManager assetManager;
     String[] images;
-    String rootPath = "./Games/" + MenuScreen.GAME_NAME + "/Art/";
+    String rootPath = GameRuntime.getGamePath() + "/Art/";
 
     public ImageLoader() {
         assetManager = new AssetManager();
@@ -44,7 +44,7 @@ public class ImageLoader {
     }
 
     public Texture getImage(String fileName) {
-        return assetManager.get(rootPath+fileName+".png");
+        return assetManager.get(rootPath + fileName + ".png");
     }
 
     public void disposeImages() {

@@ -14,6 +14,15 @@ public class GameRuntime extends ScreenBasedGame {
     public static int HEIGHT = 160;
 
     AssetManager assetManager;
+    
+    public static String GAME_NAME;
+    public static void setGameName(String name){
+        GAME_NAME = name;
+    }
+    
+    public static String getGamePath(){
+        return "./Games/"+GAME_NAME;
+    }
 
     @Override
     public void initialise() {

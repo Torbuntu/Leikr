@@ -20,7 +20,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.Array;
 import java.io.File;
-import leikr.screens.MenuScreen;
+import leikr.GameRuntime;
 
 /**
  *
@@ -31,8 +31,8 @@ public class AudioLoader {
     AssetManager soundManager;
     AssetManager musicManager;
 
-    String musicRootPath = "./Games/" + MenuScreen.GAME_NAME + "/Audio/Music/";
-    String soundRootPath = "./Games/" + MenuScreen.GAME_NAME + "/Audio/Sound/";
+    String musicRootPath = GameRuntime.getGamePath() + "/Audio/Music/";
+    String soundRootPath = GameRuntime.getGamePath() + "/Audio/Sound/";
 
     public AudioLoader() {
         soundManager = new AssetManager();

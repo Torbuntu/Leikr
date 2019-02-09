@@ -16,9 +16,9 @@
 package leikr.loaders;
 
 import com.badlogic.gdx.files.FileHandle;
+import leikr.GameRuntime;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.tiled.TiledMap;
-import leikr.screens.MenuScreen;
 
 /**
  *
@@ -29,7 +29,7 @@ public class MapLoader {
 
     TiledMap tiledMap;
 
-    String rootPath = "./Games/" + MenuScreen.GAME_NAME + "/Maps/";
+    String rootPath = GameRuntime.getGamePath() + "/Maps/";
 
     public void loadMap(String name) {
         if (null != tiledMap) {

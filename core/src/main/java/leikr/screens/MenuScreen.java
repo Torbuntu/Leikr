@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import java.io.File;
+import leikr.GameRuntime;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -40,7 +41,6 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
             4?. a genre?
      */
     public static int ID = 0;
-    public static String GAME_NAME;
     static boolean LOADING = false;
     boolean start = false;
     int cursor;
@@ -127,7 +127,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         if (start) {
             start = false;
-            GAME_NAME = gameList[cursor];
+            GameRuntime.setGameName(gameList[cursor]);
             EngineScreen screen = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
             sm.enterGameScreen(EngineScreen.ID, null, null);
             Gdx.input.setInputProcessor(screen);
