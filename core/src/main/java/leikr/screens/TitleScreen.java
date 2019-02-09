@@ -53,7 +53,6 @@ public class TitleScreen extends BasicGameScreen {
 
     void checkInput(ScreenManager sm) {
         if (Gdx.input.isKeyPressed(Keys.SPACE) || Gdx.input.isKeyPressed(Keys.ENTER)) {
-            MenuScreen ms = (MenuScreen) sm.getGameScreen(MenuScreen.ID);
             sm.enterGameScreen(MenuScreen.ID, new FadeOutTransition(Color.TEAL), new FadeInTransition(Color.FOREST));
         }
     }
