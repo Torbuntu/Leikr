@@ -7,8 +7,10 @@ package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
+import java.util.Arrays;
 import leikr.Engine;
 import leikr.loaders.EngineLoader;
 import org.mini2Dx.core.game.GameContainer;
@@ -22,7 +24,7 @@ import org.mini2Dx.core.screen.Transition;
  *
  * @author tor
  */
-public class EngineScreen extends BasicGameScreen implements InputProcessor {
+public class EngineScreen extends BasicGameScreen {
 
     public static int ID = 1;
     AssetManager assetManager;
@@ -36,6 +38,12 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
 
     public void setEngine(Engine engine) {
         this.engine = engine;
+    }
+
+    void switchScreen(ScreenManager sm) {
+        back = false;
+        engine.setActive(false);
+        sm.enterGameScreen(MenuScreen.ID, null, null);
     }
 
     @Override
@@ -54,6 +62,7 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public void preTransitionIn(Transition transition) {
+
         try {
             engine = EngineLoader.getEngine();
             setEngine(engine);
@@ -72,23 +81,28 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
             back = true;
             System.out.println("Error in game `create` method. " + ex.getMessage());
         }
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean keyUp(int i) {
+                if (i == Keys.ESCAPE) {
+                    back = true;
+                }
+                return false;
+            }
+        });
     }
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         if (back) {
-            back = false;
-            engine.setActive(false);
-            sm.enterGameScreen(MenuScreen.ID, null, null);
-            Gdx.input.setInputProcessor((MenuScreen) sm.getGameScreen(MenuScreen.ID));
-            return;
+            switchScreen(sm);
         }
         try {
             engine.preUpdate(delta);
             engine.update(delta);
         } catch (Exception ex) {
             back = true;
-            System.out.println("Error in game `update` method. " + ex.getMessage());
+            System.out.println("Error in game `update` method. " + Arrays.toString(ex.getStackTrace()));
         }
 
     }
@@ -114,48 +128,5 @@ public class EngineScreen extends BasicGameScreen implements InputProcessor {
     @Override
     public int getId() {
         return ID;
-    }
-
-    @Override
-    public boolean keyDown(int i) {
-        return true;
-    }
-
-    @Override
-    public boolean keyUp(int i) {
-        if (i == Keys.ESCAPE) {
-            back = true;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean keyTyped(char c) {
-        return true;
-    }
-
-    @Override
-    public boolean touchDown(int i, int i1, int i2, int i3) {
-        return true;
-    }
-
-    @Override
-    public boolean touchUp(int i, int i1, int i2, int i3) {
-        return true;
-    }
-
-    @Override
-    public boolean touchDragged(int i, int i1, int i2) {
-        return true;
-    }
-
-    @Override
-    public boolean mouseMoved(int i, int i1) {
-        return true;
-    }
-
-    @Override
-    public boolean scrolled(int i) {
-        return true;
     }
 }

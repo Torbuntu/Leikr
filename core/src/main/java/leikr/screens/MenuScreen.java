@@ -7,7 +7,7 @@ package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
@@ -30,7 +30,7 @@ import org.mini2Dx.core.screen.Transition;
  * @author tor
  *
  */
-public class MenuScreen extends BasicGameScreen implements InputProcessor {
+public class MenuScreen extends BasicGameScreen {
 
     /* TODO: Make a graphical menu list to display games. This will take in a 
         This will take in a few items to use from the game's properties file.
@@ -42,7 +42,7 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
      */
     public static int ID = 0;
     static boolean LOADING = false;
-    boolean start = false;
+    boolean START = false;
     int cursor;
 
     AssetManager assetManager;
@@ -92,7 +92,8 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
                         switch (buttonIndex) {
                             case 1:
                             case 9:
-                                start = true;
+                                START = true;
+                                LOADING = true;
                                 break;
                         }
                         return false;
@@ -119,18 +120,35 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public void postTransitionIn(Transition transitionOut) {
-        Gdx.input.setInputProcessor(this);
-
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean keyUp(int i) {
+                if (i == Keys.UP && cursor > 0) {
+                    cursor--;
+                }
+                if (i == Keys.DOWN && cursor < gameList.length - 1) {
+                    cursor++;
+                }
+                if (i == Keys.ENTER) {
+                    System.out.println("Loading game: " + gameList[cursor]);
+                    START = true;
+                    LOADING = true;
+                }
+                if (i == Keys.ESCAPE) {
+                    System.out.println("Good bye!");
+                    System.exit(0);
+                }
+                return false;
+            }
+        });
     }
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
-        if (start) {
-            start = false;
-            GameRuntime.setGamePath("./Programs/"+gameList[cursor]);
-            EngineScreen screen = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
+        if (START) {
+            START = false;
+            GameRuntime.setGamePath("./Programs/" + gameList[cursor]);
             sm.enterGameScreen(EngineScreen.ID, null, null);
-            Gdx.input.setInputProcessor(screen);
         }
     }
 
@@ -157,60 +175,5 @@ public class MenuScreen extends BasicGameScreen implements InputProcessor {
     @Override
     public int getId() {
         return ID;
-    }
-
-    @Override
-    public boolean keyDown(int i) {
-        return true;
-    }
-
-    @Override
-    public boolean keyUp(int i) {
-        if (i == Keys.UP && cursor > 0) {
-            cursor--;
-        }
-        if (i == Keys.DOWN && cursor < gameList.length - 1) {
-            cursor++;
-        }
-        if (i == Keys.ENTER) {
-            System.out.println("Loading game: " + gameList[cursor]);
-            start = true;
-            LOADING = true;
-        }
-        if (i == Keys.ESCAPE) {
-            System.out.println("Good bye!");
-            System.exit(0);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean keyTyped(char c) {
-        return true;
-    }
-
-    @Override
-    public boolean touchDown(int i, int i1, int i2, int i3) {
-        return true;
-    }
-
-    @Override
-    public boolean touchUp(int i, int i1, int i2, int i3) {
-        return true;
-    }
-
-    @Override
-    public boolean touchDragged(int i, int i1, int i2) {
-        return true;
-    }
-
-    @Override
-    public boolean mouseMoved(int i, int i1) {
-        return true;
-    }
-
-    @Override
-    public boolean scrolled(int i) {
-        return true;
     }
 }
