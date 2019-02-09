@@ -1,10 +1,13 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 # Leikr
-A Work in Progress remake of Leikr16 in Mini2dx
+A Work in Progress remake of Leikr16 
+
+Powered by [Mini2Dx](https://mini2dx.org/)
 
 Projects structure
 ```
-Games/
+Data/
+Programs/
   /SomeGame
   /SomeGame2
   /SomeGame3
