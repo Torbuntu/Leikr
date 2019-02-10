@@ -12,12 +12,14 @@ import leikr.loaders.ImageLoader;
 import leikr.loaders.MapLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.utils.Array;
 import leikr.loaders.AudioLoader;
+import leikr.screens.EngineScreen;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -27,7 +29,7 @@ import org.mini2Dx.core.graphics.viewport.ScalingViewport;
  *
  * @author tor
  */
-public class Engine {
+public class Engine implements InputProcessor {
 
     Graphics g;
     ScalingViewport viewport;
@@ -116,10 +118,10 @@ public class Engine {
         mapLoader.disposeMap();
         spriteLoader.disposeSprites();
         imageLoader.disposeImages();
-        if(null != p1c){
+        if (null != p1c) {
             p1c.removeListener(p1Controller);
         }
-        if(null!= p2c){
+        if (null != p2c) {
             p2c.removeListener(p2Controller);
         }
     }
@@ -130,10 +132,12 @@ public class Engine {
     void FPS() {
         logger.log();
     }
-    public boolean getActive(){
+
+    public boolean getActive() {
         return active;
     }
-    public void setActive(boolean state){
+
+    public void setActive(boolean state) {
         this.active = state;
     }
     //End helper methods.
@@ -272,6 +276,16 @@ public class Engine {
     void text(String text, float x, float y, float[] color) {
         drawColor(color[0], color[1], color[2]);
         g.drawString(text, x, y);
+    }
+
+    void text(String text, float x, float y, float width, int color) {
+        drawColor(color);
+        g.drawString(text, x, y, width);
+    }
+
+    void text(String text, float x, float y, float width, float[] color) {
+        drawColor(color[0], color[1], color[2]);
+        g.drawString(text, x, y, width);
     }
     //end text methods
 
@@ -536,6 +550,49 @@ public class Engine {
     boolean key(String key) {
         return Gdx.input.isKeyPressed(Keys.valueOf(key));
     }
-    //end input handling
 
+    @Override
+    public boolean keyDown(int i) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int i) {
+        if (i == Keys.ESCAPE) {
+            EngineScreen.back = true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char c) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int i, int i1, int i2, int i3) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int i, int i1, int i2, int i3) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int i, int i1, int i2) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int i, int i1) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int i) {
+        return false;
+    }
+
+    //end input handling
 }
