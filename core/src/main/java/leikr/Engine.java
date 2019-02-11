@@ -552,45 +552,45 @@ public class Engine implements InputProcessor {
     }
 
     @Override
-    public boolean keyDown(int i) {
+    public boolean keyDown(int keyCode) {
         return false;
     }
 
     @Override
-    public boolean keyUp(int i) {
-        if (i == Keys.ESCAPE) {
+    public boolean keyUp(int keyCode) {
+        if (keyCode == Keys.ESCAPE) {
             EngineScreen.back = true;
         }
         return false;
     }
 
     @Override
-    public boolean keyTyped(char c) {
+    public boolean keyTyped(char character) {
         return false;
     }
 
     @Override
-    public boolean touchDown(int i, int i1, int i2, int i3) {
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         return false;
     }
 
     @Override
-    public boolean touchUp(int i, int i1, int i2, int i3) {
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         return false;
     }
 
     @Override
-    public boolean touchDragged(int i, int i1, int i2) {
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
         return false;
     }
 
     @Override
-    public boolean mouseMoved(int i, int i1) {
+    public boolean mouseMoved(int screenX, int screenY) {
         return false;
     }
 
     @Override
-    public boolean scrolled(int i) {
+    public boolean scrolled(int amount) {
         return false;
     }
 

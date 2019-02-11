@@ -236,8 +236,15 @@ class Breakout extends Engine {
 	   		newGame()
 	  	}
 	}
+	
+	@Override
+    public boolean mouseMoved(int x, int y) {
+    	println x/3 + " : " +y/3
+        return false;
+    }
 
 	void create(){	
+	
 		rand = new Random()		
 		newGame()
 	}
