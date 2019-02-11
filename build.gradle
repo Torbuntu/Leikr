@@ -14,7 +14,7 @@ buildscript {
 
 allprojects {
 
-    version = '1.0.0'
+    version = '0.0.0a'
     ext {
         appName = 'Leikr'
         mini2DxVersion = '1.9.0-beta.9'
