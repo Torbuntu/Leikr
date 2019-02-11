@@ -6,8 +6,6 @@
 package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import java.util.Arrays;
 import leikr.Engine;
@@ -76,16 +74,17 @@ public class EngineScreen extends BasicGameScreen {
         MenuScreen.finishLoading();
         try {
             engine.create();
+            Gdx.input.setInputProcessor(engine);
         } catch (Exception ex) {
             back = true;
+            engine.setActive(false);
             System.out.println("Error in game `create` method. " + ex.getMessage());
         }
-        Gdx.input.setInputProcessor(engine);
     }
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
-        
+
         if (back) {
             switchScreen(sm);
         }

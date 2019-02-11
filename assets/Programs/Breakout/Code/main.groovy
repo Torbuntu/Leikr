@@ -24,11 +24,11 @@ class Breakout extends Engine {
  		for (int i in 0..brickCountHeight){
   			for( int j in 0..brickCountWidth){
    				def brick = [
+   					sid: j,
     				x: 10+j*11,
     				y: 10+i*5,
-    				width: 10,
-    				height: 4,
-    				color: i+1
+    				width: 8,
+    				height: 3
    				]
    				bricks.add(0, brick)
   			}
@@ -219,8 +219,7 @@ class Breakout extends Engine {
 	 	
 	 	// draw bricks
 	 	bricks.each{
-	 		drawColor(it.color)
-			rect(it.x.toFloat(), it.y.toFloat(), it.width.toFloat(), it.height.toFloat())
+			sprite(it.sid, it.x.toFloat(), it.y.toFloat())
 		}
 	
 	}
