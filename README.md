@@ -7,6 +7,8 @@ Powered by [Mini2Dx](https://mini2dx.org/)
 
 ## Running from source 
 
+#### note: `Programs` and `Data` are in the `/leikr/assets/` directory. 
+
 1. git clone the project. Then enter the `leikr` directory.
 
 `git clone https://github.com/torbuntu/leikr.git`
