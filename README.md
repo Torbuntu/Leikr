@@ -4,6 +4,39 @@ A Work in Progress remake of Leikr16
 
 Powered by [Mini2Dx](https://mini2dx.org/)
 
+
+## Running from source 
+
+#### note: `Programs` and `Data` are in the `/leikr/assets/` directory. 
+
+1. git clone the project. Then enter the `leikr` directory.
+
+`git clone https://github.com/torbuntu/leikr.git`
+
+2. Run the gradlew command: 
+
+`./gradlew desktop:launchDesktop`
+
+## Building a release 
+
+to build a release on your platform run: `./gradlew clean build bundleNative`
+
+the release will show up in the `./leikr/desktop/build/` directory and then under the platform you are running on.
+for example on linux `desktop/build/linux/`
+
+then copy the `Data` and `Programs` folders from the `leikr/assets/` directory to the location of the launch script. You should end up with the following:
+
+```
+Data/
+Programs/
+Leikr
+libs/
+```
+
+
+
+## Starting your own Program
+
 Projects structure
 ```
 Data/
