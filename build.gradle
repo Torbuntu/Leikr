@@ -40,6 +40,14 @@ project(":core") {
     }
 }
 
+task cplinux(){
+    
+    copy {
+        from "$projectDir/assets"
+        into "$projectDir/desktop/build/linux"
+    }    
+}
+
 project(":desktop") {
     apply plugin: "java"
     apply plugin: "application"
@@ -80,7 +88,7 @@ project(":desktop") {
             binDirectory = "$buildDir/mac"
         }
         linux {
-            binDirectory = "$buildDir/linux"
-        }
+            binDirectory = "$buildDir/linux"            
+        }        
     }
 }
