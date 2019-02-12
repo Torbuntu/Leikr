@@ -1,6 +1,6 @@
 apply plugin: "application"
 
-//sourceCompatibility = 1.9
+sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
 
 mainClassName = "leikr.desktop.DesktopLauncher"
@@ -15,3 +15,4 @@ task launchDesktop(dependsOn: classes, type: JavaExec) {
     workingDir = project.assetsDir
     ignoreExitValue = true
 }
+
