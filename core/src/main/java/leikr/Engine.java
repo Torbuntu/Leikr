@@ -29,7 +29,7 @@ import org.mini2Dx.core.graphics.viewport.ScalingViewport;
  *
  * @author tor
  */
-public class Engine implements InputProcessor {
+public abstract class Engine implements InputProcessor {
 
     Graphics g;
     ScalingViewport viewport;
@@ -87,18 +87,18 @@ public class Engine implements InputProcessor {
         }
 
     }
+    
+    abstract public void create();
 
-    public void create() {
-    }
+    abstract public void update(float delta);
+
+    abstract public void render();
 
     public void preUpdate(float delta) {
         if (null == mapLoader.getMap()) {
             return;//don't update the map if it is null
         }
         mapLoader.getMap().update(delta);
-    }
-
-    public void update(float delta) {
     }
 
     public void preRender(Graphics g) {
@@ -108,10 +108,7 @@ public class Engine implements InputProcessor {
         USED_SPRITES = 0;
     }
 
-    public void render() {
-    }
     // end override functions
-
     //dispose
     public void dispose() {
         audioLoader.disposeAudioLoader();
