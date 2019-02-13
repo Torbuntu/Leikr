@@ -16,11 +16,6 @@ import org.mini2Dx.core.font.MonospaceFont;
  * Super Temporary font loading class
  */
 public class FontLoader {
-
-    MonospaceFont font;
-    public FontLoader() {
-    }
-
     public MonospaceFont getFont(AssetManager manager){
         manager.load("./Data/LeikrFontA.png", Texture.class);
         manager.finishLoading();
@@ -29,8 +24,6 @@ public class FontLoader {
         params.spacing = 0;
         params.frameWidth = 8;
         params.frameHeight = 8;
-        font = new MonospaceFont(params);
-        return font;
+        return new MonospaceFont(params);
     }
-
 }

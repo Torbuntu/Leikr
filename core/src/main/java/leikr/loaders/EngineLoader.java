@@ -28,10 +28,10 @@ public class EngineLoader {
         CustomProperties cp = new CustomProperties(GameRuntime.getGamePath());
         String rootPath = GameRuntime.getGamePath() + "/Code/";
         String[] codes = new File(rootPath).list();
-        try {            
-            for(String path : codes){
-                if(!path.equals("main.groovy")){
-                    gcl.parseClass(new File(rootPath+path));                
+        try {
+            for (String path : codes) {
+                if (!path.equals("main.groovy")) {
+                    gcl.parseClass(new File(rootPath + path));
                 }
             }
             Class game = gcl.parseClass(new File(rootPath + "main.groovy"));//loads the game code  

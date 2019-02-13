@@ -54,7 +54,7 @@ public class MenuScreen extends BasicGameScreen {
 
     public MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
-        viewport = new FitViewport(240, 160);
+        viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         gameList = new File("./Programs").list();
         loadIcons();
     }

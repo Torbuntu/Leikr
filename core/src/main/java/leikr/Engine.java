@@ -87,12 +87,6 @@ public abstract class Engine implements InputProcessor {
         }
 
     }
-    
-    abstract public void create();
-
-    abstract public void update(float delta);
-
-    abstract public void render();
 
     public void preUpdate(float delta) {
         if (null == mapLoader.getMap()) {
@@ -108,7 +102,14 @@ public abstract class Engine implements InputProcessor {
         USED_SPRITES = 0;
     }
 
+    abstract public void create();
+
+    abstract public void update(float delta);
+
+    abstract public void render();
+
     // end override functions
+    
     //dispose
     public void dispose() {
         audioLoader.disposeAudioLoader();
