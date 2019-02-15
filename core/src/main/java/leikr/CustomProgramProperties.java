@@ -25,14 +25,14 @@ import java.util.Properties;
  *
  * @author tor
  */
-public class CustomGameProperties {
+public class CustomProgramProperties {
 
     public int MAX_SPRITES;
 
-    public CustomGameProperties(String gamePath) {
+    public CustomProgramProperties(String gamePath) {
 
         Properties prop = new Properties();
-        try (InputStream stream = new FileInputStream(new File(gamePath + "/game.properties"))) {
+        try (InputStream stream = new FileInputStream(new File(gamePath + "/program.properties"))) {
             prop.load(stream);
 
             //String example for later
