@@ -79,6 +79,7 @@ public class EngineScreen extends BasicGameScreen {
         } catch (Exception ex) {
             back = true;
             System.out.println("Error parsing game code. " + ex.getMessage());
+            ex.printStackTrace();
         }
     }
 

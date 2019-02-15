@@ -18,12 +18,15 @@ package leikr.loaders;
 import groovy.lang.GroovyClassLoader;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Files;
 import leikr.CustomProgramProperties;
 import leikr.Engine;
 import leikr.GameRuntime;
+import leikr.screens.MenuScreen;
 import org.codehaus.groovy.control.CompilationFailedException;
+import org.codehaus.groovy.control.CompilerConfiguration;
+import org.codehaus.groovy.tools.Compiler;
 
 /**
  *
@@ -32,21 +35,76 @@ import org.codehaus.groovy.control.CompilationFailedException;
 public class EngineLoader {
 
     //TODO: Add support for more than one code file?
-    public static Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    public static Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException {
         GroovyClassLoader gcl = new GroovyClassLoader();
         CustomProgramProperties cp = new CustomProgramProperties(GameRuntime.getGamePath());
         String rootPath = GameRuntime.getGamePath() + "/Code/";
-        String[] codes = new File(rootPath).list();
-        for (String path : codes) {
-            if (!path.equals("main.groovy")) {
-                gcl.parseClass(new File(rootPath + path));
-            }
+
+        if (cp.COMPILE_SOURCE) {
+            compileEngine(rootPath);
         }
-        Class game = gcl.parseClass(new File(rootPath + "main.groovy"));//loads the game code  
-        Constructor[] cnst = game.getConstructors();//gets the constructos
-        Engine engine = (Engine) cnst[0].newInstance();//instantiates based on first constructor
-        engine.preCreate(cp.MAX_SPRITES);//pre create here to instantiate objects
-        return engine;
+        if (cp.USE_COMPILED) {
+            return getCompiledEngine(rootPath, gcl, cp);
+        }
+        return getSourceEngine(rootPath, gcl, cp);
+    }
+
+    private static Engine getSourceEngine(String rootPath, GroovyClassLoader gcl, CustomProgramProperties cp) {
+        try {
+            String[] codes = new File(rootPath).list();
+            if (codes.length > 1) {
+                for (String path : codes) {
+                    if (!path.equals("main.groovy") && !path.equals("Compiled")) {
+                        gcl.parseClass(new File(rootPath + path));
+                    }
+                }
+            }
+            Engine engine = (Engine) gcl.parseClass(new File(rootPath + "main.groovy")).getConstructors()[0].newInstance();//loads the game code  
+            engine.preCreate(cp.MAX_SPRITES);//pre create here to instantiate objects
+            return engine;
+        } catch (Exception ex) {
+            System.out.println("Failed to parse and load program sources.");
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    private static Engine getCompiledEngine(String rootPath, GroovyClassLoader gcl, CustomProgramProperties cp) {
+        try {
+            gcl.addURL(new File(rootPath.substring(2, rootPath.length()) + "Compiled/").toURI().toURL());
+            for (String classFile : new File(rootPath + "Compiled/").list()) {
+                if (!classFile.equals(MenuScreen.getGAME_NAME() + ".class")) {
+                    gcl.loadClass(classFile.replace(".class", ""));
+                }
+            }
+            Engine engine = (Engine) gcl.loadClass(MenuScreen.getGAME_NAME()).getConstructors()[0].newInstance();
+            engine.preCreate(cp.MAX_SPRITES);
+            return engine;
+        } catch (Exception ex) {
+            System.out.println("Failed to collect compiled sources.");
+            ex.printStackTrace();
+            return null;
+
+        }
+    }
+
+    private static void compileEngine(String rootPath) {
+        try {
+            CompilerConfiguration cc = new CompilerConfiguration();
+            if (!(new File(rootPath + "Compiled/").exists())) {
+                new File(rootPath + "Compiled/").mkdir();
+            }
+            cc.setTargetDirectory(rootPath + "Compiled/");
+            Compiler cp = new Compiler(cc);
+            for (String path : new File(rootPath).list()) {
+                if (!path.equals("Compiled")) {
+                    cp.compile(new File(rootPath + path));
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
     }
 
 }

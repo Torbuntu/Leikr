@@ -28,6 +28,8 @@ import java.util.Properties;
 public class CustomProgramProperties {
 
     public int MAX_SPRITES;
+    public boolean USE_COMPILED;
+    public boolean COMPILE_SOURCE;
 
     public CustomProgramProperties(String gamePath) {
 
@@ -42,6 +44,8 @@ public class CustomProgramProperties {
             if (MAX_SPRITES > 2048) {
                 MAX_SPRITES = 2048;
             }
+            USE_COMPILED = (prop.getProperty("use_compiled") != null) ? Boolean.valueOf(prop.getProperty("use_compiled")) : false;
+            COMPILE_SOURCE = (prop.getProperty("compile_source") != null) ? Boolean.valueOf(prop.getProperty("compile_source")) : false;
 
         } catch (IOException | NumberFormatException ex) {
             System.out.println(ex.getMessage());
