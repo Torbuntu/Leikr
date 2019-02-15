@@ -56,9 +56,9 @@ public class GameRuntime extends ScreenBasedGame {
     @Override
     public void initialise() {
         assetManager = new AssetManager();
+        this.addScreen(new TitleScreen(assetManager));
         this.addScreen(new MenuScreen(assetManager));
         this.addScreen(new EngineScreen(assetManager));
-        this.addScreen(new TitleScreen(assetManager));
     }
 
     @Override

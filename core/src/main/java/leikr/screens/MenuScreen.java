@@ -65,10 +65,6 @@ public class MenuScreen extends BasicGameScreen {
     public MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
-        if (GameRuntime.SINGLE_LAUNCH) {
-            START = true;
-            LOADING = true;
-        }
         gameList = new File("./Programs").list();
         loadIcons();
     }
@@ -103,7 +99,18 @@ public class MenuScreen extends BasicGameScreen {
     }
 
     @Override
+    public void preTransitionIn(Transition transitionIn) {
+        if (GameRuntime.SINGLE_LAUNCH) {
+            START = true;
+            LOADING = true;
+        }
+    }
+
+    @Override
     public void postTransitionIn(Transition transitionIn) {
+        if (GameRuntime.SINGLE_LAUNCH) {
+            return;
+        }
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyUp(int i) {
@@ -120,7 +127,7 @@ public class MenuScreen extends BasicGameScreen {
                 }
                 if (i == Keys.ESCAPE) {
                     System.out.println("Good bye!");
-                    System.exit(0);
+                    Gdx.app.exit();
                 }
                 return false;
             }
