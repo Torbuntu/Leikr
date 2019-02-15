@@ -37,9 +37,6 @@ public class CustomProgramProperties {
         try (InputStream stream = new FileInputStream(new File(gamePath + "/program.properties"))) {
             prop.load(stream);
 
-            //String example for later
-            //customPalette = (prop.getProperty("customPalette") != null) ? prop.getProperty("customPalette") : "";
-            //2048 is maximum, 120 is default
             MAX_SPRITES = (prop.getProperty("max_sprites") != null) ? Integer.parseInt(prop.getProperty("max_sprites")) : 120;
             if (MAX_SPRITES > 2048) {
                 MAX_SPRITES = 2048;

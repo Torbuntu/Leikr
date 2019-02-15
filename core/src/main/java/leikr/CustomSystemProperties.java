@@ -33,9 +33,6 @@ public class CustomSystemProperties {
         Properties prop = new Properties();
         try (InputStream stream = new FileInputStream(new File("Data/system.properties"))) {
             prop.load(stream);
-            //String example for later
-            //customPalette = (prop.getProperty("customPalette") != null) ? prop.getProperty("customPalette") : "";
-            //2048 is maximum, 120 is default
             SINGLE_LAUNCH = (prop.getProperty("single_launch") != null) ? Boolean.valueOf(prop.getProperty("single_launch")) : false;
         } catch (IOException | NumberFormatException ex) {
             System.out.println(ex.getMessage());

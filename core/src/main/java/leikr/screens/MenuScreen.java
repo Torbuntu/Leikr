@@ -67,16 +67,16 @@ public class MenuScreen extends BasicGameScreen {
         this.assetManager = assetManager;
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         gameList = new File("./Programs").list();
-        setGAME_NAME(gameList[0]);
+        setGameName(gameList[0]);
         loadIcons();
     }
 
-    public static String getGAME_NAME() {
+    public static String getGameName() {
         return GAME_NAME;
     }
 
-    private void setGAME_NAME(String GAME_NAME) {
-        this.GAME_NAME = GAME_NAME;
+    private void setGameName(String GAME_NAME) {
+        MenuScreen.GAME_NAME = GAME_NAME;
     }
     
     public static void finishLoading() {
@@ -126,14 +126,14 @@ public class MenuScreen extends BasicGameScreen {
             public boolean keyUp(int i) {
                 if (i == Keys.UP && cursor > 0) {
                     cursor--;
-                    setGAME_NAME(gameList[cursor]);
+                    setGameName(gameList[cursor]);
                 }
                 if (i == Keys.DOWN && cursor < gameList.length - 1) {
                     cursor++;
-                    setGAME_NAME(gameList[cursor]);
+                    setGameName(gameList[cursor]);
                 }
                 if (i == Keys.ENTER) {
-                    System.out.println("Loading game: " + getGAME_NAME());
+                    System.out.println("Loading game: " + getGameName());
                     START = true;
                     LOADING = true;
                 }
@@ -170,10 +170,10 @@ public class MenuScreen extends BasicGameScreen {
                         if (axisCode == 1) {
                             if (value == 1 && cursor < gameList.length - 1) {
                                 cursor++;
-                                setGAME_NAME(gameList[cursor]);
+                                setGameName(gameList[cursor]);
                             } else if (value == -1 && cursor > 0) {
                                 cursor--;
-                                setGAME_NAME(gameList[cursor]);
+                                setGameName(gameList[cursor]);
                             }
                             return true;
                         }
@@ -192,7 +192,7 @@ public class MenuScreen extends BasicGameScreen {
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         if (START) {
             START = false;
-            GameRuntime.setGamePath("./Programs/" + getGAME_NAME());
+            GameRuntime.setGamePath("./Programs/" + getGameName());
             sm.enterGameScreen(EngineScreen.ID, null, null);
         }
     }
@@ -210,8 +210,8 @@ public class MenuScreen extends BasicGameScreen {
             g.drawCircle(120, 80, 15);
             g.drawString("Loading... ", 0, viewport.getHeight() - 9);
         } else if (null != gameList) {
-            g.drawTexture(assetManager.get("./Programs/" + getGAME_NAME() + "/Art/icon.png"), ID, ID);
-            g.drawString("Selection: " + getGAME_NAME(), 0, viewport.getHeight() - 9);
+            g.drawTexture(assetManager.get("./Programs/" + getGameName() + "/Art/icon.png"), ID, ID);
+            g.drawString("Selection: " + getGameName(), 0, viewport.getHeight() - 9);
         } else {
             g.drawString("No game chips detected... ", 0, viewport.getHeight() - 9);
         }

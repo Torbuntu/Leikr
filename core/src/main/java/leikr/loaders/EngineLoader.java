@@ -19,7 +19,7 @@ import groovy.lang.GroovyClassLoader;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Files;
+import java.net.MalformedURLException;
 import leikr.CustomProgramProperties;
 import leikr.Engine;
 import leikr.GameRuntime;
@@ -34,7 +34,7 @@ import org.codehaus.groovy.tools.Compiler;
  */
 public class EngineLoader {
 
-    //TODO: Add support for more than one code file?
+    //Returns either a pre-compiled game Engine, an Engine compiled from sources, or null. Returning Null helps the EngineScreen return to the MenuScreen.
     public static Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException {
         GroovyClassLoader gcl = new GroovyClassLoader();
         CustomProgramProperties cp = new CustomProgramProperties(GameRuntime.getGamePath());
@@ -62,9 +62,8 @@ public class EngineLoader {
             Engine engine = (Engine) gcl.parseClass(new File(rootPath + "main.groovy")).getConstructors()[0].newInstance();//loads the game code  
             engine.preCreate(cp.MAX_SPRITES);//pre create here to instantiate objects
             return engine;
-        } catch (Exception ex) {
+        } catch (IOException | IllegalAccessException | IllegalArgumentException | InstantiationException | SecurityException | InvocationTargetException | CompilationFailedException ex) {
             System.out.println("Failed to parse and load program sources.");
-            ex.printStackTrace();
             return null;
         }
     }
@@ -73,18 +72,16 @@ public class EngineLoader {
         try {
             gcl.addURL(new File(rootPath.substring(2, rootPath.length()) + "Compiled/").toURI().toURL());
             for (String classFile : new File(rootPath + "Compiled/").list()) {
-                if (!classFile.equals(MenuScreen.getGAME_NAME() + ".class")) {
+                if (!classFile.equals(MenuScreen.getGameName() + ".class")) {
                     gcl.loadClass(classFile.replace(".class", ""));
                 }
             }
-            Engine engine = (Engine) gcl.loadClass(MenuScreen.getGAME_NAME()).getConstructors()[0].newInstance();
+            Engine engine = (Engine) gcl.loadClass(MenuScreen.getGameName()).getConstructors()[0].newInstance();
             engine.preCreate(cp.MAX_SPRITES);
             return engine;
-        } catch (Exception ex) {
+        } catch (ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException | SecurityException | InvocationTargetException | MalformedURLException ex) {
             System.out.println("Failed to collect compiled sources.");
-            ex.printStackTrace();
             return null;
-
         }
     }
 
@@ -101,9 +98,8 @@ public class EngineLoader {
                     cp.compile(new File(rootPath + path));
                 }
             }
-        } catch (Exception ex) {
+        } catch (CompilationFailedException ex) {
             System.out.println(ex.getMessage());
-            ex.printStackTrace();
         }
     }
 

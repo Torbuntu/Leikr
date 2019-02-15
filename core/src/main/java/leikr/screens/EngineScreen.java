@@ -17,9 +17,12 @@ package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import leikr.Engine;
 import leikr.GameRuntime;
 import leikr.loaders.EngineLoader;
+import org.codehaus.groovy.control.CompilationFailedException;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.screen.BasicGameScreen;
@@ -76,10 +79,9 @@ public class EngineScreen extends BasicGameScreen {
     public void preTransitionIn(Transition transition) {
         try {
             engine = EngineLoader.getEngine();//calls engine.preCreate()
-        } catch (Exception ex) {
+        } catch (IOException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException | InvocationTargetException | CompilationFailedException ex) {
             back = true;
             System.out.println("Error parsing game code. " + ex.getMessage());
-            ex.printStackTrace();
         }
     }
 
