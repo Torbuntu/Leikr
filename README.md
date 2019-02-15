@@ -51,7 +51,7 @@ Programs/
      /Code/     
      /Maps/
      /Sprites/
-     game.properties
+     program.properties
 ```
 
 Add `main.groovy` in the `Code/` directory. 
