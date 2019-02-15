@@ -52,7 +52,6 @@ public class EngineScreen extends BasicGameScreen {
             engine.setActive(false);
         }
         if (GameRuntime.SINGLE_LAUNCH) {
-            System.out.println("Good bye!");
             sm.enterGameScreen(TitleScreen.ID, null, null);
         } else {
             sm.enterGameScreen(MenuScreen.ID, null, null);
@@ -72,7 +71,7 @@ public class EngineScreen extends BasicGameScreen {
         if (null != engine) {
             engine.dispose();
         }
-        System.out.println("Game engine classes disposed.");
+        System.out.println("Engine classes disposed.");
     }
 
     @Override
@@ -81,7 +80,7 @@ public class EngineScreen extends BasicGameScreen {
             engine = EngineLoader.getEngine();//calls engine.preCreate()
         } catch (IOException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException | InvocationTargetException | CompilationFailedException ex) {
             back = true;
-            System.out.println("Error parsing game code. " + ex.getMessage());
+            System.out.println("Error parsing program code. " + ex.getMessage());
         }
     }
 
@@ -93,7 +92,7 @@ public class EngineScreen extends BasicGameScreen {
             Gdx.input.setInputProcessor(engine);
         } catch (Exception ex) {
             back = true;
-            System.out.println("Error in game `create` method. " + ex.getMessage());
+            System.out.println("Error in program `create` method. " + ex.getMessage());
         }
     }
 
@@ -108,7 +107,7 @@ public class EngineScreen extends BasicGameScreen {
             engine.update(delta);
         } catch (Exception ex) {
             back = true;
-            System.out.println("Error in game `update` method. " + ex.getMessage());
+            System.out.println("Error in program `update` method. " + ex.getMessage());
         }
 
     }
@@ -127,7 +126,7 @@ public class EngineScreen extends BasicGameScreen {
             engine.render();
         } catch (Exception ex) {
             back = true;
-            System.out.println("Error in game `render` method. " + ex.getMessage());
+            System.out.println("Error in program `render` method. " + ex.getMessage());
         }
     }
 

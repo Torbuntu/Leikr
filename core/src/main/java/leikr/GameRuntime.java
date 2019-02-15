@@ -63,7 +63,7 @@ public class GameRuntime extends ScreenBasedGame {
 
     @Override
     public int getInitialScreenId() {
-        return TitleScreen.ID;
+        return TitleScreen.ID;//initial screen to begin on is the title screen.
     }
 
 }

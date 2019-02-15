@@ -133,7 +133,7 @@ public class MenuScreen extends BasicGameScreen {
                     setGameName(gameList[cursor]);
                 }
                 if (i == Keys.ENTER) {
-                    System.out.println("Loading game: " + getGameName());
+                    System.out.println("Loading program: " + getGameName());
                     START = true;
                     LOADING = true;
                 }
@@ -213,7 +213,7 @@ public class MenuScreen extends BasicGameScreen {
             g.drawTexture(assetManager.get("./Programs/" + getGameName() + "/Art/icon.png"), ID, ID);
             g.drawString("Selection: " + getGameName(), 0, viewport.getHeight() - 9);
         } else {
-            g.drawString("No game chips detected... ", 0, viewport.getHeight() - 9);
+            g.drawString("No programs detected... ", 0, viewport.getHeight() - 9);
         }
     }
 
