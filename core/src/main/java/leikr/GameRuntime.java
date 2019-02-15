@@ -27,14 +27,26 @@ public class GameRuntime extends ScreenBasedGame {
 
     public static int WIDTH = 240;
     public static int HEIGHT = 160;
+    public static boolean SINGLE_LAUNCH = false;
 
     AssetManager assetManager;
-    
+
+    public GameRuntime(String[] args) {
+        if (args.length > 0) {
+            GAME_PATH = "./Programs/" + args[0];
+            SINGLE_LAUNCH = true;
+        }
+    }
+
     private static String GAME_PATH;
-    public static void setGamePath(String name){
-        GAME_PATH = name;
-    }    
-    public static String getGamePath(){
+
+    public static void setGamePath(String name) {
+        if (!SINGLE_LAUNCH) {
+            GAME_PATH = name;
+        }
+    }
+
+    public static String getGamePath() {
         return GAME_PATH;
     }
 

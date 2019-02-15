@@ -19,6 +19,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import java.util.Arrays;
 import leikr.Engine;
+import leikr.GameRuntime;
 import leikr.loaders.EngineLoader;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
@@ -47,6 +48,11 @@ public class EngineScreen extends BasicGameScreen {
         back = false;
         if (null != engine) {
             engine.setActive(false);
+        }
+        if(GameRuntime.SINGLE_LAUNCH){
+            System.out.println("Good bye!");
+            engine.dispose();
+            System.exit(0);
         }
         sm.enterGameScreen(MenuScreen.ID, null, null);
     }
