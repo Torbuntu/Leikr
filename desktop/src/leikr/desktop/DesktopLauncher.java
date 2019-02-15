@@ -13,6 +13,6 @@ public class DesktopLauncher {
         config.width = 720;
         config.height = 480;
         config.fullscreen = false;
-        new DesktopMini2DxGame(new GameRuntime(arg), config);
+        new DesktopMini2DxGame(new GameRuntime(), config);
     }
 }

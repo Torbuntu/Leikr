@@ -25,27 +25,20 @@ import java.util.Properties;
  *
  * @author tor
  */
-public class CustomProperties {
+public class CustomSystemProperties {
 
-    public int MAX_SPRITES;
+    public boolean SINGLE_LAUNCH;
 
-    public CustomProperties(String gamePath) {
-
+    CustomSystemProperties() {
         Properties prop = new Properties();
-        try (InputStream stream = new FileInputStream(new File(gamePath + "/game.properties"))) {
+        try (InputStream stream = new FileInputStream(new File("Data/system.properties"))) {
             prop.load(stream);
-
             //String example for later
             //customPalette = (prop.getProperty("customPalette") != null) ? prop.getProperty("customPalette") : "";
             //2048 is maximum, 120 is default
-            MAX_SPRITES = (prop.getProperty("max_sprites") != null) ? Integer.parseInt(prop.getProperty("max_sprites")) : 120;
-            if (MAX_SPRITES > 2048) {
-                MAX_SPRITES = 2048;
-            }
-
+            SINGLE_LAUNCH = (prop.getProperty("single_launch") != null) ? Boolean.valueOf(prop.getProperty("single_launch")) : false;
         } catch (IOException | NumberFormatException ex) {
             System.out.println(ex.getMessage());
         }
-
     }
 }

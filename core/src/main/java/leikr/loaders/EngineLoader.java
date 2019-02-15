@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import leikr.CustomProperties;
+import leikr.CustomGameProperties;
 import leikr.Engine;
 import leikr.GameRuntime;
 import org.codehaus.groovy.control.CompilationFailedException;
@@ -34,7 +34,7 @@ public class EngineLoader {
     //TODO: Add support for more than one code file?
     public static Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         GroovyClassLoader gcl = new GroovyClassLoader();
-        CustomProperties cp = new CustomProperties(GameRuntime.getGamePath());
+        CustomGameProperties cp = new CustomGameProperties(GameRuntime.getGamePath());
         String rootPath = GameRuntime.getGamePath() + "/Code/";
         String[] codes = new File(rootPath).list();
         for (String path : codes) {

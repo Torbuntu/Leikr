@@ -18,6 +18,7 @@ package leikr;
 import leikr.screens.EngineScreen;
 import leikr.screens.MenuScreen;
 import com.badlogic.gdx.assets.AssetManager;
+import java.io.File;
 import leikr.screens.TitleScreen;
 import org.mini2Dx.core.game.ScreenBasedGame;
 
@@ -31,9 +32,11 @@ public class GameRuntime extends ScreenBasedGame {
 
     AssetManager assetManager;
 
-    public GameRuntime(String[] args) {
-        if (args.length > 0) {
-            GAME_PATH = "./Programs/" + args[0];
+    public GameRuntime() {
+        CustomSystemProperties csp = new CustomSystemProperties();
+        if (csp.SINGLE_LAUNCH) {
+            GAME_PATH = "./Programs/" + new File("./Programs/").list()[0];//Look at this crazy hack! 
+            System.out.println(GAME_PATH);
             SINGLE_LAUNCH = true;
         }
     }
