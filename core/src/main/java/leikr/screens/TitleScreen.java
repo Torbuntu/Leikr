@@ -29,6 +29,7 @@ import leikr.loaders.FontLoader;
 import org.mini2Dx.core.font.MonospaceFont;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
@@ -47,13 +48,15 @@ public class TitleScreen extends BasicGameScreen {
     AssetManager assetManager;
     FontLoader fontLoader;
     MonospaceFont font;
+    FitViewport viewport;
     boolean MENU = false;
-    
+
     TiledMap logo;
 
     public TitleScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
         logo = new TiledMap(new FileHandle("./Data/Logo/Logo.tmx"));
+        viewport = new FitViewport(240, 160);
         loadMini2DxGraphic();
     }
 
@@ -108,6 +111,12 @@ public class TitleScreen extends BasicGameScreen {
     }
 
     @Override
+    public void onResize(int width, int height) {
+        Gdx.app.log("INFO", "Game window changed to " + width + "x" + height);
+        viewport.onResize(width, height);
+    }
+    
+    @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
         font.load(assetManager);
         logo.update(f);
@@ -121,11 +130,12 @@ public class TitleScreen extends BasicGameScreen {
 
     @Override
     public void render(GameContainer gc, Graphics g) {
+        viewport.apply(g);
         g.setFont(font);
-        g.drawString("Leikr Game System", 0, 0);
-        g.drawString("Powered by: ", 0, 24);
-        g.drawTexture(assetManager.get("./Data/mini2Dx.png"), 100, 10);
-        logo.draw(g, 100, 100);
+        logo.draw(g, 8, 8);
+        g.drawString("Leikr Game System", 24, 32);
+        g.drawString("Powered by: ", 8, 64);
+        g.drawTexture(assetManager.get("./Data/mini2Dx.png"), 96, 56, 82, 18);
     }
 
     @Override
