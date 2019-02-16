@@ -4,6 +4,7 @@ A Work in Progress remake of Leikr16
 
 Powered by [Mini2Dx](https://mini2dx.org/)
 
+![](title.gif?raw=true)
 
 ## Running from source 
 
