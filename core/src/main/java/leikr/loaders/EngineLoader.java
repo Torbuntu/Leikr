@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
-import leikr.CustomProgramProperties;
+import leikr.customProperties.CustomProgramProperties;
 import leikr.Engine;
 import leikr.GameRuntime;
 import leikr.screens.MenuScreen;
@@ -64,6 +64,7 @@ public class EngineLoader {
             return engine;
         } catch (IOException | IllegalAccessException | IllegalArgumentException | InstantiationException | SecurityException | InvocationTargetException | CompilationFailedException ex) {
             System.out.println("Failed to parse and load program sources.");
+            ex.printStackTrace();
             return null;
         }
     }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr;
+package leikr.customProperties;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,28 +25,17 @@ import java.util.Properties;
  *
  * @author tor
  */
-public class CustomProgramProperties {
+public class CustomSystemProperties {
 
-    public int MAX_SPRITES;
-    public boolean USE_COMPILED;
-    public boolean COMPILE_SOURCE;
+    public boolean SINGLE_LAUNCH;
 
-    public CustomProgramProperties(String gamePath) {
-
+    public CustomSystemProperties() {
         Properties prop = new Properties();
-        try (InputStream stream = new FileInputStream(new File(gamePath + "/program.properties"))) {
+        try (InputStream stream = new FileInputStream(new File("Data/system.properties"))) {
             prop.load(stream);
-
-            MAX_SPRITES = (prop.getProperty("max_sprites") != null) ? Integer.parseInt(prop.getProperty("max_sprites")) : 120;
-            if (MAX_SPRITES > 2048) {
-                MAX_SPRITES = 2048;
-            }
-            USE_COMPILED = (prop.getProperty("use_compiled") != null) ? Boolean.valueOf(prop.getProperty("use_compiled")) : false;
-            COMPILE_SOURCE = (prop.getProperty("compile_source") != null) ? Boolean.valueOf(prop.getProperty("compile_source")) : false;
-
+            SINGLE_LAUNCH = (prop.getProperty("single_launch") != null) ? Boolean.valueOf(prop.getProperty("single_launch")) : false;
         } catch (IOException | NumberFormatException ex) {
             System.out.println(ex.getMessage());
         }
-
     }
 }

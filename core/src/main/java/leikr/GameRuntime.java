@@ -15,6 +15,7 @@
  */
 package leikr;
 
+import leikr.customProperties.CustomSystemProperties;
 import leikr.screens.EngineScreen;
 import leikr.screens.MenuScreen;
 import com.badlogic.gdx.assets.AssetManager;
