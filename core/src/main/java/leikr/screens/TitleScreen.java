@@ -21,6 +21,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
@@ -33,6 +34,7 @@ import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.transition.FadeInTransition;
 import org.mini2Dx.core.screen.transition.FadeOutTransition;
+import org.mini2Dx.tiled.TiledMap;
 
 /**
  *
@@ -45,9 +47,12 @@ public class TitleScreen extends BasicGameScreen {
     FontLoader fontLoader;
     MonospaceFont font;
     boolean MENU = false;
+    
+    TiledMap logo;
 
     public TitleScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
+        logo = new TiledMap(new FileHandle("./Data/Logo/Logo.tmx"));
         loadMini2DxGraphic();
     }
 
@@ -95,6 +100,7 @@ public class TitleScreen extends BasicGameScreen {
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
         font.load(assetManager);
+        logo.update(f);
 
         checkInput(sm);
     }
@@ -109,6 +115,7 @@ public class TitleScreen extends BasicGameScreen {
         g.drawString("Leikr Game System", 0, 0);
         g.drawString("Powered by: ", 0, 24);
         g.drawTexture(assetManager.get("./Data/mini2Dx.png"), 100, 10);
+        logo.draw(g, 100, 100);
     }
 
     @Override
