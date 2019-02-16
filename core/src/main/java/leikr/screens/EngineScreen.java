@@ -1,15 +1,28 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2019 torbuntu.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import java.util.Arrays;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import leikr.Engine;
+import leikr.GameRuntime;
 import leikr.loaders.EngineLoader;
+import org.codehaus.groovy.control.CompilationFailedException;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.screen.BasicGameScreen;
@@ -33,14 +46,16 @@ public class EngineScreen extends BasicGameScreen {
         this.assetManager = assetManager;
     }
 
-    public void setEngine(Engine engine) {
-        this.engine = engine;
-    }
-
     void switchScreen(ScreenManager sm) {
         back = false;
-        engine.setActive(false);
-        sm.enterGameScreen(MenuScreen.ID, null, null);
+        if (null != engine) {
+            engine.setActive(false);
+        }
+        if (GameRuntime.SINGLE_LAUNCH) {
+            sm.enterGameScreen(TitleScreen.ID, null, null);
+        } else {
+            sm.enterGameScreen(MenuScreen.ID, null, null);
+        }
     }
 
     @Override
@@ -53,19 +68,19 @@ public class EngineScreen extends BasicGameScreen {
 
     @Override
     public void preTransitionOut(Transition transition) {
-        engine.dispose();
-        System.out.println("Game engine classes disposed.");
+        if (null != engine) {
+            engine.dispose();
+        }
+        System.out.println("Engine classes disposed.");
     }
 
     @Override
     public void preTransitionIn(Transition transition) {
-
         try {
-            engine = EngineLoader.getEngine();
-            setEngine(engine);
-        } catch (Exception ex) {
+            engine = EngineLoader.getEngine();//calls engine.preCreate()
+        } catch (IOException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException | InvocationTargetException | CompilationFailedException ex) {
             back = true;
-            System.out.println("Error parsing game class. " + ex.getMessage());
+            System.out.println("Error parsing program code. " + ex.getMessage());
         }
     }
 
@@ -77,8 +92,7 @@ public class EngineScreen extends BasicGameScreen {
             Gdx.input.setInputProcessor(engine);
         } catch (Exception ex) {
             back = true;
-            engine.setActive(false);
-            System.out.println("Error in game `create` method. " + ex.getMessage());
+            System.out.println("Error in program `create` method. " + ex.getMessage());
         }
     }
 
@@ -93,7 +107,7 @@ public class EngineScreen extends BasicGameScreen {
             engine.update(delta);
         } catch (Exception ex) {
             back = true;
-            System.out.println("Error in game `update` method. " + Arrays.toString(ex.getStackTrace()));
+            System.out.println("Error in program `update` method. " + ex.getMessage());
         }
 
     }
@@ -104,7 +118,7 @@ public class EngineScreen extends BasicGameScreen {
 
     @Override
     public void render(GameContainer gc, Graphics g) {
-        if (!engine.getActive()) {
+        if (null != engine && !engine.getActive()) {
             return;
         }
         try {
@@ -112,7 +126,7 @@ public class EngineScreen extends BasicGameScreen {
             engine.render();
         } catch (Exception ex) {
             back = true;
-            System.out.println("Error in game `render` method. " + ex.getMessage());
+            System.out.println("Error in program `render` method. " + ex.getMessage());
         }
     }
 
