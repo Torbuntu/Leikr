@@ -19,6 +19,7 @@ import leikr.screens.EngineScreen;
 import leikr.screens.MenuScreen;
 import com.badlogic.gdx.assets.AssetManager;
 import java.io.File;
+import leikr.screens.CreditScreen;
 import leikr.screens.TitleScreen;
 import org.mini2Dx.core.game.ScreenBasedGame;
 
@@ -57,6 +58,7 @@ public class GameRuntime extends ScreenBasedGame {
     public void initialise() {
         assetManager = new AssetManager();
         this.addScreen(new TitleScreen(assetManager));
+        this.addScreen(new CreditScreen(assetManager));
         this.addScreen(new MenuScreen(assetManager));
         this.addScreen(new EngineScreen(assetManager));
     }

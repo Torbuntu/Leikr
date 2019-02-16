@@ -16,16 +16,14 @@
 package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
-import leikr.loaders.FontLoader;
-import org.mini2Dx.core.font.MonospaceFont;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -35,34 +33,34 @@ import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
 import org.mini2Dx.core.screen.transition.FadeInTransition;
 import org.mini2Dx.core.screen.transition.FadeOutTransition;
-import org.mini2Dx.tiled.TiledMap;
 
 /**
  *
  * @author tor
  */
-public class TitleScreen extends BasicGameScreen {
-
-    public static int ID = 2;
+public class CreditScreen extends BasicGameScreen {
+    
+    public static int ID = 3;
     AssetManager assetManager;
-    FontLoader fontLoader;
-    MonospaceFont font;
     FitViewport viewport;
-    boolean CREDITS = false;
+    boolean MENU = false;
 
-    TiledMap logo;
-
-    public TitleScreen(AssetManager assetManager) {
+    public CreditScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
-        logo = new TiledMap(new FileHandle("./Data/Logo/Logo.tmx"));
         viewport = new FitViewport(240, 160);
+        loadMini2DxGraphic();
+    }
+
+    private void loadMini2DxGraphic() {
+        assetManager.load("./Data/mini2Dx.png", Texture.class);
+        assetManager.finishLoading();
     }
 
     void checkInput(ScreenManager sm) {
-        if (Gdx.input.isKeyPressed(Keys.SPACE) || Gdx.input.isKeyPressed(Keys.ENTER) || CREDITS) {
-            sm.enterGameScreen(CreditScreen.ID, new FadeOutTransition(Color.TEAL), new FadeInTransition(Color.FOREST));
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.ENTER) || MENU) {
+            sm.enterGameScreen(MenuScreen.ID, new FadeOutTransition(Color.TEAL), new FadeInTransition(Color.FOREST));
         }
-        if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             System.out.println("Good bye!");
             Gdx.app.exit();
         }
@@ -70,13 +68,11 @@ public class TitleScreen extends BasicGameScreen {
 
     @Override
     public void preTransitionIn(Transition transitionIn) {
-        CREDITS = false;
+        MENU = false;
     }
 
     @Override
     public void initialise(GameContainer gc) {
-        fontLoader = new FontLoader();
-        font = fontLoader.getFont(assetManager);
         try {
             Controller menuController;
             Array<Controller> nmc = Controllers.getControllers();
@@ -90,7 +86,7 @@ public class TitleScreen extends BasicGameScreen {
                         switch (buttonIndex) {
                             case 1:
                             case 9:
-                                CREDITS = true;
+                                MENU = true;
                                 break;
                         }
                         return false;
@@ -111,9 +107,6 @@ public class TitleScreen extends BasicGameScreen {
     
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
-        font.load(assetManager);
-        logo.update(f);
-
         checkInput(sm);
     }
 
@@ -124,14 +117,12 @@ public class TitleScreen extends BasicGameScreen {
     @Override
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
-        g.setFont(font);
-        logo.draw(g, 36, 64);
-        g.drawString("Leikr Game System", 56, 88);
+        g.drawString("Powered by ", 72, 40);
+        g.drawTexture(assetManager.get("./Data/mini2Dx.png"), 40, 72, 164, 32);
     }
 
     @Override
     public int getId() {
         return ID;
     }
-
 }
