@@ -28,6 +28,22 @@ class SimplePlatformer extends Engine {
     def isLadder(x,y){
         return getSolid(x,y) == 18
     }
+    
+    def hitBySwd(pa, pd){
+        if(pa.attack && !pd.attack){
+            if(pa.f > 0){
+                if(pa.x < pd.x && pa.x + 16 > pd.x + 8){
+                    pd.x += 6
+                    pd.y -= 4
+                }
+            }else{
+                if(pa.x < pd.x+8 && pa.x+8 > pd.x+8){
+                    pd.x -= 6
+                    pd.y -= 4
+                }
+            }
+        }
+    }
 	
     def getSolid(x,y){
         float mx = (x)/8+offX 
@@ -137,21 +153,21 @@ class SimplePlatformer extends Engine {
         p.y=p.y+p.vy
         if(p.x < 0 ){
             p.x = 0
-//            if(offX > 1){
-//                offX = 0
-//                p.x = 232
-//            }else{
-//                p.x = 0
-//            }
+            //            if(offX > 1){
+            //                offX = 0
+            //                p.x = 232
+            //            }else{
+            //                p.x = 0
+            //            }
         }	
         if(p.x > 236){
             p.x = 236
-//            if(offX < 1){
-//                offX = 30
-//                p.x = 0
-//            }else{
-//                p.x = 236
-//            }			
+            //            if(offX < 1){
+            //                offX = 30
+            //                p.x = 0
+            //            }else{
+            //                p.x = 236
+            //            }			
         }
     }
 	
@@ -233,13 +249,11 @@ class SimplePlatformer extends Engine {
 	
     void drawBullets(p){		
         if(p.f == 1){
-            bulletHitWall(-2, p)
             p.bullets.each{		
                 sprite(43, (it.x).toFloat(), it.y, false, false)
                 it.x += it.vx
             }
         }else{
-            bulletHitWall(8, p)
             p.bullets.each{
                 sprite(43, (it.x).toFloat(), it.y, true, false)
                 it.x += it.vx				
@@ -247,19 +261,26 @@ class SimplePlatformer extends Engine {
         }
     }
 	
-    void bulletHitWall(front, p){
-        for(def b in p.bullets){
-            if(getSolid(b.x+front, b.y) == 4){
-                b.hit = true
-                setSolid(b.x+front, b.y)//kill 3
-            }
-		
-            if(solid(b.x+front,b.y)){
+    void bulletHit(pa, pb){        
+        for(def b in pa.bullets){
+            if(((b.vx < 0 && b.x+5 > pb.x && b.x+8 < pb.x+8)||(b.vx > 0 && b.x > pb.x && b.x+3 < pb.x+8)) && b.y+5 > pb.y && b.y+7 < pb.y+8){
+                pb.x+=(5*b.vx)
+                pb.y-=6
                 b.hit = true
             }
         }
-        p.bullets.removeAll{it.hit == true}
+        for(def b in pb.bullets){
+            if(((b.vx < 0 && b.x+5 > pa.x && b.x+8 < pa.x+8)||(b.vx > 0 && b.x > pa.x && b.x+3 < pa.x+8)) && b.y+5 > pa.y && b.y+7 < pa.y+8){
+                pa.x+=(5*b.vx)
+                pa.y-=6
+                b.hit = true
+            }
+        }
+        pa.bullets.removeAll{it.hit == true}
+        pb.bullets.removeAll{it.hit == true}
     }
+    
+    
 	
     void renderPlayer(p){
         if(p.f == 1) {
@@ -301,6 +322,9 @@ class SimplePlatformer extends Engine {
         moveClouds()
         move(p1)
         move(p2)
+        hitBySwd(p1,p2)
+        hitBySwd(p2,p1)
+        bulletHit(p1,p2)
         updateTime(p1)
         updateTime(p2)
     }
