@@ -4,8 +4,9 @@ import com.badlogic.gdx.Input.Keys
 class Term extends Engine {
 
 	Random rand	
-	String txtOutput = ""
+	String txtOutput = ">"
 	Repository repo
+	boolean entered = false
 	
 	@Override
 	public boolean keyTyped(char character){
@@ -16,16 +17,26 @@ class Term extends Engine {
 	
 	@Override
 	public boolean keyDown(int keycode) {
-		if(keycode == Keys.BACKSPACE && txtOutput.length() > 0){
+		if(keycode == Keys.BACKSPACE && txtOutput.length() > 1){
+			if(entered){
+				txtOutput = ">"
+				return true
+			}
 			txtOutput = txtOutput.substring(0, txtOutput.length()-1)			
 		}
 		if(keycode == Keys.ENTER){
-			process()
+			if(txtOutput.length() > 1){
+				process()
+			}else{
+				txtOutput = ">"
+			}
 		}
 		return false;
 	}	
 	
 	void process(){
+		entered = true
+		txtOutput = txtOutput.substring(1, txtOutput.length())
 		def command = txtOutput.split(" ")
 		if(command[0].equals("lpm")){
 			if(command[1].equals("install")){
@@ -36,7 +47,7 @@ class Term extends Engine {
 			}
 			return
 		}
-		txtOutput = ""
+		txtOutput = ">"
 	}
 	
 	void create(){
@@ -47,6 +58,6 @@ class Term extends Engine {
 	}
 	void render(){	
 		bgColor(16)
-		text(txtOutput, 0, 0, 230, 1)
+		text(txtOutput, 0, 0, 232, 1)		
 	}	
 }

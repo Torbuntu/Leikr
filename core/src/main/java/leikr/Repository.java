@@ -16,10 +16,8 @@
 package leikr;
 
 import java.io.File;
-import java.io.IOException;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.PullCommand;
-import org.eclipse.jgit.api.errors.GitAPIException;
 
 /**
  *
@@ -33,7 +31,7 @@ public class Repository {
         try {
             Git.cloneRepository().setURI("https://" + repoType + ".com/" + userName + "/" + project + ".git").setDirectory(new File("./Programs/" + project)).call();
             return "Install success: `" + project + "`";
-        } catch (GitAPIException ex) {
+        } catch (Exception ex) {
             return "Install failure:  " + ex.getMessage();
         }
     }
@@ -43,7 +41,7 @@ public class Repository {
             PullCommand pc = git.pull();
             pc.call();
             return "Update success: `" + project + "`";
-        } catch (IOException | GitAPIException ex) {
+        } catch (Exception ex) {
             return "Update failure:  " + ex.getMessage();
         }
     }
