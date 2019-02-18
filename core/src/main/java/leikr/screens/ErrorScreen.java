@@ -116,7 +116,7 @@ public class ErrorScreen extends BasicGameScreen {
     @Override
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
-        g.setColor(Color.WHITE);
+        g.setColor(Color.RED);
         g.drawString("Message:  "+errorMessage, 0, 0, 232);
     }
 
