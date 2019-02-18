@@ -567,7 +567,7 @@ public abstract class Engine implements InputProcessor {
     @Override
     public boolean keyUp(int keyCode) {
         if (keyCode == Keys.ESCAPE) {
-            EngineScreen.back = true;
+            EngineScreen.BACK = true;
         }
         return false;
     }

@@ -17,12 +17,10 @@ package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import leikr.Engine;
 import leikr.GameRuntime;
 import leikr.loaders.EngineLoader;
-import org.codehaus.groovy.control.CompilationFailedException;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.screen.BasicGameScreen;
@@ -40,14 +38,16 @@ public class EngineScreen extends BasicGameScreen {
     AssetManager assetManager;
 
     Engine engine;
-    public static boolean back = false;
+    public static boolean BACK = false;
+    public static boolean ERROR = false;
+    public String errorMessage;
 
     public EngineScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
     }
 
-    void switchScreen(ScreenManager sm) {
-        back = false;
+    void enterMenuScreen(ScreenManager sm) {
+        BACK = false;
         if (null != engine) {
             engine.setActive(false);
         }
@@ -55,6 +55,18 @@ public class EngineScreen extends BasicGameScreen {
             sm.enterGameScreen(TitleScreen.ID, null, null);
         } else {
             sm.enterGameScreen(MenuScreen.ID, null, null);
+        }
+    }
+
+    void enterErrorScreen(ScreenManager sm) {
+        if (null != engine) {
+            engine.setActive(false);
+        }
+        if (GameRuntime.SINGLE_LAUNCH) {
+            sm.enterGameScreen(TitleScreen.ID, null, null);
+        } else {
+            ErrorScreen.setErrorMessage(errorMessage);
+            sm.enterGameScreen(ErrorScreen.ID, null, null);
         }
     }
 
@@ -78,36 +90,50 @@ public class EngineScreen extends BasicGameScreen {
     public void preTransitionIn(Transition transition) {
         try {
             engine = EngineLoader.getEngine();//calls engine.preCreate()
-        } catch (IOException | ClassNotFoundException | IllegalAccessException | IllegalArgumentException | InstantiationException | InvocationTargetException | CompilationFailedException ex) {
-            back = true;
-            System.out.println("Error parsing program code. " + ex.getMessage());
+        } catch (Exception ex) {
+            ERROR = true;
+            errorMessage = "Error parsing program code. " + ex.getLocalizedMessage();
+            System.out.println(errorMessage);
         }
+    }
+    
+    @Override
+    public void postTransitionOut(Transition transition){
+        ERROR = false;
     }
 
     @Override
     public void postTransitionIn(Transition transition) {
         MenuScreen.finishLoading();
+        if (ERROR) {
+            return;
+        }
         try {
             engine.create();
             Gdx.input.setInputProcessor(engine);
         } catch (Exception ex) {
-            back = true;
-            System.out.println("Error in program `create` method. " + ex.getMessage());
+            ERROR = true;
+            errorMessage = "Error in program `create` method. " + ex.getLocalizedMessage();
+            System.out.println(errorMessage);
         }
     }
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
-
-        if (back) {
-            switchScreen(sm);
+        if (BACK) {
+            enterMenuScreen(sm);
+        }
+        if (ERROR) {
+            enterErrorScreen(sm);
+            return;
         }
         try {
             engine.preUpdate(delta);
             engine.update(delta);
         } catch (Exception ex) {
-            back = true;
-            System.out.println("Error in program `update` method. " + ex.getMessage());
+            ERROR = true;
+            errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
+            System.out.println(errorMessage);
         }
 
     }
@@ -118,15 +144,16 @@ public class EngineScreen extends BasicGameScreen {
 
     @Override
     public void render(GameContainer gc, Graphics g) {
-        if (null != engine && !engine.getActive()) {
+        if (null != engine && !engine.getActive() || ERROR) {
             return;
         }
         try {
             engine.preRender(g);
             engine.render();
         } catch (Exception ex) {
-            back = true;
-            System.out.println("Error in program `render` method. " + ex.getMessage());
+            ERROR = true;
+            errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();
+            System.out.println(errorMessage);
         }
     }
 
