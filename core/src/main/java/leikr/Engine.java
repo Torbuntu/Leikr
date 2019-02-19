@@ -33,7 +33,6 @@ import leikr.screens.EngineScreen;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
-import org.mini2Dx.core.graphics.viewport.ScalingViewport;
 
 /**
  *
@@ -42,7 +41,7 @@ import org.mini2Dx.core.graphics.viewport.ScalingViewport;
 public abstract class Engine implements InputProcessor {
 
     Graphics g;
-    ScalingViewport viewport;
+    FitViewport viewport;
 
     //used by the Engine Screen to determine if the game is actively running.
     boolean active;
@@ -119,6 +118,11 @@ public abstract class Engine implements InputProcessor {
     abstract public void render();
 
     // end override functions
+    
+    
+    public void resize(int width, int height){
+        viewport.onResize(width, height);
+    }
     
     //dispose
     public void dispose() {
@@ -567,7 +571,7 @@ public abstract class Engine implements InputProcessor {
     @Override
     public boolean keyUp(int keyCode) {
         if (keyCode == Keys.ESCAPE) {
-            EngineScreen.BACK = true;
+            EngineScreen.setBack(true);
         }
         return false;
     }

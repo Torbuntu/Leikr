@@ -62,7 +62,7 @@ public class GameRuntime extends ScreenBasedGame {
         this.addScreen(new TitleScreen(assetManager));
         this.addScreen(new CreditScreen(assetManager));
         this.addScreen(new MenuScreen(assetManager));
-        this.addScreen(new EngineScreen(assetManager));
+        this.addScreen(new EngineScreen());
         this.addScreen(new ErrorScreen(assetManager));
     }
 
