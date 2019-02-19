@@ -62,11 +62,11 @@ project(":desktop") {
     }
     parcl {
         exe {
-            vmArgs = ["-Xmx1g"]
+            vmArgs = ["-Xmx1g", "-XX:+CMSClassUnloadingEnabled"]
             exeName = "Leikr"
         }
         app {
-            vmArgs = ["-Xmx1g"]
+            vmArgs = ["-Xmx1g", "-XX:+CMSClassUnloadingEnabled"]
             appName = "Leikr"
             icon = "icon.icns"
             applicationCategory = "public.app-category.adventure-games"
@@ -75,7 +75,7 @@ project(":desktop") {
             copyright = "Copyright 2018 Your Company Name"
         }
         linux {
-            vmArgs = ["-Xmx1g"]
+            vmArgs = ["-Xmx1g", "-XX:+CMSClassUnloadingEnabled"]
             binName = "Leikr"
             withJre("/usr/lib/jvm/java-1.8.0-openjdk/")
         }
