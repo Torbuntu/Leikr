@@ -16,7 +16,6 @@
 package leikr.loaders;
 
 import groovy.lang.GroovyClassLoader;
-import groovy.lang.GroovyResourceLoader;
 import groovy.lang.GroovySystem;
 import java.io.File;
 import java.io.IOException;
@@ -74,7 +73,7 @@ public class EngineLoader {
             }
         }
         Engine engine = (Engine) gcl.loadClass(MenuScreen.getGameName()).getConstructors()[0].newInstance();
-        engine.preCreate(cp.MAX_SPRITES);
+        engine.preCreate(cp.MAX_SPRITES);//pre create here to instantiate objects
         return engine;
     }
 
@@ -93,9 +92,9 @@ public class EngineLoader {
     }
 
     public static void destroy() {
+        gcl.clearCache();
         for (Class<?> c : gcl.getLoadedClasses()) {
             GroovySystem.getMetaClassRegistry().removeMetaClass(c);
         }
-        gcl.clearCache();
     }
 }
