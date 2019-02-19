@@ -16,6 +16,8 @@
 package leikr.loaders;
 
 import groovy.lang.GroovyClassLoader;
+import groovy.lang.GroovyResourceLoader;
+import groovy.lang.GroovySystem;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -33,10 +35,11 @@ import org.codehaus.groovy.tools.Compiler;
  * @author tor
  */
 public class EngineLoader {
-    static GroovyClassLoader gcl = new GroovyClassLoader();
+
+    static GroovyClassLoader gcl = new GroovyClassLoader(ClassLoader.getSystemClassLoader());
+
     //Returns either a pre-compiled game Engine, an Engine compiled from sources, or null. Returning Null helps the EngineScreen return to the MenuScreen.
     public static Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException {
-        gcl.clearCache();
         CustomProgramProperties cp = new CustomProgramProperties(GameRuntime.getGamePath());
         String rootPath = GameRuntime.getGamePath() + "/Code/";
 
@@ -89,4 +92,10 @@ public class EngineLoader {
         }
     }
 
+    public static void destroy() {
+        for (Class<?> c : gcl.getLoadedClasses()) {
+            GroovySystem.getMetaClassRegistry().removeMetaClass(c);
+        }
+        gcl.clearCache();
+    }
 }

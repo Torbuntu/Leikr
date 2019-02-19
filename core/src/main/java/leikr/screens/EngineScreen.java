@@ -77,11 +77,6 @@ public class EngineScreen extends BasicGameScreen {
     }
 
     @Override
-    public void preTransitionOut(Transition transition) {
-        
-    }
-
-    @Override
     public void preTransitionIn(Transition transition) {
         try {
             engine = EngineLoader.getEngine();//calls engine.preCreate()
@@ -99,6 +94,7 @@ public class EngineScreen extends BasicGameScreen {
         if (null != engine) {
             engine.dispose();
             engine = null; // release all objects for gc
+            EngineLoader.destroy();//danger-zone
         }
         System.out.println("Engine classes disposed.");
     }
