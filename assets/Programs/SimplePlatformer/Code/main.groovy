@@ -51,7 +51,7 @@ class SimplePlatformer extends Engine {
         return mapGet(mx,my)
     }
 	
-    void setSolid(x,y){
+    void setDebris(x,y){
         float mx = (x)/8+offX 
         float my = (y)/8+offY
         mapSet(mx,my, 16)
@@ -153,21 +153,21 @@ class SimplePlatformer extends Engine {
         p.y=p.y+p.vy
         if(p.x < 0 ){
             p.x = 0
-            //            if(offX > 1){
-            //                offX = 0
-            //                p.x = 232
-            //            }else{
-            //                p.x = 0
-            //            }
+            if(offX > 1){
+                offX = 0
+                p.x = 232
+            }else{
+                p.x = 0
+            }
         }	
         if(p.x > 236){
             p.x = 236
-            //            if(offX < 1){
-            //                offX = 30
-            //                p.x = 0
-            //            }else{
-            //                p.x = 236
-            //            }			
+            if(offX < 1){
+                offX = 30
+                p.x = 0
+            }else{
+                p.x = 236
+            }			
         }
     }
 	
@@ -268,12 +268,28 @@ class SimplePlatformer extends Engine {
                 pb.y-=6
                 b.hit = true
             }
+            if(b.vx > 0 && getSolid(b.x+3, b.y+2)==4){
+                b.hit = true
+                setDebris(b.x+3, b.y+2)
+            }
+            if(b.vx < 0 && getSolid(b.x+5, b.y+2)==4){
+                b.hit = true
+                setDebris(b.x+5, b.y+2)
+            }
         }
         for(def b in pb.bullets){
             if(((b.vx < 0 && b.x+5 > pa.x && b.x+8 < pa.x+8)||(b.vx > 0 && b.x > pa.x && b.x+3 < pa.x+8)) && b.y+5 > pa.y && b.y+7 < pa.y+8){
                 pa.x+=(5*b.vx)
                 pa.y-=6
                 b.hit = true
+            }
+            if(b.vx > 0 && getSolid(b.x+3, b.y+2)==4){
+                b.hit = true
+                setDebris(b.x+3, b.y+2)
+            }
+            if(b.vx < 0 && getSolid(b.x+5, b.y+2)==4){
+                b.hit = true
+                setDebris(b.x+5, b.y+2)
             }
         }
         pa.bullets.removeAll{it.hit == true}

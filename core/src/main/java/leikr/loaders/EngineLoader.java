@@ -33,10 +33,10 @@ import org.codehaus.groovy.tools.Compiler;
  * @author tor
  */
 public class EngineLoader {
-
+    static GroovyClassLoader gcl = new GroovyClassLoader();
     //Returns either a pre-compiled game Engine, an Engine compiled from sources, or null. Returning Null helps the EngineScreen return to the MenuScreen.
     public static Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException {
-        GroovyClassLoader gcl = new GroovyClassLoader();
+        gcl.clearCache();
         CustomProgramProperties cp = new CustomProgramProperties(GameRuntime.getGamePath());
         String rootPath = GameRuntime.getGamePath() + "/Code/";
 
@@ -44,12 +44,12 @@ public class EngineLoader {
             compileEngine(rootPath);
         }
         if (cp.USE_COMPILED) {
-            return getCompiledEngine(rootPath, gcl, cp);
+            return getCompiledEngine(rootPath, cp);
         }
-        return getSourceEngine(rootPath, gcl, cp);
+        return getSourceEngine(rootPath, cp);
     }
 
-    private static Engine getSourceEngine(String rootPath, GroovyClassLoader gcl, CustomProgramProperties cp) throws CompilationFailedException, IOException, InstantiationException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    private static Engine getSourceEngine(String rootPath, CustomProgramProperties cp) throws CompilationFailedException, IOException, InstantiationException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         String[] codes = new File(rootPath).list();
         if (codes.length > 1) {
             for (String path : codes) {
@@ -63,7 +63,7 @@ public class EngineLoader {
         return engine;
     }
 
-    private static Engine getCompiledEngine(String rootPath, GroovyClassLoader gcl, CustomProgramProperties cp) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    private static Engine getCompiledEngine(String rootPath, CustomProgramProperties cp) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
         gcl.addURL(new File(rootPath.substring(2, rootPath.length()) + "Compiled/").toURI().toURL());
         for (String classFile : new File(rootPath + "Compiled/").list()) {
             if (!classFile.equals(MenuScreen.getGameName() + ".class")) {

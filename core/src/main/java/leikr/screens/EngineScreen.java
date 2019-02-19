@@ -16,8 +16,6 @@
 package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-import java.util.Arrays;
 import leikr.Engine;
 import leikr.GameRuntime;
 import leikr.loaders.EngineLoader;
@@ -35,15 +33,14 @@ import org.mini2Dx.core.screen.Transition;
 public class EngineScreen extends BasicGameScreen {
 
     public static int ID = 1;
-    AssetManager assetManager;
 
     Engine engine;
-    public static boolean BACK = false;
-    public static boolean ERROR = false;
-    public String errorMessage;
-
-    public EngineScreen(AssetManager assetManager) {
-        this.assetManager = assetManager;
+    static boolean BACK = false;
+    static boolean ERROR = false;
+    String errorMessage;
+    
+    public static void setBack(boolean setback){
+        BACK = setback;
     }
 
     void enterMenuScreen(ScreenManager sm) {
@@ -76,14 +73,12 @@ public class EngineScreen extends BasicGameScreen {
 
     @Override
     public void onResize(int width, int height) {
+        engine.resize(width, height);
     }
 
     @Override
     public void preTransitionOut(Transition transition) {
-        if (null != engine) {
-            engine.dispose();
-        }
-        System.out.println("Engine classes disposed.");
+        
     }
 
     @Override
@@ -100,6 +95,12 @@ public class EngineScreen extends BasicGameScreen {
     @Override
     public void postTransitionOut(Transition transition){
         ERROR = false;
+        BACK = false;
+        if (null != engine) {
+            engine.dispose();
+            engine = null; // release all objects for gc
+        }
+        System.out.println("Engine classes disposed.");
     }
 
     @Override
