@@ -72,11 +72,6 @@ public class EngineScreen extends BasicGameScreen {
     }
 
     @Override
-    public void onResize(int width, int height) {
-        engine.resize(width, height);
-    }
-
-    @Override
     public void preTransitionIn(Transition transition) {
         try {
             engine = EngineLoader.getEngine();//calls engine.preCreate()

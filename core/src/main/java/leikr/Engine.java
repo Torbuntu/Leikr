@@ -40,26 +40,43 @@ import org.mini2Dx.core.graphics.viewport.FitViewport;
  */
 public abstract class Engine implements InputProcessor {
 
+    //Mini2DX specific classes for managing the screen state and drawing.
     Graphics g;
     FitViewport viewport;
+    FPSLogger logger;
 
-    //used by the Engine Screen to determine if the game is actively running.
+    //used by the Engine Screen to determine if the game should be actively running.
     boolean active;
 
+    /**
+     * LeikrController is actually the custom controller listener and the pNc
+     * objects are the controllers.
+     */
     LeikrController p1Controller;
     LeikrController p2Controller;
     Controller p1c;
     Controller p2c;
 
+    /**
+     * Loaders
+     *
+     * The loaders are used to load the custom assets for a game at startup.
+     */
     MapLoader mapLoader;
     ImageLoader imageLoader;
     SpriteLoader spriteLoader;
     AudioLoader audioLoader;
 
-    FPSLogger logger;
+    /**
+     * Properties set by Custom Properties
+     *
+     * These can be overwritten for a more custom experience.
+     */
     private int MAX_SPRITES;
     private int USED_SPRITES;
-    public ButtonCodes BTN; //codes for the buttons for readability
+
+    //codes for the buttons for readability
+    public ButtonCodes BTN;
 
     //custom prop functions
     public int getUsedSprites() {
@@ -67,7 +84,6 @@ public abstract class Engine implements InputProcessor {
     }
     //end custom prop functions
 
-    // Override functions for game scripting.
     public void preCreate(int mSprites) {
         MAX_SPRITES = mSprites;
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
@@ -110,21 +126,19 @@ public abstract class Engine implements InputProcessor {
         //set to 0 before drawing anything
         USED_SPRITES = 0;
     }
-
+    
+    /**
+     * Override functions for game scripting.
+     * These are abstract and are required to be implemented in the game code.
+     */
     abstract public void create();
 
     abstract public void update(float delta);
 
     abstract public void render();
-
     // end override functions
-    
-    
-    public void resize(int width, int height){
-        viewport.onResize(width, height);
-    }
-    
-    //dispose
+  
+    //disposes the game objects on exit
     public void dispose() {
         audioLoader.disposeAudioLoader();
         mapLoader.disposeMap();
