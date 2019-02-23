@@ -69,7 +69,7 @@ public class EngineLoader {
         gcl.addURL(new File(rootPath.substring(2, rootPath.length()) + "Compiled/").toURI().toURL());
         for (String classFile : new File(rootPath + "Compiled/").list()) {
             if (!classFile.equals(MenuScreen.getGameName() + ".class")) {
-                gcl.loadClass(classFile.replace(".class", ""));
+                gcl.loadClass(classFile.replace(".class", ""), false, true);
             }
         }
         Engine engine = (Engine) gcl.loadClass(MenuScreen.getGameName()).getConstructors()[0].newInstance();
