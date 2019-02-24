@@ -20,16 +20,16 @@ package leikr.controls;
  * @author tor
  */
 public class ButtonCodes {
-    public int X = 0;
-    public int A = 1;
-    public int B = 2;
-    public int Y = 3;
-    public int LEFT_BUMPER = 4;
-    public int RIGHT_BUMPER = 5;
-    public int SELECT = 8;
-    public int START = 9;
-    public int UP = 10;
-    public int RIGHT = 11;
-    public int DOWN = 12;
-    public int LEFT = 13;
+    public static final int X = 0;
+    public static final int A = 1;
+    public static final int B = 2;
+    public static final int Y = 3;
+    public static final int LEFT_BUMPER = 4;
+    public static final int RIGHT_BUMPER = 5;
+    public static final int SELECT = 8;
+    public static final int START = 9;
+    public static final int UP = 10;
+    public static final int RIGHT = 11;
+    public static final int DOWN = 12;
+    public static final int LEFT = 13;
 }

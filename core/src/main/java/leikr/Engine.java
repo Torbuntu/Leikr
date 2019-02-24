@@ -79,12 +79,12 @@ public abstract class Engine implements InputProcessor {
     public ButtonCodes BTN;
 
     //custom prop functions
-    public int getUsedSprites() {
+    final int getUsedSprites() {
         return USED_SPRITES;
     }
     //end custom prop functions
 
-    public void preCreate(int mSprites) {
+    public final void preCreate(int mSprites) {
         MAX_SPRITES = mSprites;
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         logger = new FPSLogger();
@@ -113,23 +113,23 @@ public abstract class Engine implements InputProcessor {
 
     }
 
-    public void preUpdate(float delta) {
+    public final void preUpdate(float delta) {
         if (null == mapLoader.getMap()) {
             return;//don't update the map if it is null
         }
         mapLoader.getMap().update(delta);
     }
 
-    public void preRender(Graphics g) {
+    public final void preRender(Graphics g) {
         this.g = g;
         viewport.apply(this.g);
         //set to 0 before drawing anything
         USED_SPRITES = 0;
     }
-    
+
     /**
-     * Override functions for game scripting.
-     * These are abstract and are required to be implemented in the game code.
+     * Override functions for game scripting. These are abstract and are
+     * required to be implemented in the game code.
      */
     abstract public void create();
 
@@ -137,9 +137,9 @@ public abstract class Engine implements InputProcessor {
 
     abstract public void render();
     // end override functions
-  
+
     //disposes the game objects on exit
-    public void dispose() {
+    public final void dispose() {
         audioLoader.disposeAudioLoader();
         mapLoader.disposeMap();
         spriteLoader.disposeSprites();
@@ -155,90 +155,90 @@ public abstract class Engine implements InputProcessor {
 
     //Start Helper methods
     //Not a very helpful method, but I like to see how things perform.
-    void FPS() {
+    final void FPS() {
         logger.log();
     }
 
-    public boolean getActive() {
+    public final boolean getActive() {
         return active;
     }
 
-    public void setActive(boolean state) {
+    public final void setActive(boolean state) {
         this.active = state;
     }
     //End helper methods.
 
     //Image methods
-    void loadImages() {
+    final void loadImages() {
         imageLoader.load();
     }
 
-    void image(String name, float x, float y) {
+    final void image(String name, float x, float y) {
         g.drawTexture(imageLoader.getImage(name), x, y);
     }
 
-    void image(String name, float x, float y, float w, float h) {
+    final void image(String name, float x, float y, float w, float h) {
         g.drawTexture(imageLoader.getImage(name), x, y, w, h);
     }
 
-    void image(String name, float x, float y, float w, float h, boolean flipv) {
+    final void image(String name, float x, float y, float w, float h, boolean flipv) {
         g.drawTexture(imageLoader.getImage(name), x, y, w, h, flipv);
     }
     //end Image methods
 
     //Map methods
-    void loadMap(String map) {
+    final void loadMap(String map) {
         mapLoader.loadMap(map);
     }
 
-    void map() {
+    final void map() {
         mapLoader.drawMap(g);
     }
 
-    void map(int x, int y) {
+    final void map(int x, int y) {
         mapLoader.drawMap(g, x, y);
     }
 
-    void map(int x, int y, int layer) {
+    final void map(int x, int y, int layer) {
         mapLoader.drawMap(g, x, y, layer);
     }
 
-    void map(int x, int y, int sx, int sy, int w, int h) {
+    final void map(int x, int y, int sx, int sy, int w, int h) {
         mapLoader.drawMap(g, x, y, sx, sy, w, h);
     }
 
-    void map(int x, int y, int sx, int sy, int w, int h, int layer) {
+    final void map(int x, int y, int sx, int sy, int w, int h, int layer) {
         mapLoader.drawMap(g, x, y, sx, sy, w, h, layer);
     }
 
-    int mapGet(float x, float y) {
+    final int mapGet(float x, float y) {
         return mapLoader.getMapTileId(x, y);
     }
 
-    void mapSet(float x, float y, int id) {
+    final void mapSet(float x, float y, int id) {
         mapLoader.setMapTile(x, y, id);
     }
 
-    int getMapHeight() {
+    final int getMapHeight() {
         return mapLoader.getMap().getHeight();
     }
 
-    int getMapWidth() {
+    final int getMapWidth() {
         return mapLoader.getMap().getWidth();
     }
     //end Map methods
 
     //start color methods
-    void drawColor(int color) {
+    final void drawColor(int color) {
         g.setColor(getDrawColor(color));
     }
 
-    void drawColor(float r, float gr, float b) {
+    final void drawColor(float r, float gr, float b) {
         Color tmp = new Color(r, gr, b, 1f);
         g.setColor(tmp);
     }
 
-    Color getDrawColor(int color) {
+    final Color getDrawColor(int color) {
         switch (color) {
             case 0:
                 return (Color.BLACK);
@@ -277,46 +277,46 @@ public abstract class Engine implements InputProcessor {
         }
     }
 
-    void bgColor(int color) {
+    final void bgColor(int color) {
         drawColor(color);
         g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
     }
 
-    void bgColor(float r, float gr, float b) {
+    final void bgColor(float r, float gr, float b) {
         drawColor(r, gr, b);
         g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
     }
 
-    void bgColor(float[] color) {
+    final void bgColor(float[] color) {
         drawColor(color[0], color[1], color[2]);
         g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
     }
     //end color methods
 
     //text methods
-    void text(String text, float x, float y, int color) {
+    final void text(String text, float x, float y, int color) {
         drawColor(color);
         g.drawString(text, x, y);
     }
 
-    void text(String text, float x, float y, float[] color) {
+    final void text(String text, float x, float y, float[] color) {
         drawColor(color[0], color[1], color[2]);
         g.drawString(text, x, y);
     }
 
-    void text(String text, float x, float y, float width, int color) {
+    final void text(String text, float x, float y, float width, int color) {
         drawColor(color);
         g.drawString(text, x, y, width);
     }
 
-    void text(String text, float x, float y, float width, float[] color) {
+    final void text(String text, float x, float y, float width, float[] color) {
         drawColor(color[0], color[1], color[2]);
         g.drawString(text, x, y, width);
     }
     //end text methods
 
     //start 8x8 sprites
-    void sprite(int id, float x, float y) {
+    final void sprite(int id, float x, float y) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -324,7 +324,7 @@ public abstract class Engine implements InputProcessor {
         USED_SPRITES++;
     }
 
-    void sprite(int id, float x, float y, float degr) {
+    final void sprite(int id, float x, float y, float degr) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -335,7 +335,7 @@ public abstract class Engine implements InputProcessor {
         USED_SPRITES++;
     }
 
-    void sprite(int id, float x, float y, boolean clockwise) {
+    final void sprite(int id, float x, float y, boolean clockwise) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -346,7 +346,7 @@ public abstract class Engine implements InputProcessor {
         USED_SPRITES++;
     }
 
-    void sprite(int id, float x, float y, boolean flipX, boolean flipY) {
+    final void sprite(int id, float x, float y, boolean flipX, boolean flipY) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -359,7 +359,7 @@ public abstract class Engine implements InputProcessor {
     //end 8x8 sprites
 
     //start 16x16 sprites
-    void sprite16(int id, float x, float y) {
+    final void sprite16(int id, float x, float y) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -367,7 +367,7 @@ public abstract class Engine implements InputProcessor {
         USED_SPRITES++;
     }
 
-    void sprite16(int id, float x, float y, float degr) {
+    final void sprite16(int id, float x, float y, float degr) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -378,7 +378,7 @@ public abstract class Engine implements InputProcessor {
         USED_SPRITES++;
     }
 
-    void sprite16(int id, float x, float y, boolean clockwise) {
+    final void sprite16(int id, float x, float y, boolean clockwise) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -389,7 +389,7 @@ public abstract class Engine implements InputProcessor {
         USED_SPRITES++;
     }
 
-    void sprite16(int id, float x, float y, boolean flipX, boolean flipY) {
+    final void sprite16(int id, float x, float y, boolean flipX, boolean flipY) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -402,7 +402,7 @@ public abstract class Engine implements InputProcessor {
     //end 16x16 sprites
 
     //start 32x32 sprites
-    void sprite32(int id, float x, float y) {
+    final void sprite32(int id, float x, float y) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -410,7 +410,7 @@ public abstract class Engine implements InputProcessor {
         USED_SPRITES++;
     }
 
-    void sprite32(int id, float x, float y, float degr) {
+    final void sprite32(int id, float x, float y, float degr) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -421,7 +421,7 @@ public abstract class Engine implements InputProcessor {
         USED_SPRITES++;
     }
 
-    void sprite32(int id, float x, float y, boolean clockwise) {
+    final void sprite32(int id, float x, float y, boolean clockwise) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -432,7 +432,7 @@ public abstract class Engine implements InputProcessor {
         USED_SPRITES++;
     }
 
-    void sprite32(int id, float x, float y, boolean flipX, boolean flipY) {
+    final void sprite32(int id, float x, float y, boolean flipX, boolean flipY) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -445,7 +445,7 @@ public abstract class Engine implements InputProcessor {
     //end 32x32 sprites
 
     //start 64x64 sprites
-    void sprite64(int id, float x, float y) {
+    final void sprite64(int id, float x, float y) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -453,7 +453,7 @@ public abstract class Engine implements InputProcessor {
         USED_SPRITES++;
     }
 
-    void sprite64(int id, float x, float y, float degr) {
+    final void sprite64(int id, float x, float y, float degr) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -464,7 +464,7 @@ public abstract class Engine implements InputProcessor {
         USED_SPRITES++;
     }
 
-    void sprite64(int id, float x, float y, boolean clockwise) {
+    final void sprite64(int id, float x, float y, boolean clockwise) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -475,7 +475,7 @@ public abstract class Engine implements InputProcessor {
         USED_SPRITES++;
     }
 
-    void sprite64(int id, float x, float y, boolean flipX, boolean flipY) {
+    final void sprite64(int id, float x, float y, boolean flipX, boolean flipY) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -488,11 +488,11 @@ public abstract class Engine implements InputProcessor {
     //end 64x64 sprites
 
     //start shape drawing methods
-    void rect(float x, float y, float w, float h) {
+    final void rect(float x, float y, float w, float h) {
         g.drawRect(x, y, w, h);
     }
 
-    void rect(float x, float y, float w, float h, boolean fill) {
+    final void rect(float x, float y, float w, float h, boolean fill) {
         if (fill) {
             g.fillRect(x, y, w, h);
         } else {
@@ -500,11 +500,11 @@ public abstract class Engine implements InputProcessor {
         }
     }
 
-    void circle(float x, float y, float r) {
+    final void circle(float x, float y, float r) {
         g.drawCircle(x, y, r);
     }
 
-    void circle(float x, float y, float r, boolean fill) {
+    final void circle(float x, float y, float r, boolean fill) {
         if (fill) {
             g.fillCircle(x, y, r);
         } else {
@@ -512,11 +512,11 @@ public abstract class Engine implements InputProcessor {
         }
     }
 
-    void triangle(float x1, float y1, float x2, float y2, float x3, float y3) {
+    final void triangle(float x1, float y1, float x2, float y2, float x3, float y3) {
         g.drawTriangle(x1, y1, x2, y2, x3, y3);
     }
 
-    void triangle(float x1, float y1, float x2, float y2, float x3, float y3, boolean fill) {
+    final void triangle(float x1, float y1, float x2, float y2, float x3, float y3, boolean fill) {
         if (fill) {
             g.fillTriangle(x1, y1, x2, y2, x3, y3);
         } else {
@@ -524,44 +524,44 @@ public abstract class Engine implements InputProcessor {
         }
     }
 
-    void line(float x1, float y1, float x2, float y2) {
+    final void line(float x1, float y1, float x2, float y2) {
         g.drawLineSegment(x1, x2, y1, y2);
     }
     //end shape drawing methods
 
     //start Audio handling
-    void sfx(String name) {
+    final void sfx(String name) {
         audioLoader.sound(name);
     }
 
-    void sfx(String name, float vol, float pit, float pan) {
+    final void sfx(String name, float vol, float pit, float pan) {
         audioLoader.sound(name, vol, pit, pan);
     }
 
-    void music(String name) {
+    final void music(String name) {
         audioLoader.music(name);
     }
 
-    void music(String name, boolean loop) {
+    final void music(String name, boolean loop) {
         audioLoader.music(name, loop);
     }
 
-    void stopAllMusic() {
+    final void stopAllMusic() {
         audioLoader.stopMusic();
     }
 
-    void stopMusic(String fileName) {
+    final void stopMusic(String fileName) {
         audioLoader.stopMusic(fileName);
     }
     //end audio handling
 
     //start input handling
-    boolean button(int button) {
+    final boolean button(int button) {
         //assume single player game, only p1Controller
         return (null != p1Controller) ? p1Controller.button(button) : false;
     }
 
-    boolean button(int button, int player) {
+    final boolean button(int button, int player) {
         if (null != p1Controller && player == 0) {
             return p1Controller.button(button);
         }
@@ -573,7 +573,7 @@ public abstract class Engine implements InputProcessor {
     }
 
     //detect keyboard key presses
-    boolean key(String key) {
+    final boolean key(String key) {
         return Gdx.input.isKeyPressed(Keys.valueOf(key));
     }
 

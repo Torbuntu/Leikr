@@ -243,8 +243,7 @@ class Breakout extends Engine {
         return false;
     }
 
-    void create(){	
-	
+    void create(){		
         rand = new Random()		
         newGame()
     }

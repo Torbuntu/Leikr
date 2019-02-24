@@ -15,12 +15,14 @@
  */
 package leikr.loaders;
 
+import com.badlogic.gdx.Gdx;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovySystem;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
+import java.util.Arrays;
 import leikr.customProperties.CustomProgramProperties;
 import leikr.Engine;
 import leikr.GameRuntime;
@@ -52,16 +54,20 @@ public class EngineLoader {
     }
 
     private static Engine getSourceEngine(String rootPath, CustomProgramProperties cp) throws CompilationFailedException, IOException, InstantiationException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        String[] codes = new File(rootPath).list();
-        if (codes.length > 1) {
+        String[] codes = new File(Gdx.files.getLocalStoragePath() + rootPath).list();
+        Engine engine = null;
+        if (codes.length > 0) {
             for (String path : codes) {
                 if (!path.equals("main.groovy") && !path.equals("Compiled")) {
-                    gcl.parseClass(new File(rootPath + path));
+                    gcl.parseClass(new File(Gdx.files.getLocalStoragePath() + rootPath + path));
+                } else {
+                    engine = (Engine) gcl.parseClass(new File(Gdx.files.getLocalStoragePath() + rootPath + "main.groovy")).getConstructors()[0].newInstance();//loads the game code  
                 }
             }
         }
-        Engine engine = (Engine) gcl.parseClass(new File(rootPath + "main.groovy")).getConstructors()[0].newInstance();//loads the game code  
-        engine.preCreate(cp.MAX_SPRITES);//pre create here to instantiate objects
+        if (null != engine) {
+            engine.preCreate(cp.MAX_SPRITES);//pre create here to instantiate objects
+        }
         return engine;
     }
 

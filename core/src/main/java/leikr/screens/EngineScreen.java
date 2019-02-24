@@ -104,6 +104,7 @@ public class EngineScreen extends BasicGameScreen {
             engine.create();
             Gdx.input.setInputProcessor(engine);
         } catch (Exception ex) {
+            ex.printStackTrace();
             ERROR = true;
             errorMessage = "Error in program `create` method. " + ex.getLocalizedMessage();
             System.out.println(errorMessage);
