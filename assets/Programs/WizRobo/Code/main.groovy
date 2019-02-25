@@ -9,6 +9,7 @@ class WizRobo extends Engine {
 	def enemy3 = [:]
 	def enemy4 = [:]
 	
+	def title = true
 	def level = 0
 	def lvl1start = false
 	
@@ -33,13 +34,7 @@ class WizRobo extends Engine {
         float my = (y)/8
         return mapGet(mx,my)
     }
-	
-	//TODO: chane debris sprite
-    void setDebris(x,y){
-        float mx = (x)/8 
-        float my = (y)/8
-        mapSet(mx,my, 16)
-    }
+
     
     void init(){
     	wiz = [x: 10, y: 100, vx: 0, vy: 0, spid: 0, f: false, g: true, jmsid: 4,
@@ -205,10 +200,18 @@ class WizRobo extends Engine {
     void create(){		
         loadImages()
         rand = new Random()
-        init()
+        loadMap("title")
     }
 
     void update(float delta){
+    	if(title){
+    		if(key("X") || key("Space")){
+    			title = false
+    			init()
+    		}
+    		return
+    	}
+    
     	wiz.waTime++
     	movep()
     	if(bolt.attack){
@@ -222,7 +225,7 @@ class WizRobo extends Engine {
     		}
     	}
     	
-    	switch(level){
+    	switch(level){    	
     		case 1:
     			lvl1Update()
     			break;
@@ -243,10 +246,24 @@ class WizRobo extends Engine {
     		sprite(enemy1.spid, enemy1.x, enemy1.y)
 		}
     }
+    void renderlvl1(){
+    	if(enemy1.alive){
+    		sprite(enemy1.spid, enemy1.x, enemy1.y)
+    	}
+    	if(enemy2.alive){
+    		sprite(enemy2.spid, enemy2.x, enemy2.y)
+    	}
+    }	
 	
     void render(){
         bgColor(0.1f,0.1f,0.1f)
-		map()		
+		map()	
+		
+		if(title){
+			text("Escape the dungeon!", 46, 32, 1)
+			return
+		}
+			
 		if(wiz.charged){
 			sprite(9, (wiz.x).toFloat(), (wiz.y-8).toFloat(), wiz.cf, false)
 		}
@@ -256,6 +273,7 @@ class WizRobo extends Engine {
 		}
 		switch(level){
 			case 1:
+				renderlvl1()
 				break;
 				
 			default:

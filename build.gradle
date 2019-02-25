@@ -9,6 +9,7 @@ buildscript {
     dependencies {
         classpath 'org.mini2Dx:parcl:1.3.1'
         classpath 'org.mini2Dx:butler:1.1.2'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:4.0.4'
     }
 }
 
