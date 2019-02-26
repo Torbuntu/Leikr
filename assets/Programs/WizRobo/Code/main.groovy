@@ -12,6 +12,7 @@ class WizRobo extends Engine {
     def title = true
     def level = 0
     def lvl1start = false
+    def lvl2start = false
 	
     def i = [:]
     
@@ -60,11 +61,25 @@ class WizRobo extends Engine {
     	loadMap("lvl1")
     }
     
+    void initlvl2(){
+        wiz.x = 0
+        wiz.y = 16
+        
+    	enemy1 = [x: 72, y: 96, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+        
+        enemy2 = [x: 152, y: 72, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+        
+        enemy3 = [x: 208, y: 72, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+        
+    	loadMap("lvl2")
+    }
+    
     
     void movep(){        
-        	
+        wiz.waTime++
         wiz.vx = 0
         wiz.spid = 0
+        //check left or right moving
         if((key(wiz.left) || button(BTN.LEFT)) && !solid(wiz.x-1, wiz.y) && !solid(wiz.x-1, wiz.y+7)){		
             wiz.vx =-1           
             wiz.f = true
@@ -75,9 +90,13 @@ class WizRobo extends Engine {
             wiz.f = false
             wiz.w = true
         }
+        
+        //check walking
         if(wiz.vx == 0){
             wiz.w = false
         }
+        
+        //check gravity
         if( solid(wiz.x,wiz.y+8+wiz.vy) || solid(wiz.x+7,wiz.y+8+wiz.vy)){
             wiz.vy=0
             wiz.g = true
@@ -85,31 +104,31 @@ class WizRobo extends Engine {
             wiz.vy = wiz.vy+0.2
             wiz.g = false
         }
-		
-        if((key(wiz.up) || button(BTN.A)) && wiz.vy==0){        	
+	
+        //check jumping.
+        if(((key(wiz.up) || button(BTN.A)) || key("Up")) && wiz.vy==0){        	
             wiz.vy=-3.5            
             wiz.g = false 
         }	
-        if((key(wiz.down) || button(BTN.DOWN)) && ladder()){
-            wiz.vy = 1
-        }
+        
+        //check on ground
         if(wiz.vy < 0 && (solid(wiz.x, wiz.y-1)||solid(wiz.x+8, wiz.y-1))){
             wiz.vy = 0
-        }
-		
+        }		
         if( wiz.vy<0 && (solid(wiz.x+wiz.vx,wiz.y+wiz.vy) || solid(wiz.x+8+wiz.vx,wiz.y+wiz.vy))){
             wiz.g = true  
         }   
 		
-     
+        // jumping
         if(!wiz.g){
             wiz.spid = wiz.jmsid
         }
-        
+        //standing
         if(wiz.g && !wiz.w){
             wiz.spid = 0
         }
-		
+        
+        //walking
         if(wiz.w && wiz.g){   
             wiz.spid = wiz.walkAnim[wiz.waIndex] 		
             if(wiz.waTime > 8){
@@ -121,6 +140,7 @@ class WizRobo extends Engine {
             wiz.waIndex = 0
     	}
     	
+        //action buttons
     	if(key("X") || button(BTN.Y)){
             chargep()
     	}
@@ -129,13 +149,13 @@ class WizRobo extends Engine {
     	}
     	
     	if(ladder()){
-            
-            if(key(wiz.down)){
+            wiz.vy = 0
+            if(key(wiz.down) || button(BTN.DOWN) || key("Down") ){
                 wiz.vy = 0.6
             }
-            if(key(wiz.up)){
+            if(key(wiz.up) || button(BTN.UP) || key("Up")){
                 wiz.vy = -0.6
-            }
+            }            
         }	
         
         if(bolt.charge == 30){
@@ -144,6 +164,16 @@ class WizRobo extends Engine {
 		
         wiz.x=wiz.x+wiz.vx
         wiz.y=wiz.y+wiz.vy
+        if(bolt.attack){
+            attackb()
+    	}
+    	if(wiz.charged){
+            wiz.chargedTime++
+            if(wiz.chargedTime > 2){
+                wiz.chargedTime = 0  
+                wiz.cf = !wiz.cf  			
+            }
+    	}
     }
     
     def ladder(){
@@ -233,6 +263,9 @@ class WizRobo extends Engine {
             initlvl1()
             lvl1start = true    		
     	}    	
+        if(wiz.x>236){
+            level++
+        }
         
         enemyAnimation(enemy1)
         enemyAnimation(enemy2)
@@ -256,6 +289,59 @@ class WizRobo extends Engine {
             mapSet(29,2,0)
         }
     }
+    
+    void lvl2Update(){
+    	if(!lvl2start){
+            initlvl2()
+            lvl2start = true    		
+    	}    	
+        if(wiz.y>160){
+            level++
+        }
+        
+        enemyAnimation(enemy1)
+        enemyAnimation(enemy2)
+        enemyAnimation(enemy3)
+        if(enemy1.alive){
+            if(enemy1.x < 72 || enemy1.x > 88){
+                enemy1.vs = -enemy1.vs
+                enemy1.f = !enemy1.f
+            }
+            enemy1.x = enemy1.x + enemy1.vs            
+        }
+        if(enemy2.alive){
+            if(enemy2.x < 152 || enemy2.x > 168){
+                enemy2.vs = -enemy2.vs
+                enemy2.f = !enemy2.f
+            }
+            enemy2.x = enemy2.x + enemy2.vs            
+        }
+        if(enemy3.alive){
+            if(enemy3.x < 208 || enemy3.x > 224){
+                enemy3.vs = -enemy3.vs
+                enemy3.f = !enemy3.f
+            }
+            enemy3.x = enemy3.x + enemy3.vs            
+        }
+        boltHitEnemy(enemy1)
+        boltHitEnemy(enemy2)
+        boltHitEnemy(enemy3)
+        if(!enemy1.alive){
+            mapSet(enemy1.x/8, enemy1.y/8, 88)
+            mapSet(27,17,0)
+            mapSet(28,17,0)
+        }
+        if(!enemy2.alive){
+            mapSet(enemy2.x/8, enemy2.y/8, 88)
+            mapSet(27,18,0)
+            mapSet(28,18,0)
+        }
+        if(!enemy3.alive){
+            mapSet(enemy3.x/8, enemy3.y/8, 88)
+            mapSet(27,19,0)
+            mapSet(28,19,0)
+        }
+    }
   
     void create(){		
         loadImages()
@@ -270,25 +356,18 @@ class WizRobo extends Engine {
                 init()
             }
             return
-    	}
-    
-    	wiz.waTime++
+    	}    
+    	
     	movep()
-    	if(bolt.attack){
-            attackb()
-    	}
-    	if(wiz.charged){
-            wiz.chargedTime++
-            if(wiz.chargedTime > 2){
-                wiz.chargedTime = 0  
-                wiz.cf = !wiz.cf  			
-            }
-    	}
+    	
         checkScroll() 
     	
     	switch(level){    	
         case 1:
             lvl1Update()
+            break;
+        case 2:
+            lvl2Update()
             break;
         default:    			    	
             if(wiz.y < 0){
@@ -317,6 +396,17 @@ class WizRobo extends Engine {
             sprite(enemy2.spid, enemy2.x, enemy2.y)
     	}
     }	
+    void renderlvl2(){        
+    	if(enemy1.alive){
+            sprite(enemy1.spid, enemy1.x, enemy1.y, enemy1.f, false)
+    	}
+    	if(enemy2.alive){
+            sprite(enemy2.spid, enemy2.x, enemy2.y)
+    	}
+        if(enemy3.alive){
+            sprite(enemy3.spid, enemy3.x, enemy3.y, enemy3.f, false)
+    	}
+    }	
 	
     void render(){
         bgColor(0.1f,0.1f,0.1f)
@@ -341,7 +431,9 @@ class WizRobo extends Engine {
         case 1:
             renderlvl1()
             break;
-				
+        case 2:
+            renderlvl2()
+            break;
         default:
             renderDefault()
             break;
