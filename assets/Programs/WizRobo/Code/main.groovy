@@ -3,15 +3,7 @@ class WizRobo extends Engine {
 	
     def wiz = [:]	
     def bolt = [:]
-	
-    def enemy1 = [:]
-    def enemy2 = [:]
-    def enemy3 = [:]
-    def enemy4 = [:]
-    def enemy5 = [:]
-    def enemy6 = [:]
-    def enemy7 = [:]
-    def enemy8 = [:]
+    def enemies = []
     def enemyDeadSpids = [84.85,86]
 	
     def title = true
@@ -222,9 +214,10 @@ class WizRobo extends Engine {
             scrolls: 0]
     			
     	bolt = [x:0, y:0, vx:0, w:8, h:8, spid: 0, spids: [5,6,7,8], charge: 0, attack: false, hit: false]
-    	
-    	enemy1 = [x: 72, y: 72, w:8, h:8, f:false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
-    			
+    	def enemy1 = [x: 72, y: 72, w:8, h:8, f:false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+        enemies = [] // only needed when the game loops around during development.
+        enemies.add(enemy1)
+
     	loadMap("intro")
     }
     
@@ -232,10 +225,14 @@ class WizRobo extends Engine {
         wiz.x = 10
         wiz.y = 144
         
-    	enemy1 = [x: 208, y: 64, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+    	def enemy1 = [x: 208, y: 64, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]        
+        def enemy2 = [x: 64, y: 80, vs: 0, w: 8, h: 8, f:false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+        enemies = []
+        enemies.addAll([enemy1, enemy2])
         
-        enemy2 = [x: 64, y: 80, w: 8, h: 8, f:false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
-        
+        enemies.each{
+            println "enemy " + it
+        }
     	loadMap("lvl1")
     }
     
@@ -243,12 +240,11 @@ class WizRobo extends Engine {
         wiz.x = 0
         wiz.y = 16
         
-    	enemy1 = [x: 72, y: 96, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
-        
-        enemy2 = [x: 152, y: 72, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
-        
-        enemy3 = [x: 208, y: 72, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
-        
+    	def enemy1 = [x: 72, y: 96, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]        
+        def enemy2 = [x: 152, y: 72, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]        
+        def enemy3 = [x: 208, y: 72, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+        enemies = []
+        enemies.addAll([enemy1, enemy2, enemy3])
     	loadMap("lvl2")
     }
     
@@ -256,13 +252,12 @@ class WizRobo extends Engine {
         wiz.x = 220
         wiz.y = 0
         
-    	enemy1 = [x: 8, y: 64, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
-        
-        enemy2 = [x: 8, y: 144, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
-        
-        enemy3 = [x: 184, y: 80, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
-        
-        enemy4 = [x: 32, y: 80, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+    	def enemy1 = [x: 8, y: 64, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]        
+        def enemy2 = [x: 8, y: 144, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]        
+        def enemy3 = [x: 184, y: 80, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]        
+        def enemy4 = [x: 32, y: 80, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+        enemies = []
+        enemies.addAll([enemy1, enemy2, enemy3, enemy4])
         
     	loadMap("lvl3")
     }
@@ -310,21 +305,22 @@ class WizRobo extends Engine {
             level++
             lvl1start = false
         }
+        enemies.each{
+            enemyAnimation(it)
+        }
         
-        enemyAnimation(enemy1)
-        enemyAnimation(enemy2)
+        moveEnemy(enemies.get(0), 208, 224)
+        enemies.each{
+            boltHitEnemy(it)
+        }
         
-        moveEnemy(enemy1, 208, 224)
-        
-        boltHitEnemy(enemy1)
-        boltHitEnemy(enemy2)
-        if(!enemy1.alive){
-            mapSet(enemy1.x/8, enemy1.y/8, 88)
+        if(!enemies[0].alive){
+            mapSet(enemies[0].x/8, enemies[0].y/8, 88)
             mapSet(28,1,0)
             mapSet(28,2,0)
         }
-        if(!enemy2.alive){
-            mapSet(enemy2.x/8, enemy2.y/8, 88)
+        if(!enemies[1].alive){
+            mapSet(enemies[1].x/8, enemies[1].y/8, 88)
             mapSet(29,1,0)
             mapSet(29,2,0)
         }
@@ -339,29 +335,30 @@ class WizRobo extends Engine {
             level++
             lvl2start = false
         }
+        enemies.each{
+            enemyAnimation(it)
+        }
         
-        enemyAnimation(enemy1)
-        enemyAnimation(enemy2)
-        enemyAnimation(enemy3)
-        moveEnemy(enemy1, 72, 88)
-        moveEnemy(enemy2, 152, 168)
-        moveEnemy(enemy3, 208, 224)
+        moveEnemy(enemies.get(0), 72, 88)
+        moveEnemy(enemies.get(1), 152, 168)
+        moveEnemy(enemies.get(2), 208, 224)
         
-        boltHitEnemy(enemy1)
-        boltHitEnemy(enemy2)
-        boltHitEnemy(enemy3)
-        if(!enemy1.alive){
-            mapSet(enemy1.x/8, enemy1.y/8, 88)
+        enemies.each{
+            boltHitEnemy(it)
+        }
+
+        if(!enemies[0].alive){
+            mapSet(enemies[0].x/8, enemies[0].y/8, 88)
             mapSet(27,17,0)
             mapSet(28,17,0)
         }
-        if(!enemy2.alive){
-            mapSet(enemy2.x/8, enemy2.y/8, 88)
+        if(!enemies[1].alive){
+            mapSet(enemies[1].x/8, enemies[1].y/8, 88)
             mapSet(27,18,0)
             mapSet(28,18,0)
         }
-        if(!enemy3.alive){
-            mapSet(enemy3.x/8, enemy3.y/8, 88)
+        if(!enemies[2].alive){
+            mapSet(enemies[2].x/8, enemies[2].y/8, 88)
             mapSet(27,19,0)
             mapSet(28,19,0)
         }
@@ -376,38 +373,35 @@ class WizRobo extends Engine {
             level++
             lvl3start = false
         }
+        enemies.each{
+            enemyAnimation(it)
+        }
         
-        enemyAnimation(enemy1)
-        enemyAnimation(enemy2)
-        enemyAnimation(enemy3)
-        enemyAnimation(enemy4)
+        moveEnemy(enemies[0], 8, 24)
+        moveEnemy(enemies[1], 8, 56)
+        moveEnemy(enemies[2], 184, 200)
+        moveEnemy(enemies[3], 32, 48)
         
-        moveEnemy(enemy1, 8, 24)
-        moveEnemy(enemy2, 8, 56)
-        moveEnemy(enemy3, 184, 200)
-        moveEnemy(enemy4, 32, 48)
-        
-        boltHitEnemy(enemy1)
-        boltHitEnemy(enemy2)
-        boltHitEnemy(enemy3)
-        boltHitEnemy(enemy4)
-        if(!enemy1.alive){
-            mapSet(enemy1.x/8, enemy1.y/8, 88)
+        enemies.each{
+            boltHitEnemy(it)
+        }
+        if(!enemies[0].alive){
+            mapSet(enemies[0].x/8, enemies[0].y/8, 88)
             mapSet(26,13,0)
             mapSet(26,14,0)
         }
-        if(!enemy2.alive){
-            mapSet(enemy2.x/8, enemy2.y/8, 88)
+        if(!enemies[1].alive){
+            mapSet(enemies[1].x/8, enemies[1].y/8, 88)
             mapSet(27,13,0)
             mapSet(27,14,0)
         }
-        if(!enemy3.alive){
-            mapSet(enemy3.x/8, enemy3.y/8, 88)
+        if(!enemies[2].alive){
+            mapSet(enemies[2].x/8, enemies[2].y/8, 88)
             mapSet(28,13,0)
             mapSet(28,14,0)
         }
-        if(!enemy4.alive){
-            mapSet(enemy4.x/8, enemy4.y/8, 88)
+        if(!enemies[3].alive){
+            mapSet(enemies[3].x/8, enemies[3].y/8, 88)
             mapSet(29,13,0)
             mapSet(29,14,0)
         }
@@ -437,10 +431,10 @@ class WizRobo extends Engine {
             if(wiz.y < 0){
                 level++
             }
-            enemyAnimation(enemy1)
-            boltHitEnemy(enemy1)
-            if(!enemy1.alive){
-                mapSet(enemy1.x/8, enemy1.y/8, 88)
+            enemyAnimation(enemies[0])
+            boltHitEnemy(enemies[0])
+            if(!enemies[0].alive){
+                mapSet(enemies[0].x/8, enemies[0].y/8, 88)
                 mapSet(1,0,33)
             }
             break;
@@ -464,42 +458,30 @@ class WizRobo extends Engine {
     }
     
     void renderDefault(){
-    	if(enemy1.alive){
-            sprite(enemy1.spid, enemy1.x, enemy1.y)
+    	if(enemies[0].alive){
+            sprite(enemies[0].spid, enemies[0].x, enemies[0].y)
         }
     }
-    void renderlvl1(){        
-    	if(enemy1.alive){
-            sprite(enemy1.spid, enemy1.x, enemy1.y, enemy1.f, false)
-    	}
-    	if(enemy2.alive){
-            sprite(enemy2.spid, enemy2.x, enemy2.y)
-    	}
+    void renderlvl1(){
+        enemies.each{it ->
+            if(it.alive){
+                sprite(it.spid, it.x, it.y, it.f, false)
+            }
+        }    	
     }	
     void renderlvl2(){        
-    	if(enemy1.alive){
-            sprite(enemy1.spid, enemy1.x, enemy1.y, enemy1.f, false)
-    	}
-    	if(enemy2.alive){
-            sprite(enemy2.spid, enemy2.x, enemy2.y, enemy2.f, false)
-    	}
-        if(enemy3.alive){
-            sprite(enemy3.spid, enemy3.x, enemy3.y, enemy3.f, false)
-    	}
+    	enemies.each{it ->
+            if(it.alive){
+                sprite(it.spid, it.x, it.y, it.f, false)
+            }
+        }  
     }	
     void renderlvl3(){        
-    	if(enemy1.alive){
-            sprite(enemy1.spid, enemy1.x, enemy1.y, enemy1.f, false)
-    	}
-    	if(enemy2.alive){
-            sprite(enemy2.spid, enemy2.x, enemy2.y, enemy2.f, false)
-    	}
-        if(enemy3.alive){
-            sprite(enemy3.spid, enemy3.x, enemy3.y, enemy3.f, false)
-    	}
-        if(enemy4.alive){
-            sprite(enemy4.spid, enemy4.x, enemy4.y, enemy4.f, false)
-    	}
+    	enemies.each{it ->
+            if(it.alive){
+                sprite(it.spid, it.x, it.y, it.f, false)
+            }
+        }  
     }	
 	
     void render(){
