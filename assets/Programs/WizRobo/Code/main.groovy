@@ -223,7 +223,7 @@ class WizRobo extends Engine {
     			
     	bolt = [x:0, y:0, vx:0, w:8, h:8, spid: 0, spids: [5,6,7,8], charge: 0, attack: false, hit: false]
     	
-    	enemy1 = [x: 72, y: 72, w:8, h:8, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+    	enemy1 = [x: 72, y: 72, w:8, h:8, f:false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
     			
     	loadMap("intro")
     }
@@ -234,7 +234,7 @@ class WizRobo extends Engine {
         
     	enemy1 = [x: 208, y: 64, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
         
-        enemy2 = [x: 64, y: 80, w: 8, h: 8, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+        enemy2 = [x: 64, y: 80, w: 8, h: 8, f:false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
         
     	loadMap("lvl1")
     }
@@ -459,6 +459,8 @@ class WizRobo extends Engine {
             loadMap("title")
             break;    			
     	}
+        
+        debuglvl()
     }
     
     void renderDefault(){
@@ -538,5 +540,27 @@ class WizRobo extends Engine {
         }
         
         text("Charge: "+bolt.charge, 0,0, 1)
+    }
+    
+    
+    
+    
+    //Debug
+    void debuglvl(){
+        if(key("1")){
+            level = 1
+            lvl2start = false
+            lvl3start = false
+        }
+        if(key("2")){
+            level = 2
+            lvl1start = false
+            lvl3start = false
+        }
+        if(key("3")){
+            level = 3
+            lvl2start = false
+            lvl1start = false
+        }
     }
 }
