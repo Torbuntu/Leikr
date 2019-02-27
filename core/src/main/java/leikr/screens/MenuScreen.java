@@ -85,7 +85,7 @@ public class MenuScreen extends BasicGameScreen {
 
     private void loadIcons() {
         for (String game : gameList) {
-            assetManager.load(Gdx.files.getLocalStoragePath()+"Programs/" + game + "/Art/icon.png", Texture.class);
+            assetManager.load("./Programs/" + game + "/Art/icon.png", Texture.class);
         }
         assetManager.finishLoading();
     }
@@ -209,7 +209,7 @@ public class MenuScreen extends BasicGameScreen {
             g.drawCircle(120, 80, 15);
             g.drawString("Loading... ", 0, viewport.getHeight() - 9);
         } else if (null != gameList) {
-            g.drawTexture(assetManager.get(Gdx.files.getLocalStoragePath()+"Programs/" + getGameName() + "/Art/icon.png"), ID, ID);
+            g.drawTexture(assetManager.get("./Programs/" + getGameName() + "/Art/icon.png"), ID, ID);
             g.drawString("Selection: " + getGameName(), 0, viewport.getHeight() - 9);
         } else {
             g.drawString("No programs detected... ", 0, viewport.getHeight() - 9);
