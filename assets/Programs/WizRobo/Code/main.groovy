@@ -8,11 +8,22 @@ class WizRobo extends Engine {
     def enemy2 = [:]
     def enemy3 = [:]
     def enemy4 = [:]
+    def enemy5 = [:]
+    def enemy6 = [:]
+    def enemy7 = [:]
+    def enemy8 = [:]
+    def enemyDeadSpids = [84.85,86]
 	
     def title = true
     def level = 0
     def lvl1start = false
     def lvl2start = false
+    def lvl3start = false
+    def lvl4start = false
+    def lvl5start = false
+    def lvl6start = false
+    def lvl7start = false
+    def lvl8start = false
 	
     def i = [:]
     
@@ -35,45 +46,6 @@ class WizRobo extends Engine {
         float my = (y)/8
         return mapGet(mx,my)
     }
-
-    
-    void init(){
-    	wiz = [x: 10, y: 100, vx: 0, vy: 0, w:8, h:8, spid: 0, f: false, g: true, jmsid: 4,
-            jumping: false, s: false, walkAnim: [1,2,3,0], waIndex: 0, 
-            waTime: 0, left: "Left", right: "Right", up: "Space", down:"Down", charged: false, chargedTime: 0, cf: false,
-            scrolls: 0]
-    			
-    	bolt = [x:0, y:0, vx:0, w:8, h:8, spid: 0, spids: [5,6,7,8], charge: 0, attack: false, hit: false]
-    	
-    	enemy1 = [x: 72, y: 72, w:8, h:8, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
-    			
-    	loadMap("intro")
-    }
-    
-    void initlvl1(){
-        wiz.x = 16
-        wiz.y = 150
-        
-    	enemy1 = [x: 208, y: 64, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
-        
-        enemy2 = [x: 64, y: 80, w: 8, h: 8, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
-        
-    	loadMap("lvl1")
-    }
-    
-    void initlvl2(){
-        wiz.x = 0
-        wiz.y = 16
-        
-    	enemy1 = [x: 72, y: 96, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
-        
-        enemy2 = [x: 152, y: 72, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
-        
-        enemy3 = [x: 208, y: 72, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
-        
-    	loadMap("lvl2")
-    }
-    
     
     void movep(){        
         wiz.waTime++
@@ -166,7 +138,11 @@ class WizRobo extends Engine {
         wiz.y=wiz.y+wiz.vy
         if(bolt.attack){
             attackb()
-    	}
+    	}else{
+            bolt.x = 0
+            bolt.y = 0
+        }
+        
     	if(wiz.charged){
             wiz.chargedTime++
             if(wiz.chargedTime > 2){
@@ -212,24 +188,18 @@ class WizRobo extends Engine {
     }
     
     void attackb(){
-    	if((bolt.f && solid(bolt.x, bolt.y) || solid(bolt.x, bolt.y+7)) || (bolt.f && solid(bolt.x+8, bolt.y) || solid(bolt.x+8, bolt.y+7))){
+    	if((bolt.f && solid(bolt.x, bolt.y) || solid(bolt.x, bolt.y+7)) || (bolt.f && solid(bolt.x+4, bolt.y) || solid(bolt.x+4, bolt.y+7))){
             bolt.attack = false
             bolt.charge = 0
+            return
     	}
         if(bolt.x > 240 || bolt.x < 0){
             bolt.attack = false
             bolt.charge = 0
-        }
+            return
+        }        
     	bolt.x = bolt.x + bolt.vx
-    }
-    
-    void boltHitEnemy(enemy){
-        if(collide(bolt, enemy)){
-            bolt.attack = false
-            bolt.charge = 0
-            enemy.alive = false
-    	}
-    }
+    }  
     
     void checkScroll(){
         int tile = getTile(wiz.x+2, wiz.y+2)
@@ -237,8 +207,85 @@ class WizRobo extends Engine {
             mapSet((wiz.x+2)/8, (wiz.y+2)/8, 0)
             wiz.scrolls++
         }
+    }   
+    
+    //assumes x,y,w,h on each object
+    boolean collide(a,b){
+        return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y
     }
     
+    // INIT methods
+    void init(){
+    	wiz = [x: 10, y: 100, vx: 0, vy: 0, w:8, h:8, spid: 0, f: false, g: true, jmsid: 4,
+            jumping: false, s: false, walkAnim: [1,2,3,0], waIndex: 0, 
+            waTime: 0, left: "Left", right: "Right", up: "Space", down:"Down", charged: false, chargedTime: 0, cf: false,
+            scrolls: 0]
+    			
+    	bolt = [x:0, y:0, vx:0, w:8, h:8, spid: 0, spids: [5,6,7,8], charge: 0, attack: false, hit: false]
+    	
+    	enemy1 = [x: 72, y: 72, w:8, h:8, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+    			
+    	loadMap("intro")
+    }
+    
+    void initlvl1(){
+        wiz.x = 10
+        wiz.y = 144
+        
+    	enemy1 = [x: 208, y: 64, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+        
+        enemy2 = [x: 64, y: 80, w: 8, h: 8, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+        
+    	loadMap("lvl1")
+    }
+    
+    void initlvl2(){
+        wiz.x = 0
+        wiz.y = 16
+        
+    	enemy1 = [x: 72, y: 96, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+        
+        enemy2 = [x: 152, y: 72, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+        
+        enemy3 = [x: 208, y: 72, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+        
+    	loadMap("lvl2")
+    }
+    
+    void initlvl3(){
+        wiz.x = 220
+        wiz.y = 0
+        
+    	enemy1 = [x: 8, y: 64, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+        
+        enemy2 = [x: 8, y: 144, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+        
+        enemy3 = [x: 184, y: 80, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+        
+        enemy4 = [x: 32, y: 80, vs: 0.2, w: 8, h: 8, f: false, spid: 10, alive: true, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0]
+        
+    	loadMap("lvl3")
+    }
+    
+    // ENEMY methods
+    void moveEnemy(enemy, x, y){
+        if(enemy.alive){
+            if(enemy.x < x || enemy.x > y){
+                enemy.vs = -enemy.vs
+                enemy.f = !enemy.f
+            }
+            enemy.x = enemy.x + enemy.vs            
+        }
+    }
+    
+    void boltHitEnemy(enemy){
+        if(collide(bolt, enemy) && bolt.charge == 30){  
+            bolt.attack = false
+            bolt.charge = 0
+            enemy.alive = false
+    	}
+    }    
+     
     void enemyAnimation(enemy){
         enemy.animTime++      
         if(enemy.alive){   
@@ -253,11 +300,7 @@ class WizRobo extends Engine {
     	}
     }
     
-    //assumes x,y,w,h on each object
-    boolean collide(a,b){
-        return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y
-    }
-    
+    // UPDATE methods
     void lvl1Update(){
     	if(!lvl1start){
             initlvl1()
@@ -265,17 +308,14 @@ class WizRobo extends Engine {
     	}    	
         if(wiz.x>236){
             level++
+            lvl1start = false
         }
         
         enemyAnimation(enemy1)
         enemyAnimation(enemy2)
-        if(enemy1.alive){
-            if(enemy1.x < 208 || enemy1.x > 224){
-                enemy1.vs = -enemy1.vs
-                enemy1.f = !enemy1.f
-            }
-            enemy1.x = enemy1.x + enemy1.vs            
-        }
+        
+        moveEnemy(enemy1, 208, 224)
+        
         boltHitEnemy(enemy1)
         boltHitEnemy(enemy2)
         if(!enemy1.alive){
@@ -297,32 +337,16 @@ class WizRobo extends Engine {
     	}    	
         if(wiz.y>160){
             level++
+            lvl2start = false
         }
         
         enemyAnimation(enemy1)
         enemyAnimation(enemy2)
         enemyAnimation(enemy3)
-        if(enemy1.alive){
-            if(enemy1.x < 72 || enemy1.x > 88){
-                enemy1.vs = -enemy1.vs
-                enemy1.f = !enemy1.f
-            }
-            enemy1.x = enemy1.x + enemy1.vs            
-        }
-        if(enemy2.alive){
-            if(enemy2.x < 152 || enemy2.x > 168){
-                enemy2.vs = -enemy2.vs
-                enemy2.f = !enemy2.f
-            }
-            enemy2.x = enemy2.x + enemy2.vs            
-        }
-        if(enemy3.alive){
-            if(enemy3.x < 208 || enemy3.x > 224){
-                enemy3.vs = -enemy3.vs
-                enemy3.f = !enemy3.f
-            }
-            enemy3.x = enemy3.x + enemy3.vs            
-        }
+        moveEnemy(enemy1, 72, 88)
+        moveEnemy(enemy2, 152, 168)
+        moveEnemy(enemy3, 208, 224)
+        
         boltHitEnemy(enemy1)
         boltHitEnemy(enemy2)
         boltHitEnemy(enemy3)
@@ -340,6 +364,52 @@ class WizRobo extends Engine {
             mapSet(enemy3.x/8, enemy3.y/8, 88)
             mapSet(27,19,0)
             mapSet(28,19,0)
+        }
+    }
+    
+    void lvl3Update(){
+    	if(!lvl3start){
+            initlvl3()
+            lvl3start = true    		
+    	}    	
+        if(wiz.x>234){
+            level++
+            lvl3start = false
+        }
+        
+        enemyAnimation(enemy1)
+        enemyAnimation(enemy2)
+        enemyAnimation(enemy3)
+        enemyAnimation(enemy4)
+        
+        moveEnemy(enemy1, 8, 24)
+        moveEnemy(enemy2, 8, 56)
+        moveEnemy(enemy3, 184, 200)
+        moveEnemy(enemy4, 32, 48)
+        
+        boltHitEnemy(enemy1)
+        boltHitEnemy(enemy2)
+        boltHitEnemy(enemy3)
+        boltHitEnemy(enemy4)
+        if(!enemy1.alive){
+            mapSet(enemy1.x/8, enemy1.y/8, 88)
+            mapSet(26,13,0)
+            mapSet(26,14,0)
+        }
+        if(!enemy2.alive){
+            mapSet(enemy2.x/8, enemy2.y/8, 88)
+            mapSet(27,13,0)
+            mapSet(27,14,0)
+        }
+        if(!enemy3.alive){
+            mapSet(enemy3.x/8, enemy3.y/8, 88)
+            mapSet(28,13,0)
+            mapSet(28,14,0)
+        }
+        if(!enemy4.alive){
+            mapSet(enemy4.x/8, enemy4.y/8, 88)
+            mapSet(29,13,0)
+            mapSet(29,14,0)
         }
     }
   
@@ -362,14 +432,8 @@ class WizRobo extends Engine {
     	
         checkScroll() 
     	
-    	switch(level){    	
-        case 1:
-            lvl1Update()
-            break;
-        case 2:
-            lvl2Update()
-            break;
-        default:    			    	
+    	switch(level){    
+        case 0:
             if(wiz.y < 0){
                 level++
             }
@@ -379,6 +443,20 @@ class WizRobo extends Engine {
                 mapSet(enemy1.x/8, enemy1.y/8, 88)
                 mapSet(1,0,33)
             }
+            break;
+        case 1:
+            lvl1Update()
+            break;
+        case 2:
+            lvl2Update()
+            break;
+        case 3:
+            lvl3Update()
+            break;
+        default:    			    	
+            level = 0
+            title = true
+            loadMap("title")
             break;    			
     	}
     }
@@ -401,15 +479,29 @@ class WizRobo extends Engine {
             sprite(enemy1.spid, enemy1.x, enemy1.y, enemy1.f, false)
     	}
     	if(enemy2.alive){
-            sprite(enemy2.spid, enemy2.x, enemy2.y)
+            sprite(enemy2.spid, enemy2.x, enemy2.y, enemy2.f, false)
     	}
         if(enemy3.alive){
             sprite(enemy3.spid, enemy3.x, enemy3.y, enemy3.f, false)
     	}
     }	
+    void renderlvl3(){        
+    	if(enemy1.alive){
+            sprite(enemy1.spid, enemy1.x, enemy1.y, enemy1.f, false)
+    	}
+    	if(enemy2.alive){
+            sprite(enemy2.spid, enemy2.x, enemy2.y, enemy2.f, false)
+    	}
+        if(enemy3.alive){
+            sprite(enemy3.spid, enemy3.x, enemy3.y, enemy3.f, false)
+    	}
+        if(enemy4.alive){
+            sprite(enemy4.spid, enemy4.x, enemy4.y, enemy4.f, false)
+    	}
+    }	
 	
     void render(){
-        bgColor(0.1f,0.1f,0.1f)
+        image("stonewall", 0,0)
         map()	
         if(key("S")){
             text("Scrolls: "+wiz.scrolls, 46, 32, 1)
@@ -428,16 +520,23 @@ class WizRobo extends Engine {
             sprite(bolt.spid, bolt.x, bolt.y, bolt.f, false)
         }
         switch(level){
+        case 0:
+            renderDefault()
+            break;
         case 1:
             renderlvl1()
             break;
         case 2:
             renderlvl2()
             break;
+        case 3:
+            renderlvl3()
+            break;
         default:
             renderDefault()
             break;
-		
         }
+        
+        text("Charge: "+bolt.charge, 0,0, 1)
     }
 }
