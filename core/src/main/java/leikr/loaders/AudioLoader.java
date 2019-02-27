@@ -69,7 +69,7 @@ public class AudioLoader {
     }
 
     public void sound(String fileName) {
-        Sound tmp = soundManager.get(soundRootPath + fileName + ".wav");
+        Sound tmp = soundManager.get(soundRootPath + fileName + ".wav", Sound.class);
         tmp.play();
     }
 
@@ -77,17 +77,17 @@ public class AudioLoader {
         //vol: range [0,1]
         //pit: 0.5 and 2.0
         //pan: panning in the range -1 (full left) to 1 (full right). 0 is center position.
-        Sound tmp = soundManager.get(soundRootPath + fileName + ".wav");
+        Sound tmp = soundManager.get(soundRootPath + fileName + ".wav", Sound.class);
         tmp.play(vol, pit, pan);
     }
 
     public void music(String fileName) {
-        Music tmp = musicManager.get(musicRootPath + fileName + ".wav");
+        Music tmp = musicManager.get(musicRootPath + fileName + ".wav", Music.class);
         tmp.play();
     }
 
     public void music(String fileName, boolean loop) {
-        Music tmp = musicManager.get(musicRootPath + fileName + ".wav");
+        Music tmp = musicManager.get(musicRootPath + fileName + ".wav", Music.class);
         tmp.setLooping(loop);
         tmp.play();
     }
@@ -100,7 +100,7 @@ public class AudioLoader {
     }
 
     public void stopMusic(String fileName) {
-        Music m = musicManager.get(musicRootPath + fileName + ".wav");
+        Music m = musicManager.get(musicRootPath + fileName + ".wav", Music.class);
         m.stop();
     }
 
