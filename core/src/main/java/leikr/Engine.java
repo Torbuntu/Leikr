@@ -218,6 +218,10 @@ public abstract class Engine implements InputProcessor {
     final void mapSet(float x, float y, int id) {
         mapLoader.setMapTile(x, y, id);
     }
+    
+    final void mapRemove(float x, float y){
+        mapLoader.removeMapTile(x,y);
+    }
 
     final int getMapHeight() {
         return mapLoader.getMap().getHeight();
