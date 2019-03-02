@@ -1,10 +1,15 @@
 import leikr.Engine
+import com.badlogic.gdx.math.MathUtils
+
 class WizRobo extends Engine {
 	
     def wizard = [:]	
     def bolt = [:]
     def enemies = []
-    def enemyDeadSpids = [84,85,86]
+    def enemyDeadSpids = [85,86,87]
+    
+    def healthSpids = [193,193,193]
+    def energySpids = [194,194,194]
 	
     def title = true
     def level = 0
@@ -47,17 +52,17 @@ class WizRobo extends Engine {
         if((key(wizard.left) || button(BTN.LEFT)) && !solid(wizard.x-1, wizard.y) && !solid(wizard.x-1, wizard.y+7)){		
             wizard.vx =-1           
             wizard.f = true
-            wizard.w = true
+            wizard.walking = true
         }
         if((key(wizard.right) || button(BTN.RIGHT)) && !solid(wizard.x+9,wizard.y) && !solid(wizard.x+9,wizard.y+7)){
             wizard.vx = 1         
             wizard.f = false
-            wizard.w = true
+            wizard.walking = true
         }
         
         //check walking
         if(wizard.vx == 0){
-            wizard.w = false
+            wizard.walking = false
         }
         
         //check gravity
@@ -93,7 +98,7 @@ class WizRobo extends Engine {
         }
         
         //walking
-        if(wizard.w && wizard.g){   
+        if(wizard.walking && wizard.g){   
             wizard.spid = wizard.walkAnim[wizard.waIndex] 		
             if(wizard.waTime > 8){
                 wizard.waIndex++
@@ -179,7 +184,7 @@ class WizRobo extends Engine {
     	bolt.spid = bolt.spids[(bolt.charge/10).toInteger()]
     }
     
-    void attackb(){
+    void attackb(){        
     	if((bolt.f && solid(bolt.x, bolt.y) || solid(bolt.x, bolt.y+7)) || (bolt.f && solid(bolt.x+4, bolt.y) || solid(bolt.x+4, bolt.y+7))){
             bolt.attack = false
             bolt.charge = 0
@@ -203,19 +208,19 @@ class WizRobo extends Engine {
     
     //assumes x,y,w,h on each object
     boolean collide(a,b){
-        return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y
+        return (a.x < b.x + b.width) && (a.x + a.width > b.x) && (a.y < b.y + b.height) && (a.y + a.height > b.y)
     }
     
     // INIT methods
     void init(){
-    	wizard = [x: 10, y: 100, vx: 0, vy: 0, w:8, h:8, spid: 0, f: false, g: true, jmsid: 4,
-            jumping: false, s: false, walkAnim: [1,2,3,0], waIndex: 0, 
+    	wizard = [x: 10, y: 100, vx: 0, vy: 0, width: 8, height: 8, spid: 0, f: false, g: true, jmsid: 4,
+            jumping: false, s: false, walkAnim: [1,2,3,0], waIndex: 0, walking: false,
             waTime: 0, left: "Left", right: "Right", up: "Space", down:"Down", charged: false, chargedTime: 0, cf: false,
-            scrolls: 0]
+            scrolls: 0, health: 3]
     			
-    	bolt = [x:0, y:0, vx:0, w:8, h:8, spid: 0, spids: [5,6,7,8], charge: 0, attack: false, hit: false]
+    	bolt = [x:0, y:0, vx:0, width:8, height:8, spid: 0, spids: [5,6,7,8], charge: 0, attack: false, hit: false]
         
-    	def enemy1 = [x: 72, y: 72, w:8, h:8, f:false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 1, y: 0]]
+    	def enemy1 = [x: 72, y: 72, width:8, height:8, f:false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 1, y: 1]]
         enemies = [] // only needed when the game loops around during development.
         enemies.add(enemy1)
 
@@ -226,8 +231,8 @@ class WizRobo extends Engine {
         wizard.x = 10
         wizard.y = 144
         
-    	def enemy1 = [x: 208, y: 64, vs: 0.2, l: 208, r: 224, w: 8, h: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 28, y: 3], keyB: [x:28, y:2]]        
-        def enemy2 = [x: 64, y: 80, vs: 0, l:64, r:64, w: 8, h: 8, f:false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 29, y: 3], keyB: [x:29, y:2]]
+    	def enemy1 = [x: 208, y: 64, vs: 0.2, l: 208, r: 224, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 28, y: 3], keyB: [x:28, y:2]]        
+        def enemy2 = [x: 64, y: 80, vs: 0, l:64, r:64, width: 8, height: 8, f:false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 29, y: 3], keyB: [x:29, y:2]]
         enemies = []
         enemies.addAll([enemy1, enemy2]) 
     	loadMap("lvl1")
@@ -235,11 +240,11 @@ class WizRobo extends Engine {
     
     void initlvl2(){
         wizard.x = 0
-        wizard.y = 16
+        wizard.y = 24
         
-    	def enemy1 = [x: 72, y: 96, vs: 0.2, l:72, r:88, w: 8, h: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 27, y: 17], keyB: [x:28, y:17]]        
-        def enemy2 = [x: 152, y: 72, vs: 0.2, l:152, r:168, w: 8, h: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 27, y: 18], keyB: [x:28, y:18]]        
-        def enemy3 = [x: 208, y: 72, vs: 0.2, l: 208, r:224, w: 8, h: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 27, y: 19], keyB: [x:28, y:19]]
+    	def enemy1 = [x: 72, y: 96, vs: 0.2, l:72, r:88, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 27, y: 17], keyB: [x:28, y:17]]        
+        def enemy2 = [x: 152, y: 72, vs: 0.2, l:152, r:168, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 27, y: 18], keyB: [x:28, y:18]]        
+        def enemy3 = [x: 208, y: 72, vs: 0.2, l: 208, r:224, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 27, y: 19], keyB: [x:28, y:19]]
         enemies = []
         enemies.addAll([enemy1, enemy2, enemy3])
     	loadMap("lvl2")
@@ -249,10 +254,10 @@ class WizRobo extends Engine {
         wizard.x = 220
         wizard.y = 0
         
-    	def enemy1 = [x: 8, y: 64, vs: 0.2, l:8, r:24, w: 8, h: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 26, y: 13], keyB: [x:26, y:14]]        
-        def enemy2 = [x: 8, y: 144, vs: 0.2, l:8, r:56, w: 8, h: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 27, y: 13], keyB: [x:27, y:14]]        
-        def enemy3 = [x: 184, y: 80, vs: 0.2, l:184, r:200, w: 8, h: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 28, y: 13], keyB: [x:28, y:14]]        
-        def enemy4 = [x: 32, y: 80, vs: 0.2, l:32, r:48, w: 8, h: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 29, y: 13], keyB: [x:29, y:14]]
+    	def enemy1 = [x: 8, y: 64, vs: 0.2, l:8, r:24, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 26, y: 13], keyB: [x:26, y:14]]        
+        def enemy2 = [x: 8, y: 144, vs: 0.2, l:8, r:56, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 27, y: 13], keyB: [x:27, y:14]]        
+        def enemy3 = [x: 184, y: 80, vs: 0.2, l:184, r:200, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 28, y: 13], keyB: [x:28, y:14]]        
+        def enemy4 = [x: 32, y: 80, vs: 0.2, l:32, r:48, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 29, y: 13], keyB: [x:29, y:14]]
         enemies = []
         enemies.addAll([enemy1, enemy2, enemy3, enemy4])
         
@@ -279,6 +284,8 @@ class WizRobo extends Engine {
                 enemy.remove = true
             }else{
                 enemy.alive = false
+                enemy.x = MathUtils.ceil(enemy.x)
+                enemy.x = enemy.x + enemy.x%8
             }            
     	}
     }    
@@ -306,6 +313,19 @@ class WizRobo extends Engine {
         enemies.removeAll{it.remove}
     }
     
+    void setDeadEnemy(){
+        enemies.each{
+            enemyAnimation(it)
+            moveEnemy(it, it.l, it.r)
+            boltHitEnemy(it)
+            if(!it.alive){
+                mapSet((it.x)/8, (it.y)/8, 88)                
+                mapRemove(it.keyA.x, it.keyA.y)
+                mapRemove(it.keyB.x, it.keyB.y)
+            }
+        }
+    }
+    
     // UPDATE methods
     void lvl1Update(){
     	if(!lvl1start){
@@ -319,16 +339,7 @@ class WizRobo extends Engine {
         if(enemies.isEmpty()){
             return
         }
-        enemies.each{
-            enemyAnimation(it)
-            moveEnemy(it, it.l, it.r)
-            boltHitEnemy(it)
-            if(!it.alive){
-                mapSet(it.x/8, it.y/8, 88)
-                mapRemove(it.keyA.x, it.keyA.y)
-                mapRemove(it.keyB.x, it.keyB.y)
-            }
-        }
+        setDeadEnemy()
     }
     
     void lvl2Update(){
@@ -343,16 +354,7 @@ class WizRobo extends Engine {
         if(enemies.isEmpty()){
             return
         }
-        enemies.each{
-            enemyAnimation(it)
-            moveEnemy(it, it.l, it.r)
-            boltHitEnemy(it)
-            if(!it.alive){
-                mapSet(it.x/8, it.y/8, 88)
-                mapRemove(it.keyA.x, it.keyA.y)
-                mapRemove(it.keyB.x, it.keyB.y)
-            }
-        }
+        setDeadEnemy()
     }
     
     void lvl3Update(){
@@ -367,16 +369,7 @@ class WizRobo extends Engine {
         if(enemies.isEmpty()){
             return
         }
-        enemies.each{
-            enemyAnimation(it)
-            moveEnemy(it, it.l, it.r)
-            boltHitEnemy(it)
-            if(!it.alive){
-                mapSet(it.x/8, it.y/8, 88)
-                mapRemove(it.keyA.x, it.keyA.y)
-                mapRemove(it.keyB.x, it.keyB.y)
-            }
-        }
+        setDeadEnemy()
     }
   
     void create(){		
@@ -384,8 +377,50 @@ class WizRobo extends Engine {
         rand = new Random()
         loadMap("title")
     }
+    
+    void updateGui(){
+        if(bolt.charge < 5){
+            energySpids = [194,194,194]
+        }
+        if(bolt.charge >= 5){
+            energySpids[0] = 195
+        }
+        if(bolt.charge >= 10){
+            energySpids[0] = 196
+        }
+        if(bolt.charge >= 15){
+            energySpids[1] = 195
+        }
+        if(bolt.charge >= 20){
+            energySpids[1] = 196
+        }
+        if(bolt.charge >= 25){
+            energySpids[2] = 195 
+        }
+        if(bolt.charge >= 30){
+            energySpids[2] = 196
+        }
+        if(bolt.attack){
+            energySpids = [194,194,194]
+        }
+        
+        if(wizard.health == 0){
+            healthSpids = [193,193,193]
+        }
+        if(wizard.health == 1){
+            healthSpids = [192,193,193]
+        }
+        if(wizard.health == 2){
+            healthSpids = [192,192,193]
+        }
+        if(wizard.health == 3){
+            healthSpids = [192,192,192]
+        }
+    }
 
     void update(float delta){
+        debuglvl()        
+
     	if(title){
             if(key("X") || key("Space") || button(BTN.START)){
                 title = false
@@ -395,7 +430,7 @@ class WizRobo extends Engine {
     	}    
     	removeDebris()
     	movep()
-    	
+    	updateGui()
         checkScroll() 
     	
     	switch(level){    
@@ -405,7 +440,7 @@ class WizRobo extends Engine {
             }
             if(enemies.isEmpty()){
                 return
-            }
+            }            
             enemyAnimation(enemies[0])
             boltHitEnemy(enemies[0])
             if(!enemies[0].alive){
@@ -429,15 +464,37 @@ class WizRobo extends Engine {
             break;    			
     	}
         
-        debuglvl()
+        if(!enemies.isEmpty()){
+            enemies.each{
+                if(collide(wizard, it)){
+                    wizard.health--
+                    if(wizard.f){
+                        wizard.x = wizard.x +14
+                    }else{
+                        wizard.x = wizard.x -14
+                    }
+                    wizard.y -= 6
+                }
+            }
+        }
+    }
+    
+    void renderGui(){
         
+        sprite(energySpids[0], 0, 0)
+        sprite(energySpids[1], 8, 0)
+        sprite(energySpids[2], 16, 0)
+        
+        sprite(healthSpids[0], 152, 0)
+        sprite(healthSpids[1], 144, 0)
+        sprite(healthSpids[2], 136, 0)
     }
     
     void renderDefault(){
         if(enemies.isEmpty()){
             return
         }
-    	if(enemies[0].alive){
+        if(enemies[0].alive){
             sprite(enemies[0].spid, enemies[0].x, enemies[0].y)
         }
     }
@@ -455,7 +512,7 @@ class WizRobo extends Engine {
         if(enemies.isEmpty()){
             return
         }
-    	enemies.each{it ->
+        enemies.each{it ->
             if(it.alive){
                 sprite(it.spid, it.x, it.y, it.f, false)
             }
@@ -465,7 +522,7 @@ class WizRobo extends Engine {
         if(enemies.isEmpty()){
             return
         }
-    	enemies.each{it ->
+        enemies.each{it ->
             if(it.alive){
                 sprite(it.spid, it.x, it.y, it.f, false)
             }
@@ -480,10 +537,12 @@ class WizRobo extends Engine {
         }
 		
         if(title){
+            image("stonewall", 0,0)
             text("Escape the dungeon!", 46, 32, 1)
             return
         }
-			
+		
+        renderGui()
         if(wizard.charged){
             sprite(9, (wizard.x).toFloat(), (wizard.y-8).toFloat(), wizard.cf, false)
         }
@@ -509,7 +568,7 @@ class WizRobo extends Engine {
             break;
         }
         
-        text("Charge: "+bolt.charge, 0,0, 1)
+        //text("Charge: "+bolt.charge, 0,0, 1)
     }
     
     
