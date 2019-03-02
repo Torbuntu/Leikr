@@ -530,16 +530,21 @@ class WizRobo extends Engine {
     }	
 	
     void render(){
-        image("stonewall", 0,8)
-        map()	
-        if(key("S")){
-            text("Scrolls: "+wizard.scrolls, 46, 32, 1)
-        }
+        
+        
 		
         if(title){
             image("stonewall", 0,0)
+	    map()
             text("Escape the dungeon!", 46, 32, 1)
             return
+        }else{
+	    image("stonewall", 0,8)
+            map()	
+	}
+
+	if(key("S")){
+            text("Scrolls: "+wizard.scrolls, 46, 32, 1)
         }
 		
         renderGui()
