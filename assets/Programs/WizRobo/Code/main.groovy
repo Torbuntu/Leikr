@@ -51,12 +51,12 @@ class WizRobo extends Engine {
         wizard.vx = 0
         wizard.spid = 0
         //check left or right moving
-        if((key(wizard.left) || button(BTN.LEFT)) && !solid(wizard.x-1, wizard.y) && !solid(wizard.x-1, wizard.y+7)){		
+        if((key(wizard.left) || button(BTN.LEFT)) && !solid(wizard.x-1.6, wizard.y) && !solid(wizard.x-1.6, wizard.y+7)){		
             wizard.vx =-1           
             wizard.f = true
             wizard.walking = true
         }
-        if((key(wizard.right) || button(BTN.RIGHT)) && !solid(wizard.x+8,wizard.y) && !solid(wizard.x+8,wizard.y+7)){
+        if((key(wizard.right) || button(BTN.RIGHT)) && !solid(wizard.x+8.6,wizard.y) && !solid(wizard.x+8.6,wizard.y+7)){
             wizard.vx = 1         
             wizard.f = false
             wizard.walking = true
@@ -150,7 +150,7 @@ class WizRobo extends Engine {
             }
     	}
     	if(wizard.health < 1){
-    		level = 0
+            level = 0
             title = true
             loadMap("title")
             lvl1start = false
@@ -216,8 +216,8 @@ class WizRobo extends Engine {
             wizard.scrolls++
         }
         if(tile == 193 && wizard.health < 3){
-        	wizard.health++
-        	mapRemove((wizard.x+2)/8, (wizard.y+2)/8)
+            wizard.health++
+            mapRemove((wizard.x+2)/8, (wizard.y+2)/8)
         }
     }   
     
@@ -235,7 +235,7 @@ class WizRobo extends Engine {
     			
     	bolt = [x:0, y:0, vx:0, width:8, height:8, spid: 0, spids: [5,6,7,8], charge: 0, attack: false, hit: false]
         
-    	def enemy1 = [x: 72, y: 72, width:8, height:8, f:false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 1, y: 1]]
+    	def enemy1 = [x: 72, y: 72, width:8, height:8, f:false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 1, y: 1], keyB: [x: 1, y: 1]]
         enemies = [] // only needed when the game loops around during development.
         enemies.add(enemy1)
 
@@ -294,7 +294,17 @@ class WizRobo extends Engine {
     	loadMap("lvl4")
     }
     
-    
+    void initlvl5(){
+    	wizard.x = 10
+        wizard.y = 80
+    			
+        
+    	def enemy1 = [x: 40, y: 72, vs: 0.6, l: 40, r: 184, width: 32, height: 32, f: false, spid: 60, alive: true, remove: false, animTime: 0, walkAnim: [60,61,62,63], waIndex: 0, keyA: [x: 27, y: 1], keyB: [x:28, y:1], health: 8]      
+        enemies = [] // only needed when the game loops around during development.
+        enemies.add(enemy1)
+
+    	loadMap("lvl5")
+    }
     
     
     
@@ -361,10 +371,10 @@ class WizRobo extends Engine {
             if(it.remove){
             	def num = rand.nextInt(2)            	
                 if(num==1){
-                	println num
-		            def x = it.x/8
-		        	def y = it.y/8
-		        	mapSet(x, y, 193)
+                    println num
+                    def x = it.x/8
+                    def y = it.y/8
+                    mapSet(x, y, 193)
                 }
             }
         }
@@ -440,32 +450,77 @@ class WizRobo extends Engine {
         updateEnemies()
     }
     
+    void lvl5Update(){
+    	if(!lvl5start){
+            initlvl5()
+            lvl5start = true    		
+    	}    	       
+        if(wizard.y < 6){
+            level++
+            lvl5start = false
+            return
+        }
+        enemies.each{
+            enemyAnimation(it)
+            moveEnemy(it, it.l, it.r)
+            if(collide(bolt, it) && bolt.charge == 30){  
+                bolt.attack = false
+                bolt.charge = 0
+                if(it.health > 0){
+                    it.health--
+                }       
+                if(it.health == 0){
+                    it.alive = false
+                    it.remove = true
+                    
+                    mapSet((it.x+16)/8, (it.y+16)/8, 29)//Drop scroll for the victor
+                    
+                    mapSet(it.keyA.x, it.keyA.y, 33)
+                    mapSet(it.keyB.x, it.keyB.y, 33)
+                    
+                    mapSet(it.keyA.x, it.keyA.y+5, 33)
+                    mapSet(it.keyB.x, it.keyB.y+5, 33)
+                    
+                    mapSet(it.keyA.x, it.keyA.y+6, 33)
+                    mapSet(it.keyB.x, it.keyB.y+6, 33)
+                    
+                    mapSet(it.keyA.x, it.keyA.y+7, 33)
+                    mapSet(it.keyB.x, it.keyB.y+7, 33)
+                    
+                    mapSet(it.keyA.x, it.keyA.y+8, 33)
+                    mapSet(it.keyB.x, it.keyB.y+8, 33)
+                }  
+            }	
+    	}
+        
+    }
+    
     void lvl9Update(){
     	if(!lvl9start){
             initlvl9()
             lvl9start = true    		
     	}    	       
         if(enemies.isEmpty()){
-        	level = 0
+            level = 0
             title = true
             loadMap("title")
-        	lvl9start = false
+            lvl9start = false
             return
         }
         enemies.each{
-		    enemyAnimation(it)
-		    moveEnemy(it, it.l, it.r)
-		    if(collide(bolt, it) && bolt.charge == 30){  
-		        bolt.attack = false
-		        bolt.charge = 0
-		        if(it.health > 0){
-		        	it.health--
-		        }       
-		        if(it.health == 0){
-		        	it.alive = false
-		        	it.remove = true
-		        }  
-			}	
+            enemyAnimation(it)
+            moveEnemy(it, it.l, it.r)
+            if(collide(bolt, it) && bolt.charge == 30){  
+                bolt.attack = false
+                bolt.charge = 0
+                if(it.health > 0){
+                    it.health--
+                }       
+                if(it.health == 0){
+                    it.alive = false
+                    it.remove = true
+                }  
+            }	
     	}
         
     }
@@ -558,9 +613,12 @@ class WizRobo extends Engine {
         case 4:
             lvl4Update()
             break;
+        case 5:
+            lvl5Update()
+            break;
         case 9:
-        	lvl9Update()
-        	break;
+            lvl9Update()
+            break;
         default:    			    	
             level = 0
             title = true
@@ -592,6 +650,8 @@ class WizRobo extends Engine {
         sprite(healthSpids[0], 152, 0)
         sprite(healthSpids[1], 144, 0)
         sprite(healthSpids[2], 136, 0)
+        
+        text("lvl: "+level, 160, 0, 1)
     }
     
     void renderDefault(){
@@ -627,7 +687,6 @@ class WizRobo extends Engine {
             return
         }
         enemies.each{it ->
-        	rect(it.x, it.y, 8, 8)//DEBUG
             if(it.alive){            	
                 sprite(it.spid, it.x, it.y, it.f, false)
             }
@@ -638,9 +697,19 @@ class WizRobo extends Engine {
             return
         }
         enemies.each{it ->
-        	rect(it.x, it.y, 8, 8)//DEBUG
             if(it.alive){            	
                 sprite(it.spid, it.x, it.y, it.f, false)
+            }
+        }  
+    }	
+    void renderlvl5(){    
+        if(enemies.isEmpty()){
+            return
+        }
+        enemies.each{it ->
+            if(it.alive){
+                sprite32(it.spid, it.x, it.y, it.f, false)
+                text("["+it.health+"]", (it.x+8).toFloat(), (it.y-8).toFloat(), 2)
             }
         }  
     }	
@@ -654,7 +723,6 @@ class WizRobo extends Engine {
                 text("["+it.health+"]", (it.x+8).toFloat(), (it.y-8).toFloat(), 2)
             }
         }  
-        
     }	
 	
     void render(){
@@ -699,9 +767,12 @@ class WizRobo extends Engine {
         case 4:
             renderlvl4()
             break;
+        case 5:
+            renderlvl5()
+            break;
         case 9:
-        	renderlvl9()
-        	break;
+            renderlvl9()
+            break;
         default:
             renderDefault()
             break;
@@ -715,11 +786,30 @@ class WizRobo extends Engine {
     
     //Debug
     void debuglvl(){
+        if(key("0")){
+            level = 0
+            title = true
+            lvl1start = false
+            lvl2start = false
+            lvl3start = false
+            lvl4start = false
+            lvl5start = false
+            lvl6start = false
+            lvl7start = false
+            lvl8start = false
+    
+            lvl9start = false
+        }
         if(key("1")){
             level = 1
             lvl2start = false
             lvl3start = false
             lvl4start = false
+            lvl5start = false
+            lvl6start = false
+            lvl7start = false
+            lvl8start = false
+    
             lvl9start = false
         }
         if(key("2")){
@@ -727,29 +817,60 @@ class WizRobo extends Engine {
             lvl1start = false
             lvl3start = false
             lvl4start = false
+            lvl5start = false
+            lvl6start = false
+            lvl7start = false
+            lvl8start = false
+    
             lvl9start = false
         }
         if(key("3")){
             level = 3
-            lvl4start = false
-            lvl2start = false
             lvl1start = false
+            lvl2start = false
+            lvl4start = false
+            lvl5start = false
+            lvl6start = false
+            lvl7start = false
+            lvl8start = false
+    
             lvl9start = false
         }
         if(key("4")){
             level = 4
-            lvl3start = false
-            lvl2start = false
             lvl1start = false
+            lvl2start = false
+            lvl3start = false
+            lvl5start = false
+            lvl6start = false
+            lvl7start = false
+            lvl8start = false
+    
+            lvl9start = false
+        }
+        if(key("5")){
+            level = 5
+            lvl1start = false
+            lvl2start = false
+            lvl3start = false
+            lvl4start = false
+            lvl6start = false
+            lvl7start = false
+            lvl8start = false
+    
             lvl9start = false
         }
         if(key("9")){
-        	level = 9
-        	lvl1start = false
-        	lvl2start = false
-        	lvl3start = false
-        	lvl4start = false
-        	
+            level = 9
+            lvl1start = false
+            lvl2start = false
+            lvl3start = false
+            lvl4start = false
+            lvl5start = false
+            lvl6start = false
+            lvl7start = false
+            lvl8start = false
+
         }
     }
         
