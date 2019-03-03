@@ -56,7 +56,7 @@ class WizRobo extends Engine {
             wizard.f = true
             wizard.walking = true
         }
-        if((key(wizard.right) || button(BTN.RIGHT)) && !solid(wizard.x+9,wizard.y) && !solid(wizard.x+9,wizard.y+7)){
+        if((key(wizard.right) || button(BTN.RIGHT)) && !solid(wizard.x+8,wizard.y) && !solid(wizard.x+8,wizard.y+7)){
             wizard.vx = 1         
             wizard.f = false
             wizard.walking = true
@@ -68,7 +68,7 @@ class WizRobo extends Engine {
         }
         
         //check gravity
-        if( solid(wizard.x,wizard.y+8+wizard.vy) || solid(wizard.x+7,wizard.y+8+wizard.vy)){
+        if( solid(wizard.x+1,wizard.y+8+wizard.vy) || solid(wizard.x+7,wizard.y+8+wizard.vy)){
             wizard.vy=0
             wizard.g = true
         }else{
@@ -83,7 +83,7 @@ class WizRobo extends Engine {
         }	
         
         //check on ground
-        if(wizard.vy < 0 && (solid(wizard.x, wizard.y-1)||solid(wizard.x+8, wizard.y-1))){
+        if(wizard.vy < 0 && (solid(wizard.x, wizard.y-1)||solid(wizard.x+7, wizard.y-1))){
             wizard.vy = 0
         }		
         if( wizard.vy<0 && (solid(wizard.x+wizard.vx,wizard.y+wizard.vy) || solid(wizard.x+8+wizard.vx,wizard.y+wizard.vy))){
@@ -279,6 +279,21 @@ class WizRobo extends Engine {
     	loadMap("lvl3")
     }
     
+    void initlvl4(){
+        wizard.x = 10
+        wizard.y = 110
+        
+    	def enemy1 = [x: 24, y: 88, vs: 0.2, l:24, r:40, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 3, y: 17], keyB: [x:3, y:18]]        
+        def enemy2 = [x: 96, y: 88, vs: 0.2, l:96, r:104, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 17, y: 2], keyB: [x:17, y:3]]        
+        def enemy3 = [x: 96, y: 24, vs: 0.2, l:56, r:128, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 29, y: 9], keyB: [x:29, y:10]]        
+        def enemy4 = [x: 8, y: 144, vs: 0.2, l:8, r:16, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 28, y: 10], keyB: [x:28, y:9]]
+        def enemy5 = [x: 168, y: 80, vs: 0.2, l:168, r:168, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 27, y: 9], keyB: [x:27, y:10]]
+        enemies = []
+        enemies.addAll([enemy1, enemy2, enemy3, enemy4, enemy5])
+        
+    	loadMap("lvl4")
+    }
+    
     
     
     
@@ -409,6 +424,22 @@ class WizRobo extends Engine {
         }
         updateEnemies()
     }
+    
+    void lvl4Update(){
+    	if(!lvl4start){
+            initlvl4()
+            lvl4start = true    		
+    	}    	
+        if(wizard.x>234){
+            level++
+            lvl4start = false
+        }
+        if(enemies.isEmpty()){
+            return
+        }
+        updateEnemies()
+    }
+    
     void lvl9Update(){
     	if(!lvl9start){
             initlvl9()
@@ -524,6 +555,9 @@ class WizRobo extends Engine {
         case 3:
             lvl3Update()
             break;
+        case 4:
+            lvl4Update()
+            break;
         case 9:
         	lvl9Update()
         	break;
@@ -599,6 +633,17 @@ class WizRobo extends Engine {
             }
         }  
     }	
+    void renderlvl4(){    
+        if(enemies.isEmpty()){
+            return
+        }
+        enemies.each{it ->
+        	rect(it.x, it.y, 8, 8)//DEBUG
+            if(it.alive){            	
+                sprite(it.spid, it.x, it.y, it.f, false)
+            }
+        }  
+    }	
     void renderlvl9(){    
         if(enemies.isEmpty()){
             return
@@ -651,7 +696,9 @@ class WizRobo extends Engine {
         case 3:
             renderlvl3()
             break;
-            
+        case 4:
+            renderlvl4()
+            break;
         case 9:
         	renderlvl9()
         	break;
@@ -672,16 +719,26 @@ class WizRobo extends Engine {
             level = 1
             lvl2start = false
             lvl3start = false
+            lvl4start = false
             lvl9start = false
         }
         if(key("2")){
             level = 2
             lvl1start = false
             lvl3start = false
+            lvl4start = false
             lvl9start = false
         }
         if(key("3")){
             level = 3
+            lvl4start = false
+            lvl2start = false
+            lvl1start = false
+            lvl9start = false
+        }
+        if(key("4")){
+            level = 4
+            lvl3start = false
             lvl2start = false
             lvl1start = false
             lvl9start = false
@@ -691,6 +748,7 @@ class WizRobo extends Engine {
         	lvl1start = false
         	lvl2start = false
         	lvl3start = false
+        	lvl4start = false
         	
         }
     }
