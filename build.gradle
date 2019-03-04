@@ -19,6 +19,7 @@ allprojects {
     ext {
         appName = 'Leikr'
         mini2DxVersion = '1.9.0-beta.10'
+        miniscriptVersion = '1.1.1'
         gdxVersion = '1.9.8'
     }
 
@@ -36,6 +37,8 @@ project(":core") {
     dependencies {
         implementation "org.mini2Dx:mini2Dx-core:$mini2DxVersion"
         implementation "org.mini2Dx:mini2Dx-tiled:$mini2DxVersion"
+        implementation "org.mini2Dx:miniscript-core:$miniscriptVersion"
+        implementation "org.mini2Dx:miniscript-groovy:$miniscriptVersion"
         implementation 'org.codehaus.groovy:groovy:3.0.0-alpha-4'
         implementation 'org.lwjgl.lwjgl:lwjgl:2.9.3'
         implementation 'org.eclipse.jgit:org.eclipse.jgit:5.2.1.201812262042-r'
