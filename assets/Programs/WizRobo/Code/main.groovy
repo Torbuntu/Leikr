@@ -51,12 +51,12 @@ class WizRobo extends Engine {
         wizard.vx = 0
         wizard.spid = 0
         //check left or right moving
-        if((key(wizard.left) || button(BTN.LEFT)) && !solid(wizard.x-1.6, wizard.y) && !solid(wizard.x-1.6, wizard.y+7)){		
+        if((key(wizard.left) || button(BTN.LEFT)) && !solid(wizard.x-1, wizard.y) && !solid(wizard.x-1, wizard.y+7)){		
             wizard.vx =-1           
             wizard.f = true
             wizard.walking = true
         }
-        if((key(wizard.right) || button(BTN.RIGHT)) && !solid(wizard.x+8.6,wizard.y) && !solid(wizard.x+8.6,wizard.y+7)){
+        if((key(wizard.right) || button(BTN.RIGHT)) && !solid(wizard.x+8,wizard.y) && !solid(wizard.x+8,wizard.y+7)){
             wizard.vx = 1         
             wizard.f = false
             wizard.walking = true
@@ -83,7 +83,7 @@ class WizRobo extends Engine {
         }	
         
         //check on ground
-        if(wizard.vy < 0 && (solid(wizard.x, wizard.y-1)||solid(wizard.x+7, wizard.y-1))){
+        if(wizard.vy < 0 && (solid(wizard.x, wizard.y+1)||solid(wizard.x+7, wizard.y-1))){
             wizard.vy = 0
         }		
         if( wizard.vy<0 && (solid(wizard.x+wizard.vx,wizard.y+wizard.vy) || solid(wizard.x+8+wizard.vx,wizard.y+wizard.vy))){
