@@ -575,6 +575,10 @@ public abstract class Engine implements InputProcessor {
         //default search is false, in case there are no controllers.
         return false;
     }
+    
+    final boolean getButton(int code){
+        return p1c.getButton(code);
+    }
 
     //detect keyboard key presses
     final boolean key(String key) {

@@ -23,13 +23,11 @@ class WizRobo extends Engine {
     def lvl8start = false
     
     def lvl9start = false
-	
-    def i = [:]
-    
+	    
     def time = 0
-			
-    Random rand
     
+    def rand
+			    
     def solid(x,y){
         float mx = (x)/8 
         float my = (y)/8
