@@ -20,6 +20,7 @@ allprojects {
         appName = 'Leikr'
         mini2DxVersion = '1.9.0-beta.10'
         gdxVersion = '1.9.8'
+        cuVersion = '0.1.3'
     }
 
     repositories {
@@ -36,6 +37,8 @@ project(":core") {
     dependencies {
         implementation "org.mini2Dx:mini2Dx-core:$mini2DxVersion"
         implementation "org.mini2Dx:mini2Dx-tiled:$mini2DxVersion"
+        implementation "de.golfgl.gdxcontrollerutils:gdx-controllerutils-mapping:$cuVersion"
+        implementation "de.golfgl.gdxcontrollerutils:gdx-controllerutils-scene2d:$cuVersion"
         implementation 'org.codehaus.groovy:groovy:3.0.0-alpha-4'
         implementation 'org.lwjgl.lwjgl:lwjgl:2.9.3'
         implementation 'org.eclipse.jgit:org.eclipse.jgit:5.2.1.201812262042-r'

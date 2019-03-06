@@ -74,9 +74,10 @@ public class LeikrController implements ControllerListener {
         }
     }
 
+
     @Override
     public boolean buttonDown(Controller controller, int buttonCode) {
-        System.out.println(controller.getName() + " : " + buttonCode);
+        System.out.println(controller.getName() +  " : " + buttonCode);
         switch (buttonCode) {
             case 0:
                 buttonXisPressed = true;
@@ -168,30 +169,27 @@ public class LeikrController implements ControllerListener {
         }
     }
 
+    
+    
     //Unused methods
     @Override
     public void connected(Controller controller) {
     }
-
     @Override
     public void disconnected(Controller controller) {
     }
-
     @Override
     public boolean povMoved(Controller cntrlr, int i, PovDirection pd) {
         return false;
     }
-
     @Override
     public boolean xSliderMoved(Controller cntrlr, int i, boolean bln) {
         return false;
     }
-
     @Override
     public boolean ySliderMoved(Controller cntrlr, int i, boolean bln) {
         return false;
     }
-
     @Override
     public boolean accelerometerMoved(Controller cntrlr, int i, Vector3 vctr) {
         return false;
