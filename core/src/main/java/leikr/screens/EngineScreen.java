@@ -148,6 +148,7 @@ public class EngineScreen extends BasicGameScreen {
             ERROR = true;
             errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();
             System.out.println(errorMessage);
+            ex.printStackTrace();
         }
     }
 

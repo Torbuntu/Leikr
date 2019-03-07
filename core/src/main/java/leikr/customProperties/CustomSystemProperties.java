@@ -29,11 +29,49 @@ public class CustomSystemProperties {
 
     public boolean SINGLE_LAUNCH;
 
+    public static int X;
+    public static int A;
+    public static int B;
+    public static int Y;
+    public static int LEFT_BUMPER;
+    public static int RIGHT_BUMPER;
+    public static int SELECT;
+    public static int START;
+    public static int UP;
+    public static int DOWN;
+    public static int RIGHT;
+    public static int LEFT;
+
+    public static int HORIZONTAL_AXIS;
+    public static int VERTICAL_AXIS;
+
     public CustomSystemProperties() {
         Properties prop = new Properties();
         try (InputStream stream = new FileInputStream(new File("Data/system.properties"))) {
             prop.load(stream);
             SINGLE_LAUNCH = (prop.getProperty("single_launch") != null) ? Boolean.valueOf(prop.getProperty("single_launch")) : false;
+
+            X = (prop.getProperty("btn_x") != null) ? Integer.parseInt(prop.getProperty("btn_x")) : 0;
+            A = (prop.getProperty("btn_a") != null) ? Integer.parseInt(prop.getProperty("btn_a")) : 1;
+            B = (prop.getProperty("btn_b") != null) ? Integer.parseInt(prop.getProperty("btn_b")) : 2;
+            Y = (prop.getProperty("btn_y") != null) ? Integer.parseInt(prop.getProperty("btn_y")) : 3;
+
+            LEFT_BUMPER = (prop.getProperty("btn_lbumper") != null) ? Integer.parseInt(prop.getProperty("btn_lbumper")) : 4;
+            RIGHT_BUMPER = (prop.getProperty("btn_rbumper") != null) ? Integer.parseInt(prop.getProperty("btn_rbumper")) : 5;
+
+            SELECT = (prop.getProperty("btn_select") != null) ? Integer.parseInt(prop.getProperty("btn_select")) : 8;
+            START = (prop.getProperty("btn_start") != null) ? Integer.parseInt(prop.getProperty("btn_start")) : 9;
+
+            UP = (prop.getProperty("btn_up") != null) ? Integer.parseInt(prop.getProperty("btn_up")) : -1;
+            DOWN = (prop.getProperty("btn_down") != null) ? Integer.parseInt(prop.getProperty("btn_down")) : 1;
+            LEFT = (prop.getProperty("btn_left") != null) ? Integer.parseInt(prop.getProperty("btn_left")) : -1;
+            RIGHT = (prop.getProperty("btn_right") != null) ? Integer.parseInt(prop.getProperty("btn_right")) : 1;
+            
+            HORIZONTAL_AXIS = (prop.getProperty("axis_horizontal") != null) ? Integer.parseInt(prop.getProperty("axis_horizontal")) : 0;
+            VERTICAL_AXIS = (prop.getProperty("axis_vertical") != null) ? Integer.parseInt(prop.getProperty("axis_vertical")) : 1;
+
+
+            
         } catch (IOException | NumberFormatException ex) {
             System.out.println(ex.getMessage());
         }

@@ -16,7 +16,6 @@
 package leikr;
 
 import leikr.controls.LeikrController;
-import leikr.controls.ButtonCodes;
 import leikr.loaders.SpriteLoader;
 import leikr.loaders.ImageLoader;
 import leikr.loaders.MapLoader;
@@ -48,13 +47,28 @@ public abstract class Engine implements InputProcessor {
     //used by the Engine Screen to determine if the game should be actively running.
     boolean active;
 
+    public static enum BTN {
+        X,
+        A,
+        B,
+        Y,
+        LEFT_BUMPER,
+        RIGHT_BUMPER,
+        SELECT,
+        START,
+        UP,
+        RIGHT,
+        DOWN,
+        LEFT
+    }
+
     /**
      * LeikrController is actually the custom controller listener and the pNc
      * objects are the controllers.
      */
     LeikrController p1Controller;
     LeikrController p2Controller;
-    Controller p1c;
+    public Controller playerOneController;
     Controller p2c;
 
     /**
@@ -75,9 +89,6 @@ public abstract class Engine implements InputProcessor {
     private int MAX_SPRITES;
     private int USED_SPRITES;
 
-    //codes for the buttons for readability
-    public ButtonCodes BTN;
-
     //custom prop functions
     final int getUsedSprites() {
         return USED_SPRITES;
@@ -88,19 +99,18 @@ public abstract class Engine implements InputProcessor {
         MAX_SPRITES = mSprites;
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         logger = new FPSLogger();
-        BTN = new ButtonCodes();
         spriteLoader = new SpriteLoader();
         imageLoader = new ImageLoader();
         mapLoader = new MapLoader();
         audioLoader = new AudioLoader();
         active = true;
-
         try {
             Array<Controller> nmc = Controllers.getControllers();
             if (null != nmc.get(0)) {
-                p1c = nmc.get(0);
+                playerOneController = nmc.get(0);
                 p1Controller = new LeikrController();
-                p1c.addListener(p1Controller);
+                playerOneController.addListener(p1Controller);
+
             }
             if (null != nmc.get(1)) {
                 p2c = nmc.get(1);
@@ -144,8 +154,8 @@ public abstract class Engine implements InputProcessor {
         mapLoader.disposeMap();
         spriteLoader.disposeSprites();
         imageLoader.disposeImages();
-        if (null != p1c) {
-            p1c.removeListener(p1Controller);
+        if (null != playerOneController) {
+            playerOneController.removeListener(p1Controller);
         }
         if (null != p2c) {
             p2c.removeListener(p2Controller);
@@ -218,9 +228,9 @@ public abstract class Engine implements InputProcessor {
     final void mapSet(float x, float y, int id) {
         mapLoader.setMapTile(x, y, id);
     }
-    
-    final void mapRemove(float x, float y){
-        mapLoader.removeMapTile(x,y);
+
+    final void mapRemove(float x, float y) {
+        mapLoader.removeMapTile(x, y);
     }
 
     final int getMapHeight() {
@@ -560,12 +570,11 @@ public abstract class Engine implements InputProcessor {
     //end audio handling
 
     //start input handling
-    final boolean button(int button) {
-        //assume single player game, only p1Controller
+    final boolean button(BTN button) {
         return (null != p1Controller) ? p1Controller.button(button) : false;
     }
 
-    final boolean button(int button, int player) {
+    final boolean button(BTN button, int player) {
         if (null != p1Controller && player == 0) {
             return p1Controller.button(button);
         }
@@ -575,9 +584,9 @@ public abstract class Engine implements InputProcessor {
         //default search is false, in case there are no controllers.
         return false;
     }
-    
-    final boolean getButton(int code){
-        return p1c.getButton(code);
+
+    final boolean getButton(int code) {
+        return playerOneController.getButton(code);
     }
 
     //detect keyboard key presses

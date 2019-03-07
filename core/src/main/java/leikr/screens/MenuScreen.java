@@ -27,6 +27,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import java.io.File;
 import leikr.GameRuntime;
+import leikr.customProperties.CustomSystemProperties;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -66,7 +67,7 @@ public class MenuScreen extends BasicGameScreen {
     public MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
-        gameList = new File(Gdx.files.getLocalStoragePath()+"Programs").list();
+        gameList = new File(Gdx.files.getLocalStoragePath() + "Programs").list();
         setGameName(gameList[0]);
         loadIcons();
     }
@@ -78,7 +79,7 @@ public class MenuScreen extends BasicGameScreen {
     private void setGameName(String GAME_NAME) {
         MenuScreen.GAME_NAME = GAME_NAME;
     }
-    
+
     public static void finishLoading() {
         LOADING = false;
     }
@@ -154,19 +155,16 @@ public class MenuScreen extends BasicGameScreen {
                     //9 start
                     @Override
                     public boolean buttonUp(Controller controller, int buttonIndex) {
-                        switch (buttonIndex) {
-                            case 1:
-                            case 9:
-                                START = true;
-                                LOADING = true;
-                                break;
+                        if (buttonIndex == CustomSystemProperties.START || buttonIndex == CustomSystemProperties.A) {
+                            START = true;
+                            LOADING = true;
                         }
                         return false;
                     }
 
                     @Override
                     public boolean axisMoved(Controller controller, int axisCode, float value) {
-                        if (axisCode == 1) {
+                        if (axisCode == CustomSystemProperties.VERTICAL_AXIS) {
                             if (value == 1 && cursor < gameList.length - 1) {
                                 cursor++;
                                 setGameName(gameList[cursor]);

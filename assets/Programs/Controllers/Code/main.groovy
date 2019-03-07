@@ -1,104 +1,78 @@
+
 import leikr.Engine
+
 class Controllers extends Engine {
-	
-	int buttons = 12
-	int index = 0
-	def isSet = [:]
-	def settings = [:]
-	
-	
-	
-	public static final String LGPM = "lgpm"; //leikr gamepad mapping
-
-    public static Preferences prefs = Gdx.app.getPreferences(LGPM);
-
-    public static String loadControllerMappings() {
-        return prefs.getString("controllerMappings", "");
-    }
-
-    public static void saveControllerMappings(String json) {
-        prefs.putString("controllerMappings", json);
-        prefs.flush();
-    }
-	
-	
-	private void switchStep() {
-        switch (currentStep) {
-            case 0:
-                mappings.resetMappings(controller);
-                instructionLabel.setText(PRESS_THE_BUTTON_TO + "move RIGHT");
-                inputToRecord = MyControllerMapping.AXIS_HORIZONTAL;
-                break;
-            case 1:
-                instructionLabel.setText(PRESS_THE_BUTTON_TO + "move LEFT");
-                inputToRecord = MyControllerMapping.AXIS_HORIZONTAL;
-                break;
-            case 2:
-                instructionLabel.setText(PRESS_THE_BUTTON_TO + "move DOWN");
-                inputToRecord = MyControllerMapping.AXIS_VERTICAL;
-                break;
-            case 3:
-                instructionLabel.setText(PRESS_THE_BUTTON_TO + "move UP");
-                inputToRecord = MyControllerMapping.AXIS_VERTICAL;
-                break;
-            case 4:
-            case 5:
-                instructionLabel.setText(PRESS_THE_BUTTON_TO + "X");
-                inputToRecord = MyControllerMapping.BUTTON_X;
-                break;
-            case 6:
-            case 7:
-                instructionLabel.setText(PRESS_THE_BUTTON_TO + "Y");
-                inputToRecord = MyControllerMapping.BUTTON_Y;
-                break;
-            case 8:
-            case 9:
-                instructionLabel.setText(PRESS_THE_BUTTON_TO + "A");
-                inputToRecord = MyControllerMapping.BUTTON_A;
-                break;
-            case 10:
-            case 11:
-                instructionLabel.setText(PRESS_THE_BUTTON_TO + "B");
-                inputToRecord = MyControllerMapping.BUTTON_B;
-                break;
-            case 12:
-            case 13:
-                instructionLabel.setText(PRESS_THE_BUTTON_TO + "ENTER/START");
-                inputToRecord = MyControllerMapping.BUTTON_START;
-                break;
-            case 14:
-            case 15:
-                instructionLabel.setText(PRESS_THE_BUTTON_TO + "ESCAPE/SELECT");
-                inputToRecord = MyControllerMapping.BUTTON_SELECT;
-                break;
-            case 16:
-            case 17:
-                instructionLabel.setText(PRESS_THE_BUTTON_TO + "Left Bumper");
-                inputToRecord = MyControllerMapping.BUTTON_LBUMPER;
-                break;
-            case 18:
-            case 19:
-                instructionLabel.setText(PRESS_THE_BUTTON_TO + "Right Bumper");
-                inputToRecord = MyControllerMapping.BUTTON_RBUMPER;
-                break;
-            default:
-                instructionLabel.setText("Finished");
-                ControllerMappingManager.saveControllerMappings(mappings.toJson().toJson(JsonWriter.OutputType.json));
-                skipButton.setText("OK");
-
-                inputToRecord = -1;
-        }
-    }
-	
-	
+    
+    
+    int buttons = 12
+    int index = 0
+    def isSet = [:]
+    def settings = [:]
+    String settingButton = ""
+    def allSet = false
+    
+    
     void create(){
+        loadImages()
     	isSet = [left: false, right: false, up: false, down: false, lb: false, rb: false, select: false, start: false, a:false, b:false, x:false, y:false]
     }
-    void update(float delta){}
+    void update(float delta){
+       
+    }
+    
+    void drawButtons(){
+        if(button(BTN.UP)){
+            sprite32(1, 40,42,false, false)
+        }
+        if(button(BTN.DOWN)){
+            sprite32(1, 40, 102, false, true)
+        }
+        if(button(BTN.LEFT)){
+            sprite32(2, 10, 72, true, false)
+        }
+        if(button(BTN.RIGHT)){
+            sprite32(2, 70, 72, false, false)
+        }
+        
+        if(button(BTN.LEFT_BUMPER)){
+            sprite16(0, 16,16)
+            sprite16(0, 32,16)
+            sprite16(0, 48,16)
+            sprite16(0, 64,16)
+        }
+        if(button(BTN.RIGHT_BUMPER)){
+            sprite16(0, 160,16)
+            sprite16(0, 176,16)
+            sprite16(0, 192,16)
+            sprite16(0, 208,16)
+        }
+        if(button(BTN.X)){
+            sprite32(3, 168, 40, false, false)
+        }
+        if(button(BTN.Y)){
+            sprite32(4, 136, 72, false, false)
+        }
+        if(button(BTN.A)){
+            sprite32(5, 200, 72, false, false)
+        }
+        if(button(BTN.B)){
+            sprite32(6, 168, 104, false, false)
+        }
+        if(button(BTN.SELECT)){
+            sprite16(0, 80, 136, false, false)
+            sprite16(0, 96, 136, false, false)
+        }
+        if(button(BTN.START)){
+            sprite16(0, 128, 136, false, false)
+            sprite16(0, 144, 136, false, false)
+        }
+        
+    }
     void render(){	
-        bgColor(16)
+        bgColor(0.6f, 0.6f, 0.6f)
         
-        text("Button " + isSet.left, 0, 8, 232, 1) 
-        
+        drawButtons()
+        image("controller",0,0)    
+
     }	
 }
