@@ -31,6 +31,7 @@ import leikr.customProperties.CustomSystemProperties;
 public class LeikrController implements ControllerListener {
 
     Map buttons = new HashMap();
+    Map btnCodes = new HashMap();
 
     public LeikrController() {
         buttons.put(Engine.BTN.A, false);
@@ -47,6 +48,14 @@ public class LeikrController implements ControllerListener {
         buttons.put(Engine.BTN.UP, false);
         buttons.put(Engine.BTN.DOWN, false);
         
+        btnCodes.put(CustomSystemProperties.A, Engine.BTN.A);
+        btnCodes.put(CustomSystemProperties.B, Engine.BTN.B);
+        btnCodes.put(CustomSystemProperties.X, Engine.BTN.X);
+        btnCodes.put(CustomSystemProperties.Y, Engine.BTN.Y);
+        btnCodes.put(CustomSystemProperties.LEFT_BUMPER, Engine.BTN.LEFT_BUMPER);
+        btnCodes.put(CustomSystemProperties.RIGHT_BUMPER, Engine.BTN.RIGHT_BUMPER);
+        btnCodes.put(CustomSystemProperties.SELECT, Engine.BTN.SELECT);
+        btnCodes.put(CustomSystemProperties.START, Engine.BTN.START);
     }
 
     //engine api for returning boolean status of button presses on snes style controller
@@ -57,69 +66,22 @@ public class LeikrController implements ControllerListener {
     @Override
     public boolean buttonDown(Controller controller, int buttonCode) {
         System.out.println(controller.getName() + " : " + buttonCode);
-        if(buttonCode == CustomSystemProperties.X){
-            buttons.replace(Engine.BTN.X, true);
-        }
-        if(buttonCode == CustomSystemProperties.A){
-            buttons.replace(Engine.BTN.A, true);
-        }
-        if(buttonCode == CustomSystemProperties.B){
-            buttons.replace(Engine.BTN.B, true);
-        }
-        if(buttonCode == CustomSystemProperties.Y){
-            buttons.replace(Engine.BTN.Y, true);
-        }
-        if(buttonCode == CustomSystemProperties.LEFT_BUMPER){
-            buttons.replace(Engine.BTN.LEFT_BUMPER, true);
-        }
-        if(buttonCode == CustomSystemProperties.RIGHT_BUMPER){
-            buttons.replace(Engine.BTN.RIGHT_BUMPER, true);
-        }
-        if(buttonCode == CustomSystemProperties.SELECT){
-            buttons.replace(Engine.BTN.SELECT, true);
-        }
-        if(buttonCode == CustomSystemProperties.START){
-            buttons.replace(Engine.BTN.START, true);
-        }
+        buttons.replace(btnCodes.get(buttonCode), true);
         return false;
     }
 
     @Override
     public boolean buttonUp(Controller controller, int buttonCode) {
         System.out.println(controller.getName() + " : " + buttonCode);
-        if(buttonCode == CustomSystemProperties.X){
-            buttons.replace(Engine.BTN.X, false);
-        }
-        if(buttonCode == CustomSystemProperties.A){
-            buttons.replace(Engine.BTN.A, false);
-        }
-        if(buttonCode == CustomSystemProperties.B){
-            buttons.replace(Engine.BTN.B, false);
-        }
-        if(buttonCode == CustomSystemProperties.Y){
-            buttons.replace(Engine.BTN.Y, false);
-        }
-        if(buttonCode == CustomSystemProperties.LEFT_BUMPER){
-            buttons.replace(Engine.BTN.LEFT_BUMPER, false);
-        }
-        if(buttonCode == CustomSystemProperties.RIGHT_BUMPER){
-            buttons.replace(Engine.BTN.RIGHT_BUMPER, false);
-        }
-        if(buttonCode == CustomSystemProperties.SELECT){
-            buttons.replace(Engine.BTN.SELECT, false);
-        }
-        if(buttonCode == CustomSystemProperties.START){
-            buttons.replace(Engine.BTN.START, false);
-        }
-        
+        buttons.replace(btnCodes.get(buttonCode), false);
         return false;
     }
 
     //Keypad
     @Override
     public boolean axisMoved(Controller controller, int axisCode, float value) {
-        //axis 0 = x axis -1 = left 1 = right
-        //axis 1 = y axis -1 = up 1 = down
+        //Legacy codes: axis 0 = x axis -1 = left 1 = right
+        //Legacy codes: axis 1 = y axis -1 = up 1 = down
         if ((int) value == 0) {
             buttons.replace(Engine.BTN.UP, false);
             buttons.replace(Engine.BTN.DOWN, false);
@@ -130,12 +92,11 @@ public class LeikrController implements ControllerListener {
         if (axisCode == CustomSystemProperties.VERTICAL_AXIS) {
             if (value == CustomSystemProperties.DOWN) {
                 buttons.replace(Engine.BTN.DOWN, true);
-                System.out.println("DOWN is pressed");
             } else if (value == CustomSystemProperties.UP) {
                 buttons.replace(Engine.BTN.UP, true);
-                System.out.println("UP is pressed");
             }
-        } else {
+        } 
+        if(axisCode == CustomSystemProperties.HORIZONTAL_AXIS){
             if (value == CustomSystemProperties.RIGHT) {
                 buttons.replace(Engine.BTN.RIGHT, true);
             } else if (value == CustomSystemProperties.LEFT) {
