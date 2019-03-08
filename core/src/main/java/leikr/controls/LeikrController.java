@@ -42,12 +42,12 @@ public class LeikrController implements ControllerListener {
         buttons.put(Engine.BTN.RIGHT_BUMPER, false);
         buttons.put(Engine.BTN.SELECT, false);
         buttons.put(Engine.BTN.START, false);
-        
+
         buttons.put(Engine.BTN.LEFT, false);
         buttons.put(Engine.BTN.RIGHT, false);
         buttons.put(Engine.BTN.UP, false);
         buttons.put(Engine.BTN.DOWN, false);
-        
+
         btnCodes.put(CustomSystemProperties.A, Engine.BTN.A);
         btnCodes.put(CustomSystemProperties.B, Engine.BTN.B);
         btnCodes.put(CustomSystemProperties.X, Engine.BTN.X);
@@ -65,14 +65,18 @@ public class LeikrController implements ControllerListener {
 
     @Override
     public boolean buttonDown(Controller controller, int buttonCode) {
-        System.out.println(controller.getName() + " : " + buttonCode);
+        if (CustomSystemProperties.DEBUG) {
+            System.out.println(controller.getName() + " : " + buttonCode);
+        }
         buttons.replace(btnCodes.get(buttonCode), true);
         return false;
     }
 
     @Override
     public boolean buttonUp(Controller controller, int buttonCode) {
-        System.out.println(controller.getName() + " : " + buttonCode);
+        if (CustomSystemProperties.DEBUG) {
+            System.out.println(controller.getName() + " : " + buttonCode);
+        }
         buttons.replace(btnCodes.get(buttonCode), false);
         return false;
     }
@@ -82,6 +86,9 @@ public class LeikrController implements ControllerListener {
     public boolean axisMoved(Controller controller, int axisCode, float value) {
         //Legacy codes: axis 0 = x axis -1 = left 1 = right
         //Legacy codes: axis 1 = y axis -1 = up 1 = down
+        if (CustomSystemProperties.DEBUG) {
+            System.out.println(controller.getName() + " : " + axisCode + " | "+value);
+        }
         if ((int) value == 0) {
             buttons.replace(Engine.BTN.UP, false);
             buttons.replace(Engine.BTN.DOWN, false);
@@ -95,8 +102,8 @@ public class LeikrController implements ControllerListener {
             } else if (value == CustomSystemProperties.UP) {
                 buttons.replace(Engine.BTN.UP, true);
             }
-        } 
-        if(axisCode == CustomSystemProperties.HORIZONTAL_AXIS){
+        }
+        if (axisCode == CustomSystemProperties.HORIZONTAL_AXIS) {
             if (value == CustomSystemProperties.RIGHT) {
                 buttons.replace(Engine.BTN.RIGHT, true);
             } else if (value == CustomSystemProperties.LEFT) {

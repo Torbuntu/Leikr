@@ -44,12 +44,16 @@ public class CustomSystemProperties {
 
     public static int HORIZONTAL_AXIS;
     public static int VERTICAL_AXIS;
+    
+    
+    public static boolean DEBUG;
 
     public CustomSystemProperties() {
         Properties prop = new Properties();
         try (InputStream stream = new FileInputStream(new File("Data/system.properties"))) {
             prop.load(stream);
             SINGLE_LAUNCH = (prop.getProperty("single_launch") != null) ? Boolean.valueOf(prop.getProperty("single_launch")) : false;
+            DEBUG = (prop.getProperty("debug_mode") != null) ? Boolean.valueOf(prop.getProperty("debug_mode")) : false;
 
             X = (prop.getProperty("btn_x") != null) ? Integer.parseInt(prop.getProperty("btn_x")) : 0;
             A = (prop.getProperty("btn_a") != null) ? Integer.parseInt(prop.getProperty("btn_a")) : 1;
