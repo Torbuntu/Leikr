@@ -15,9 +15,12 @@
  */
 package leikr.loaders;
 
-import com.badlogic.gdx.Gdx;
+import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovySystem;
+import groovy.util.GroovyScriptEngine;
+import groovy.util.ResourceException;
+import groovy.util.ScriptException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -39,10 +42,12 @@ public class EngineLoader {
     static GroovyClassLoader gcl = new GroovyClassLoader(ClassLoader.getSystemClassLoader());
 
     //Returns either a pre-compiled game Engine, an Engine compiled from sources, or null. Returning Null helps the EngineScreen return to the MenuScreen.
-    public static Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException {
+    public static Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, ResourceException, ScriptException {
         CustomProgramProperties cp = new CustomProgramProperties(GameRuntime.getGamePath());
         String rootPath = GameRuntime.getGamePath() + "/Code/";
-
+        if (cp.USE_SCRIPT) {
+            return getScriptedEngine(rootPath, cp);
+        }
         if (cp.COMPILE_SOURCE) {
             compileEngine(rootPath);
         }
@@ -53,14 +58,14 @@ public class EngineLoader {
     }
 
     private static Engine getSourceEngine(String rootPath, CustomProgramProperties cp) throws CompilationFailedException, IOException, InstantiationException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        String[] codes = new File(Gdx.files.getLocalStoragePath() + rootPath).list();
+        String[] codes = new File(rootPath).list();
         Engine engine = null;
         if (codes.length > 0) {
             for (String path : codes) {
                 if (!path.equals("main.groovy") && !path.equals("Compiled")) {
-                    gcl.parseClass(new File(Gdx.files.getLocalStoragePath() + rootPath + path));
+                    gcl.parseClass(new File(rootPath + path));
                 } else {
-                    engine = (Engine) gcl.parseClass(new File(Gdx.files.getLocalStoragePath() + rootPath + "main.groovy")).getConstructors()[0].newInstance();//loads the game code  
+                    engine = (Engine) gcl.parseClass(new File(rootPath + "main.groovy")).getConstructors()[0].newInstance();//loads the game code  
                 }
             }
         }
@@ -102,4 +107,15 @@ public class EngineLoader {
             GroovySystem.getMetaClassRegistry().removeMetaClass(c);
         }
     }
+
+    //TODO: these are for testing
+    private static Engine getScriptedEngine(String rootPath, CustomProgramProperties cp) throws IOException, ResourceException, ScriptException {
+        String[] paths = {rootPath};
+        Binding bd = new Binding();
+        GroovyScriptEngine gse = new GroovyScriptEngine(paths);
+        Engine engine = (Engine) gse.run("main.groovy", bd);
+        engine.preCreate(cp.MAX_SPRITES);
+        return engine;
+    }
+
 }

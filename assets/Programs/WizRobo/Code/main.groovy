@@ -2,7 +2,6 @@ import leikr.Engine
 import com.badlogic.gdx.math.MathUtils
 
 class WizRobo extends Engine {
-	
     def wizard = [:]	
     def bolt = [:]
     def enemies = []
@@ -873,3 +872,4 @@ class WizRobo extends Engine {
     }
         
 }
+new WizRobo()

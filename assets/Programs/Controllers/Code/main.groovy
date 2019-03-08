@@ -66,13 +66,14 @@ class Controllers extends Engine {
             sprite16(0, 128, 136, false, false)
             sprite16(0, 144, 136, false, false)
         }
-        
+        FPS()
     }
     void render(){	
         bgColor(0.6f, 0.6f, 0.6f)
         
         drawButtons()
         image("controller",0,0)    
-
+        
     }	
 }
+new Controllers()
