@@ -872,4 +872,3 @@ class WizRobo extends Engine {
     }
         
 }
-new WizRobo()

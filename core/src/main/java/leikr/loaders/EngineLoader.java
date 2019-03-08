@@ -76,7 +76,7 @@ public class EngineLoader {
     }
 
     private static Engine getCompiledEngine(String rootPath, CustomProgramProperties cp) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-        gcl.addURL(new File(rootPath.substring(2, rootPath.length()) + "Compiled/").toURI().toURL());
+        gcl.addURL(new File(rootPath + "Compiled/").toURI().toURL());
         for (String classFile : new File(rootPath + "Compiled/").list()) {
             if (!classFile.equals(MenuScreen.getGameName() + ".class")) {
                 gcl.loadClass(classFile.replace(".class", ""), false, true);
