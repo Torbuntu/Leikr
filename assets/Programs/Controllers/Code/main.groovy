@@ -44,7 +44,6 @@ class ControllerUtil extends Engine {
     int VERTICAL_AXIS;
     
     def lastButtonPressed
-    
     void readDataProps(){
         Properties prop = new Properties();
         try(InputStream stream = new FileInputStream(new File("Data/system.properties"))) {
@@ -355,4 +354,4 @@ class ControllerUtil extends Engine {
         }	
     }
 }
-new ControllerUtil()
+//new ControllerUtil()
