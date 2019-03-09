@@ -64,11 +64,11 @@ public class EngineLoader {
             for (String path : codes) {
                 if (!path.equals("main.groovy") && !path.equals("Compiled")) {
                     gcl.parseClass(new File(rootPath + path));
-                } else {
-                    engine = (Engine) gcl.parseClass(new File(rootPath + "main.groovy")).getConstructors()[0].newInstance();//loads the game code  
                 }
             }
         }
+        engine = (Engine) gcl.parseClass(new File(rootPath + "main.groovy")).getConstructors()[0].newInstance();//loads the game code  
+
         if (null != engine) {
             engine.preCreate(cp.MAX_SPRITES);//pre create here to instantiate objects
         }
