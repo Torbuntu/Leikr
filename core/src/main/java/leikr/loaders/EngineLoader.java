@@ -59,7 +59,6 @@ public class EngineLoader {
 
     private static Engine getSourceEngine(String rootPath, CustomProgramProperties cp) throws CompilationFailedException, IOException, InstantiationException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         String[] codes = new File(rootPath).list();
-        Engine engine = null;
         if (codes.length > 0) {
             for (String path : codes) {
                 if (!path.equals("main.groovy") && !path.equals("Compiled")) {
@@ -67,7 +66,7 @@ public class EngineLoader {
                 }
             }
         }
-        engine = (Engine) gcl.parseClass(new File(rootPath + "main.groovy")).getConstructors()[0].newInstance();//loads the game code  
+        Engine engine = (Engine) gcl.parseClass(new File(rootPath + "main.groovy")).getConstructors()[0].newInstance();//loads the game code  
 
         if (null != engine) {
             engine.preCreate(cp.MAX_SPRITES);//pre create here to instantiate objects
