@@ -28,12 +28,12 @@ import leikr.customProperties.CustomSystemProperties;
  *
  * @author tor
  */
-public class LeikrController implements ControllerListener {
+public class LeikrControllerListener implements ControllerListener {
 
     Map buttons = new HashMap();
     Map btnCodes = new HashMap();
 
-    public LeikrController() {
+    public LeikrControllerListener() {
         buttons.put(Engine.BTN.A, false);
         buttons.put(Engine.BTN.B, false);
         buttons.put(Engine.BTN.X, false);
@@ -87,7 +87,7 @@ public class LeikrController implements ControllerListener {
         //Legacy codes: axis 0 = x axis -1 = left 1 = right
         //Legacy codes: axis 1 = y axis -1 = up 1 = down
         if (CustomSystemProperties.DEBUG) {
-            System.out.println(controller.getName() + " : " + axisCode + " | "+value);
+            System.out.println(controller.getName() + " : " + axisCode + " | " + value);
         }
         if ((int) value == 0) {
             buttons.replace(Engine.BTN.UP, false);
@@ -99,14 +99,16 @@ public class LeikrController implements ControllerListener {
         if (axisCode == CustomSystemProperties.VERTICAL_AXIS) {
             if (value == CustomSystemProperties.DOWN) {
                 buttons.replace(Engine.BTN.DOWN, true);
-            } else if (value == CustomSystemProperties.UP) {
+            }
+            if (value == CustomSystemProperties.UP) {
                 buttons.replace(Engine.BTN.UP, true);
             }
         }
         if (axisCode == CustomSystemProperties.HORIZONTAL_AXIS) {
             if (value == CustomSystemProperties.RIGHT) {
                 buttons.replace(Engine.BTN.RIGHT, true);
-            } else if (value == CustomSystemProperties.LEFT) {
+            }
+            if (value == CustomSystemProperties.LEFT) {
                 buttons.replace(Engine.BTN.LEFT, true);
             }
         }
@@ -121,6 +123,7 @@ public class LeikrController implements ControllerListener {
 
     @Override
     public void disconnected(Controller controller) {
+        System.out.println("Controller lost...");
     }
 
     @Override

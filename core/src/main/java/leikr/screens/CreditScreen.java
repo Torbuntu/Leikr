@@ -23,7 +23,6 @@ import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.Array;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -39,11 +38,12 @@ import org.mini2Dx.core.screen.transition.FadeOutTransition;
  * @author tor
  */
 public class CreditScreen extends BasicGameScreen {
-    
+
     public static int ID = 3;
     AssetManager assetManager;
     FitViewport viewport;
     boolean MENU = false;
+    int timer = 0;
 
     public CreditScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
@@ -72,31 +72,28 @@ public class CreditScreen extends BasicGameScreen {
     }
 
     @Override
-    public void initialise(GameContainer gc) {
+    public void postTransitionIn(Transition transitionIn) {
         try {
-            Controller menuController;
-            Array<Controller> nmc = Controllers.getControllers();
-            if (null != nmc.get(0)) {
-                menuController = nmc.get(0);
+            Controllers.clearListeners();            
+            if (Controllers.getControllers().size > 0) {
+                Controller menuController = Controllers.getControllers().get(0);
                 menuController.addListener(new ControllerAdapter() {
-                    //1 A
-                    //9 start
                     @Override
                     public boolean buttonUp(Controller controller, int buttonIndex) {
-                        switch (buttonIndex) {
-                            case 1:
-                            case 9:
-                                MENU = true;
-                                break;
-                        }
+                        MENU = true;
                         return false;
                     }
 
                 });
             }
         } catch (Exception ex) {
-            System.out.println("No controllers active. " + ex.getMessage());
+            System.out.println("No controllers active on Credit Screen. " + ex.getMessage());
         }
+    }
+
+    @Override
+    public void initialise(GameContainer gc) {
+
     }
 
     @Override
@@ -104,10 +101,14 @@ public class CreditScreen extends BasicGameScreen {
         Gdx.app.log("INFO", "Game window changed to " + width + "x" + height);
         viewport.onResize(width, height);
     }
-    
+
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
         checkInput(sm);
+        if (timer > 300) {
+            MENU = true;
+        }
+        timer++;
     }
 
     @Override

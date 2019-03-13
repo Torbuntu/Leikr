@@ -67,10 +67,8 @@ public class EngineLoader {
             }
         }
         Engine engine = (Engine) gcl.parseClass(new File(rootPath + "main.groovy")).getConstructors()[0].newInstance();//loads the game code  
-
-        if (null != engine) {
-            engine.preCreate(cp.MAX_SPRITES);//pre create here to instantiate objects
-        }
+        engine.preCreate(cp.MAX_SPRITES);//pre create here to instantiate objects
+        
         return engine;
     }
 

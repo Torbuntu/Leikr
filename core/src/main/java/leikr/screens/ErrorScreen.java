@@ -22,7 +22,6 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.utils.Array;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -38,7 +37,7 @@ import org.mini2Dx.core.screen.transition.FadeOutTransition;
  * @author tor
  */
 public class ErrorScreen extends BasicGameScreen {
-    
+
     public static int ID = 4;
     AssetManager assetManager;
     FitViewport viewport;
@@ -50,8 +49,8 @@ public class ErrorScreen extends BasicGameScreen {
         viewport = new FitViewport(240, 160);
         errorMessage = "";
     }
-    
-    public static void setErrorMessage(String message){
+
+    public static void setErrorMessage(String message) {
         errorMessage = message;
     }
 
@@ -73,28 +72,19 @@ public class ErrorScreen extends BasicGameScreen {
     @Override
     public void initialise(GameContainer gc) {
         try {
-            Controller menuController;
-            Array<Controller> nmc = Controllers.getControllers();
-            if (null != nmc.get(0)) {
-                menuController = nmc.get(0);
+            Controllers.clearListeners();
+            if (Controllers.getControllers().size > 0) {
+                Controller menuController = Controllers.getControllers().get(0);
                 menuController.addListener(new ControllerAdapter() {
-                    //1 A
-                    //9 start
                     @Override
                     public boolean buttonUp(Controller controller, int buttonIndex) {
-                        switch (buttonIndex) {
-                            case 1:
-                            case 9:
-                                MENU = true;
-                                break;
-                        }
+                        MENU = true;
                         return false;
                     }
-
                 });
             }
         } catch (Exception ex) {
-            System.out.println("No controllers active. " + ex.getMessage());
+            System.out.println("No controllers active on Error Screen. " + ex.getMessage());
         }
     }
 
@@ -102,7 +92,7 @@ public class ErrorScreen extends BasicGameScreen {
     public void onResize(int width, int height) {
         viewport.onResize(width, height);
     }
-    
+
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
         checkInput(sm);
@@ -116,7 +106,7 @@ public class ErrorScreen extends BasicGameScreen {
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
         g.setColor(Color.RED);
-        g.drawString("Message:  "+errorMessage, 0, 0, 232);
+        g.drawString("Message:  " + errorMessage, 0, 0, 232);
     }
 
     @Override

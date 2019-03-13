@@ -24,7 +24,6 @@ import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.Array;
 import java.io.File;
 import leikr.GameRuntime;
 import leikr.customProperties.CustomSystemProperties;
@@ -59,9 +58,6 @@ public class MenuScreen extends BasicGameScreen {
 
     AssetManager assetManager;
     FitViewport viewport;
-    Controller menuController;
-    ControllerAdapter controllerAdapter;
-
     String[] gameList;
 
     public MenuScreen(AssetManager assetManager) {
@@ -102,13 +98,6 @@ public class MenuScreen extends BasicGameScreen {
     }
 
     @Override
-    public void preTransitionOut(Transition transitionOut) {
-        if (null != menuController) {
-            menuController.removeListener(controllerAdapter);
-        }
-    }
-
-    @Override
     public void preTransitionIn(Transition transitionIn) {
         if (GameRuntime.SINGLE_LAUNCH) {
             START = true;
@@ -145,14 +134,10 @@ public class MenuScreen extends BasicGameScreen {
             }
         });
         try {
-            Array<Controller> nmc = Controllers.getControllers();
-            if (null != nmc.get(0)) {
-                menuController = nmc.get(0);
-                controllerAdapter = new ControllerAdapter() {
-                    //10 up
-                    //12 down
-                    //1 A
-                    //9 start
+            Controllers.clearListeners();
+            if (Controllers.getControllers().size > 0) {
+                Controller menuController = Controllers.getControllers().get(0);
+                menuController.addListener(new ControllerAdapter() {
                     @Override
                     public boolean buttonUp(Controller controller, int buttonIndex) {
                         if (buttonIndex == CustomSystemProperties.START || buttonIndex == CustomSystemProperties.A) {
@@ -176,12 +161,10 @@ public class MenuScreen extends BasicGameScreen {
                         }
                         return false;
                     }
-                };
-                menuController.addListener(controllerAdapter);
-
+                });
             }
         } catch (Exception ex) {
-            System.out.println("No controllers active. " + ex.getMessage());
+            System.out.println("No controllers active on Menu Screen. " + ex.getMessage());
         }
     }
 

@@ -15,7 +15,7 @@
  */
 package leikr;
 
-import leikr.controls.LeikrController;
+import leikr.controls.LeikrControllerListener;
 import leikr.loaders.SpriteLoader;
 import leikr.loaders.ImageLoader;
 import leikr.loaders.MapLoader;
@@ -26,7 +26,6 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.utils.Array;
 import leikr.loaders.AudioLoader;
 import leikr.screens.EngineScreen;
 import org.mini2Dx.core.graphics.Graphics;
@@ -63,13 +62,12 @@ public abstract class Engine implements InputProcessor {
     }
 
     /**
-     * LeikrController is actually the custom controller listener and the pNc
-     * objects are the controllers.
+     * Controllers and listeners for handling custom controller input
      */
-    LeikrController p1Controller;
-    LeikrController p2Controller;
-    public Controller playerOneController;
-    Controller p2c;
+    LeikrControllerListener p1ControllerListener;
+    LeikrControllerListener p2ControllerListener;
+    Controller playerOneController;
+    Controller playerTwoController;
 
     /**
      * Loaders
@@ -105,17 +103,15 @@ public abstract class Engine implements InputProcessor {
         audioLoader = new AudioLoader();
         active = true;
         try {
-            Array<Controller> nmc = Controllers.getControllers();
-            if (null != nmc.get(0)) {
-                playerOneController = nmc.get(0);
-                p1Controller = new LeikrController();
-                playerOneController.addListener(p1Controller);
+            Controllers.clearListeners();
+            if (Controllers.getControllers().size > 0) {
+                p1ControllerListener = new LeikrControllerListener();
+                Controllers.getControllers().get(0).addListener(p1ControllerListener);
 
             }
-            if (null != nmc.get(1)) {
-                p2c = nmc.get(1);
-                p2Controller = new LeikrController();
-                p2c.addListener(p2Controller);
+            if (Controllers.getControllers().size > 1) {
+                p2ControllerListener = new LeikrControllerListener();
+                Controllers.getControllers().get(1).addListener(p2ControllerListener);
             }
         } catch (Exception ex) {
             System.out.println("Controllers not active: " + ex.getMessage());
@@ -155,10 +151,10 @@ public abstract class Engine implements InputProcessor {
         spriteLoader.disposeSprites();
         imageLoader.disposeImages();
         if (null != playerOneController) {
-            playerOneController.removeListener(p1Controller);
+            playerOneController.removeListener(p1ControllerListener);
         }
-        if (null != p2c) {
-            p2c.removeListener(p2Controller);
+        if (null != playerTwoController) {
+            playerTwoController.removeListener(p2ControllerListener);
         }
     }
     //dispose
@@ -329,6 +325,40 @@ public abstract class Engine implements InputProcessor {
     }
     //end text methods
 
+    //sprite helper methods.
+    private void drawSpriteRotate(int id, int size, float degr, float x, float y) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        Sprite t = spriteLoader.getSprite(id, size);
+        t.rotate(degr);
+        g.drawSprite(t, x, y);
+        t.rotate(-degr);
+        USED_SPRITES++;
+    }
+
+    private void drawSprite90(int id, float x, float y, int size, boolean clockwise) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        Sprite t = spriteLoader.getSprite(id, size);
+        t.rotate90(clockwise);
+        g.drawSprite(t, x, y);
+        t.rotate90(!clockwise);
+        USED_SPRITES++;
+    }
+
+    private void drawSpriteFlip(int id, float x, float y, int size, boolean flipX, boolean flipY) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        Sprite t = spriteLoader.getSprite(id, size);
+        t.setFlip(flipX, flipY);
+        g.drawSprite(t, x, y);
+        t.setFlip(false, false);
+        USED_SPRITES++;
+    }
+
     //start 8x8 sprites
     final void sprite(int id, float x, float y) {
         if (USED_SPRITES >= MAX_SPRITES) {
@@ -339,36 +369,15 @@ public abstract class Engine implements InputProcessor {
     }
 
     final void sprite(int id, float x, float y, float degr) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, 0);
-        t.rotate(degr);
-        g.drawSprite(t, x, y);
-        t.rotate(-degr);
-        USED_SPRITES++;
+        drawSpriteRotate(id, 0, degr, x, y);
     }
 
     final void sprite(int id, float x, float y, boolean clockwise) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, 0);
-        t.rotate90(clockwise);
-        g.drawSprite(t, x, y);
-        t.rotate90(!clockwise);
-        USED_SPRITES++;
+        drawSprite90(id, x, y, 0, clockwise);
     }
 
     final void sprite(int id, float x, float y, boolean flipX, boolean flipY) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, 0);
-        t.setFlip(flipX, flipY);
-        g.drawSprite(t, x, y);
-        t.setFlip(false, false);
-        USED_SPRITES++;
+        drawSpriteFlip(id, x, y, 0, flipX, flipY);
     }
     //end 8x8 sprites
 
@@ -382,36 +391,15 @@ public abstract class Engine implements InputProcessor {
     }
 
     final void sprite16(int id, float x, float y, float degr) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, 1);
-        t.rotate(degr);
-        g.drawSprite(t, x, y);
-        t.rotate(-degr);
-        USED_SPRITES++;
+        drawSpriteRotate(id, 1, degr, x, y);
     }
 
     final void sprite16(int id, float x, float y, boolean clockwise) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, 1);
-        t.rotate90(clockwise);
-        g.drawSprite(t, x, y);
-        t.rotate90(!clockwise);
-        USED_SPRITES++;
+        drawSprite90(id, x, y, 1, clockwise);
     }
 
     final void sprite16(int id, float x, float y, boolean flipX, boolean flipY) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, 1);
-        t.setFlip(flipX, flipY);
-        g.drawSprite(t, x, y);
-        t.setFlip(false, false);
-        USED_SPRITES++;
+        drawSpriteFlip(id, x, y, 1, flipX, flipY);
     }
     //end 16x16 sprites
 
@@ -425,36 +413,15 @@ public abstract class Engine implements InputProcessor {
     }
 
     final void sprite32(int id, float x, float y, float degr) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, 2);
-        t.rotate(degr);
-        g.drawSprite(t, x, y);
-        t.rotate(-degr);
-        USED_SPRITES++;
+        drawSpriteRotate(id, 2, degr, x, y);
     }
 
     final void sprite32(int id, float x, float y, boolean clockwise) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, 2);
-        t.rotate90(clockwise);
-        g.drawSprite(t, x, y);
-        t.rotate90(!clockwise);
-        USED_SPRITES++;
+        drawSprite90(id, x, y, 2, clockwise);
     }
 
     final void sprite32(int id, float x, float y, boolean flipX, boolean flipY) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, 2);
-        t.setFlip(flipX, flipY);
-        g.drawSprite(t, x, y);
-        t.setFlip(false, false);
-        USED_SPRITES++;
+        drawSpriteFlip(id, x, y, 2, flipX, flipY);
     }
     //end 32x32 sprites
 
@@ -468,36 +435,15 @@ public abstract class Engine implements InputProcessor {
     }
 
     final void sprite64(int id, float x, float y, float degr) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, 3);
-        t.rotate(degr);
-        g.drawSprite(t, x, y);
-        t.rotate(-degr);
-        USED_SPRITES++;
+        drawSpriteRotate(id, 3, degr, x, y);
     }
 
     final void sprite64(int id, float x, float y, boolean clockwise) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, 3);
-        t.rotate90(clockwise);
-        g.drawSprite(t, x, y);
-        t.rotate90(!clockwise);
-        USED_SPRITES++;
+        drawSprite90(id, x, y, 3, clockwise);
     }
 
     final void sprite64(int id, float x, float y, boolean flipX, boolean flipY) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, 3);
-        t.setFlip(flipX, flipY);
-        g.drawSprite(t, x, y);
-        t.setFlip(false, false);
-        USED_SPRITES++;
+        drawSpriteFlip(id, x, y, 3, flipX, flipY);
     }
     //end 64x64 sprites
 
@@ -571,15 +517,15 @@ public abstract class Engine implements InputProcessor {
 
     //start input handling
     final boolean button(BTN button) {
-        return (null != p1Controller) ? p1Controller.button(button) : false;
+        return (null != p1ControllerListener) ? p1ControllerListener.button(button) : false;
     }
 
     final boolean button(BTN button, int player) {
-        if (null != p1Controller && player == 0) {
-            return p1Controller.button(button);
+        if (null != p1ControllerListener && player == 0) {
+            return p1ControllerListener.button(button);
         }
-        if (null != p2Controller && player == 1) {
-            return p2Controller.button(button);
+        if (null != p2ControllerListener && player == 1) {
+            return p2ControllerListener.button(button);
         }
         //default search is false, in case there are no controllers.
         return false;

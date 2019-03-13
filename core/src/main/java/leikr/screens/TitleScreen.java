@@ -23,7 +23,6 @@ import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.utils.Array;
 import leikr.loaders.FontLoader;
 import org.mini2Dx.core.font.MonospaceFont;
 import org.mini2Dx.core.game.GameContainer;
@@ -51,6 +50,7 @@ public class TitleScreen extends BasicGameScreen {
     boolean CREDITS = false;
 
     TiledMap logo;
+    int timer = 0;
 
     public TitleScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
@@ -78,28 +78,20 @@ public class TitleScreen extends BasicGameScreen {
         fontLoader = new FontLoader();
         font = fontLoader.getFont(assetManager);
         try {
-            Controller menuController;
-            Array<Controller> nmc = Controllers.getControllers();
-            if (null != nmc.get(0)) {
-                menuController = nmc.get(0);
+            Controllers.clearListeners();
+            if (Controllers.getControllers().size > 0) {
+                Controller menuController = Controllers.getControllers().get(0);
                 menuController.addListener(new ControllerAdapter() {
-                    //1 A
-                    //9 start
                     @Override
                     public boolean buttonUp(Controller controller, int buttonIndex) {
-                        switch (buttonIndex) {
-                            case 1:
-                            case 9:
-                                CREDITS = true;
-                                break;
-                        }
-                        return false;
+                        CREDITS = true;
+                        return true;
                     }
 
                 });
             }
         } catch (Exception ex) {
-            System.out.println("No controllers active. " + ex.getMessage());
+            System.out.println("No controllers active on Title Screen. " + ex.getMessage());
         }
     }
 
@@ -108,13 +100,17 @@ public class TitleScreen extends BasicGameScreen {
         Gdx.app.log("INFO", "Game window changed to " + width + "x" + height);
         viewport.onResize(width, height);
     }
-    
+
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
         font.load(assetManager);
         logo.update(f);
 
         checkInput(sm);
+        if(timer > 300){
+            CREDITS = true;
+        }
+        timer++;
     }
 
     @Override
