@@ -3,9 +3,9 @@ apply plugin: "application"
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-   baseName = 'Leikr'
-   classifier = null
-   version = '0.0.0a'
+    baseName = 'Leikr'
+    classifier = null
+    version = '0.0.0a'
 }
 
 sourceCompatibility = 1.8

@@ -20,7 +20,6 @@ import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
 import java.util.HashMap;
-import java.util.Map;
 import leikr.Engine;
 import leikr.customProperties.CustomSystemProperties;
 
@@ -30,8 +29,8 @@ import leikr.customProperties.CustomSystemProperties;
  */
 public class LeikrControllerListener implements ControllerListener {
 
-    Map buttons = new HashMap();
-    Map btnCodes = new HashMap();
+    HashMap<Object, Boolean> buttons = new HashMap<>();
+    HashMap<Object, Object> btnCodes = new HashMap<>();
 
     public LeikrControllerListener() {
         buttons.put(Engine.BTN.A, false);
