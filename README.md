@@ -92,4 +92,4 @@ Maps: .tmx maps loadabled from `Maps` directory. (currently unlimited) Animated 
 
 Audio: .WAV files loaded from `Audio/Sound` and `Audio/Music`  (Limitations TBD)
 
-Controls: 2xUSB controllers/Full Keyboard. Tested using SNES style controllers. (Mouse TBD)
+Controls: 2xUSB controllers/Full Keyboard. Tested using SNES style controllers on Linux. Note: The controllers are configurable using the Program `Controllers` which comes with the system. It maps inputs to the system properties file in `Data`
