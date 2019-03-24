@@ -177,30 +177,21 @@ class Breakout extends Engine {
     }
 
     void ballBrickCollision(){
-        def iter = bricks.iterator()
-        while (iter.hasNext()) {
-            // get parameters
-            def it = iter.next()
-            float x = it.x
-            float y = it.y
-            float w = it.width
-            float h = it.height
-
-            // check collision
-            if (collide(ball, it)) {
+    	for(it in bricks.collect()){
+    		if (collide(ball, it)) {
                 // collide left or right side
-                if ((y < ball.y && ball.y < y+h) && (x < ball.x || ball.x < x+w)) {
+                if ((it.y < ball.y && ball.y < it.y+it.height) && (it.x < ball.x || ball.x < it.x+it.width)) {
                     ball.speed.x = -ball.speed.x
                 }
                 // collide top or bottom side		
-                if ((ball.y < y+h || ball.y > y) && (x < ball.x && ball.x < x+w) ){
+                if ((ball.y < it.y+it.height || ball.y > it.y) && (it.x < ball.x && ball.x < it.x+it.width) ){
                     ball.speed.y = -ball.speed.y
                 }
                 score++
-                bricks.remove(it)	
-                return // This has to return or else null is thrown 
+                bricks.remove(it)	                
             }
-        }
+    	}
+        
     }
 
     void draw(){
@@ -237,11 +228,6 @@ class Breakout extends Engine {
         }
     }
 	
-    @Override
-    public boolean mouseMoved(int x, int y) {
-    	println x/3 + " : " +y/3
-        return false;
-    }
 
     void create(){		
         rand = new Random()		

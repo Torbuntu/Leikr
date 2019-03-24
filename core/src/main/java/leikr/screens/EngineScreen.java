@@ -38,8 +38,8 @@ public class EngineScreen extends BasicGameScreen {
     static boolean BACK = false;
     static boolean ERROR = false;
     String errorMessage;
-    
-    public static void setBack(boolean setback){
+
+    public static void setBack(boolean setback) {
         BACK = setback;
     }
 
@@ -78,13 +78,13 @@ public class EngineScreen extends BasicGameScreen {
         } catch (Exception ex) {
             ERROR = true;
             errorMessage = "Error parsing program code. " + ex.getLocalizedMessage();
-            System.out.println(errorMessage);
+
             ex.printStackTrace();
         }
     }
-    
+
     @Override
-    public void postTransitionOut(Transition transition){
+    public void postTransitionOut(Transition transition) {
         ERROR = false;
         BACK = false;
         if (null != engine) {
@@ -105,10 +105,9 @@ public class EngineScreen extends BasicGameScreen {
             engine.create();
             Gdx.input.setInputProcessor(engine);
         } catch (Exception ex) {
-            ex.printStackTrace();
             ERROR = true;
             errorMessage = "Error in program `create` method. " + ex.getLocalizedMessage();
-            System.out.println(errorMessage);
+            ex.printStackTrace();
         }
     }
 
@@ -127,7 +126,6 @@ public class EngineScreen extends BasicGameScreen {
         } catch (Exception ex) {
             ERROR = true;
             errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
-            System.out.println(errorMessage);
             ex.printStackTrace();
         }
 
@@ -148,7 +146,6 @@ public class EngineScreen extends BasicGameScreen {
         } catch (Exception ex) {
             ERROR = true;
             errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();
-            System.out.println(errorMessage);
             ex.printStackTrace();
         }
     }

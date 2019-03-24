@@ -18,6 +18,7 @@ package leikr.loaders;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import java.io.File;
+import java.util.Arrays;
 import leikr.GameRuntime;
 
 /**
@@ -27,15 +28,13 @@ import leikr.GameRuntime;
 public class ImageLoader {
 
     AssetManager assetManager;
-    String[] images;
     String rootPath = GameRuntime.getGamePath() + "/Art/";
 
     public ImageLoader() {
         assetManager = new AssetManager();
-        images = new File(rootPath).list();
-        for (String path : images) {
-            assetManager.load(rootPath + path, Texture.class);
-        }
+        Arrays.asList(new File(rootPath).list()).stream()
+                .forEach(path -> assetManager.load(rootPath + path, Texture.class));
+
         assetManager.finishLoading();
     }
 

@@ -42,8 +42,6 @@ public class SpriteLoader {
         rootPath = GameRuntime.getGamePath() + "/Sprites/Sprites.png";
 
         loadSpriteSheets();
-
-        //This section is kind of hacky.
         addSpritesToSpriteBank();
     }
 

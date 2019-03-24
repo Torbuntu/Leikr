@@ -25,6 +25,10 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import leikr.customProperties.CustomProgramProperties;
 import leikr.Engine;
 import leikr.GameRuntime;
@@ -58,27 +62,35 @@ public class EngineLoader {
     }
 
     private static Engine getSourceEngine(String rootPath, CustomProgramProperties cp) throws CompilationFailedException, IOException, InstantiationException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        String[] codes = new File(rootPath).list();
-        if (codes.length > 0) {
-            for (String path : codes) {
-                if (!path.equals("main.groovy") && !path.equals("Compiled")) {
-                    gcl.parseClass(new File(rootPath + path));
-                }
-            }
+        List<String> codes = Arrays.asList(new File(rootPath).list());
+        if (!codes.isEmpty() && codes.size() > 1) {
+            codes.stream()
+                    .filter(x -> !x.equals("main.groovy") && !x.equals("Compiled"))
+                    .forEach(path -> {
+                        try {
+                            gcl.parseClass(new File(rootPath + path));
+                        } catch (CompilationFailedException | IOException ex) {
+                            Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    });
         }
         Engine engine = (Engine) gcl.parseClass(new File(rootPath + "main.groovy")).getConstructors()[0].newInstance();//loads the game code  
         engine.preCreate(cp.MAX_SPRITES);//pre create here to instantiate objects
-        
+
         return engine;
     }
 
     private static Engine getCompiledEngine(String rootPath, CustomProgramProperties cp) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
         gcl.addURL(new File(rootPath + "Compiled/").toURI().toURL());
-        for (String classFile : new File(rootPath + "Compiled/").list()) {
-            if (!classFile.equals(MenuScreen.getGameName() + ".class")) {
-                gcl.loadClass(classFile.replace(".class", ""), false, true);
-            }
-        }
+        Arrays.asList(new File(rootPath + "Compiled/").list()).stream()
+                .filter(x -> !x.equals(MenuScreen.getGameName() + ".class"))
+                .forEach(classFile -> {
+                    try {
+                        gcl.loadClass(classFile.replace(".class", ""), false, true);
+                    } catch (ClassNotFoundException | CompilationFailedException ex) {
+                        Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
         Engine engine = (Engine) gcl.loadClass(MenuScreen.getGameName()).getConstructors()[0].newInstance();
         engine.preCreate(cp.MAX_SPRITES);//pre create here to instantiate objects
         return engine;
@@ -91,11 +103,10 @@ public class EngineLoader {
         }
         cc.setTargetDirectory(rootPath + "Compiled/");
         Compiler cp = new Compiler(cc);
-        for (String path : new File(rootPath).list()) {
-            if (!path.equals("Compiled")) {
-                cp.compile(new File(rootPath + path));
-            }
-        }
+        
+        Arrays.asList(new File(rootPath).list()).stream()
+                .filter(x -> !x.equals("Compiled"))
+                .forEach(path -> cp.compile(new File(rootPath + path)));
     }
 
     public static void destroy() {

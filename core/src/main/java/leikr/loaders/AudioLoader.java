@@ -42,8 +42,7 @@ public class AudioLoader {
 
     private void loadAudio() {
         try {
-            String[] sounds = new File(soundRootPath).list();
-            for (String path : sounds) {
+            for (String path : new File(soundRootPath).list()) {
                 soundManager.load(soundRootPath + path, Sound.class);
             }
             soundManager.finishLoading();
@@ -52,8 +51,7 @@ public class AudioLoader {
         }
 
         try {
-            String[] musics = new File(musicRootPath).list();
-            for (String path : musics) {
+            for (String path : new File(musicRootPath).list()) {
                 musicManager.load(musicRootPath + path, Music.class);
             }
             musicManager.finishLoading();
