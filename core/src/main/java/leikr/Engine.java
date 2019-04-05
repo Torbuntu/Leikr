@@ -380,73 +380,29 @@ public abstract class Engine implements InputProcessor {
         drawSpriteFlip(id, x, y, 0, flipX, flipY);
     }
     //end 8x8 sprites
-
-    //start 16x16 sprites
-    final void sprite16(int id, float x, float y) {
+    
+    //start sizable sprites
+    final void sprite(int id, float x, float y, int size) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        g.drawSprite(spriteLoader.getSprite(id, 1), x, y);
+        g.drawSprite(spriteLoader.getSprite(id, size), x, y);
         USED_SPRITES++;
     }
 
-    final void sprite16(int id, float x, float y, float degr) {
-        drawSpriteRotate(id, 1, degr, x, y);
+    final void sprite(int id, float x, float y, float degr, int size) {
+        drawSpriteRotate(id, size, degr, x, y);
     }
 
-    final void sprite16(int id, float x, float y, boolean clockwise) {
-        drawSprite90(id, x, y, 1, clockwise);
+    final void sprite(int id, float x, float y, boolean clockwise, int size) {
+        drawSprite90(id, x, y, size, clockwise);
     }
 
-    final void sprite16(int id, float x, float y, boolean flipX, boolean flipY) {
-        drawSpriteFlip(id, x, y, 1, flipX, flipY);
+    final void sprite(int id, float x, float y, boolean flipX, boolean flipY, int size) {
+        drawSpriteFlip(id, x, y, size, flipX, flipY);
     }
-    //end 16x16 sprites
-
-    //start 32x32 sprites
-    final void sprite32(int id, float x, float y) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        g.drawSprite(spriteLoader.getSprite(id, 2), x, y);
-        USED_SPRITES++;
-    }
-
-    final void sprite32(int id, float x, float y, float degr) {
-        drawSpriteRotate(id, 2, degr, x, y);
-    }
-
-    final void sprite32(int id, float x, float y, boolean clockwise) {
-        drawSprite90(id, x, y, 2, clockwise);
-    }
-
-    final void sprite32(int id, float x, float y, boolean flipX, boolean flipY) {
-        drawSpriteFlip(id, x, y, 2, flipX, flipY);
-    }
-    //end 32x32 sprites
-
-    //start 64x64 sprites
-    final void sprite64(int id, float x, float y) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        g.drawSprite(spriteLoader.getSprite(id, 3), x, y);
-        USED_SPRITES++;
-    }
-
-    final void sprite64(int id, float x, float y, float degr) {
-        drawSpriteRotate(id, 3, degr, x, y);
-    }
-
-    final void sprite64(int id, float x, float y, boolean clockwise) {
-        drawSprite90(id, x, y, 3, clockwise);
-    }
-
-    final void sprite64(int id, float x, float y, boolean flipX, boolean flipY) {
-        drawSpriteFlip(id, x, y, 3, flipX, flipY);
-    }
-    //end 64x64 sprites
-
+    //end sizable sprites
+    
     //start shape drawing methods
     final void rect(float x, float y, float w, float h) {
         g.drawRect(x, y, w, h);

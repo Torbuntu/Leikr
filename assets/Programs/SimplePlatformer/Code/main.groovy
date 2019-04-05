@@ -360,8 +360,8 @@ class SimplePlatformer extends Engine {
         renderPlayer(p2)
         drawBullets(p2)
 				
-        sprite16(3, bc.x, bc.y)
-        sprite16(4, sc.x, sc.y)	
+        sprite(3, bc.x, bc.y, 1)
+        sprite(4, sc.x, sc.y, 1)	
 			
     }
 }

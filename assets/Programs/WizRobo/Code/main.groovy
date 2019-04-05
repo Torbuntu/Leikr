@@ -705,7 +705,7 @@ class WizRobo extends Engine {
         }
         enemies.each{it ->
             if(it.alive){
-                sprite32(it.spid, it.x, it.y, it.f, false)
+                sprite(it.spid, it.x, it.y, it.f, false, 2)
                 text("["+it.health+"]", (it.x+8).toFloat(), (it.y-8).toFloat(), 2)
             }
         }  
@@ -716,7 +716,7 @@ class WizRobo extends Engine {
         }
         enemies.each{it ->
             if(it.alive){
-                sprite32(it.spid, it.x, it.y, it.f, false)
+                sprite(it.spid, it.x, it.y, it.f, false, 2)
                 text("["+it.health+"]", (it.x+8).toFloat(), (it.y-8).toFloat(), 2)
             }
         }  

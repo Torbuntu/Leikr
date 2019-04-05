@@ -292,49 +292,49 @@ class ControllerUtil extends Engine {
     
     void drawButtons(){        
         if(button(BTN.UP)){
-            sprite32(1, 40,42,false, false)
+            sprite(1, 40,42,false, false, 2)
         }
         if(button(BTN.DOWN)){
-            sprite32(1, 40, 102, false, true)
+            sprite(1, 40, 102, false, true, 2)
         }
         if(button(BTN.LEFT)){
-            sprite32(2, 10, 72, true, false)
+            sprite(2, 10, 72, true, false,2)
         }
         if(button(BTN.RIGHT)){
-            sprite32(2, 70, 72, false, false)
+            sprite(2, 70, 72, false, false,2)
         }
         
         if(button(BTN.LEFT_BUMPER)){
-            sprite16(0, 16,16)
-            sprite16(0, 32,16)
-            sprite16(0, 48,16)
-            sprite16(0, 64,16)
+            sprite(0, 16,16,1)
+            sprite(0, 32,16,1)
+            sprite(0, 48,16,1)
+            sprite(0, 64,16,1)
         }
         if(button(BTN.RIGHT_BUMPER)){
-            sprite16(0, 160,16)
-            sprite16(0, 176,16)
-            sprite16(0, 192,16)
-            sprite16(0, 208,16)
+            sprite(0, 160,16,1)
+            sprite(0, 176,16,1)
+            sprite(0, 192,16,1)
+            sprite(0, 208,16,1)
         }
         if(button(BTN.X)){
-            sprite32(3, 168, 40, false, false)
+            sprite(3, 168, 40, false, false,2)
         }
         if(button(BTN.Y)){
-            sprite32(4, 136, 72, false, false)
+            sprite(4, 136, 72, false, false,2)
         }
         if(button(BTN.A)){
-            sprite32(5, 200, 72, false, false)
+            sprite(5, 200, 72, false, false,2)
         }
         if(button(BTN.B)){
-            sprite32(6, 168, 104, false, false)
+            sprite(6, 168, 104, false, false,2)
         }
         if(button(BTN.SELECT)){
-            sprite16(0, 80, 136, false, false)
-            sprite16(0, 96, 136, false, false)
+            sprite(0, 80, 136, false, false,1)
+            sprite(0, 96, 136, false, false,1)
         }
         if(button(BTN.START)){
-            sprite16(0, 128, 136, false, false)
-            sprite16(0, 144, 136, false, false)
+            sprite(0, 128, 136, false, false,1)
+            sprite(0, 144, 136, false, false,1)
         }
     }
     void render(){	
