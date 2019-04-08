@@ -28,7 +28,7 @@ import org.mini2Dx.core.game.ScreenBasedGame;
 public class GameRuntime extends ScreenBasedGame {
 
     public static final String GAME_IDENTIFIER = "torbuntu.leikr";
-    private final String PROGRAM_PATH = "./Programs/";
+    public static final String PROGRAM_PATH = "./Programs/";
     private static String GAME_PATH;
 
     public static int WIDTH = 240;

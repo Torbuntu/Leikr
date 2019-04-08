@@ -24,7 +24,7 @@ class ControllerUtil extends Engine {
     def controller
     def ERROR = false
     def unpress = false
-    
+    def activeController = true
     def finished = false
     
     int X;
@@ -80,43 +80,45 @@ class ControllerUtil extends Engine {
         loadImages()
         readDataProps()
         try{
-            Array<Controller> nmc = Controllers.getControllers();
-            controller = nmc.get(0);
-            controller.addListener(new ControllerAdapter() {
-                    @Override
-                    public boolean buttonDown(Controller controller, int buttonCode){
-                        println buttonCode
-                        lastButtonPressed = buttonCode
-                        unpress = false
-                        return true
-                    }         
-                    @Override
-                    public boolean buttonUp(Controller controller, int buttonCode){
-                        println buttonCode
-                        if(lastButtonPressed == buttonCode){
-                            unpress = true
-                        }
-                        return true
-                    }                    
-                    @Override
-                    public boolean axisMoved(Controller controller, int axisCode, float value) {
-                        
-                        if(dpad_h){
-                            HORIZONTAL_AXIS = axisCode
-                        }
-                        if(dpad_v){
-                            VERTICAL_AXIS = axisCode
-                        }
-                        if(value.toInteger() == 0){
-                            unpress = true
-                        }else{
-                            lastButtonPressed = value.toInteger()
-                            unpress = false
-                        }
-                        return true
-                    }
-                    
-                });
+           	if(Controllers.getControllers().size > 0){
+            	controller = Controllers.getControllers().get(0);
+            	controller.addListener(new ControllerAdapter() {
+                	    @Override
+                   	 	public boolean buttonDown(Controller controller, int buttonCode){
+                        	println buttonCode
+                        	lastButtonPressed = buttonCode
+                        	unpress = false
+                        	return true
+                    	}
+                    	@Override
+                    	public boolean buttonUp(Controller controller, int buttonCode){
+                        	println buttonCode
+                        	if(lastButtonPressed == buttonCode){
+                            	unpress = true
+                        	}
+                        	return true
+                    	}
+                    	@Override
+                    	public boolean axisMoved(Controller controller, int axisCode, float value) {
+
+                        	if(dpad_h){
+                            	HORIZONTAL_AXIS = axisCode
+                        	}
+                        	if(dpad_v){
+                            	VERTICAL_AXIS = axisCode
+                        	}
+                        	if(value.toInteger() == 0){
+                            	unpress = true
+                        	}else{
+                            	lastButtonPressed = value.toInteger()
+                            	unpress = false
+                        	}
+                        	return true
+                    	}
+                	});
+			}else{
+				activeController = false
+			}
         }catch(Exception ex){
             println ex.getMessage()
             ex.printStackTrace()
@@ -124,143 +126,144 @@ class ControllerUtil extends Engine {
         }
     }
     void update(float delta){
-        if(key("Q")){
-            saved = [X:false, A:false,B:false,Y:false,SELECT:false,START:false,LEFT_BUMPER:false,RIGHT_BUMPER:false,UP:false,DOWN:false,LEFT:false,RIGHT:false]
-        }
+		if(activeController){
+	        if(key("Q")){
+	            saved = [X:false, A:false,B:false,Y:false,SELECT:false,START:false,LEFT_BUMPER:false,RIGHT_BUMPER:false,UP:false,DOWN:false,LEFT:false,RIGHT:false]
+	        }
 
-        if(!saved.X){
-            index = "X"
-            if(unpress){
-                if(saveToProps("btn_x")){
-                    unpress = false
-                    saved.X = true
-                }
-            }
-            return
-        }
-        if(!saved.A){
-            index = "A"
-            if(unpress){
-                if(saveToProps("btn_a")){                    
-                    unpress = false
-                    saved.A = true
-                }
-            }
-            return
-        }
-        if(!saved.B){
-            index = "B"
-            if(unpress){
-                if(saveToProps("btn_b")){                    
-                    unpress = false
-                    saved.B = true
-                }
-            }
-            return
-        }
-        if(!saved.Y){
-            index = "Y"
-            if(unpress){
-                if(saveToProps("btn_y")){                    
-                    unpress = false
-                    saved.Y = true
-                }
-            }
-            return
-        }
-        if(!saved.SELECT){
-            index = "SELECT"
-            if(unpress){
-                if(saveToProps("btn_select")){                    
-                    unpress = false
-                    saved.SELECT = true
-                }
-            }
-            return
-        }
-        if(!saved.START){
-            index = "START"
-            if(unpress){
-                if(saveToProps("btn_start")){                    
-                    unpress = false
-                    saved.START = true
-                }
-            }
-            return
-        }
-        if(!saved.LEFT_BUMPER){
-            index = "LEFT_BUMPER"
-            if(unpress){
-                if(saveToProps("btn_lbumper")){                    
-                    unpress = false
-                    saved.LEFT_BUMPER = true
-                }
-            }
-            return
-        }
-        if(!saved.RIGHT_BUMPER){
-            index = "RIGHT_BUMPER"
-            if(unpress){
-                if(saveToProps("btn_rbumper")){                    
-                    unpress = false
-                    saved.RIGHT_BUMPER = true
-                }
-            }
-            return
-        }
-        if(!saved.UP){
-            dpad_h = false
-            dpad_v = true
-            index = "UP"
-            if(unpress){
-                if(saveToProps("btn_up")){                    
-                    unpress = false
-                    saved.UP = true
-                }
-            }
-            return
-        }
-        if(!saved.DOWN){
-            dpad_h = false
-            dpad_v = true
-            index = "DOWN"
-            if(unpress){
-                if(saveToProps("btn_down")){                    
-                    unpress = false
-                    saved.DOWN = true
-                }
-            }
-            return
-        }
-        if(!saved.LEFT){
-            dpad_h = true
-            dpad_v = false
-            index = "LEFT"
-            if(unpress){
-                if(saveToProps("btn_left")){                    
-                    unpress = false
-                    saved.LEFT = true
-                }
-            }
-            return
-        }
-        if(!saved.RIGHT){
-            dpad_h = true
-            dpad_v = false
-            index = "RIGHT"
-            if(unpress){
-                if(saveToProps("btn_right")){                    
-                    unpress = false
-                    saved.RIGHT = true
-                }
-            }
-            return
-        }
-        finished = true
-    }
-    
-    
-    
+	        if(!saved.X){
+	            index = "X"
+	            if(unpress){
+	                if(saveToProps("btn_x")){
+	                    unpress = false
+	                    saved.X = true
+	                }
+	            }
+	            return
+	        }
+	        if(!saved.A){
+	            index = "A"
+	            if(unpress){
+	                if(saveToProps("btn_a")){                    
+	                    unpress = false
+	                    saved.A = true
+	                }
+	            }
+	            return
+	        }
+	        if(!saved.B){
+	            index = "B"
+	            if(unpress){
+	                if(saveToProps("btn_b")){                    
+	                    unpress = false
+	                    saved.B = true
+	                }
+	            }
+	            return
+	        }
+	        if(!saved.Y){
+	            index = "Y"
+	            if(unpress){
+	                if(saveToProps("btn_y")){                    
+	                    unpress = false
+	                    saved.Y = true
+	                }
+	            }
+	            return
+	        }
+	        if(!saved.SELECT){
+	            index = "SELECT"
+	            if(unpress){
+	                if(saveToProps("btn_select")){                    
+	                    unpress = false
+	                    saved.SELECT = true
+	                }
+	            }
+	            return
+	        }
+	        if(!saved.START){
+	            index = "START"
+	            if(unpress){
+	                if(saveToProps("btn_start")){                    
+	                    unpress = false
+	                    saved.START = true
+	                }
+	            }
+	            return
+	        }
+	        if(!saved.LEFT_BUMPER){
+	            index = "LEFT_BUMPER"
+	            if(unpress){
+	                if(saveToProps("btn_lbumper")){                    
+	                    unpress = false
+	                    saved.LEFT_BUMPER = true
+	                }
+	            }
+	            return
+	        }
+	        if(!saved.RIGHT_BUMPER){
+	            index = "RIGHT_BUMPER"
+	            if(unpress){
+	                if(saveToProps("btn_rbumper")){                    
+	                    unpress = false
+	                    saved.RIGHT_BUMPER = true
+	                }
+	            }
+	            return
+	        }
+	        if(!saved.UP){
+	            dpad_h = false
+	            dpad_v = true
+	            index = "UP"
+	            if(unpress){
+	                if(saveToProps("btn_up")){                    
+	                    unpress = false
+	                    saved.UP = true
+	                }
+	            }
+	            return
+	        }
+	        if(!saved.DOWN){
+	            dpad_h = false
+	            dpad_v = true
+	            index = "DOWN"
+	            if(unpress){
+	                if(saveToProps("btn_down")){                    
+	                    unpress = false
+	                    saved.DOWN = true
+	                }
+	            }
+	            return
+	        }
+	        if(!saved.LEFT){
+	            dpad_h = true
+	            dpad_v = false
+	            index = "LEFT"
+	            if(unpress){
+	                if(saveToProps("btn_left")){                    
+	                    unpress = false
+	                    saved.LEFT = true
+	                }
+	            }
+	            return
+	        }
+	        if(!saved.RIGHT){
+	            dpad_h = true
+	            dpad_v = false
+	            index = "RIGHT"
+	            if(unpress){
+	                if(saveToProps("btn_right")){                    
+	                    unpress = false
+	                    saved.RIGHT = true
+	                }
+	            }
+	            return
+	        }
+	        finished = true
+		}
+	}
+
+
     def saveToProps(pname){
         Properties prop = new Properties();
         try (InputStream instream = new FileInputStream(new File("Data/system.properties"))) {
@@ -342,16 +345,17 @@ class ControllerUtil extends Engine {
         
         drawButtons()
         image("controller",0,0)    
-        if(ERROR){
+        if(ERROR || !activeController){
             text("No controller active.", 0,0,1)
-        }
-        if(finished){
-            text("Please Restart Leikr", 0,0,1)
-
         }else{
-            text("Please press: "+index, 0,0,1)
+			if(finished){
+            	text("Please Restart Leikr", 0,0,1)
 
-        }	
+        	}else{
+            	text("Please press: "+index, 0,0,1)
+
+        	}
+		}
     }
 }
 //new ControllerUtil()

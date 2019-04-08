@@ -18,6 +18,7 @@ package leikr.screens;
 import com.badlogic.gdx.Gdx;
 import leikr.Engine;
 import leikr.GameRuntime;
+import leikr.customProperties.CustomProgramProperties;
 import leikr.loaders.EngineLoader;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
@@ -75,6 +76,7 @@ public class EngineScreen extends BasicGameScreen {
     public void preTransitionIn(Transition transition) {
         try {
             engine = EngineLoader.getEngine();//calls engine.preCreate()
+            engine.preCreate(EngineLoader.cp.MAX_SPRITES);
         } catch (Exception ex) {
             ERROR = true;
             errorMessage = "Error parsing program code. " + ex.getLocalizedMessage();

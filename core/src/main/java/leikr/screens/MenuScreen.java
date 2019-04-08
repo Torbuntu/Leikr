@@ -55,6 +55,7 @@ public class MenuScreen extends BasicGameScreen {
     boolean START = false;
     int cursor;
     public static String GAME_NAME;
+    private static final String ICON_PATH = "/Art/icon.png";
 
     AssetManager assetManager;
     FitViewport viewport;
@@ -63,7 +64,7 @@ public class MenuScreen extends BasicGameScreen {
     public MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
-        gameList = new File(Gdx.files.getLocalStoragePath() + "Programs").list();
+        gameList = new File(GameRuntime.PROGRAM_PATH).list();
         setGameName(gameList[0]);
         loadIcons();
     }
@@ -82,7 +83,7 @@ public class MenuScreen extends BasicGameScreen {
 
     private void loadIcons() {
         for (String game : gameList) {
-            assetManager.load("./Programs/" + game + "/Art/icon.png", Texture.class);
+            assetManager.load(GameRuntime.PROGRAM_PATH + game + ICON_PATH, Texture.class);
         }
         assetManager.finishLoading();
     }
@@ -190,7 +191,7 @@ public class MenuScreen extends BasicGameScreen {
             g.drawCircle(120, 80, 15);
             g.drawString("Loading... ", 0, viewport.getHeight() - 9);
         } else if (null != gameList) {
-            g.drawTexture(assetManager.get("./Programs/" + getGameName() + "/Art/icon.png", Texture.class), ID, ID);
+            g.drawTexture(assetManager.get(GameRuntime.PROGRAM_PATH + getGameName() + ICON_PATH, Texture.class), ID, ID);
             g.drawString("Selection: " + getGameName(), 0, viewport.getHeight() - 9);
         } else {
             g.drawString("No programs detected... ", 0, viewport.getHeight() - 9);

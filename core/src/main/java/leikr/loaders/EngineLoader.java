@@ -44,24 +44,24 @@ import org.codehaus.groovy.tools.Compiler;
 public class EngineLoader {
 
     static GroovyClassLoader gcl = new GroovyClassLoader(ClassLoader.getSystemClassLoader());
-
+    public static CustomProgramProperties cp;
     //Returns either a pre-compiled game Engine, an Engine compiled from sources, or null. Returning Null helps the EngineScreen return to the MenuScreen.
     public static Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, ResourceException, ScriptException {
-        CustomProgramProperties cp = new CustomProgramProperties(GameRuntime.getGamePath());
+        cp = new CustomProgramProperties(GameRuntime.getGamePath());
         String rootPath = GameRuntime.getGamePath() + "/Code/";
         if (cp.USE_SCRIPT) {
-            return getScriptedEngine(rootPath, cp);
+            return getScriptedEngine(rootPath);
         }
         if (cp.COMPILE_SOURCE) {
             compileEngine(rootPath);
         }
         if (cp.USE_COMPILED) {
-            return getCompiledEngine(rootPath, cp);
+            return getCompiledEngine(rootPath);
         }
-        return getSourceEngine(rootPath, cp);
+        return getSourceEngine(rootPath);
     }
 
-    private static Engine getSourceEngine(String rootPath, CustomProgramProperties cp) throws CompilationFailedException, IOException, InstantiationException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    private static Engine getSourceEngine(String rootPath) throws CompilationFailedException, IOException, InstantiationException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         List<String> codes = Arrays.asList(new File(rootPath).list());
         if (!codes.isEmpty() && codes.size() > 1) {
             codes.stream()
@@ -75,14 +75,13 @@ public class EngineLoader {
                     });
         }
         Engine engine = (Engine) gcl.parseClass(new File(rootPath + "main.groovy")).getConstructors()[0].newInstance();//loads the game code  
-        engine.preCreate(cp.MAX_SPRITES);//pre create here to instantiate objects
-
         return engine;
     }
 
-    private static Engine getCompiledEngine(String rootPath, CustomProgramProperties cp) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-        gcl.addURL(new File(rootPath + "Compiled/").toURI().toURL());
-        Arrays.asList(new File(rootPath + "Compiled/").list()).stream()
+    private static Engine getCompiledEngine(String rootPath) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
+        String COMPILED = rootPath+"Compiled/";
+        gcl.addURL(new File(COMPILED).toURI().toURL());
+        Arrays.asList(new File(COMPILED).list()).stream()
                 .filter(x -> !x.equals(MenuScreen.getGameName() + ".class"))
                 .forEach(classFile -> {
                     try {
@@ -92,21 +91,21 @@ public class EngineLoader {
                     }
                 });
         Engine engine = (Engine) gcl.loadClass(MenuScreen.getGameName()).getConstructors()[0].newInstance();
-        engine.preCreate(cp.MAX_SPRITES);//pre create here to instantiate objects
         return engine;
     }
 
     private static void compileEngine(String rootPath) {
+        String COMPILED = rootPath + "Compiled/";
         CompilerConfiguration cc = new CompilerConfiguration();
-        if (!(new File(rootPath + "Compiled/").exists())) {
-            new File(rootPath + "Compiled/").mkdir();
+        if (!(new File(COMPILED).exists())) {
+            new File(COMPILED).mkdir();
         }
-        cc.setTargetDirectory(rootPath + "Compiled/");
-        Compiler cp = new Compiler(cc);
+        cc.setTargetDirectory(COMPILED);
+        Compiler compiler = new Compiler(cc);
         
         Arrays.asList(new File(rootPath).list()).stream()
                 .filter(x -> !x.equals("Compiled"))
-                .forEach(path -> cp.compile(new File(rootPath + path)));
+                .forEach(path -> compiler.compile(new File(rootPath + path)));
     }
 
     public static void destroy() {
@@ -117,12 +116,11 @@ public class EngineLoader {
     }
 
     //TODO: these are for testing
-    private static Engine getScriptedEngine(String rootPath, CustomProgramProperties cp) throws IOException, ResourceException, ScriptException {
+    private static Engine getScriptedEngine(String rootPath) throws IOException, ResourceException, ScriptException {
         String[] paths = {rootPath};
         Binding bd = new Binding();
         GroovyScriptEngine gse = new GroovyScriptEngine(paths);
         Engine engine = (Engine) gse.run("main.groovy", bd);
-        engine.preCreate(cp.MAX_SPRITES);
         return engine;
     }
 
