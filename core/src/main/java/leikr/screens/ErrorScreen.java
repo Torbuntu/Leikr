@@ -55,12 +55,8 @@ public class ErrorScreen extends BasicGameScreen {
     }
 
     void checkInput(ScreenManager sm) {
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.ENTER) || MENU) {
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.ENTER) || MENU || Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             sm.enterGameScreen(MenuScreen.ID, new FadeOutTransition(Color.TEAL), new FadeInTransition(Color.FOREST));
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            System.out.println("Good bye!");
-            Gdx.app.exit();
         }
     }
 

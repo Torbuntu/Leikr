@@ -28,6 +28,8 @@ import org.mini2Dx.core.game.ScreenBasedGame;
 public class GameRuntime extends ScreenBasedGame {
 
     public static final String GAME_IDENTIFIER = "torbuntu.leikr";
+    private final String PROGRAM_PATH = "./Programs/";
+    private static String GAME_PATH;
 
     public static int WIDTH = 240;
     public static int HEIGHT = 160;
@@ -38,13 +40,11 @@ public class GameRuntime extends ScreenBasedGame {
     public GameRuntime() {
         CustomSystemProperties csp = new CustomSystemProperties();
         if (csp.SINGLE_LAUNCH) {
-            GAME_PATH = "./Programs/" + new File("./Programs/").list()[0];//Look at this crazy hack! 
+            GAME_PATH = PROGRAM_PATH + new File(PROGRAM_PATH).list()[0];//Look at this crazy hack! 
             System.out.println(GAME_PATH);
             SINGLE_LAUNCH = true;
         }
     }
-
-    private static String GAME_PATH;
 
     public static void setGamePath(String name) {
         if (!SINGLE_LAUNCH) {
