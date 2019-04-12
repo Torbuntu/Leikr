@@ -540,4 +540,12 @@ public abstract class Engine implements InputProcessor {
     }
 
     //end input handling
+    
+    
+    
+    //Experimental API methods
+    public void tint(int color){
+        g.setTint(getDrawColor(color));
+    }
+    //END Experimental
 }
