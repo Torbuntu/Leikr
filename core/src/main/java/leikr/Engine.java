@@ -97,10 +97,26 @@ public abstract class Engine implements InputProcessor {
         MAX_SPRITES = mSprites;
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         logger = new FPSLogger();
+        long startTime = System.nanoTime();
         spriteLoader = new SpriteLoader();
+        long duration = (System.nanoTime() - startTime) / 1000000;
+        System.out.println("Sprites load time: " + duration);
+        
+        startTime = System.nanoTime();
         imageLoader = new ImageLoader();
+        duration = (System.nanoTime() - startTime) / 1000000;
+        System.out.println("Images load time: " + duration);
+        
+        startTime = System.nanoTime();
         mapLoader = new MapLoader();
+        duration = (System.nanoTime() - startTime) / 1000000;
+        System.out.println("Maps load time: " + duration);
+        
+        startTime = System.nanoTime();
         audioLoader = new AudioLoader();
+        duration = (System.nanoTime() - startTime) / 1000000;
+        System.out.println("Audio load time: " + duration);
+        
         active = true;
         try {
             Controllers.clearListeners();
@@ -116,7 +132,6 @@ public abstract class Engine implements InputProcessor {
         } catch (Exception ex) {
             System.out.println("Controllers not active: " + ex.getMessage());
         }
-
     }
 
     public final void preUpdate(float delta) {
