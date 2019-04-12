@@ -137,8 +137,7 @@ public class MenuScreen extends BasicGameScreen {
         try {
             Controllers.clearListeners();
             if (Controllers.getControllers().size > 0) {
-                Controller menuController = Controllers.getControllers().get(0);
-                menuController.addListener(new ControllerAdapter() {
+                Controllers.getControllers().get(0).addListener(new ControllerAdapter() {
                     @Override
                     public boolean buttonUp(Controller controller, int buttonIndex) {
                         if (buttonIndex == CustomSystemProperties.START || buttonIndex == CustomSystemProperties.A) {
