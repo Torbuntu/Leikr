@@ -18,7 +18,6 @@ package leikr.screens;
 import com.badlogic.gdx.Gdx;
 import leikr.Engine;
 import leikr.GameRuntime;
-import leikr.customProperties.CustomProgramProperties;
 import leikr.loaders.EngineLoader;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
@@ -75,7 +74,11 @@ public class EngineScreen extends BasicGameScreen {
     @Override
     public void preTransitionIn(Transition transition) {
         try {
-            engine = EngineLoader.getEngine();//calls engine.preCreate()
+            long startTime = System.nanoTime();
+            engine = EngineLoader.getEngine();
+            long duration = (System.nanoTime() - startTime) / 1000000;
+            System.out.println("\n\nTotal load time: " + duration);
+            
             engine.preCreate(EngineLoader.cp.MAX_SPRITES);
         } catch (Exception ex) {
             ERROR = true;

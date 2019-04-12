@@ -45,6 +45,7 @@ public class EngineLoader {
 
     static GroovyClassLoader gcl = new GroovyClassLoader(ClassLoader.getSystemClassLoader());
     public static CustomProgramProperties cp;
+
     //Returns either a pre-compiled game Engine, an Engine compiled from sources, or null. Returning Null helps the EngineScreen return to the MenuScreen.
     public static Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, ResourceException, ScriptException {
         cp = new CustomProgramProperties(GameRuntime.getGamePath());
@@ -62,24 +63,20 @@ public class EngineLoader {
     }
 
     private static Engine getSourceEngine(String rootPath) throws CompilationFailedException, IOException, InstantiationException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        List<String> codes = Arrays.asList(new File(rootPath).list());
-        if (!codes.isEmpty() && codes.size() > 1) {
-            codes.stream()
-                    .filter(x -> !x.equals("main.groovy") && !x.equals("Compiled"))
-                    .forEach(path -> {
-                        try {
-                            gcl.parseClass(new File(rootPath + path));
-                        } catch (CompilationFailedException | IOException ex) {
-                            Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    });
-        }
-        Engine engine = (Engine) gcl.parseClass(new File(rootPath + "main.groovy")).getConstructors()[0].newInstance();//loads the game code  
-        return engine;
+        Arrays.asList(new File(rootPath).list()).stream()
+                .filter(x -> !x.equals("main.groovy") && !x.equals("Compiled"))
+                .forEach(path -> {
+                    try {
+                        gcl.parseClass(new File(rootPath + path));
+                    } catch (CompilationFailedException | IOException ex) {
+                        Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                });
+        return (Engine) gcl.parseClass(new File(rootPath + "main.groovy")).getConstructors()[0].newInstance();//loads the game code  
     }
 
     private static Engine getCompiledEngine(String rootPath) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-        String COMPILED = rootPath+"Compiled/";
+        String COMPILED = rootPath + "Compiled/";
         gcl.addURL(new File(COMPILED).toURI().toURL());
         Arrays.asList(new File(COMPILED).list()).stream()
                 .filter(x -> !x.equals(MenuScreen.getGameName() + ".class"))
@@ -90,8 +87,7 @@ public class EngineLoader {
                         Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 });
-        Engine engine = (Engine) gcl.loadClass(MenuScreen.getGameName()).getConstructors()[0].newInstance();
-        return engine;
+        return (Engine) gcl.loadClass(MenuScreen.getGameName()).getConstructors()[0].newInstance();
     }
 
     private static void compileEngine(String rootPath) {
@@ -102,7 +98,7 @@ public class EngineLoader {
         }
         cc.setTargetDirectory(COMPILED);
         Compiler compiler = new Compiler(cc);
-        
+
         Arrays.asList(new File(rootPath).list()).stream()
                 .filter(x -> !x.equals("Compiled"))
                 .forEach(path -> compiler.compile(new File(rootPath + path)));
@@ -120,8 +116,7 @@ public class EngineLoader {
         String[] paths = {rootPath};
         Binding bd = new Binding();
         GroovyScriptEngine gse = new GroovyScriptEngine(paths);
-        Engine engine = (Engine) gse.run("main.groovy", bd);
-        return engine;
+        return (Engine) gse.run("main.groovy", bd);
     }
 
 }
