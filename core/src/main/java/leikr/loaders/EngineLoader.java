@@ -17,6 +17,8 @@ package leikr.loaders;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
+import groovy.lang.GroovyCodeSource;
+import groovy.lang.GroovyShell;
 import groovy.lang.GroovySystem;
 import groovy.util.GroovyScriptEngine;
 import groovy.util.ResourceException;
@@ -71,7 +73,7 @@ public class EngineLoader {
                         Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 });
-        return (Engine) gcl.parseClass(new File(rootPath + "main.groovy")).getConstructors()[0].newInstance();//loads the game code  
+        return (Engine) gcl.parseClass(new File(rootPath+"main.groovy")).getDeclaredConstructors()[0].newInstance();//loads the game code  
     }
 
     private static Engine getCompiledEngine(String rootPath) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {

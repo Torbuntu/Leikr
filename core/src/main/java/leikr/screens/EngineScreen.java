@@ -77,7 +77,7 @@ public class EngineScreen extends BasicGameScreen {
             long startTime = System.nanoTime();
             engine = EngineLoader.getEngine();
             long duration = (System.nanoTime() - startTime) / 1000000;
-            System.out.println("\n\nTotal load time: " + duration);
+            System.out.println("\n\nEngine load time: " + duration);
             
             engine.preCreate(EngineLoader.cp.MAX_SPRITES);
         } catch (Exception ex) {
