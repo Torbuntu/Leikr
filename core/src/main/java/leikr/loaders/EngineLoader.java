@@ -46,7 +46,7 @@ public class EngineLoader {
     public static CustomProgramProperties cp;
 
     //Returns either a pre-compiled game Engine, an Engine compiled from sources, or null. Returning Null helps the EngineScreen return to the MenuScreen.
-    public static Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, ResourceException, ScriptException, NoSuchMethodException {
+    public static Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, ResourceException, ScriptException {
         cp = new CustomProgramProperties(GameRuntime.getGamePath());
         String rootPath = GameRuntime.getGamePath() + "/Code/";
         if (cp.USE_SCRIPT) {
@@ -61,7 +61,7 @@ public class EngineLoader {
         return getSourceEngine(rootPath);
     }
 
-    private static Engine getSourceEngine(String rootPath) throws CompilationFailedException, IOException, InstantiationException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+    private static Engine getSourceEngine(String rootPath) throws CompilationFailedException, IOException, InstantiationException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         Arrays.asList(new File(rootPath).list()).stream()
                 .filter(x -> !x.equals("main.groovy") && !x.equals("Compiled"))
                 .forEach(path -> {
@@ -71,10 +71,10 @@ public class EngineLoader {
                         Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 });
-        return (Engine) gcl.parseClass(new File(rootPath+"main.groovy")).getDeclaredConstructor().newInstance();//loads the game code  
+        return (Engine) gcl.parseClass(new File(rootPath+"main.groovy")).getDeclaredConstructors()[0].newInstance();//loads the game code  
     }
 
-    private static Engine getCompiledEngine(String rootPath) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException, NoSuchMethodException {
+    private static Engine getCompiledEngine(String rootPath) throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
         String COMPILED = rootPath + "Compiled/";
         gcl.addURL(new File(COMPILED).toURI().toURL());
         Arrays.asList(new File(COMPILED).list()).stream()
@@ -86,7 +86,7 @@ public class EngineLoader {
                         Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 });
-        return (Engine) gcl.loadClass(MenuScreen.getGameName()).getDeclaredConstructor().newInstance();
+        return (Engine) gcl.loadClass(MenuScreen.getGameName()).getConstructors()[0].newInstance();
     }
 
     private static void compileEngine(String rootPath) {

@@ -118,7 +118,7 @@ public class CreditScreen extends BasicGameScreen {
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
         g.drawString("Powered by ", 72, 40);
-        g.drawTexture(assetManager.get("./Data/mini2Dx.png"), 40, 72, 164, 32);
+        g.drawTexture(assetManager.get("./Data/mini2Dx.png"), 16, 64, 208, 87);
     }
 
     @Override
