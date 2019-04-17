@@ -66,6 +66,10 @@ public class EngineScreen extends BasicGameScreen {
             sm.enterGameScreen(ErrorScreen.ID, null, null);
         }
     }
+    
+    public void setEngine(Engine engine){
+        this.engine = engine;
+    }
 
     @Override
     public void initialise(GameContainer gc) {
@@ -75,10 +79,9 @@ public class EngineScreen extends BasicGameScreen {
     public void preTransitionIn(Transition transition) {
         try {
             long startTime = System.nanoTime();
-            engine = EngineLoader.getEngine();
+            //engine = EngineLoader.getEngine();
             long duration = (System.nanoTime() - startTime) / 1000000;
             System.out.println("\n\nEngine load time: " + duration);
-            
             engine.preCreate(EngineLoader.cp.MAX_SPRITES);
         } catch (Exception ex) {
             ERROR = true;
@@ -95,7 +98,6 @@ public class EngineScreen extends BasicGameScreen {
         if (null != engine) {
             engine.dispose();
             engine = null; // release all objects for gc
-            EngineLoader.destroy();//danger-zone
         }
         System.out.println("Engine classes disposed.");
     }

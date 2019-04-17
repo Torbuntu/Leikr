@@ -25,8 +25,16 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import java.io.File;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import leikr.Engine;
 import leikr.GameRuntime;
 import leikr.customProperties.CustomSystemProperties;
+import leikr.loaders.EngineLoader;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -61,6 +69,9 @@ public class MenuScreen extends BasicGameScreen {
     FitViewport viewport;
     String[] gameList;
 
+    ExecutorService service;
+    Future engineGetter;
+
     public MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
@@ -86,6 +97,12 @@ public class MenuScreen extends BasicGameScreen {
             assetManager.load(GameRuntime.PROGRAM_PATH + game + ICON_PATH, Texture.class);
         }
         assetManager.finishLoading();
+    }
+
+    private void loadProgram() {
+        service = Executors.newFixedThreadPool(5);
+        GameRuntime.setGamePath("Programs/" + getGameName());
+        engineGetter = service.submit(new EngineLoader());
     }
 
     @Override
@@ -124,7 +141,7 @@ public class MenuScreen extends BasicGameScreen {
                 }
                 if (i == Keys.ENTER) {
                     System.out.println("Loading program: " + getGameName());
-                    START = true;
+                    loadProgram();
                     LOADING = true;
                 }
                 if (i == Keys.ESCAPE) {
@@ -141,7 +158,7 @@ public class MenuScreen extends BasicGameScreen {
                     @Override
                     public boolean buttonUp(Controller controller, int buttonIndex) {
                         if (buttonIndex == CustomSystemProperties.START || buttonIndex == CustomSystemProperties.A) {
-                            START = true;
+                            loadProgram();
                             LOADING = true;
                         }
                         return false;
@@ -172,8 +189,14 @@ public class MenuScreen extends BasicGameScreen {
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         if (START) {
             START = false;
-            GameRuntime.setGamePath("Programs/" + getGameName());
-            sm.enterGameScreen(EngineScreen.ID, null, null);
+            EngineScreen scrn = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
+            try {
+                scrn.setEngine((Engine) engineGetter.get());
+                sm.enterGameScreen(EngineScreen.ID, null, null);
+
+            } catch (InterruptedException | ExecutionException ex) {
+                Logger.getLogger(MenuScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -186,9 +209,14 @@ public class MenuScreen extends BasicGameScreen {
         g.setColor(Color.WHITE);
         viewport.apply(g);
         if (LOADING) {
-            g.setColor(Color.MAGENTA);
-            g.drawCircle(120, 80, 15);
-            g.drawString("Loading... ", 0, viewport.getHeight() - 9);
+            if (engineGetter.isDone()) {
+                g.drawString("Finished!", 0, viewport.getHeight() - 9);
+                START = true;
+            } else {
+                g.setColor(Color.MAGENTA);
+                g.drawCircle(120, 80, 15);
+                g.drawString("Loading... ", 0, viewport.getHeight() - 9);
+            }
         } else if (null != gameList) {
             g.drawTexture(assetManager.get(GameRuntime.PROGRAM_PATH + getGameName() + ICON_PATH, Texture.class), ID, ID);
             g.drawString("Selection: " + getGameName(), 0, viewport.getHeight() - 9);
