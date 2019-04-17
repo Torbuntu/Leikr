@@ -25,16 +25,8 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import java.io.File;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import leikr.Engine;
 import leikr.GameRuntime;
 import leikr.customProperties.CustomSystemProperties;
-import leikr.loaders.EngineLoader;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -59,7 +51,6 @@ public class MenuScreen extends BasicGameScreen {
             4?. a genre?
      */
     public static int ID = 0;
-    static boolean LOADING = false;
     boolean START = false;
     int cursor;
     public static String GAME_NAME;
@@ -68,9 +59,6 @@ public class MenuScreen extends BasicGameScreen {
     AssetManager assetManager;
     FitViewport viewport;
     String[] gameList;
-
-    ExecutorService service;
-    Future engineGetter;
 
     public MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
@@ -88,21 +76,11 @@ public class MenuScreen extends BasicGameScreen {
         MenuScreen.GAME_NAME = GAME_NAME;
     }
 
-    public static void finishLoading() {
-        LOADING = false;
-    }
-
     private void loadIcons() {
         for (String game : gameList) {
             assetManager.load(GameRuntime.PROGRAM_PATH + game + ICON_PATH, Texture.class);
         }
         assetManager.finishLoading();
-    }
-
-    private void loadProgram() {
-        service = Executors.newFixedThreadPool(5);
-        GameRuntime.setGamePath("Programs/" + getGameName());
-        engineGetter = service.submit(new EngineLoader());
     }
 
     @Override
@@ -118,8 +96,8 @@ public class MenuScreen extends BasicGameScreen {
     @Override
     public void preTransitionIn(Transition transitionIn) {
         if (GameRuntime.SINGLE_LAUNCH) {
+            GameRuntime.setGamePath("Programs/" + getGameName());
             START = true;
-            LOADING = true;
         }
     }
 
@@ -141,8 +119,8 @@ public class MenuScreen extends BasicGameScreen {
                 }
                 if (i == Keys.ENTER) {
                     System.out.println("Loading program: " + getGameName());
-                    loadProgram();
-                    LOADING = true;
+                    GameRuntime.setGamePath("Programs/" + getGameName());
+                    START = true;
                 }
                 if (i == Keys.ESCAPE) {
                     System.out.println("Good bye!");
@@ -158,8 +136,8 @@ public class MenuScreen extends BasicGameScreen {
                     @Override
                     public boolean buttonUp(Controller controller, int buttonIndex) {
                         if (buttonIndex == CustomSystemProperties.START || buttonIndex == CustomSystemProperties.A) {
-                            loadProgram();
-                            LOADING = true;
+                            GameRuntime.setGamePath("Programs/" + getGameName());
+                            START = true;
                         }
                         return false;
                     }
@@ -189,14 +167,7 @@ public class MenuScreen extends BasicGameScreen {
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         if (START) {
             START = false;
-            EngineScreen scrn = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
-            try {
-                scrn.setEngine((Engine) engineGetter.get());
-                sm.enterGameScreen(EngineScreen.ID, null, null);
-
-            } catch (InterruptedException | ExecutionException ex) {
-                Logger.getLogger(MenuScreen.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            sm.enterGameScreen(LoadScreen.ID, null, null);
         }
     }
 
@@ -206,18 +177,9 @@ public class MenuScreen extends BasicGameScreen {
 
     @Override
     public void render(GameContainer gc, Graphics g) {
-        g.setColor(Color.WHITE);
         viewport.apply(g);
-        if (LOADING) {
-            if (engineGetter.isDone()) {
-                g.drawString("Finished!", 0, viewport.getHeight() - 9);
-                START = true;
-            } else {
-                g.setColor(Color.MAGENTA);
-                g.drawCircle(120, 80, 15);
-                g.drawString("Loading... ", 0, viewport.getHeight() - 9);
-            }
-        } else if (null != gameList) {
+        g.setColor(Color.WHITE);
+        if (null != gameList) {
             g.drawTexture(assetManager.get(GameRuntime.PROGRAM_PATH + getGameName() + ICON_PATH, Texture.class), ID, ID);
             g.drawString("Selection: " + getGameName(), 0, viewport.getHeight() - 9);
         } else {

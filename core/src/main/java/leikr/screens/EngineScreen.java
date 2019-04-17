@@ -66,29 +66,13 @@ public class EngineScreen extends BasicGameScreen {
             sm.enterGameScreen(ErrorScreen.ID, null, null);
         }
     }
-    
-    public void setEngine(Engine engine){
+
+    public void setEngine(Engine engine) {
         this.engine = engine;
     }
 
     @Override
     public void initialise(GameContainer gc) {
-    }
-
-    @Override
-    public void preTransitionIn(Transition transition) {
-        try {
-            long startTime = System.nanoTime();
-            //engine = EngineLoader.getEngine();
-            long duration = (System.nanoTime() - startTime) / 1000000;
-            System.out.println("\n\nEngine load time: " + duration);
-            engine.preCreate(EngineLoader.cp.MAX_SPRITES);
-        } catch (Exception ex) {
-            ERROR = true;
-            errorMessage = "Error parsing program code. " + ex.getLocalizedMessage();
-
-            ex.printStackTrace();
-        }
     }
 
     @Override
@@ -104,11 +88,11 @@ public class EngineScreen extends BasicGameScreen {
 
     @Override
     public void postTransitionIn(Transition transition) {
-        MenuScreen.finishLoading();
         if (ERROR) {
             return;
         }
         try {
+            engine.preCreate(EngineLoader.cp.MAX_SPRITES);
             engine.create();
             Gdx.input.setInputProcessor(engine);
         } catch (Exception ex) {
