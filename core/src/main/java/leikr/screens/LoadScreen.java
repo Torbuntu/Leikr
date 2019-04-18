@@ -88,7 +88,6 @@ public class LoadScreen extends BasicGameScreen {
         }
         
         loadCircleCircumf += loadCircleDir;
-        System.out.println("Circumf: "+loadCircleCircumf + " direc: "+loadCircleDir);
     }
 
     @Override

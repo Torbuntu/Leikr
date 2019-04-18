@@ -124,7 +124,7 @@ public class EngineLoader implements Callable{
     }
 
     @Override
-    public Object call() throws Exception {
+    public Engine call() throws Exception {
         return getEngine();
     }
     
