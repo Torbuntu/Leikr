@@ -6,6 +6,7 @@
 package leikr.screens;
 
 import com.badlogic.gdx.graphics.Color;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,7 +37,7 @@ public class LoadScreen extends BasicGameScreen {
     FitViewport viewport;
     ExecutorService service;
     Future engineGetter;
-    
+
     int loadCircleCircumf = 15;
     int loadCircleDir = 1;
     String loadPhrase = "Loading... ";
@@ -47,7 +48,10 @@ public class LoadScreen extends BasicGameScreen {
 
     private void loadProgram() {
         service = Executors.newFixedThreadPool(5);
-        engineGetter = service.submit(new EngineLoader());
+        Callable<Engine> engineTask = () -> {
+            return new EngineLoader().call();
+        };
+        engineGetter = service.submit(engineTask);
     }
 
     @Override
@@ -67,26 +71,26 @@ public class LoadScreen extends BasicGameScreen {
                 scrn.setEngine((Engine) engineGetter.get());
                 sm.enterGameScreen(EngineScreen.ID, new FadeOutTransition(Color.TEAL), new FadeInTransition(Color.FOREST));
             } catch (InterruptedException | ExecutionException ex) {
-                ErrorScreen.setErrorMessage("Error loading engine: "+ex.getMessage());
+                ErrorScreen.setErrorMessage("Error loading engine: " + ex.getMessage());
                 sm.enterGameScreen(ErrorScreen.ID, null, null);
                 Logger.getLogger(LoadScreen.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if(loadCircleCircumf >= 15 && loadCircleDir > 0){
+        if (loadCircleCircumf >= 15 && loadCircleDir > 0) {
             loadCircleDir = -1;
         }
-        if(loadCircleCircumf <= 1 && loadCircleDir < 0){
+        if (loadCircleCircumf <= 1 && loadCircleDir < 0) {
             loadCircleDir = 1;
         }
-    
-        if(loadCircleCircumf <= 5){
+
+        if (loadCircleCircumf <= 5) {
             loadPhrase = "Loading. ";
-        }else if(loadCircleCircumf <= 10){
+        } else if (loadCircleCircumf <= 10) {
             loadPhrase = "Loading.. ";
-        }else if(loadCircleCircumf <= 15){
+        } else if (loadCircleCircumf <= 15) {
             loadPhrase = "Loading... ";
         }
-        
+
         loadCircleCircumf += loadCircleDir;
     }
 
