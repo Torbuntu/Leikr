@@ -41,7 +41,7 @@ import org.codehaus.groovy.tools.Compiler;
  *
  * @author tor
  */
-public class EngineLoader implements Callable{
+public class EngineLoader implements Callable<Engine>{
 
     static GroovyClassLoader gcl = new GroovyClassLoader(ClassLoader.getSystemClassLoader());
     public static CustomProgramProperties cp;

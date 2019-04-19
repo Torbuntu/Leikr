@@ -379,10 +379,12 @@ class WizRobo extends Engine {
     }
     
     void updateEnemies(){
-        enemies.each{
-            enemyAnimation(it)
-            moveEnemy(it, it.l, it.r)
-            boltHitEnemy(it)            
+        if(!enemies.isEmpty()){
+            enemies.each{
+                enemyAnimation(it)
+                moveEnemy(it, it.l, it.r)
+                boltHitEnemy(it)            
+            }
         }
     }
     
@@ -396,9 +398,6 @@ class WizRobo extends Engine {
             level++
             lvl1start = false
         }
-        if(enemies.isEmpty()){
-            return
-        }
         updateEnemies()
     }
     
@@ -410,9 +409,6 @@ class WizRobo extends Engine {
         if(wizard.y>160){
             level++
             lvl2start = false
-        }
-        if(enemies.isEmpty()){
-            return
         }
         updateEnemies()
     }
@@ -426,9 +422,6 @@ class WizRobo extends Engine {
             level++
             lvl3start = false
         }
-        if(enemies.isEmpty()){
-            return
-        }
         updateEnemies()
     }
     
@@ -440,9 +433,6 @@ class WizRobo extends Engine {
         if(wizard.x>234){
             level++
             lvl4start = false
-        }
-        if(enemies.isEmpty()){
-            return
         }
         updateEnemies()
     }

@@ -46,21 +46,14 @@ public class LoadScreen extends BasicGameScreen {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
     }
 
-    private void loadProgram() {
-        service = Executors.newFixedThreadPool(5);
-        Callable<Engine> engineTask = () -> {
-            return new EngineLoader().call();
-        };
-        engineGetter = service.submit(engineTask);
-    }
-
     @Override
     public void preTransitionIn(Transition transition) {
-        loadProgram();
+        engineGetter = service.submit(new EngineLoader());
     }
 
     @Override
     public void initialise(GameContainer gc) {
+        service = Executors.newFixedThreadPool(5);
     }
 
     @Override
