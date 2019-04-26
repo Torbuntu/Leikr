@@ -18,8 +18,8 @@ allprojects {
     version = '0.0.0a'
     ext {
         appName = 'Leikr'
-        mini2DxVersion = '1.9.0-beta.17'
-        gdxVersion = '1.9.8'
+        mini2DxVersion = '1.9.0'
+        gdxVersion = '1.9.9'
     }
 
     repositories {
