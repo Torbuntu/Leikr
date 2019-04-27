@@ -337,7 +337,7 @@ class WizRobo extends Engine {
             if(!enemy.alive){
                 //mapRemove(enemy.x/8, enemy.y/8)
                 enemy.remove = true
-                mapSet(enemy.x/8, enemy.y/8, 192)
+                mapSet(enemy.x.toInteger()/8, enemy.y.toInteger()/8, 192)
             }else{
                 enemy.alive = false
                 enemy.x = MathUtils.ceil(enemy.x)
