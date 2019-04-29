@@ -42,9 +42,7 @@ Projects structure
 ```
 Data/
 Programs/
-  /SomeGame
-  /SomeGame2
-  /SomeGame3
+  YourGameName/
      /Art/
      /Audio/
         /Sound/
