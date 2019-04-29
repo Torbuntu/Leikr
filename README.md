@@ -44,10 +44,12 @@ Data/
 Programs/
   YourGameName/
      /Art/
+         icon.png
      /Audio/
         /Sound/
         /Music/
-     /Code/     
+     /Code/ 
+         main.groovy
      /Maps/
      /Sprites/
          Sprites.png
