@@ -50,6 +50,7 @@ Programs/
      /Code/     
      /Maps/
      /Sprites/
+         Sprites.png
      program.properties
 ```
 
