@@ -31,6 +31,11 @@ public class CustomProgramProperties {
     public boolean USE_COMPILED;
     public boolean COMPILE_SOURCE;
     public boolean USE_SCRIPT;
+    public String TITLE;
+    public String TYPE;
+    public String AUTHOR;
+    public String ENGINE;
+    public int PLAYERS;
 
     public CustomProgramProperties(String gamePath) {
 
@@ -45,6 +50,12 @@ public class CustomProgramProperties {
             USE_SCRIPT = (prop.getProperty("use_script") != null) ? Boolean.valueOf(prop.getProperty("use_script")) : false;
             USE_COMPILED = (prop.getProperty("use_compiled") != null) ? Boolean.valueOf(prop.getProperty("use_compiled")) : false;
             COMPILE_SOURCE = (prop.getProperty("compile_source") != null) ? Boolean.valueOf(prop.getProperty("compile_source")) : false;
+            
+            TITLE = (prop.getProperty("title") != null) ? prop.getProperty("title") : "unknown";
+            TYPE = (prop.getProperty("type") != null) ? prop.getProperty("type") : "Program";
+            AUTHOR = (prop.getProperty("author") != null) ? prop.getProperty("author") : "unknown";
+            ENGINE = (prop.getProperty("engine") != null) ? prop.getProperty("engine") : "groovy";
+            PLAYERS = (prop.getProperty("players") != null) ? Integer.parseInt(prop.getProperty("players")) : 1;
 
         } catch (IOException | NumberFormatException ex) {
             System.out.println(ex.getMessage());

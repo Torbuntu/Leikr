@@ -25,6 +25,8 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import java.io.File;
+import java.util.ArrayList;
+import leikr.ChipData;
 import leikr.GameRuntime;
 import leikr.customProperties.CustomSystemProperties;
 import org.mini2Dx.core.game.GameContainer;
@@ -53,8 +55,10 @@ public class MenuScreen extends BasicGameScreen {
     public static int ID = 0;
     boolean START = false;
     int cursor;
+    int offset;
     public static String GAME_NAME;
-    private static final String ICON_PATH = "/Art/icon.png";
+    private String menuBg;
+    ArrayList<ChipData> programs;
 
     AssetManager assetManager;
     FitViewport viewport;
@@ -62,10 +66,18 @@ public class MenuScreen extends BasicGameScreen {
 
     public MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
+        menuBg = "Data/menu_bg.png";
+
+        this.assetManager.load(menuBg, Texture.class);
+
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         gameList = new File(GameRuntime.PROGRAM_PATH).list();
-        setGameName(gameList[0]);
-        loadIcons();
+        programs = new ArrayList<>();
+
+        if (gameList != null) {
+            setGameName(gameList[0]);
+            loadPrograms();
+        }
     }
 
     public static String getGameName() {
@@ -76,9 +88,9 @@ public class MenuScreen extends BasicGameScreen {
         MenuScreen.GAME_NAME = GAME_NAME;
     }
 
-    private void loadIcons() {
+    private void loadPrograms() {
         for (String game : gameList) {
-            assetManager.load(GameRuntime.PROGRAM_PATH + game + ICON_PATH, Texture.class);
+            programs.add(new ChipData(game, assetManager));
         }
         assetManager.finishLoading();
     }
@@ -91,6 +103,7 @@ public class MenuScreen extends BasicGameScreen {
     @Override
     public void initialise(GameContainer gc) {
         cursor = 0;
+        offset = 0;
     }
 
     @Override
@@ -169,6 +182,7 @@ public class MenuScreen extends BasicGameScreen {
             START = false;
             sm.enterGameScreen(LoadScreen.ID, null, null);
         }
+        offset = cursor * 8;
     }
 
     @Override
@@ -180,11 +194,35 @@ public class MenuScreen extends BasicGameScreen {
         viewport.apply(g);
         g.setColor(Color.WHITE);
         if (null != gameList) {
-            g.drawTexture(assetManager.get(GameRuntime.PROGRAM_PATH + getGameName() + ICON_PATH, Texture.class), ID, ID);
-            g.drawString("Selection: " + getGameName(), 0, viewport.getHeight() - 9);
+            for (int i = 0; i < gameList.length; i++) {
+                g.drawString(gameList[i], 8, (8 * i) + 40 - offset);
+            }
+            g.setColor(Color.BLACK);
+            g.fillRect(118, 6, 120, 90);
+            g.fillRect(6, 100, 240, 150);
+
+            g.setColor(Color.WHITE);
+            g.drawString("Title  : " + programs.get(cursor).getTitle(), 8, 104);
+            g.drawString("Author : " + programs.get(cursor).getAuthor(), 8, 114);
+            g.drawString("Type   : " + programs.get(cursor).getType(), 8, 124);
+            g.drawString("Players: " + programs.get(cursor).getPlayers(), 8, 134);
+            g.drawString("Engine : " + programs.get(cursor).getEngine(), 8, 144);
+
+            
+            g.drawTexture(programs.get(cursor).getIcon(), 120, 8, 112, 80);
+
         } else {
-            g.drawString("No programs detected... ", 0, viewport.getHeight() - 9);
+            g.drawString("X", 8, 8);
+            g.drawString("X", 120, 8);
+
+            g.drawString("No programs detected... ", 8, 104);
         }
+        //Menu tops everything else.
+        g.drawTexture(assetManager.get(menuBg, Texture.class), 0, 0);
+
+        g.setColor(Color.RED);
+//        g.drawString("offset: " + offset, 0, 0);
+
     }
 
     @Override
