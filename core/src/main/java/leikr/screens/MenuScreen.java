@@ -54,6 +54,7 @@ public class MenuScreen extends BasicGameScreen {
      */
     public static int ID = 0;
     boolean START = false;
+    boolean page = true;
     int cursor;
     int offset;
     public static String GAME_NAME;
@@ -139,6 +140,9 @@ public class MenuScreen extends BasicGameScreen {
                     System.out.println("Good bye!");
                     Gdx.app.exit();
                 }
+                if(i == Keys.LEFT || i == Keys.RIGHT){
+                    page = !page;
+                }
                 return false;
             }
         });
@@ -166,6 +170,8 @@ public class MenuScreen extends BasicGameScreen {
                                 setGameName(gameList[cursor]);
                             }
                             return true;
+                        }else{
+                            page = !page;
                         }
                         return false;
                     }
@@ -202,13 +208,17 @@ public class MenuScreen extends BasicGameScreen {
             g.fillRect(6, 100, 240, 150);
 
             g.setColor(Color.WHITE);
-            g.drawString("Title  : " + programs.get(cursor).getTitle(), 8, 104);
-            g.drawString("Author : " + programs.get(cursor).getAuthor(), 8, 114);
-            g.drawString("Type   : " + programs.get(cursor).getType(), 8, 124);
-            g.drawString("Players: " + programs.get(cursor).getPlayers(), 8, 134);
-            g.drawString("Engine : " + programs.get(cursor).getEngine(), 8, 144);
 
-            
+            if (page) {
+                g.drawString("Title  : " + programs.get(cursor).getTitle(), 8, 104);
+                g.drawString("Author : " + programs.get(cursor).getAuthor(), 8, 114);
+                g.drawString("Type   : " + programs.get(cursor).getType(), 8, 124);
+                g.drawString("Players: " + programs.get(cursor).getPlayers(), 8, 134);
+                g.drawString("Engine : " + programs.get(cursor).getEngine(), 8, 144);
+            } else {
+                g.drawString("About: " + programs.get(cursor).getAbout(), 8, 104, 224);
+            }
+
             g.drawTexture(programs.get(cursor).getIcon(), 120, 8, 112, 80);
 
         } else {

@@ -55,4 +55,7 @@ public class ChipData {
     public int getPlayers(){
         return cpp.PLAYERS;
     }
+    public String getAbout(){
+        return cpp.ABOUT;
+    }
 }
