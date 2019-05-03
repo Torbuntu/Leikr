@@ -26,6 +26,8 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import leikr.loaders.AudioLoader;
 import leikr.screens.EngineScreen;
 import org.mini2Dx.core.graphics.Graphics;
@@ -41,10 +43,13 @@ public abstract class Engine implements InputProcessor {
     //Mini2DX specific classes for managing the screen state and drawing.
     Graphics g;
     FitViewport viewport;
+    Pixmap pMap;
+    Texture pixTex;
     FPSLogger logger;
 
     //used by the Engine Screen to determine if the game should be actively running.
     boolean active;
+    boolean usePix;
 
     public static enum BTN {
         X,
@@ -96,12 +101,15 @@ public abstract class Engine implements InputProcessor {
     public final void preCreate(int mSprites) {
         MAX_SPRITES = mSprites;
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
+        pMap = new Pixmap(240, 160, Pixmap.Format.RGBA8888);
+        pixTex = new Texture(pMap);
         logger = new FPSLogger();
         spriteLoader = new SpriteLoader();
         imageLoader = new ImageLoader();
         mapLoader = new MapLoader();
         audioLoader = new AudioLoader();
-        
+        usePix = false;
+
         active = true;
         try {
             Controllers.clearListeners();
@@ -120,6 +128,10 @@ public abstract class Engine implements InputProcessor {
     }
 
     public final void preUpdate(float delta) {
+        if (usePix) {
+            pixTex = new Texture(pMap);
+        }
+
         if (null == mapLoader.getMap()) {
             return;//don't update the map if it is null
         }
@@ -131,6 +143,13 @@ public abstract class Engine implements InputProcessor {
         viewport.apply(this.g);
         //set to 0 before drawing anything
         USED_SPRITES = 0;
+        if (usePix) {
+            g.drawTexture(pixTex, 0, 0);
+        }
+    }
+
+    public void usePixels() {
+        usePix = true;
     }
 
     /**
@@ -150,6 +169,8 @@ public abstract class Engine implements InputProcessor {
         mapLoader.disposeMap();
         spriteLoader.disposeSprites();
         imageLoader.disposeImages();
+        pMap.dispose();
+        pixTex.dispose();
         if (null != playerOneController) {
             playerOneController.removeListener(p1ControllerListener);
         }
@@ -241,11 +262,13 @@ public abstract class Engine implements InputProcessor {
     //start color methods
     final void drawColor(int color) {
         g.setColor(getDrawColor(color));
+        pMap.setColor(getDrawColor(color));
     }
 
     final void drawColor(float r, float gr, float b) {
         Color tmp = new Color(r, gr, b, 1f);
         g.setColor(tmp);
+        pMap.setColor(tmp);
     }
 
     final Color getDrawColor(int color) {
@@ -380,7 +403,7 @@ public abstract class Engine implements InputProcessor {
         drawSpriteFlip(id, x, y, 0, flipX, flipY);
     }
     //end 8x8 sprites
-    
+
     //start sizable sprites
     final void sprite(int id, float x, float y, int size) {
         if (USED_SPRITES >= MAX_SPRITES) {
@@ -402,46 +425,48 @@ public abstract class Engine implements InputProcessor {
         drawSpriteFlip(id, x, y, size, flipX, flipY);
     }
     //end sizable sprites
-    
+
     //start shape drawing methods
-    final void rect(float x, float y, float w, float h) {
-        g.drawRect(x, y, w, h);
+    
+    public void pixel(int x, int y) {
+        pMap.drawPixel(x, y);
     }
 
-    final void rect(float x, float y, float w, float h, boolean fill) {
+    public void pixel(int x, int y, int color) {
+        drawColor(color);
+        pMap.drawPixel(x, y);
+    }
+    public void pixel(int x, int y, float[] c) {
+        drawColor(c[0],c[1],c[2]);
+        pMap.drawPixel(x, y);
+    }
+    
+    final void rect(int x, int y, int w, int h) {
+        pMap.drawRectangle(x, y, w, h);
+    }
+
+    final void rect(int x, int y, int w, int h, boolean fill) {
         if (fill) {
-            g.fillRect(x, y, w, h);
+            pMap.fillRectangle(x, y, w, h);
         } else {
-            g.drawRect(x, y, w, h);
+            pMap.drawRectangle(x, y, w, h);
         }
     }
 
-    final void circle(float x, float y, float r) {
-        g.drawCircle(x, y, r);
+    final void circle(int x, int y, int r) {
+        pMap.drawCircle(x, y, r);
     }
 
-    final void circle(float x, float y, float r, boolean fill) {
+    final void circle(int x, int y, int r, boolean fill) {
         if (fill) {
-            g.fillCircle(x, y, r);
+            pMap.fillCircle(x, y, r);
         } else {
-            g.drawCircle(x, y, r);
+            pMap.drawCircle(x, y, r);
         }
     }
 
-    final void triangle(float x1, float y1, float x2, float y2, float x3, float y3) {
-        g.drawTriangle(x1, y1, x2, y2, x3, y3);
-    }
-
-    final void triangle(float x1, float y1, float x2, float y2, float x3, float y3, boolean fill) {
-        if (fill) {
-            g.fillTriangle(x1, y1, x2, y2, x3, y3);
-        } else {
-            g.drawTriangle(x1, y1, x2, y2, x3, y3);
-        }
-    }
-
-    final void line(float x1, float y1, float x2, float y2) {
-        g.drawLineSegment(x1, y1, x2, y2);
+    final void line(int x1, int y1, int x2, int y2) {
+        pMap.drawLine(x1, y1, x2, y2);
     }
     //end shape drawing methods
 
@@ -540,11 +565,8 @@ public abstract class Engine implements InputProcessor {
     }
 
     //end input handling
-    
-    
-    
     //Experimental API methods
-    public void tint(int color){
+    public void tint(int color) {
         g.setTint(getDrawColor(color));
     }
     //END Experimental

@@ -58,7 +58,7 @@ public class MenuScreen extends BasicGameScreen {
     int cursor;
     int offset;
     public static String GAME_NAME;
-    private String menuBg;
+    private final String menuBg;
     ArrayList<ChipData> programs;
 
     AssetManager assetManager;
@@ -122,7 +122,7 @@ public class MenuScreen extends BasicGameScreen {
         }
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
-            public boolean keyUp(int i) {
+            public boolean keyDown(int i) {
                 if (i == Keys.UP && cursor > 0) {
                     cursor--;
                     setGameName(gameList[cursor]);
@@ -231,8 +231,6 @@ public class MenuScreen extends BasicGameScreen {
         g.drawTexture(assetManager.get(menuBg, Texture.class), 0, 0);
 
         g.setColor(Color.RED);
-//        g.drawString("offset: " + offset, 0, 0);
-
     }
 
     @Override

@@ -53,9 +53,10 @@ class Term extends Engine {
     void create(){
         repo = new Repository()
     }
-    void update(float delta){}
+    void update(float delta){
+        FPS()
+    }
     void render(){	
-        bgColor(16)
-        text(txtOutput, 0, 0, 232, 1)		
+        text(txtOutput, 0, 0, 232, 1)	        
     }	
 }
