@@ -17,7 +17,7 @@ class Shapes extends Engine {
         rx = 120
         ry = 80
         usePixels()
-        println new File("/").list()
+       // println new File("/").list()
     }
     void update(float delta){
         FPS()

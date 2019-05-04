@@ -1,20 +1,26 @@
-grant codeBase "file:${user.home}${/}desktop-shadow-0.0.0a/lib/-" {
+grant {
 	permission java.util.PropertyPermission "*", "read";
 	permission java.util.PropertyPermission "org.lwjgl.input.Mouse.allowNegativeMouseCoords", "write";
 	permission java.util.PropertyPermission "org.lwjgl.librarypath", "write";
 	
 	permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
 	
-	permission java.io.FilePermission "/tmp/-", "read,write,delete,execute";
+	permission java.io.FilePermission "${java.io.tmpdir}/-", "read,write,delete,execute";
 	permission java.io.FilePermission ".temp/-", "read,write,delete,execute";	
 	permission java.io.FilePermission "${user.home}${/}.libgdx/-", "read,write,delete";
 	permission java.io.FilePermission "/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib/-", "read";
-	permission java.io.FilePermission "./Programs/-",  "read";	
-	permission java.io.FilePermission "./Data/-", "read";
+	permission java.io.FilePermission "Programs/-",  "read";	
+	permission java.io.FilePermission "Programs",  "read";
+	permission java.io.FilePermission "Data/-", "read";
 		
 	permission java.lang.RuntimePermission "loadLibrary.*";
 	permission java.lang.RuntimePermission "getenv.*", "read";
+	permission java.lang.RuntimePermission "createClassLoader";
+	permission java.lang.RuntimePermission "accessDeclaredMembers";
+	permission java.lang.RuntimePermission "getProtectionDomain";
+	permission java.lang.RuntimePermission "modifyThread";
 	
-	permission java.io.FilePermission "/usr/bin/xrandr", "execute";
+	permission java.io.FilePermission "<<ALL FILES>>", "execute";	
+	permission java.lang.RuntimePermission "shutdownHooks";
 };
 
