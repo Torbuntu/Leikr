@@ -22,5 +22,5 @@ task launchDesktop(dependsOn: classes, type: JavaExec) {
     standardInput = System.in
     workingDir = project.assetsDir
     ignoreExitValue = true
+    debug = true
 }
-

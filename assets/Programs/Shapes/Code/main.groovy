@@ -1,46 +1,44 @@
 import leikr.Engine
 import com.badlogic.gdx.math.MathUtils
+import java.io.File;
 
 class Shapes extends Engine {
 
     Random rand	
-    int x, y, r, a, i, tx, ty
+    int x, y, x2, y2, r, t, amt, rx, ry
     
 	
     void create(){
         rand = new Random()
         x = 120
         y = 80
-        r = 10
-        i = 0
+        amt = 300
+        t = 0
+        rx = 120
+        ry = 80
         usePixels()
+        println new File("/").list()
     }
     void update(float delta){
-        //        if (i < 360) {
-        //            a = (i * Math.PI / 360) 
-        //            i++
-        //        }else{
-        //            i = 0
-        //        }
-        //        tx = x + r * MathUtils.cos(i/16+a/4)*40
-        //        ty = y + r * MathUtils.sin(i/16+a/4)*40
         FPS()
     }
     void render(){	
-        //        line(x, y, tx, ty)
-        def seed = rand.nextInt(100);
-        for (int x = 0; x<240; x++) {
-            for (int y = 0; y<160; y++) {
-                drawColor((x*y)%16);
-                //pixel(x,y);
-                //                pixCircle(x, y, x)
-                //                pixRect(x, y, seed, seed)
-            }
-        }
-        for(int x = 0; x < 240; x++){
-            drawColor(x%16)
+        t+=1
+        clpx()
+        for(int i = 0; i < amt; i++){
+            x = MathUtils.cos(i / 32 + t/40)*50
+            y = MathUtils.sin(i / 32 + t/40)*50
+            
+            x2 = 40 + MathUtils.cos(x / 13 + t/40)*40
+            y2 = 40 + MathUtils.sin(y / 13 + t/40)*40
+            
+            drawColor((i%14)+2)
+            
+            pixel(-x2+rx+5, -y2+ry+5)//top left
+            pixel(-x2+rx+5, y2+ry-5)//bottom left
 
-            rect(seed,seed,x,x)
+            pixel(x2+rx-5, -y2+ry+5)//top right
+            pixel(x2+rx-5, y2+ry-5)//bottom right
         }
         
     }	

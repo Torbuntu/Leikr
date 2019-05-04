@@ -63,4 +63,13 @@ public class CustomProgramProperties {
         }
 
     }
+
+    public CustomProgramProperties(String title, String type, String author, String engine, int players, String about) {
+        TITLE = title;
+        TYPE = type;
+        AUTHOR = author;
+        ENGINE = engine;
+        PLAYERS = players;
+        ABOUT = about;
+    }
 }

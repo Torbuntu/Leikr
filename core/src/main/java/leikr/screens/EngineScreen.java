@@ -134,6 +134,7 @@ public class EngineScreen extends BasicGameScreen {
         try {
             engine.preRender(g);
             engine.render();
+            engine.postRender();
         } catch (Exception ex) {
             ERROR = true;
             errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();

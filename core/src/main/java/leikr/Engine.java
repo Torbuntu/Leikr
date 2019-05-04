@@ -129,6 +129,7 @@ public abstract class Engine implements InputProcessor {
 
     public final void preUpdate(float delta) {
         if (usePix) {
+            pixTex.dispose();//Must dispose, else memory leak occurs.
             pixTex = new Texture(pMap);
         }
 
@@ -143,6 +144,9 @@ public abstract class Engine implements InputProcessor {
         viewport.apply(this.g);
         //set to 0 before drawing anything
         USED_SPRITES = 0;
+    }
+
+    public final void postRender() {
         if (usePix) {
             g.drawTexture(pixTex, 0, 0);
         }
@@ -427,7 +431,11 @@ public abstract class Engine implements InputProcessor {
     //end sizable sprites
 
     //start shape drawing methods
-    
+    public void clpx() {
+        pMap.setColor(Color.BLACK);
+        pMap.fill();
+    }
+
     public void pixel(int x, int y) {
         pMap.drawPixel(x, y);
     }
@@ -436,11 +444,12 @@ public abstract class Engine implements InputProcessor {
         drawColor(color);
         pMap.drawPixel(x, y);
     }
+
     public void pixel(int x, int y, float[] c) {
-        drawColor(c[0],c[1],c[2]);
+        drawColor(c[0], c[1], c[2]);
         pMap.drawPixel(x, y);
     }
-    
+
     final void rect(int x, int y, int w, int h) {
         pMap.drawRectangle(x, y, w, h);
     }

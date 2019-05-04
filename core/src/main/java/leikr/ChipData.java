@@ -37,6 +37,14 @@ public class ChipData {
         assetManager.finishLoading();
     }
     
+    public ChipData(String title, String auth, String type, String eng, int pla, String about, AssetManager am){
+        cpp = new CustomProgramProperties(title, auth, type, eng, pla, about);
+        this.assetManager = am;
+        ICON_PATH = "./Data/Images/start_new.png";
+        assetManager.load(ICON_PATH, Texture.class);
+        assetManager.finishLoading();        
+    }
+    
     public Texture getIcon(){
         return assetManager.get(ICON_PATH, Texture.class);
     }

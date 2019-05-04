@@ -514,6 +514,7 @@ class WizRobo extends Engine {
   
     void create(){		
         loadImages()
+        usePixels()
         rand = new Random()
         loadMap("title")
     }
@@ -647,6 +648,10 @@ class WizRobo extends Engine {
         }
         if(enemies[0].alive){
             sprite(enemies[0].spid, enemies[0].x, enemies[0].y)
+        }
+        else{
+            drawColor([1f, 0f, 0f])
+            rect(enemies[0].x, enemies[0].y, 8,8)
         }
     }
     void renderlvl1(){

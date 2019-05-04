@@ -26,6 +26,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import leikr.ChipData;
 import leikr.GameRuntime;
 import leikr.customProperties.CustomSystemProperties;
@@ -63,21 +64,22 @@ public class MenuScreen extends BasicGameScreen {
 
     AssetManager assetManager;
     FitViewport viewport;
-    String[] gameList;
+    ArrayList<String> gameList;
 
     public MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
-        menuBg = "Data/menu_bg.png";
+        menuBg = "Data/Images/menu_bg.png";
 
         this.assetManager.load(menuBg, Texture.class);
 
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
-        gameList = new File(GameRuntime.PROGRAM_PATH).list();
+        gameList = new ArrayList<>(Arrays.asList(new File(GameRuntime.PROGRAM_PATH).list()));
         programs = new ArrayList<>();
 
         if (gameList != null) {
-            setGameName(gameList[0]);
+            setGameName(gameList.get(0));
             loadPrograms();
+            gameList.add("Start new...");
         }
     }
 
@@ -90,9 +92,10 @@ public class MenuScreen extends BasicGameScreen {
     }
 
     private void loadPrograms() {
-        for (String game : gameList) {
+        gameList.forEach((game) -> {
             programs.add(new ChipData(game, assetManager));
-        }
+        });
+        programs.add(new ChipData("New Game", "System", "Template", "Groovy", 0, "Initializes a new game template", assetManager));
         assetManager.finishLoading();
     }
 
@@ -125,24 +128,29 @@ public class MenuScreen extends BasicGameScreen {
             public boolean keyDown(int i) {
                 if (i == Keys.UP && cursor > 0) {
                     cursor--;
-                    setGameName(gameList[cursor]);
+                    setGameName(gameList.get(cursor));
                 }
-                if (i == Keys.DOWN && cursor < gameList.length - 1) {
+                if (i == Keys.DOWN && cursor < gameList.size()-1) {
                     cursor++;
-                    setGameName(gameList[cursor]);
+                    setGameName(gameList.get(cursor));
                 }
                 if (i == Keys.ENTER) {
-                    System.out.println("Loading program: " + getGameName());
-                    GameRuntime.setGamePath("Programs/" + getGameName());
-                    START = true;
+                    if (cursor == gameList.size()-1) {
+                        System.out.println("initializing new game...");
+                    } else {
+                        System.out.println("Loading program: " + getGameName());
+                        GameRuntime.setGamePath("Programs/" + getGameName());
+                        START = true;
+                    }
                 }
                 if (i == Keys.ESCAPE) {
                     System.out.println("Good bye!");
                     Gdx.app.exit();
                 }
-                if(i == Keys.LEFT || i == Keys.RIGHT){
+                if (i == Keys.LEFT || i == Keys.RIGHT) {
                     page = !page;
                 }
+                System.out.println(cursor + " : "+gameList.size());
                 return false;
             }
         });
@@ -162,15 +170,15 @@ public class MenuScreen extends BasicGameScreen {
                     @Override
                     public boolean axisMoved(Controller controller, int axisCode, float value) {
                         if (axisCode == CustomSystemProperties.VERTICAL_AXIS) {
-                            if (value == 1 && cursor < gameList.length - 1) {
+                            if (value == 1 && cursor < gameList.size()-1) {
                                 cursor++;
-                                setGameName(gameList[cursor]);
+                                setGameName(gameList.get(cursor));
                             } else if (value == -1 && cursor > 0) {
                                 cursor--;
-                                setGameName(gameList[cursor]);
+                                setGameName(gameList.get(cursor));
                             }
                             return true;
-                        }else{
+                        } else {
                             page = !page;
                         }
                         return false;
@@ -200,8 +208,8 @@ public class MenuScreen extends BasicGameScreen {
         viewport.apply(g);
         g.setColor(Color.WHITE);
         if (null != gameList) {
-            for (int i = 0; i < gameList.length; i++) {
-                g.drawString(gameList[i], 8, (8 * i) + 40 - offset);
+            for (int i = 0; i < gameList.size(); i++) {
+                g.drawString(gameList.get(i), 8, (8 * i) + 40 - offset);
             }
             g.setColor(Color.BLACK);
             g.fillRect(118, 6, 120, 90);

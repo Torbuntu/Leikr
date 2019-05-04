@@ -52,7 +52,7 @@ public class CreditScreen extends BasicGameScreen {
     }
 
     private void loadMini2DxGraphic() {
-        assetManager.load("./Data/mini2Dx.png", Texture.class);
+        assetManager.load("./Data/Images/mini2Dx.png", Texture.class);
         assetManager.finishLoading();
     }
 
@@ -118,7 +118,7 @@ public class CreditScreen extends BasicGameScreen {
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
         g.drawString("Powered by ", 72, 40);
-        g.drawTexture(assetManager.get("./Data/mini2Dx.png"), 16, 64, 208, 87);
+        g.drawTexture(assetManager.get("./Data/Images/mini2Dx.png"), 16, 64, 208, 87);
     }
 
     @Override

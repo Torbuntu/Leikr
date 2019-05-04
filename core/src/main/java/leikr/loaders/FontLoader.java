@@ -27,10 +27,10 @@ import org.mini2Dx.core.font.MonospaceFont;
  */
 public class FontLoader {
     public MonospaceFont getFont(AssetManager manager){
-        manager.load("./Data/LeikrFontA.png", Texture.class);
+        manager.load("./Data/Images/LeikrFontA.png", Texture.class);
         manager.finishLoading();
         MonospaceFont.FontParameters params = new MonospaceFont.FontParameters();
-        params.texturePath = "./Data/LeikrFontA.png";
+        params.texturePath = "./Data/Images/LeikrFontA.png";
         params.spacing = 0;
         params.frameWidth = 8;
         params.frameHeight = 8;
