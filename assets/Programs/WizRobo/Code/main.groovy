@@ -1,5 +1,4 @@
 import leikr.Engine
-import com.badlogic.gdx.math.MathUtils
 
 class WizRobo extends Engine {
     def wizard = [:]	
@@ -24,13 +23,11 @@ class WizRobo extends Engine {
     def lvl9start = false
 	    
     def time = 0
-    
-    def rand
-			    
+    			    
     def solid(x,y){
         float mx = (x)/8 
         float my = (y)/8
-        int cellid = mapGet(mx,my)
+        int cellid = mapGet((int)mx,(int)my)
         if(	cellid > 60 && cellid < 170){
             return true
         }
@@ -40,7 +37,7 @@ class WizRobo extends Engine {
     def getTile(x,y){
         float mx = (x)/8 
         float my = (y)/8
-        return mapGet(mx,my)
+        return mapGet((int)mx,(int)my)
     }
     
     void movep(){        
@@ -209,12 +206,12 @@ class WizRobo extends Engine {
     void checkScroll(){
         int tile = getTile(wizard.x+2, wizard.y+2)
         if( tile == 29 || tile == 30 || tile == 31){
-            mapSet((wizard.x+2)/8, (wizard.y+2)/8, 0)
+            mapSet((int)(wizard.x/8), (int)(wizard.y/8), 0)
             wizard.scrolls++
         }
         if(tile == 193 && wizard.health < 3){
             wizard.health++
-            mapRemove((wizard.x+2)/8, (wizard.y+2)/8)
+            mapRemove((int)(wizard.x/8), (int)(wizard.y /8))
         }
     }   
     
@@ -337,14 +334,14 @@ class WizRobo extends Engine {
             if(!enemy.alive){
                 //mapRemove(enemy.x/8, enemy.y/8)
                 enemy.remove = true
-                mapSet(enemy.x.toInteger()/8, enemy.y.toInteger()/8, 192)
+                mapSet((int)(enemy.x/8), (int)(enemy.y/8), 192)
             }else{
                 enemy.alive = false
-                enemy.x = MathUtils.ceil(enemy.x)
+                enemy.x = ceil(enemy.x)
                 enemy.x = enemy.x - enemy.x%8
                 mapRemove(enemy.keyA.x, enemy.keyA.y)
                 mapRemove(enemy.keyB.x, enemy.keyB.y)
-                mapSet((enemy.x)/8, (enemy.y)/8, 88)
+                mapSet((int)(enemy.x/8), (int)(enemy.y/8), 88)
             }            
     	}
     }    
@@ -366,12 +363,12 @@ class WizRobo extends Engine {
     void removeDebris(){
         enemies.each{
             if(it.remove){
-            	def num = rand.nextInt(2)            	
+            	def num = randInt(2)            	
                 if(num==1){
                     println num
                     def x = it.x/8
                     def y = it.y/8
-                    mapSet(x, y, 193)
+                    mapSet((int)x, (int)y, 193)
                 }
             }
         }
@@ -515,7 +512,6 @@ class WizRobo extends Engine {
     void create(){		
         loadImages()
         usePixels()
-        rand = new Random()
         loadMap("title")
     }
     
@@ -585,7 +581,7 @@ class WizRobo extends Engine {
             enemyAnimation(enemies[0])
             boltHitEnemy(enemies[0])
             if(!enemies[0].alive){
-                mapSet(enemies[0].x/8, enemies[0].y/8, 88)
+                mapSet((int)(enemies[0].x/8), (int)(enemies[0].y/8), 88)
                 mapSet(enemies[0].keyA.x,enemies[0].keyA.y,33)
             }
             break;
@@ -651,7 +647,7 @@ class WizRobo extends Engine {
         }
         else{
             drawColor([1f, 0f, 0f])
-            rect(enemies[0].x, enemies[0].y, 8,8)
+            rect((int)enemies[0].x, (int)enemies[0].y, 8,8)
         }
     }
     void renderlvl1(){

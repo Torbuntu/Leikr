@@ -63,21 +63,21 @@ public class MapLoader {
     }
 
     // Gets the tileId of the cell located at x and y. 
-    public int getMapTileId(float x, float y) {
+    public int getMapTileId(int x, int y) {
         try {
-            return tiledMap.getTile((int) x, (int) y, 0).getTileId(1);
+            return tiledMap.getTile( x,  y, 0).getTileId(1);
         } catch (Exception ex) {
             //System.out.println(ex);
             return -1;
         }
     }
 
-    public void setMapTile(float x, float y, int id) {
-        tiledMap.getTileLayer(0).setTileId((int) x, (int) y, id);
+    public void setMapTile(int x, int y, int id) {
+        tiledMap.getTileLayer(0).setTileId(x, y, id);
     }
     
-    public void removeMapTile(float x, float y){
-        tiledMap.getTileLayer(0).setTileId((int)x,(int)y, -1);
+    public void removeMapTile(int x, int y){
+        tiledMap.getTileLayer(0).setTileId(x,y, -1);
     }
 
     public void disposeMap() {

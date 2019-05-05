@@ -28,6 +28,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.MathUtils;
 import leikr.loaders.AudioLoader;
 import leikr.screens.EngineScreen;
 import org.mini2Dx.core.graphics.Graphics;
@@ -242,15 +243,15 @@ public abstract class Engine implements InputProcessor {
         mapLoader.drawMap(g, x, y, sx, sy, w, h, layer);
     }
 
-    final int mapGet(float x, float y) {
+    final int mapGet(int x, int y) {
         return mapLoader.getMapTileId(x, y);
     }
 
-    final void mapSet(float x, float y, int id) {
+    final void mapSet(int x, int y, int id) {
         mapLoader.setMapTile(x, y, id);
     }
 
-    final void mapRemove(float x, float y) {
+    final void mapRemove(int x, int y) {
         mapLoader.removeMapTile(x, y);
     }
 
@@ -504,6 +505,40 @@ public abstract class Engine implements InputProcessor {
         audioLoader.stopMusic(fileName);
     }
     //end audio handling
+    
+    //START Math utils
+    public float cos(float radians){
+        return MathUtils.cos(radians);
+    }
+    public float cosDeg(float deg){
+        return MathUtils.cosDeg(deg);
+    }
+    public float sin(float radians){
+        return MathUtils.sin(radians);
+    }
+    public float sinDeg(float deg){
+        return MathUtils.sinDeg(deg);
+    }
+    public float ceil(float value){
+        return MathUtils.ceil(value);
+    }
+    public float floor(float value){
+        return MathUtils.floor(value);
+    }
+    public int randInt(int range){
+        return MathUtils.random(range);
+    }
+    public int randInt(int start, int end){
+        return MathUtils.random(start, end);
+    }
+    public float randFloat(float range){
+        return MathUtils.random(range);
+    }
+    public float randFloat(float start, float end){
+        return MathUtils.random(start, end);
+    }
+    
+    //END Math utils
 
     //start input handling
     final boolean button(BTN button) {
