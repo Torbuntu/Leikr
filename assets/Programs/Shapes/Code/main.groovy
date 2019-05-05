@@ -1,15 +1,12 @@
 import leikr.Engine
-import com.badlogic.gdx.math.MathUtils
-import java.io.File;
+import java.io.File //for bad guy code test
 
 class Shapes extends Engine {
 
-    Random rand	
     int x, y, x2, y2, r, t, amt, rx, ry
     
 	
     void create(){
-        rand = new Random()
         x = 120
         y = 80
         amt = 300
@@ -17,7 +14,7 @@ class Shapes extends Engine {
         rx = 120
         ry = 80
         usePixels()
-       // println new File("/").list()
+        println new File("/").list() //bad guy code test
     }
     void update(float delta){
         FPS()
@@ -26,11 +23,11 @@ class Shapes extends Engine {
         t+=1
         clpx()
         for(int i = 0; i < amt; i++){
-            x = MathUtils.cos(i / 32 + t/40)*50
-            y = MathUtils.sin(i / 32 + t/40)*50
+            x = cos(i / 32 + t/40)*50
+            y = sin(i / 32 + t/40)*50
             
-            x2 = 40 + MathUtils.cos(x / 13 + t/40)*40
-            y2 = 40 + MathUtils.sin(y / 13 + t/40)*40
+            x2 = 40 + cos(x / 13 + t/40)*40
+            y2 = 40 + sin(y / 13 + t/40)*40
             
             drawColor((i%14)+2)
             

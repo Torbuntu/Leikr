@@ -206,12 +206,12 @@ class WizRobo extends Engine {
     void checkScroll(){
         int tile = getTile(wizard.x+2, wizard.y+2)
         if( tile == 29 || tile == 30 || tile == 31){
-            mapSet((int)(wizard.x/8), (int)(wizard.y/8), 0)
+            mapSet((int)((wizard.x+2)/8), (int)((wizard.y+4)/8), 0)
             wizard.scrolls++
         }
         if(tile == 193 && wizard.health < 3){
             wizard.health++
-            mapRemove((int)(wizard.x/8), (int)(wizard.y /8))
+            mapRemove((int)((wizard.x+2)/8), (int)((wizard.y+4)/8))
         }
     }   
     
@@ -365,7 +365,6 @@ class WizRobo extends Engine {
             if(it.remove){
             	def num = randInt(2)            	
                 if(num==1){
-                    println num
                     def x = it.x/8
                     def y = it.y/8
                     mapSet((int)x, (int)y, 193)
@@ -568,6 +567,7 @@ class WizRobo extends Engine {
     	removeDebris()
     	movep()
     	updateGui()
+        
         checkScroll() 
     	
     	switch(level){    
@@ -644,10 +644,6 @@ class WizRobo extends Engine {
         }
         if(enemies[0].alive){
             sprite(enemies[0].spid, enemies[0].x, enemies[0].y)
-        }
-        else{
-            drawColor([1f, 0f, 0f])
-            rect((int)enemies[0].x, (int)enemies[0].y, 8,8)
         }
     }
     void renderlvl1(){
