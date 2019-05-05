@@ -1,26 +1,98 @@
-grant {
+grant{
 	permission java.util.PropertyPermission "*", "read";
 	permission java.util.PropertyPermission "org.lwjgl.input.Mouse.allowNegativeMouseCoords", "write";
 	permission java.util.PropertyPermission "org.lwjgl.librarypath", "write";
 	
-	permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
-	
-	permission java.io.FilePermission "${java.io.tmpdir}/-", "read,write,delete,execute";
-	permission java.io.FilePermission ".temp/-", "read,write,delete,execute";	
-	permission java.io.FilePermission "${user.home}${/}.libgdx/-", "read,write,delete";
-	permission java.io.FilePermission "/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib/-", "read";
-	permission java.io.FilePermission "Programs/-",  "read";	
-	permission java.io.FilePermission "Programs",  "read";
+	//Grant access to the primary Leikr dirs
+	permission java.io.FilePermission "Programs", "read,write";
+	permission java.io.FilePermission "Programs/-", "read,write";
 	permission java.io.FilePermission "Data/-", "read";
-		
+	
 	permission java.lang.RuntimePermission "loadLibrary.*";
 	permission java.lang.RuntimePermission "getenv.*", "read";
 	permission java.lang.RuntimePermission "createClassLoader";
 	permission java.lang.RuntimePermission "accessDeclaredMembers";
 	permission java.lang.RuntimePermission "getProtectionDomain";
 	permission java.lang.RuntimePermission "modifyThread";
+	permission java.lang.RuntimePermission "accessClassInPackage.sun.reflect";
 	
-	permission java.io.FilePermission "<<ALL FILES>>", "execute";	
-	permission java.lang.RuntimePermission "shutdownHooks";
+	permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
+	
+	//tmp location permissions.
+	permission java.io.FilePermission "${java.io.tmpdir}/-", "read,write,delete,execute";
+	permission java.io.FilePermission ".temp/-", "read,write,delete,execute";	
+	permission java.io.FilePermission "${user.home}${/}.libgdx/-", "read,write,delete";
+	permission java.io.FilePermission "/usr/java/packages/lib/amd64:/usr/lib64:/lib64:/lib:/usr/lib/-", "read";
+	permission java.io.FilePermission "../lib/-", "read,write,delete,execute";	
 };
 
+
+grant codeBase "file:../lib/gdx-controllers-platform-1.9.8-natives-desktop.jar"{
+	permission java.security.AllPermission;
+	permission java.io.FilePermission "<<ALL FILES>>", "read"; 
+};
+grant codeBase "file:../lib/gdx-controllers-1.9.8.jar"{
+	permission java.security.AllPermission;
+	permission java.io.FilePermission "<<ALL FILES>>", "read"; 
+};
+grant codeBase "file:../lib/jinput-2.0.5.jar"{
+	permission java.security.AllPermission;
+	permission java.io.FilePermission "<<ALL FILES>>", "read"; 
+};
+grant codeBase "file:../lib/jinput-platform-2.0.5-natives-linux.jar"{
+	permission java.security.AllPermission;
+	permission java.io.FilePermission "<<ALL FILES>>", "read"; 
+};
+grant codeBase "file:../lib/lwjgl-2.9.3.jar"{
+	permission java.security.AllPermission;
+};
+grant codeBase "file:../lib/lwjgl_util-2.9.2.jar"{
+	permission java.security.AllPermission;
+};
+grant codeBase "file:../lib/lwjgl-platform-2.9.3-natives-linux.jar"{
+	permission java.security.AllPermission;
+};
+grant codeBase "file:../lib/natives-loader-1.0.0.jar"{
+	permission java.security.AllPermission;	
+};
+grant codeBase "file:../lib/mini2Dx-core-1.9.0.jar"{
+	permission java.security.AllPermission;
+};
+grant codeBase "file:../lib/mini2Dx-desktop-1.9.0.jar" {
+	permission java.security.AllPermission;
+};
+grant codeBase "file:../lib/mini2Dx-tiled-1.9.0.jar" {
+	permission java.security.AllPermission;
+};
+grant codeBase "file:../lib/gdx-1.9.8.jar"{
+	permission java.security.AllPermission;
+};
+grant codeBase "file:../lib/gdx-backend-lwjgl-1.9.8.jar" {
+	permission java.security.AllPermission;
+	permission java.io.FilePermission "<<ALL FILES>>", "read";
+};
+grant codeBase "file:../lib/gdx-platform-1.9.8-natives-desktop.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:../lib/groovy-3.0.0-alpha-4.jar" {
+	permission java.security.AllPermission;
+	permission java.io.FilePermission "<<ALL FILES>>", "read"; 
+};
+
+grant codeBase "file:../lib/reflections-0.9.10.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:../lib/core-0.0.0a.jar"{
+	//attempt to sandbox to these dirs only.
+	permission java.io.FilePermission "Programs", "read,write";
+	permission java.io.FilePermission "Programs/-", "read,write";
+	permission java.io.FilePermission "Data/-", "read";
+	
+};
+
+grant codeBase "file:../lib/desktop-0.0.0a.jar"{	
+	permission java.io.FilePermission "<<ALL FILES>>", "execute";
+	
+};
