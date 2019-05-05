@@ -22,7 +22,6 @@ class SnekClone2 extends Engine {
 	def t = 0
 	def score = 0
 	def score2 = 0
-	Random rand	
 	
 	void newGame(){
 	 	score = 0
@@ -42,8 +41,8 @@ class SnekClone2 extends Engine {
 	}
 	
 	void setFood(){
-		food = [x: rand.nextInt(29), y:rand.nextInt(19)]
-				
+		food = [x: randInt(29), y:randInt(19)]
+			
 		snake.each{
 			if (it.x == food.x && it.y == food.y){
 				setFood()
@@ -120,13 +119,13 @@ class SnekClone2 extends Engine {
 		}
 	}
 	
-	void create(){				
-		rand = new Random()
+	void create(){		
 		dirs.up = [x:0, y:-1]		
 		dirs.down = [x:0, y:1]
 		dirs.right = [x:1, y:0]
 		dirs.left = [x:-1, y:0]		
 		newGame()
+                usePixels()
 	}
 
 	void update(float delta){
@@ -167,12 +166,14 @@ class SnekClone2 extends Engine {
 				snake.remove(snake.size()-1)
 			}else{
 				setFood()
+                                clpx()
 				score++
 			}
 			if(!gotFood(snake2)){
 				snake2.remove(snake2.size()-1)
 			}else{
 				setFood()
+                                clpx()
 				score2++
 			}
 			t=0

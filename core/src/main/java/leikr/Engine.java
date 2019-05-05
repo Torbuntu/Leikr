@@ -433,7 +433,7 @@ public abstract class Engine implements InputProcessor {
 
     //start shape drawing methods
     public void clpx() {
-        pMap.setColor(Color.BLACK);
+        pMap.setColor(Color.CLEAR);
         pMap.fill();
     }
 
