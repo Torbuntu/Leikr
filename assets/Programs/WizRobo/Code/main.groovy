@@ -9,18 +9,15 @@ class WizRobo extends Engine {
     def healthSpids = [193,193,193]
     def energySpids = [194,194,194]
 	
+	def gameOver = false
     def title = true
     def level = 0
     def lvl1start = false
     def lvl2start = false
     def lvl3start = false
     def lvl4start = false
-    def lvl5start = false
-    def lvl6start = false
-    def lvl7start = false
-    def lvl8start = false
-    
-    def lvl9start = false
+    def lvl5start = false    
+    def lvlFinalstart = false
 	    
     def time = 0
     			    
@@ -145,12 +142,15 @@ class WizRobo extends Engine {
     	}
     	if(wizard.health < 1){
             level = 0
-            title = true
+            gameOver = true
             loadMap("title")
+            title = false
             lvl1start = false
             lvl2start = false
             lvl3start = false
-            lvl9start = false
+            lvl4start = false
+            lvl5start = false
+            lvlFinalstart = false
     	}
     }
     
@@ -178,14 +178,15 @@ class WizRobo extends Engine {
     	}
     	wizard.charged = false
     	bolt.attack = true
+    	clpx()
     	bolt.f = wizard.f
     	if(wizard.f){
             bolt.vx = -3   		
     	}else{
             bolt.vx = 3
     	}
-    	bolt.x = wizard.x
-    	bolt.y = wizard.y
+    	bolt.x = (int)wizard.x
+    	bolt.y = (int)wizard.y
     	bolt.spid = bolt.spids[(bolt.charge/10).toInteger()]
     }
     
@@ -299,11 +300,8 @@ class WizRobo extends Engine {
 
     	loadMap("lvl5")
     }
-    
-    
-    
-    
-    void initlvl9(){
+        
+    void initlvlFinal(){
         wizard.x = 10
         wizard.y = 100
         
@@ -313,7 +311,7 @@ class WizRobo extends Engine {
         
         enemies = []
         enemies.addAll([enemy1,enemy2]) 
-    	loadMap("lvl9")
+    	loadMap("lvlFinal")
     }
     
     // ENEMY methods
@@ -332,9 +330,8 @@ class WizRobo extends Engine {
             bolt.attack = false
             bolt.charge = 0
             if(!enemy.alive){
-                //mapRemove(enemy.x/8, enemy.y/8)
                 enemy.remove = true
-                mapSet((int)(enemy.x/8), (int)(enemy.y/8), 192)
+                mapRemove((int)(enemy.x/8), (int)(enemy.y/8))
             }else{
                 enemy.alive = false
                 enemy.x = ceil(enemy.x)
@@ -342,7 +339,7 @@ class WizRobo extends Engine {
                 mapRemove(enemy.keyA.x, enemy.keyA.y)
                 mapRemove(enemy.keyB.x, enemy.keyB.y)
                 mapSet((int)(enemy.x/8), (int)(enemy.y/8), 88)
-            }            
+            }                       
     	}
     }    
      
@@ -456,7 +453,7 @@ class WizRobo extends Engine {
                     it.alive = false
                     it.remove = true
                     
-                    mapSet((it.x+16)/8, (it.y+16)/8, 29)//Drop scroll for the victor
+                    mapSet((int)((it.x+16)/8), (int)((it.y+16)/8), 29)//Drop scroll for the victor
                     
                     mapSet(it.keyA.x, it.keyA.y, 33)
                     mapSet(it.keyB.x, it.keyB.y, 33)
@@ -478,16 +475,16 @@ class WizRobo extends Engine {
         
     }
     
-    void lvl9Update(){
-    	if(!lvl9start){
-            initlvl9()
-            lvl9start = true    		
+    void lvlFinalUpdate(){
+    	if(!lvlFinalstart){
+            initlvlFinal()
+            lvlFinalstart = true    		
     	}    	       
         if(enemies.isEmpty()){
             level = 0
-            title = true
+            gameOver = true
             loadMap("title")
-            lvl9start = false
+            lvlFinalstart = false
             return
         }
         enemies.each{
@@ -510,7 +507,6 @@ class WizRobo extends Engine {
   
     void create(){		
         loadImages()
-        usePixels()
         loadMap("title")
     }
     
@@ -555,10 +551,16 @@ class WizRobo extends Engine {
     }
 
     void update(float delta){
-        debuglvl()        
-
+        debuglvl()       
+        if(gameOver){
+        	if(key("Enter") || button(BTN.START)){
+        		title = true
+        		gameOver = false
+        		return
+        	}
+        }
     	if(title){
-            if(key("X") || key("Space") || button(BTN.START)){
+            if(key("Enter") || button(BTN.START)){
                 title = false
                 init()
             }
@@ -580,7 +582,7 @@ class WizRobo extends Engine {
             }            
             enemyAnimation(enemies[0])
             boltHitEnemy(enemies[0])
-            if(!enemies[0].alive){
+            if(!enemies[0].alive && !enemies[0].remove){
                 mapSet((int)(enemies[0].x/8), (int)(enemies[0].y/8), 88)
                 mapSet(enemies[0].keyA.x,enemies[0].keyA.y,33)
             }
@@ -600,8 +602,8 @@ class WizRobo extends Engine {
         case 5:
             lvl5Update()
             break;
-        case 9:
-            lvl9Update()
+        case 6:
+            lvlFinalUpdate()
             break;
         default:    			    	
             level = 0
@@ -615,11 +617,11 @@ class WizRobo extends Engine {
                 if(collide(wizard, it)){
                     wizard.health--
                     if(wizard.f){
-                        wizard.x = wizard.x +14
+                        wizard.x = wizard.x +32
                     }else{
-                        wizard.x = wizard.x -14
+                        wizard.x = wizard.x -32
                     }
-                    wizard.y -= 6
+                    wizard.y -= 8
                 }
             }
         }
@@ -631,11 +633,14 @@ class WizRobo extends Engine {
         sprite(energySpids[1], 8, 0)
         sprite(energySpids[2], 16, 0)
         
-        sprite(healthSpids[0], 152, 0)
-        sprite(healthSpids[1], 144, 0)
-        sprite(healthSpids[2], 136, 0)
+        sprite(healthSpids[0], 104, 0)
+        sprite(healthSpids[1], 96, 0)
+        sprite(healthSpids[2], 88, 0)
         
-        text("lvl: "+level, 160, 0, 1)
+        text("lvl:"+level, 112, 0, 1)
+        
+        sprite(29, 160, 0)
+        text(":"+wizard.scrolls, 168, 0, 1)
     }
     
     void renderDefault(){
@@ -643,7 +648,7 @@ class WizRobo extends Engine {
             return
         }
         if(enemies[0].alive){
-            sprite(enemies[0].spid, enemies[0].x, enemies[0].y)
+            sprite(enemies[0].spid, enemies[0].x, enemies[0].y)           
         }
     }
     void renderlvl1(){
@@ -697,7 +702,7 @@ class WizRobo extends Engine {
             }
         }  
     }	
-    void renderlvl9(){    
+    void renderlvlFinal(){    
         if(enemies.isEmpty()){
             return
         }
@@ -708,22 +713,32 @@ class WizRobo extends Engine {
             }
         }  
     }	
+    
+    void renderGameOver(){
+    	text("Game Over!", 46, 32, 1)
+    	text("Thanks for playing this demo.", 8, 42, 1)
+    	text("Press Enter to play again.", 8, 54, 1)
+    }
 	
     void render(){
-        
+        if(gameOver){
+        	renderGameOver()
+        	return
+        }
         
 		
         if(title){
             image("stonewall", 0,0)
-	    map()
+	    	map()
             text("Escape the dungeon!", 46, 32, 1)
+            text("Move: arrows. Jump: Space. Charge: X. Shoot: Z. Start: Enter", 12, 110, 116, 1)
             return
         }else{
-	    image("stonewall", 0,8)
+	    	image("stonewall", 0,8)
             map()	
-	}
+		}
 
-	if(key("S")){
+		if(key("S")){
             text("Scrolls: "+wizard.scrolls, 46, 32, 1)
         }
 		
@@ -754,15 +769,13 @@ class WizRobo extends Engine {
         case 5:
             renderlvl5()
             break;
-        case 9:
-            renderlvl9()
+        case 6:
+            renderlvlFinal()
             break;
         default:
             renderDefault()
             break;
-        }
-        
-        //text("Charge: "+bolt.charge, 0,0, 1)
+        }        
     }
     
     
@@ -777,12 +790,8 @@ class WizRobo extends Engine {
             lvl2start = false
             lvl3start = false
             lvl4start = false
-            lvl5start = false
-            lvl6start = false
-            lvl7start = false
-            lvl8start = false
-    
-            lvl9start = false
+            lvl5start = false    
+            lvlFinalstart = false
         }
         if(key("1")){
             level = 1
@@ -790,11 +799,7 @@ class WizRobo extends Engine {
             lvl3start = false
             lvl4start = false
             lvl5start = false
-            lvl6start = false
-            lvl7start = false
-            lvl8start = false
-    
-            lvl9start = false
+            lvlFinalstart = false
         }
         if(key("2")){
             level = 2
@@ -802,11 +807,7 @@ class WizRobo extends Engine {
             lvl3start = false
             lvl4start = false
             lvl5start = false
-            lvl6start = false
-            lvl7start = false
-            lvl8start = false
-    
-            lvl9start = false
+            lvlFinalstart = false
         }
         if(key("3")){
             level = 3
@@ -814,11 +815,7 @@ class WizRobo extends Engine {
             lvl2start = false
             lvl4start = false
             lvl5start = false
-            lvl6start = false
-            lvl7start = false
-            lvl8start = false
-    
-            lvl9start = false
+            lvlFinalstart = false
         }
         if(key("4")){
             level = 4
@@ -826,11 +823,7 @@ class WizRobo extends Engine {
             lvl2start = false
             lvl3start = false
             lvl5start = false
-            lvl6start = false
-            lvl7start = false
-            lvl8start = false
-    
-            lvl9start = false
+            lvlFinalstart = false
         }
         if(key("5")){
             level = 5
@@ -838,23 +831,15 @@ class WizRobo extends Engine {
             lvl2start = false
             lvl3start = false
             lvl4start = false
-            lvl6start = false
-            lvl7start = false
-            lvl8start = false
-    
-            lvl9start = false
+            lvlFinalstart = false
         }
-        if(key("9")){
-            level = 9
+        if(key("6")){
+            level = 6
             lvl1start = false
             lvl2start = false
             lvl3start = false
             lvl4start = false
             lvl5start = false
-            lvl6start = false
-            lvl7start = false
-            lvl8start = false
-
         }
     }
         
