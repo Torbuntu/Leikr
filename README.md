@@ -82,7 +82,8 @@ class MyGame extends Engine{
 ```
 
 
-WIP specs:
+## specs:
+
 screen: 240x160
 
 Sprites: 2,048 max. Each sprite gets split into 8x8, 16x16, 32x32 and 64x64 pixel sprites.
