@@ -23,6 +23,7 @@ import java.io.File;
 import leikr.screens.CreditScreen;
 import leikr.screens.ErrorScreen;
 import leikr.screens.LoadScreen;
+import leikr.screens.NewProgramScreen;
 import leikr.screens.TitleScreen;
 import org.mini2Dx.core.game.ScreenBasedGame;
 
@@ -66,6 +67,7 @@ public class GameRuntime extends ScreenBasedGame {
         this.addScreen(new CreditScreen(assetManager));
         this.addScreen(new ErrorScreen(assetManager));
         this.addScreen(new LoadScreen());
+        this.addScreen(new NewProgramScreen());
     }
 
     @Override

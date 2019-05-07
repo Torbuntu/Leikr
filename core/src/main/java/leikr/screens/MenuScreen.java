@@ -55,6 +55,7 @@ public class MenuScreen extends BasicGameScreen {
      */
     public static int ID = 0;
     boolean START = false;
+    boolean NEW_PROGRAM = false;
     boolean page = true;
     int cursor;
     int offset;
@@ -73,6 +74,10 @@ public class MenuScreen extends BasicGameScreen {
         this.assetManager.load(menuBg, Texture.class);
 
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
+        initMenuList();
+    }
+
+    private void initMenuList() {
         gameList = new ArrayList<>(Arrays.asList(new File(GameRuntime.PROGRAM_PATH).list()));
         programs = new ArrayList<>();
 
@@ -116,6 +121,7 @@ public class MenuScreen extends BasicGameScreen {
             GameRuntime.setGamePath("Programs/" + getGameName());
             START = true;
         }
+        initMenuList();
     }
 
     @Override
@@ -130,13 +136,14 @@ public class MenuScreen extends BasicGameScreen {
                     cursor--;
                     setGameName(gameList.get(cursor));
                 }
-                if (i == Keys.DOWN && cursor < gameList.size()-1) {
+                if (i == Keys.DOWN && cursor < gameList.size() - 1) {
                     cursor++;
                     setGameName(gameList.get(cursor));
                 }
                 if (i == Keys.ENTER) {
-                    if (cursor == gameList.size()-1) {
+                    if (cursor == gameList.size() - 1) {
                         System.out.println("initializing new game...");
+                        NEW_PROGRAM = true;
                     } else {
                         System.out.println("Loading program: " + getGameName());
                         GameRuntime.setGamePath("Programs/" + getGameName());
@@ -150,7 +157,6 @@ public class MenuScreen extends BasicGameScreen {
                 if (i == Keys.LEFT || i == Keys.RIGHT) {
                     page = !page;
                 }
-                System.out.println(cursor + " : "+gameList.size());
                 return false;
             }
         });
@@ -161,8 +167,12 @@ public class MenuScreen extends BasicGameScreen {
                     @Override
                     public boolean buttonUp(Controller controller, int buttonIndex) {
                         if (buttonIndex == CustomSystemProperties.START || buttonIndex == CustomSystemProperties.A) {
-                            GameRuntime.setGamePath("Programs/" + getGameName());
-                            START = true;
+                            if (cursor == gameList.size() - 1) {
+                                NEW_PROGRAM = true;
+                            } else {
+                                GameRuntime.setGamePath("Programs/" + getGameName());
+                                START = true;
+                            }
                         }
                         return false;
                     }
@@ -170,7 +180,7 @@ public class MenuScreen extends BasicGameScreen {
                     @Override
                     public boolean axisMoved(Controller controller, int axisCode, float value) {
                         if (axisCode == CustomSystemProperties.VERTICAL_AXIS) {
-                            if (value == 1 && cursor < gameList.size()-1) {
+                            if (value == 1 && cursor < gameList.size() - 1) {
                                 cursor++;
                                 setGameName(gameList.get(cursor));
                             } else if (value == -1 && cursor > 0) {
@@ -195,6 +205,10 @@ public class MenuScreen extends BasicGameScreen {
         if (START) {
             START = false;
             sm.enterGameScreen(LoadScreen.ID, null, null);
+        }
+        if (NEW_PROGRAM) {
+            NEW_PROGRAM = false;
+            sm.enterGameScreen(NewProgramScreen.ID, null, null);
         }
         offset = cursor * 8;
     }
