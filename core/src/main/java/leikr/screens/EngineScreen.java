@@ -56,6 +56,7 @@ public class EngineScreen extends BasicGameScreen {
     }
 
     void enterErrorScreen(ScreenManager sm) {
+        BACK = false;
         if (null != engine) {
             engine.setActive(false);
         }

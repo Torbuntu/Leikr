@@ -48,7 +48,6 @@ public class NewProgramScreen extends BasicGameScreen {
 
     @Override
     public void preTransitionIn(Transition trns) {
-        BACK = false;
         try {
             String[] programs = new File("Programs").list();
             int index = 0;
@@ -101,6 +100,7 @@ public class NewProgramScreen extends BasicGameScreen {
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
         if (BACK) {
+            BACK = false;
             sm.enterGameScreen(MenuScreen.ID, null, null);
         }
     }

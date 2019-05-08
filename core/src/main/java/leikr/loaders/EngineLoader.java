@@ -33,6 +33,7 @@ import leikr.customProperties.CustomProgramProperties;
 import leikr.Engine;
 import leikr.GameRuntime;
 import leikr.screens.MenuScreen;
+import org.apache.commons.io.FileUtils;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.tools.Compiler;
@@ -41,29 +42,35 @@ import org.codehaus.groovy.tools.Compiler;
  *
  * @author tor
  */
-public class EngineLoader implements Callable<Engine>{
+public class EngineLoader implements Callable<Engine> {
 
     static GroovyClassLoader gcl = new GroovyClassLoader(ClassLoader.getSystemClassLoader());
     public static CustomProgramProperties cp;
     String rootPath;
     
-    public EngineLoader(){
+    public EngineLoader() {
         rootPath = GameRuntime.getGamePath() + "/Code/";
     }
 
     //Returns either a pre-compiled game Engine, an Engine compiled from sources, or null. Returning Null helps the EngineScreen return to the MenuScreen.
     public Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, ResourceException, ScriptException {
         cp = new CustomProgramProperties(GameRuntime.getGamePath());
-        if (cp.USE_SCRIPT) {
-            return getScriptedEngine();
+        if (cp.ENGINE.equalsIgnoreCase("groovy")) {
+            if (cp.USE_SCRIPT) {
+                return getScriptedEngine();
+            }
+            if (cp.COMPILE_SOURCE) {
+                compileEngine();
+            }
+            if (cp.USE_COMPILED) {
+                return getCompiledEngine();
+            }
         }
-        if (cp.COMPILE_SOURCE) {
-            compileEngine();
-        }
-        if (cp.USE_COMPILED) {
-            return getCompiledEngine();
+        if (cp.ENGINE.equalsIgnoreCase("scala")) {
+            return compileScala();
         }
         return getSourceEngine();
+
     }
 
     private Engine getSourceEngine() throws CompilationFailedException, IOException, InstantiationException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -76,7 +83,7 @@ public class EngineLoader implements Callable<Engine>{
                         Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 });
-        return (Engine) gcl.parseClass(new File(rootPath+"main.groovy")).getDeclaredConstructors()[0].newInstance();//loads the game code  
+        return (Engine) gcl.parseClass(new File(rootPath + "main.groovy")).getDeclaredConstructors()[0].newInstance();//loads the game code  
     }
 
     private Engine getCompiledEngine() throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
@@ -123,9 +130,21 @@ public class EngineLoader implements Callable<Engine>{
         return (Engine) gse.run("main.groovy", bd);
     }
 
+    private Engine compileScala() {
+        try {
+            String content = FileUtils.readFileToString(new File(rootPath+"main.scala"));
+            System.out.println(content);
+            //return (Engine) tb.compile(tb.parse(content)).getClass().getDeclaredConstructors()[0].newInstance(0);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     @Override
     public Engine call() throws Exception {
         return getEngine();
     }
-    
+
 }

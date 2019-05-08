@@ -14,7 +14,7 @@ class Shapes extends Engine {
         rx = 120
         ry = 80
         usePixels()
-        println new File("/").list() //bad guy code test
+        //println new File("/").list() //bad guy code test
     }
     void update(float delta){
         FPS()
@@ -22,6 +22,7 @@ class Shapes extends Engine {
     void render(){	
         t+=1
         clpx()
+        drawColor(2)
         for(int i = 0; i < amt; i++){
             x = cos(i / 32 + t/40)*50
             y = sin(i / 32 + t/40)*50
@@ -29,8 +30,7 @@ class Shapes extends Engine {
             x2 = 40 + cos(x / 13 + t/40)*40
             y2 = 40 + sin(y / 13 + t/40)*40
             
-            drawColor((i%14)+2)
-            
+            //drawColor((i%14)+2)
             pixel(-x2+rx+5, -y2+ry+5)//top left
             pixel(-x2+rx+5, y2+ry-5)//bottom left
 

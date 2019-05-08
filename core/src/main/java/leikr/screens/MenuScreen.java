@@ -45,14 +45,6 @@ import org.mini2Dx.core.screen.Transition;
  */
 public class MenuScreen extends BasicGameScreen {
 
-    /* TODO: Make a graphical menu list to display games. This will take in a 
-        This will take in a few items to use from the game's properties file.
-        Such as:
-            1. a custom icon which will be displayed in a selection box. 
-            2. a Title
-            3. a small one or two line description of the game.
-            4?. a genre?
-     */
     public static int ID = 0;
     boolean START = false;
     boolean NEW_PROGRAM = false;
@@ -80,6 +72,9 @@ public class MenuScreen extends BasicGameScreen {
     private void initMenuList() {
         gameList = new ArrayList<>(Arrays.asList(new File(GameRuntime.PROGRAM_PATH).list()));
         programs = new ArrayList<>();
+
+        cursor = 0;
+        offset = 0;
 
         if (gameList != null) {
             setGameName(gameList.get(0));
@@ -111,8 +106,6 @@ public class MenuScreen extends BasicGameScreen {
 
     @Override
     public void initialise(GameContainer gc) {
-        cursor = 0;
-        offset = 0;
     }
 
     @Override
