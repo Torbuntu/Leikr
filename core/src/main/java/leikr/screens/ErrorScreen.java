@@ -17,6 +17,7 @@ package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
@@ -54,15 +55,17 @@ public class ErrorScreen extends BasicGameScreen {
         errorMessage = message;
     }
 
-    void checkInput(ScreenManager sm) {
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.ENTER) || MENU || Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            sm.enterGameScreen(MenuScreen.ID, new FadeOutTransition(Color.TEAL), new FadeInTransition(Color.FOREST));
-        }
-    }
-
     @Override
     public void preTransitionIn(Transition transitionIn) {
-        MENU = false;
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean keyDown(int i) {
+                if (i == Input.Keys.ESCAPE || i == Input.Keys.ENTER || i == Input.Keys.SPACE || i == Input.Keys.Q) {
+                    MENU = true;
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -72,7 +75,7 @@ public class ErrorScreen extends BasicGameScreen {
             if (Controllers.getControllers().size > 0) {
                 Controllers.getControllers().get(0).addListener(new ControllerAdapter() {
                     @Override
-                    public boolean buttonUp(Controller controller, int buttonIndex) {
+                    public boolean buttonDown(Controller controller, int buttonIndex) {
                         MENU = true;
                         return false;
                     }
@@ -90,7 +93,10 @@ public class ErrorScreen extends BasicGameScreen {
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
-        checkInput(sm);
+        if (MENU) {
+            MENU = false;
+            sm.enterGameScreen(MenuScreen.ID, new FadeOutTransition(Color.TEAL), new FadeInTransition(Color.FOREST));
+        }
     }
 
     @Override
@@ -102,6 +108,10 @@ public class ErrorScreen extends BasicGameScreen {
         viewport.apply(g);
         g.setColor(Color.RED);
         g.drawString("Message:  " + errorMessage, 0, 0, 232);
+        g.setColor(Color.BLACK);
+        g.drawRect(0, 152, 240, 8);
+        g.setColor(Color.GREEN);
+        g.drawString(":q to quit", 0, 152);
     }
 
     @Override

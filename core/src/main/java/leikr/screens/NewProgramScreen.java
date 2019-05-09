@@ -11,13 +11,12 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.graphics.Color;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
-import leikr.customProperties.CustomSystemProperties;
-import static leikr.screens.MenuScreen.getGameName;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.screen.BasicGameScreen;
@@ -38,6 +37,8 @@ public class NewProgramScreen extends BasicGameScreen {
 
     boolean BACK = false;
 
+    String newLocation = "New Program template generated at: /Programs/";
+    
     public NewProgramScreen() {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
     }
@@ -58,11 +59,11 @@ public class NewProgramScreen extends BasicGameScreen {
                 }
             }
             if (index > 0) {
-                FileUtils.copyDirectory(new File("Data/Templates/NewProgram"), new File("Programs/NewProgram"+index));
-
+                FileUtils.copyDirectory(new File("Data/Templates/NewProgram"), new File("Programs/NewProgram" + index));
+                newLocation += "NewProgram"+index+"/";
             } else {
                 FileUtils.copyDirectory(new File("Data/Templates/NewProgram"), new File("Programs/NewProgram"));
-
+                newLocation += "NewProgram/";
             }
             System.out.println("NewProgram template copied to Programs directory");
         } catch (IOException ex) {
@@ -72,11 +73,9 @@ public class NewProgramScreen extends BasicGameScreen {
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyDown(int i) {
-
-                if (i == Input.Keys.ESCAPE) {
+                if (i == Input.Keys.ESCAPE || i == Input.Keys.Q || i == Input.Keys.ENTER || i == Input.Keys.SPACE) {
                     BACK = true;
                 }
-
                 return false;
             }
         });
@@ -85,8 +84,8 @@ public class NewProgramScreen extends BasicGameScreen {
             if (Controllers.getControllers().size > 0) {
                 Controllers.getControllers().get(0).addListener(new ControllerAdapter() {
                     @Override
-                    public boolean buttonUp(Controller controller, int buttonIndex) {
-
+                    public boolean buttonDown(Controller controller, int buttonIndex) {
+                        BACK = true;
                         return false;
                     }
                 });
@@ -110,9 +109,13 @@ public class NewProgramScreen extends BasicGameScreen {
     }
 
     @Override
-    public void render(GameContainer gc, Graphics grphcs) {
-        viewport.apply(grphcs);
-        grphcs.drawString("New Game", 0, 0);
+    public void render(GameContainer gc, Graphics g) {
+        viewport.apply(g);
+        g.drawString(newLocation, 0, 0, 232);
+        g.setColor(Color.BLACK);
+        g.drawRect(0, 152, 240, 8);
+        g.setColor(Color.GREEN);
+        g.drawString(":q to quit", 0, 152);
     }
 
     @Override

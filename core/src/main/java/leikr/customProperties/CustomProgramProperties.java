@@ -34,7 +34,7 @@ public class CustomProgramProperties {
     public String TITLE;
     public String TYPE;
     public String AUTHOR;
-    public String ENGINE;
+    public String VERSION;
     public int PLAYERS;
     public String ABOUT;
 
@@ -55,7 +55,7 @@ public class CustomProgramProperties {
             TITLE = (prop.getProperty("title") != null) ? prop.getProperty("title") : "unknown";
             TYPE = (prop.getProperty("type") != null) ? prop.getProperty("type") : "Program";
             AUTHOR = (prop.getProperty("author") != null) ? prop.getProperty("author") : "unknown";
-            ENGINE = (prop.getProperty("engine") != null) ? prop.getProperty("engine") : "groovy";
+            VERSION = (prop.getProperty("version") != null) ? prop.getProperty("version") : "0.1";
             PLAYERS = (prop.getProperty("players") != null) ? Integer.parseInt(prop.getProperty("players")) : 1;
             ABOUT = (prop.getProperty("about") != null) ? prop.getProperty("about") : "A Leikr Program.";
         } catch (IOException | NumberFormatException ex) {
@@ -64,11 +64,11 @@ public class CustomProgramProperties {
 
     }
 
-    public CustomProgramProperties(String title, String type, String author, String engine, int players, String about) {
+    public CustomProgramProperties(String title, String type, String author, String version, int players, String about) {
         TITLE = title;
         TYPE = type;
         AUTHOR = author;
-        ENGINE = engine;
+        VERSION = version;
         PLAYERS = players;
         ABOUT = about;
     }

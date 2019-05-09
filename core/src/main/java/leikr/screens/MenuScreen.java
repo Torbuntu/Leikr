@@ -95,7 +95,7 @@ public class MenuScreen extends BasicGameScreen {
         gameList.forEach((game) -> {
             programs.add(new ChipData(game, assetManager));
         });
-        programs.add(new ChipData("New Game", "System", "Template", "Groovy", 0, "Initializes a new game template", assetManager));
+        programs.add(new ChipData("New Game", "System", "Template", "1.0", 0, "Initializes a new program template", assetManager));
         assetManager.finishLoading();
     }
 
@@ -229,7 +229,7 @@ public class MenuScreen extends BasicGameScreen {
                 g.drawString("Author : " + programs.get(cursor).getAuthor(), 8, 114);
                 g.drawString("Type   : " + programs.get(cursor).getType(), 8, 124);
                 g.drawString("Players: " + programs.get(cursor).getPlayers(), 8, 134);
-                g.drawString("Engine : " + programs.get(cursor).getEngine(), 8, 144);
+                g.drawString("Version: " + programs.get(cursor).getVersion(), 8, 144);
             } else {
                 g.drawString("About: " + programs.get(cursor).getAbout(), 8, 104, 224);
             }
@@ -245,7 +245,6 @@ public class MenuScreen extends BasicGameScreen {
         //Menu tops everything else.
         g.drawTexture(assetManager.get(menuBg, Texture.class), 0, 0);
 
-        g.setColor(Color.RED);
     }
 
     @Override

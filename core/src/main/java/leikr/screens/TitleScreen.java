@@ -60,17 +60,13 @@ public class TitleScreen extends BasicGameScreen {
 
     void checkInput(ScreenManager sm) {
         if (Gdx.input.isKeyPressed(Keys.SPACE) || Gdx.input.isKeyPressed(Keys.ENTER) || CREDITS) {
+            CREDITS = false;
             sm.enterGameScreen(CreditScreen.ID, new FadeOutTransition(Color.TEAL), new FadeInTransition(Color.FOREST));
         }
         if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
             System.out.println("Good bye!");
             Gdx.app.exit();
         }
-    }
-
-    @Override
-    public void preTransitionIn(Transition transitionIn) {
-        CREDITS = false;
     }
 
     @Override
@@ -128,5 +124,4 @@ public class TitleScreen extends BasicGameScreen {
     public int getId() {
         return ID;
     }
-
 }
