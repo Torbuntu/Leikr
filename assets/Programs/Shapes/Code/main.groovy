@@ -1,7 +1,6 @@
-import leikr.Engine
 import java.io.File //for bad guy code test
 
-class Shapes extends Engine {
+class Shapes extends leikr.Engine {
 
     int x, y, x2, y2, r, t, amt, rx, ry
     
@@ -24,11 +23,11 @@ class Shapes extends Engine {
         clpx()
         drawColor(2)
         for(int i = 0; i < amt; i++){
-            x = cos(i / 32 + t/40)*50
-            y = sin(i / 32 + t/40)*50
+            x = cos(i / 10 + t/40)*40
+            y = sin(i / 10 + t/40)*40
             
-            x2 = 40 + cos(x / 13 + t/40)*40
-            y2 = 40 + sin(y / 13 + t/40)*40
+            x2 = 40 + cos(x / 10 + t/40)*40
+            y2 = 40 + sin(y / 10 + t/40)*40
             
             //drawColor((i%14)+2)
             pixel(-x2+rx+5, -y2+ry+5)//top left

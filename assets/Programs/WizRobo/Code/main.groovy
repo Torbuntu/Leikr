@@ -1,6 +1,4 @@
-import leikr.Engine
-
-class WizRobo extends Engine {
+class WizRobo extends leikr.Engine {
     def wizard = [:]	
     def bolt = [:]
     def enemies = []
@@ -20,7 +18,7 @@ class WizRobo extends Engine {
     def lvlFinalstart = false
 	    
     def time = 0
-    			    
+		    
     def solid(x,y){
         float mx = (x)/8 
         float my = (y)/8
@@ -551,6 +549,7 @@ class WizRobo extends Engine {
     }
 
     void update(float delta){
+		FPS()
         debuglvl()       
         if(gameOver){
         	if(key("Enter") || button(BTN.START)){
