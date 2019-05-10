@@ -45,12 +45,18 @@ Programs/
   YourGameName/
      /Art/
          icon.png
+         city.png
      /Audio/
         /Sound/
+            walk.wav
         /Music/
+            theme.wav
+            intro.wav
      /Code/ 
          main.groovy
      /Maps/
+         overworld.tmx
+         underworld.tmx
      /Sprites/
          Sprites.png
      program.properties
