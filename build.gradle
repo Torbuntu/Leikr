@@ -42,7 +42,7 @@ project(":core") {
     dependencies {
         implementation "org.mini2Dx:mini2Dx-core:$mini2DxVersion"
         implementation "org.mini2Dx:mini2Dx-tiled:$mini2DxVersion"
-        implementation "org.codehaus.groovy:groovy:3.0.0-alpha-4"
+        implementation "org.codehaus.groovy:groovy:3.0.0-beta-1"
         
         implementation "org.lwjgl.lwjgl:lwjgl:2.9.3"
         implementation "org.apache.commons:commons-io:1.3.2"
