@@ -24,6 +24,7 @@ import leikr.screens.CreditScreen;
 import leikr.screens.ErrorScreen;
 import leikr.screens.LoadScreen;
 import leikr.screens.NewProgramScreen;
+import leikr.screens.TerminalScreen;
 import leikr.screens.TitleScreen;
 import org.mini2Dx.core.game.ScreenBasedGame;
 
@@ -38,9 +39,11 @@ public class GameRuntime extends ScreenBasedGame {
     public static boolean SINGLE_LAUNCH = false;
 
     AssetManager assetManager;
+    CustomSystemProperties csp;
+    
 
     public GameRuntime() {
-        CustomSystemProperties csp = new CustomSystemProperties();
+        csp = new CustomSystemProperties();
         if (csp.SINGLE_LAUNCH) {
             GAME_PATH = PROGRAM_PATH + new File(PROGRAM_PATH).list()[0];//Look at this crazy hack! 
             System.out.println(GAME_PATH);
@@ -61,18 +64,23 @@ public class GameRuntime extends ScreenBasedGame {
     @Override
     public void initialise() {
         assetManager = new AssetManager();
-        this.addScreen(new MenuScreen(assetManager));
-        this.addScreen(new EngineScreen());
-        this.addScreen(new TitleScreen(assetManager));
-        this.addScreen(new CreditScreen(assetManager));
-        this.addScreen(new ErrorScreen(assetManager));
-        this.addScreen(new LoadScreen());
-        this.addScreen(new NewProgramScreen());
+        this.addScreen(new MenuScreen(assetManager));//0
+        this.addScreen(new EngineScreen());//1
+        this.addScreen(new TitleScreen(assetManager));//2
+        this.addScreen(new CreditScreen(assetManager));//3
+        this.addScreen(new ErrorScreen(assetManager));//4
+        this.addScreen(new LoadScreen());//5
+        this.addScreen(new NewProgramScreen());//6
+        this.addScreen(new TerminalScreen(assetManager));//7
     }
 
     @Override
     public int getInitialScreenId() {
-        return TitleScreen.ID;//initial screen to begin on is the title screen.
+        if (csp.USE_TERMINAL) {
+            return TerminalScreen.ID;
+        } else {
+            return TitleScreen.ID;//initial screen to begin on is the title screen.
+        }
     }
 
 }

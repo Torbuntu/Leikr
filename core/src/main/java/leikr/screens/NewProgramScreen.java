@@ -38,13 +38,19 @@ public class NewProgramScreen extends BasicGameScreen {
     boolean BACK = false;
 
     String newLocation = "New Program template generated at: /Programs/";
-    
+
     public NewProgramScreen() {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
     }
 
     @Override
     public void initialise(GameContainer gc) {
+    }
+
+    @Override
+    public void onResize(int width, int height) {
+        Gdx.app.log("INFO", "Game window changed to " + width + "x" + height);
+        viewport.onResize(width, height);
     }
 
     @Override
@@ -60,7 +66,7 @@ public class NewProgramScreen extends BasicGameScreen {
             }
             if (index > 0) {
                 FileUtils.copyDirectory(new File("Data/Templates/NewProgram"), new File("Programs/NewProgram" + index));
-                newLocation += "NewProgram"+index+"/";
+                newLocation += "NewProgram" + index + "/";
             } else {
                 FileUtils.copyDirectory(new File("Data/Templates/NewProgram"), new File("Programs/NewProgram"));
                 newLocation += "NewProgram/";
