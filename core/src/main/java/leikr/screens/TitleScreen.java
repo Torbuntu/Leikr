@@ -31,7 +31,6 @@ import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
-import org.mini2Dx.core.screen.Transition;
 import org.mini2Dx.core.screen.transition.FadeInTransition;
 import org.mini2Dx.core.screen.transition.FadeOutTransition;
 import org.mini2Dx.tiled.TiledMap;
