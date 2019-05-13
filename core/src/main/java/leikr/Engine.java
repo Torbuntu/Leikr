@@ -30,6 +30,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import leikr.loaders.AudioLoader;
+import leikr.managers.LeikrScreenManager;
 import leikr.screens.EngineScreen;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
@@ -44,13 +45,10 @@ public abstract class Engine implements InputProcessor {
     //Mini2DX specific classes for managing the screen state and drawing.
     Graphics g;
     FitViewport viewport;
-    Pixmap pMap;
-    Texture pixTex;
     FPSLogger logger;
 
     //used by the Engine Screen to determine if the game should be actively running.
     boolean active;
-    boolean usePix;
 
     public static enum BTN {
         X,
@@ -80,37 +78,20 @@ public abstract class Engine implements InputProcessor {
      *
      * The loaders are used to load the custom assets for a game at startup.
      */
-    MapLoader mapLoader;
-    ImageLoader imageLoader;
-    SpriteLoader spriteLoader;
-    AudioLoader audioLoader;
-
-    /**
-     * Properties set by Custom Properties
-     *
-     * These can be overwritten for a more custom experience.
-     */
-    private int MAX_SPRITES;
-    private int USED_SPRITES;
+    private AudioLoader audioLoader;
+    public LeikrScreenManager screen;
 
     //custom prop functions
-    final int getUsedSprites() {
-        return USED_SPRITES;
+    int getUsedSprites() {
+        return screen.getUsedSprites();
     }
     //end custom prop functions
 
     public final void preCreate(int mSprites) {
-        MAX_SPRITES = mSprites;
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
-        pMap = new Pixmap(240, 160, Pixmap.Format.RGBA8888);
-        pixTex = new Texture(pMap);
         logger = new FPSLogger();
-        spriteLoader = new SpriteLoader();
-        imageLoader = new ImageLoader();
-        mapLoader = new MapLoader();
         audioLoader = new AudioLoader();
-        usePix = false;
-
+        screen = new LeikrScreenManager(mSprites);
         active = true;
         try {
             Controllers.clearListeners();
@@ -129,32 +110,21 @@ public abstract class Engine implements InputProcessor {
     }
 
     public final void preUpdate(float delta) {
-        if (usePix) {
-            pixTex.dispose();//Must dispose, else memory leak occurs.
-            pixTex = new Texture(pMap);
-        }
-
-        if (null == mapLoader.getMap()) {
-            return;//don't update the map if it is null
-        }
-        mapLoader.getMap().update(delta);
+        screen.preUpdate(delta);
     }
 
     public final void preRender(Graphics g) {
         this.g = g;
         viewport.apply(this.g);
-        //set to 0 before drawing anything
-        USED_SPRITES = 0;
+        screen.preRender(this.g);        
     }
 
     public final void postRender() {
-        if (usePix) {
-            g.drawTexture(pixTex, 0, 0);
-        }
+        screen.postRender();
     }
 
     public void usePixels() {
-        usePix = true;
+        screen.usePixels();
     }
 
     /**
@@ -171,11 +141,7 @@ public abstract class Engine implements InputProcessor {
     //disposes the game objects on exit
     public final void dispose() {
         audioLoader.disposeAudioLoader();
-        mapLoader.disposeMap();
-        spriteLoader.disposeSprites();
-        imageLoader.disposeImages();
-        pMap.dispose();
-        pixTex.dispose();
+        screen.dispose();
         if (null != playerOneController) {
             playerOneController.removeListener(p1ControllerListener);
         }
@@ -202,281 +168,184 @@ public abstract class Engine implements InputProcessor {
 
     //Image methods
     final void loadImages() {
-        imageLoader.load();
+        screen.loadImages();
     }
 
     final void image(String name, float x, float y) {
-        g.drawTexture(imageLoader.getImage(name), x, y);
+        screen.image(name, x, y);
     }
 
     final void image(String name, float x, float y, float w, float h) {
-        g.drawTexture(imageLoader.getImage(name), x, y, w, h);
+        screen.image(name, x, y, w, h);
     }
 
     final void image(String name, float x, float y, float w, float h, boolean flipv) {
-        g.drawTexture(imageLoader.getImage(name), x, y, w, h, flipv);
+        screen.image(name, x, y, w, h, flipv);
     }
     //end Image methods
 
     //Map methods
     final void loadMap(String map) {
-        mapLoader.loadMap(map);
+        screen.loadMap(map);
     }
 
     final void map() {
-        mapLoader.drawMap(g);
+        screen.map();
     }
 
     final void map(int x, int y) {
-        mapLoader.drawMap(g, x, y);
+        screen.map(x, y);
     }
 
     final void map(int x, int y, int layer) {
-        mapLoader.drawMap(g, x, y, layer);
+        screen.map(x, y, layer);
     }
 
     final void map(int x, int y, int sx, int sy, int w, int h) {
-        mapLoader.drawMap(g, x, y, sx, sy, w, h);
+        screen.map(x, y, sx, sy, w, h);
     }
 
     final void map(int x, int y, int sx, int sy, int w, int h, int layer) {
-        mapLoader.drawMap(g, x, y, sx, sy, w, h, layer);
+        screen.map(x, y, sx, sy, w, h, layer);
     }
 
     final int mapGet(int x, int y) {
-        return mapLoader.getMapTileId(x, y);
+        return screen.mapGet(x, y);
     }
 
     final void mapSet(int x, int y, int id) {
-        mapLoader.setMapTile(x, y, id);
+        screen.mapSet(x, y, id);
     }
 
     final void mapRemove(int x, int y) {
-        mapLoader.removeMapTile(x, y);
+        screen.mapRemove(x, y);
     }
 
     final int getMapHeight() {
-        return mapLoader.getMap().getHeight();
+        return screen.getMapHeight();
     }
 
     final int getMapWidth() {
-        return mapLoader.getMap().getWidth();
+        return screen.getMapWidth();
     }
     //end Map methods
 
     //start color methods
     final void drawColor(int color) {
-        g.setColor(getDrawColor(color));
-        pMap.setColor(getDrawColor(color));
+        screen.drawColor(color);
     }
 
     final void drawColor(float r, float gr, float b) {
-        Color tmp = new Color(r, gr, b, 1f);
-        g.setColor(tmp);
-        pMap.setColor(tmp);
+        screen.drawColor(r, gr, b);
     }
 
     final Color getDrawColor(int color) {
-        switch (color) {
-            case 0:
-                return (Color.BLACK);
-            case 1:
-                return (Color.WHITE);
-            case 2:
-                return (Color.RED);
-            case 3:
-                return (Color.GREEN);
-            case 4:
-                return (Color.BLUE);
-            case 5:
-                return (Color.YELLOW);
-            case 6:
-                return (Color.BROWN);
-            case 7:
-                return (Color.MAGENTA);
-            case 8:
-                return (Color.CYAN);
-            case 9:
-                return (Color.TEAL);
-            case 10:
-                return (Color.TAN);
-            case 11:
-                return (Color.FOREST);
-            case 12:
-                return (Color.PINK);
-            case 13:
-                return (Color.ORANGE);
-            case 14:
-                return (Color.PURPLE);
-            case 15:
-                return (Color.CORAL);
-            default:
-                return Color.BLACK;
-        }
+        return screen.getDrawColor(color);
     }
 
     final void bgColor(int color) {
-        drawColor(color);
-        g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
+        screen.bgColor(color);
     }
 
     final void bgColor(float r, float gr, float b) {
-        drawColor(r, gr, b);
-        g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
+        screen.bgColor(r, gr, b);
     }
 
     final void bgColor(float[] color) {
-        drawColor(color[0], color[1], color[2]);
-        g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
+        screen.bgColor(color);
     }
     //end color methods
 
     //text methods
     final void text(String text, float x, float y, int color) {
-        drawColor(color);
-        g.drawString(text, x, y);
+        screen.text(text, x, y, color);
     }
 
     final void text(String text, float x, float y, float[] color) {
-        drawColor(color[0], color[1], color[2]);
-        g.drawString(text, x, y);
+        screen.text(text, x, y, color);
     }
 
     final void text(String text, float x, float y, float width, int color) {
-        drawColor(color);
-        g.drawString(text, x, y, width);
+        screen.text(text, x, y, width, color);
     }
 
     final void text(String text, float x, float y, float width, float[] color) {
-        drawColor(color[0], color[1], color[2]);
-        g.drawString(text, x, y, width);
+        screen.text(text, x, y, width, color);
     }
     //end text methods
 
-    //sprite helper methods.
-    private void drawSpriteRotate(int id, int size, float degr, float x, float y) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, size);
-        t.rotate(degr);
-        g.drawSprite(t, x, y);
-        t.rotate(-degr);
-        USED_SPRITES++;
-    }
-
-    private void drawSprite90(int id, float x, float y, int size, boolean clockwise) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, size);
-        t.rotate90(clockwise);
-        g.drawSprite(t, x, y);
-        t.rotate90(!clockwise);
-        USED_SPRITES++;
-    }
-
-    private void drawSpriteFlip(int id, float x, float y, int size, boolean flipX, boolean flipY) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, size);
-        t.setFlip(flipX, flipY);
-        g.drawSprite(t, x, y);
-        t.setFlip(false, false);
-        USED_SPRITES++;
-    }
 
     //start 8x8 sprites
     final void sprite(int id, float x, float y) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        g.drawSprite(spriteLoader.getSprite(id, 0), x, y);
-        USED_SPRITES++;
+        screen.sprite(id, x, y);
     }
 
     final void sprite(int id, float x, float y, float degr) {
-        drawSpriteRotate(id, 0, degr, x, y);
+        screen.sprite(id, x, y, degr);
     }
 
     final void sprite(int id, float x, float y, boolean clockwise) {
-        drawSprite90(id, x, y, 0, clockwise);
+        screen.sprite(id, x, y, clockwise);
     }
 
     final void sprite(int id, float x, float y, boolean flipX, boolean flipY) {
-        drawSpriteFlip(id, x, y, 0, flipX, flipY);
+        screen.sprite(id, x, y, flipX, flipY);
     }
     //end 8x8 sprites
 
     //start sizable sprites
     final void sprite(int id, float x, float y, int size) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        g.drawSprite(spriteLoader.getSprite(id, size), x, y);
-        USED_SPRITES++;
+        screen.sprite(id, x, y, size);
     }
 
     final void sprite(int id, float x, float y, float degr, int size) {
-        drawSpriteRotate(id, size, degr, x, y);
+        screen.sprite(id, x, y, degr, size);
     }
 
     final void sprite(int id, float x, float y, boolean clockwise, int size) {
-        drawSprite90(id, x, y, size, clockwise);
+        screen.sprite(id, x, y, clockwise, size);
     }
 
     final void sprite(int id, float x, float y, boolean flipX, boolean flipY, int size) {
-        drawSpriteFlip(id, x, y, size, flipX, flipY);
+        screen.sprite(id, x, y, flipX, flipY, size);
     }
     //end sizable sprites
 
     //start shape drawing methods
     public void clpx() {
-        pMap.setColor(Color.CLEAR);
-        pMap.fill();
+        screen.clpx();
     }
 
     public void pixel(int x, int y) {
-        pMap.drawPixel(x, y);
+        screen.pixel(x, y);
     }
 
     public void pixel(int x, int y, int color) {
-        drawColor(color);
-        pMap.drawPixel(x, y);
+        screen.pixel(x, y, color);
     }
 
     public void pixel(int x, int y, float[] c) {
-        drawColor(c[0], c[1], c[2]);
-        pMap.drawPixel(x, y);
+        screen.pixel(x, y, c);
     }
 
     final void rect(int x, int y, int w, int h) {
-        pMap.drawRectangle(x, y, w, h);
+        screen.rect(x, y, w, h);
     }
 
     final void rect(int x, int y, int w, int h, boolean fill) {
-        if (fill) {
-            pMap.fillRectangle(x, y, w, h);
-        } else {
-            pMap.drawRectangle(x, y, w, h);
-        }
+        screen.rect(x, y, w, h, fill);
     }
 
     final void circle(int x, int y, int r) {
-        pMap.drawCircle(x, y, r);
+        screen.circle(x, y, r);
     }
 
     final void circle(int x, int y, int r, boolean fill) {
-        if (fill) {
-            pMap.fillCircle(x, y, r);
-        } else {
-            pMap.drawCircle(x, y, r);
-        }
+        screen.circle(x, y, r, fill);
     }
 
     final void line(int x1, int y1, int x2, int y2) {
-        pMap.drawLine(x1, y1, x2, y2);
+        screen.line(x1, y1, x2, y2);
     }
     //end shape drawing methods
 
@@ -505,41 +374,49 @@ public abstract class Engine implements InputProcessor {
         audioLoader.stopMusic(fileName);
     }
     //end audio handling
-    
+
     //START Math utils
-    public float cos(float radians){
+    public float cos(float radians) {
         return MathUtils.cos(radians);
     }
-    public float cosDeg(float deg){
+
+    public float cosDeg(float deg) {
         return MathUtils.cosDeg(deg);
     }
-    public float sin(float radians){
+
+    public float sin(float radians) {
         return MathUtils.sin(radians);
     }
-    public float sinDeg(float deg){
+
+    public float sinDeg(float deg) {
         return MathUtils.sinDeg(deg);
     }
-    public float ceil(float value){
+
+    public float ceil(float value) {
         return MathUtils.ceil(value);
     }
-    public float floor(float value){
+
+    public float floor(float value) {
         return MathUtils.floor(value);
     }
-    public int randInt(int range){
-        return MathUtils.random(range);
-    }
-    public int randInt(int start, int end){
-        return MathUtils.random(start, end);
-    }
-    public float randFloat(float range){
-        return MathUtils.random(range);
-    }
-    public float randFloat(float start, float end){
-        return MathUtils.random(start, end);
-    }
-    
-    //END Math utils
 
+    public int randInt(int range) {
+        return MathUtils.random(range);
+    }
+
+    public int randInt(int start, int end) {
+        return MathUtils.random(start, end);
+    }
+
+    public float randFloat(float range) {
+        return MathUtils.random(range);
+    }
+
+    public float randFloat(float start, float end) {
+        return MathUtils.random(start, end);
+    }
+
+    //END Math utils
     //start input handling
     final boolean button(BTN button) {
         return (null != p1ControllerListener) ? p1ControllerListener.button(button) : false;
