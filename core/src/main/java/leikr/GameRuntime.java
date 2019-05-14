@@ -24,7 +24,6 @@ import leikr.screens.CreditScreen;
 import leikr.screens.ErrorScreen;
 import leikr.screens.LoadScreen;
 import leikr.screens.NewProgramScreen;
-import leikr.screens.TerminalScreen;
 import leikr.screens.TitleScreen;
 import org.mini2Dx.core.game.ScreenBasedGame;
 
@@ -40,7 +39,6 @@ public class GameRuntime extends ScreenBasedGame {
 
     AssetManager assetManager;
     CustomSystemProperties csp;
-    
 
     public GameRuntime() {
         csp = new CustomSystemProperties();
@@ -71,16 +69,11 @@ public class GameRuntime extends ScreenBasedGame {
         this.addScreen(new ErrorScreen(assetManager));//4
         this.addScreen(new LoadScreen());//5
         this.addScreen(new NewProgramScreen());//6
-        this.addScreen(new TerminalScreen(assetManager));//7
     }
 
     @Override
     public int getInitialScreenId() {
-        if (csp.USE_TERMINAL) {
-            return TerminalScreen.ID;
-        } else {
-            return TitleScreen.ID;//initial screen to begin on is the title screen.
-        }
+        return TitleScreen.ID;//initial screen to begin on is the title screen.
     }
 
 }

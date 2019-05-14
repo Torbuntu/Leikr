@@ -16,9 +16,6 @@
 package leikr;
 
 import leikr.controls.LeikrControllerListener;
-import leikr.loaders.SpriteLoader;
-import leikr.loaders.ImageLoader;
-import leikr.loaders.MapLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
@@ -26,14 +23,11 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import leikr.loaders.AudioLoader;
 import leikr.managers.LeikrScreenManager;
 import leikr.screens.EngineScreen;
 import org.mini2Dx.core.graphics.Graphics;
-import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 
 /**

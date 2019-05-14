@@ -23,6 +23,7 @@ import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import leikr.GameRuntime;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -47,7 +48,7 @@ public class CreditScreen extends BasicGameScreen {
 
     public CreditScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
-        viewport = new FitViewport(240, 160);
+        viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         loadMini2DxGraphic();
     }
 

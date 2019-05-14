@@ -63,7 +63,7 @@ public class LeikrScreenManager {
         spriteLoader = new SpriteLoader();
         imageLoader = new ImageLoader();
         mapLoader = new MapLoader();
-        pixMap = new Pixmap(240, 160, Pixmap.Format.RGBA8888);
+        pixMap = new Pixmap(GameRuntime.WIDTH, GameRuntime.HEIGHT, Pixmap.Format.RGBA8888);
         pixTex = new Texture(pixMap);
         usePix = false;
 

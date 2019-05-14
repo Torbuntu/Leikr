@@ -23,6 +23,7 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
+import leikr.GameRuntime;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -47,7 +48,7 @@ public class ErrorScreen extends BasicGameScreen {
 
     public ErrorScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
-        viewport = new FitViewport(240, 160);
+        viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         errorMessage = "";
     }
 

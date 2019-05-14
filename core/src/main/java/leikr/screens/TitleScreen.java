@@ -23,6 +23,7 @@ import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
+import leikr.GameRuntime;
 import leikr.loaders.FontLoader;
 import org.mini2Dx.core.font.MonospaceFont;
 import org.mini2Dx.core.game.GameContainer;
@@ -54,7 +55,7 @@ public class TitleScreen extends BasicGameScreen {
     public TitleScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
         logo = new TiledMap(new FileHandle("./Data/Logo/Logo.tmx"));
-        viewport = new FitViewport(240, 160);
+        viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
     }
 
     void checkInput(ScreenManager sm) {
