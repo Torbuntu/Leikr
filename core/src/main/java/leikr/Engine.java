@@ -110,7 +110,7 @@ public abstract class Engine implements InputProcessor {
     public final void preRender(Graphics g) {
         this.g = g;
         viewport.apply(this.g);
-        screen.preRender(this.g);        
+        screen.preRender(this.g);
     }
 
     public final void postRender() {
@@ -266,8 +266,15 @@ public abstract class Engine implements InputProcessor {
     final void text(String text, float x, float y, float width, float[] color) {
         screen.text(text, x, y, width, color);
     }
-    //end text methods
 
+    final void text(String text, float x, float y, float width, int align, int color) {
+        screen.text(text, x, y, width, align, color);
+    }
+
+    final void text(String text, float x, float y, float width, int align, float[] color) {
+        screen.text(text, x, y, width, align, color);
+    }
+    //end text methods
 
     //start 8x8 sprites
     final void sprite(int id, float x, float y) {

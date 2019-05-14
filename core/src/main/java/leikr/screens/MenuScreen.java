@@ -76,10 +76,13 @@ public class MenuScreen extends BasicGameScreen {
         cursor = 0;
         offset = 0;
 
-        if (gameList != null) {
+        if (gameList != null && gameList.size() > 0) {
             setGameName(gameList.get(0));
             loadPrograms();
             gameList.add("Start new...");
+        } else {
+            gameList.add("Start new...");
+            programs.add(new ChipData("New Game", "System", "Template", "1.0", 0, "Initializes a new program template", assetManager));
         }
     }
 
@@ -95,7 +98,7 @@ public class MenuScreen extends BasicGameScreen {
         gameList.forEach((game) -> {
             programs.add(new ChipData(game, assetManager));
         });
-        programs.add(new ChipData("New Game", "System", "Template", "1.0", 0, "Initializes a new program template", assetManager));
+
         assetManager.finishLoading();
     }
 
@@ -214,7 +217,7 @@ public class MenuScreen extends BasicGameScreen {
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
         g.setColor(Color.WHITE);
-        if (null != gameList) {
+        if (null != gameList && gameList.size() > 0) {
             for (int i = 0; i < gameList.size(); i++) {
                 g.drawString(gameList.get(i), 8, (8 * i) + 40 - offset);
             }

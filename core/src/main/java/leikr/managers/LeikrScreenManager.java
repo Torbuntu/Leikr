@@ -261,6 +261,16 @@ public class LeikrScreenManager {
         drawColor(color[0], color[1], color[2]);
         g.drawString(text, x, y, width);
     }
+    
+    public final void text(String text, float x, float y, float width, int align, int color){
+        drawColor(color);
+        g.drawString(text, x, y, width, align);
+    }
+    
+    public final void text(String text, float x, float y, float width, int align, float[] color){
+        drawColor(color[0], color[1], color[2]);
+        g.drawString(text, x, y, width, align);
+    }
     //end text methods
 
     //sprite helper methods.
