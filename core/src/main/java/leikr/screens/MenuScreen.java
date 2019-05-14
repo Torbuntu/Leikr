@@ -98,7 +98,7 @@ public class MenuScreen extends BasicGameScreen {
         gameList.forEach((game) -> {
             programs.add(new ChipData(game, assetManager));
         });
-
+        programs.add(new ChipData("New Game", "System", "Template", "1.0", 0, "Initializes a new program template", assetManager));
         assetManager.finishLoading();
     }
 
