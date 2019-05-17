@@ -27,7 +27,6 @@ import java.util.Properties;
  */
 public class CustomSystemProperties {
 
-    public boolean SINGLE_LAUNCH;
     public String LAUNCH_TITLE;
 
     public static int X;
@@ -52,7 +51,6 @@ public class CustomSystemProperties {
         Properties prop = new Properties();
         try (InputStream stream = new FileInputStream(new File("Data/system.properties"))) {
             prop.load(stream);
-            SINGLE_LAUNCH = (prop.getProperty("single_launch") != null) ? Boolean.valueOf(prop.getProperty("single_launch")) : false;
             LAUNCH_TITLE = (prop.getProperty("launch_title") != null) ? prop.getProperty("launch_title") : "";
             DEBUG = (prop.getProperty("debug_mode") != null) ? Boolean.valueOf(prop.getProperty("debug_mode")) : false;
 
