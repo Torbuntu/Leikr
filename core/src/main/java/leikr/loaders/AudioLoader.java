@@ -31,8 +31,8 @@ public class AudioLoader {
     AssetManager soundManager;
     AssetManager musicManager;
 
-    String musicRootPath = GameRuntime.getGamePath() + "/Audio/Music/";
-    String soundRootPath = GameRuntime.getGamePath() + "/Audio/Sound/";
+    String musicRootPath = GameRuntime.getProgramPath() + "/Audio/Music/";
+    String soundRootPath = GameRuntime.getProgramPath() + "/Audio/Sound/";
 
     public AudioLoader() {
         soundManager = new AssetManager();

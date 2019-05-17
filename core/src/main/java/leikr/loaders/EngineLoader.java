@@ -48,12 +48,12 @@ public class EngineLoader implements Callable<Engine> {
     String rootPath;
 
     public EngineLoader() {
-        rootPath = GameRuntime.getGamePath() + "/Code/";
+        rootPath = GameRuntime.getProgramPath() + "/Code/";
     }
 
     //Returns either a pre-compiled game Engine, an Engine compiled from sources, or null. Returning Null helps the EngineScreen return to the MenuScreen.
     public Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, ResourceException, ScriptException {
-        cp = new CustomProgramProperties(GameRuntime.getGamePath());
+        cp = new CustomProgramProperties(GameRuntime.getProgramPath());
         if (cp.USE_SCRIPT) {
             return getScriptedEngine();
         }
@@ -84,7 +84,7 @@ public class EngineLoader implements Callable<Engine> {
         String COMPILED = rootPath + "Compiled/";
         gcl.addURL(new File(COMPILED).toURI().toURL());
         Arrays.asList(new File(COMPILED).list()).stream()
-                .filter(x -> !x.equals(MenuScreen.getGameName() + ".class"))
+                .filter(x -> !x.equals(MenuScreen.GAME_NAME + ".class"))
                 .forEach(classFile -> {
                     try {
                         gcl.loadClass(classFile.replace(".class", ""), false, true);
@@ -92,7 +92,7 @@ public class EngineLoader implements Callable<Engine> {
                         Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 });
-        return (Engine) gcl.loadClass(MenuScreen.getGameName()).getConstructors()[0].newInstance();
+        return (Engine) gcl.loadClass(MenuScreen.GAME_NAME).getConstructors()[0].newInstance();
     }
 
     private void compileEngine() {

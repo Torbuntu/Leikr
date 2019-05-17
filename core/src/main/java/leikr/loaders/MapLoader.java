@@ -29,7 +29,7 @@ public class MapLoader {
 
     TiledMap tiledMap;
 
-    String rootPath = GameRuntime.getGamePath() + "/Maps/";
+    String rootPath = GameRuntime.getProgramPath() + "/Maps/";
 
     public void loadMap(String name) {
         if (null != tiledMap) {

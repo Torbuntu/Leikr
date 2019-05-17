@@ -70,14 +70,15 @@ public class MenuScreen extends BasicGameScreen {
     }
 
     private void initMenuList() {
-        gameList = new ArrayList<>(Arrays.asList(new File(GameRuntime.PROGRAM_PATH).list()));
+        gameList = new ArrayList<>(Arrays.asList(new File("Programs/").list()));
         programs = new ArrayList<>();
 
         cursor = 0;
         offset = 0;
 
         if (gameList != null && gameList.size() > 0) {
-            setGameName(gameList.get(0));
+            GAME_NAME = gameList.get(0);
+            System.out.println("First game name: "+GAME_NAME);
             loadPrograms();
             gameList.add("Start new...");
         } else {
@@ -86,17 +87,9 @@ public class MenuScreen extends BasicGameScreen {
         }
     }
 
-    public static String getGameName() {
-        return GAME_NAME;
-    }
-
-    private void setGameName(String GAME_NAME) {
-        MenuScreen.GAME_NAME = GAME_NAME;
-    }
-
     private void loadPrograms() {
         gameList.forEach((game) -> {
-            programs.add(new ChipData(game, assetManager));
+            programs.add(new ChipData("Programs/" + game, assetManager));
         });
         programs.add(new ChipData("New Game", "System", "Template", "1.0", 0, "Initializes a new program template", assetManager));
         assetManager.finishLoading();
@@ -113,8 +106,8 @@ public class MenuScreen extends BasicGameScreen {
 
     @Override
     public void preTransitionIn(Transition transitionIn) {
-        if (GameRuntime.SINGLE_LAUNCH) {
-            GameRuntime.setGamePath("Programs/" + getGameName());
+        if (GameRuntime.checkLaunchTitle()) {
+            GameRuntime.setProgramPath("Programs/" + GAME_NAME);
             START = true;
         }
         initMenuList();
@@ -122,7 +115,7 @@ public class MenuScreen extends BasicGameScreen {
 
     @Override
     public void postTransitionIn(Transition transitionIn) {
-        if (GameRuntime.SINGLE_LAUNCH) {
+        if (GameRuntime.checkLaunchTitle()) {
             return;
         }
         Gdx.input.setInputProcessor(new InputAdapter() {
@@ -130,19 +123,19 @@ public class MenuScreen extends BasicGameScreen {
             public boolean keyDown(int i) {
                 if (i == Keys.UP && cursor > 0) {
                     cursor--;
-                    setGameName(gameList.get(cursor));
+                    GAME_NAME = gameList.get(cursor);
                 }
                 if (i == Keys.DOWN && cursor < gameList.size() - 1) {
                     cursor++;
-                    setGameName(gameList.get(cursor));
+                    GAME_NAME = gameList.get(cursor);
                 }
                 if (i == Keys.ENTER) {
                     if (cursor == gameList.size() - 1) {
                         System.out.println("initializing new game...");
                         NEW_PROGRAM = true;
                     } else {
-                        System.out.println("Loading program: " + getGameName());
-                        GameRuntime.setGamePath("Programs/" + getGameName());
+                        System.out.println("Loading program: " + GAME_NAME);
+                        GameRuntime.setProgramPath("Programs/" + GAME_NAME);
                         START = true;
                     }
                 }
@@ -166,7 +159,7 @@ public class MenuScreen extends BasicGameScreen {
                             if (cursor == gameList.size() - 1) {
                                 NEW_PROGRAM = true;
                             } else {
-                                GameRuntime.setGamePath("Programs/" + getGameName());
+                                GameRuntime.setProgramPath("Programs/" + GAME_NAME);
                                 START = true;
                             }
                         }
@@ -178,10 +171,10 @@ public class MenuScreen extends BasicGameScreen {
                         if (axisCode == CustomSystemProperties.VERTICAL_AXIS) {
                             if (value == 1 && cursor < gameList.size() - 1) {
                                 cursor++;
-                                setGameName(gameList.get(cursor));
+                                GAME_NAME = gameList.get(cursor);
                             } else if (value == -1 && cursor > 0) {
                                 cursor--;
-                                setGameName(gameList.get(cursor));
+                                GAME_NAME = gameList.get(cursor);
                             }
                             return true;
                         } else {

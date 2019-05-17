@@ -60,7 +60,11 @@ public class CreditScreen extends BasicGameScreen {
     void checkInput(ScreenManager sm) {
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.ENTER) || MENU) {
             MENU = false;
-            sm.enterGameScreen(MenuScreen.ID, new FadeOutTransition(Color.TEAL), new FadeInTransition(Color.FOREST));
+            if (GameRuntime.checkLaunchTitle()) {
+                sm.enterGameScreen(LoadScreen.ID, new FadeOutTransition(Color.TEAL), new FadeInTransition(Color.FOREST));
+            } else {
+                sm.enterGameScreen(MenuScreen.ID, new FadeOutTransition(Color.TEAL), new FadeInTransition(Color.FOREST));
+            }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             System.out.println("Good bye!");
@@ -71,7 +75,7 @@ public class CreditScreen extends BasicGameScreen {
     @Override
     public void postTransitionIn(Transition transitionIn) {
         try {
-            Controllers.clearListeners();            
+            Controllers.clearListeners();
             if (Controllers.getControllers().size > 0) {
                 Controllers.getControllers().get(0).addListener(new ControllerAdapter() {
                     @Override

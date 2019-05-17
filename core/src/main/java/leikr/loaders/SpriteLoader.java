@@ -39,7 +39,7 @@ public class SpriteLoader {
     public SpriteLoader() {
         assetManager = new AssetManager();
 
-        rootPath = GameRuntime.getGamePath() + "/Sprites/Sprites.png";
+        rootPath = GameRuntime.getProgramPath() + "/Sprites/Sprites.png";
 
         loadSpriteSheets();
         addSpritesToSpriteBank();

@@ -31,8 +31,8 @@ public class ChipData {
 
     public ChipData(String programTitle, AssetManager am) {
         this.assetManager = am;
-        cpp = new CustomProgramProperties(GameRuntime.PROGRAM_PATH + programTitle);
-        ICON_PATH = GameRuntime.PROGRAM_PATH + programTitle + "/Art/icon.png";
+        cpp = new CustomProgramProperties(programTitle);
+        ICON_PATH = programTitle + "/Art/icon.png";
         assetManager.load(ICON_PATH, Texture.class);
         assetManager.finishLoading();
     }

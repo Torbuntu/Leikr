@@ -345,6 +345,10 @@ public abstract class Engine implements InputProcessor {
         screen.circle(x, y, r, fill);
     }
 
+    final void triangle(int x, int y, int x2, int y2, int x3, int y3){
+        screen.triangle(x, y, x2, y2, x3, y3);
+    }
+    
     final void line(int x1, int y1, int x2, int y2) {
         screen.line(x1, y1, x2, y2);
     }
@@ -445,14 +449,14 @@ public abstract class Engine implements InputProcessor {
 
     @Override
     public boolean keyDown(int keyCode) {
+        if (keyCode == Keys.ESCAPE) {
+            EngineScreen.setBack(true);
+        }
         return false;
     }
 
     @Override
     public boolean keyUp(int keyCode) {
-        if (keyCode == Keys.ESCAPE) {
-            EngineScreen.setBack(true);
-        }
         return false;
     }
 

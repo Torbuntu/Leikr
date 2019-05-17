@@ -48,7 +48,7 @@ public class EngineScreen extends BasicGameScreen {
         if (null != engine) {
             engine.setActive(false);
         }
-        if (GameRuntime.SINGLE_LAUNCH) {
+        if (GameRuntime.checkLaunchTitle()) {
             sm.enterGameScreen(TitleScreen.ID, null, null);
         } else {
             sm.enterGameScreen(MenuScreen.ID, null, null);
@@ -60,7 +60,7 @@ public class EngineScreen extends BasicGameScreen {
         if (null != engine) {
             engine.setActive(false);
         }
-        if (GameRuntime.SINGLE_LAUNCH) {
+        if (GameRuntime.checkLaunchTitle()) {
             sm.enterGameScreen(TitleScreen.ID, null, null);
         } else {
             ErrorScreen.setErrorMessage(errorMessage);

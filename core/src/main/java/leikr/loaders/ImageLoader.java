@@ -28,7 +28,7 @@ import leikr.GameRuntime;
 public class ImageLoader {
 
     AssetManager assetManager;
-    String rootPath = GameRuntime.getGamePath() + "/Art/";
+    String rootPath = GameRuntime.getProgramPath() + "/Art/";
 
     public ImageLoader() {
         assetManager = new AssetManager();
