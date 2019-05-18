@@ -294,48 +294,48 @@ class ControllerUtil extends Engine {
     }
     
     void drawButtons(){        
-        if(button(BTN.UP)){
+        if(button(BTN.UP) || key("Up")){
             sprite(1, 40,42,false, false, 2)
         }
-        if(button(BTN.DOWN)){
+        if(button(BTN.DOWN) || key("Down")){
             sprite(1, 40, 102, false, true, 2)
         }
-        if(button(BTN.LEFT)){
+        if(button(BTN.LEFT) || key("Left")){
             sprite(2, 10, 72, true, false,2)
         }
-        if(button(BTN.RIGHT)){
+        if(button(BTN.RIGHT) || key("Right")){
             sprite(2, 70, 72, false, false,2)
         }
         
-        if(button(BTN.LEFT_BUMPER)){
+        if(button(BTN.LEFT_BUMPER) || key("Q")){
             sprite(0, 16,16,1)
             sprite(0, 32,16,1)
             sprite(0, 48,16,1)
             sprite(0, 64,16,1)
         }
-        if(button(BTN.RIGHT_BUMPER)){
+        if(button(BTN.RIGHT_BUMPER) || key("W")){
             sprite(0, 160,16,1)
             sprite(0, 176,16,1)
             sprite(0, 192,16,1)
             sprite(0, 208,16,1)
         }
-        if(button(BTN.X)){
+        if(button(BTN.X) || key("S")){
             sprite(3, 168, 40, false, false,2)
         }
-        if(button(BTN.Y)){
+        if(button(BTN.Y) || key("A")){
             sprite(4, 136, 72, false, false,2)
         }
-        if(button(BTN.A)){
+        if(button(BTN.A) || key("X")){
             sprite(5, 200, 72, false, false,2)
         }
-        if(button(BTN.B)){
+        if(button(BTN.B) || key("Z")){
             sprite(6, 168, 104, false, false,2)
         }
-        if(button(BTN.SELECT)){
+        if(button(BTN.SELECT) || key("'")){
             sprite(0, 80, 136, false, false,1)
             sprite(0, 96, 136, false, false,1)
         }
-        if(button(BTN.START)){
+        if(button(BTN.START) || key("Enter")){
             sprite(0, 128, 136, false, false,1)
             sprite(0, 144, 136, false, false,1)
         }
