@@ -78,7 +78,7 @@ public class MenuScreen extends BasicGameScreen {
 
         if (gameList != null && gameList.size() > 0) {
             GAME_NAME = gameList.get(0);
-            System.out.println("First game name: "+GAME_NAME);
+            System.out.println("First game name: " + GAME_NAME);
             loadPrograms();
             gameList.add("Start new...");
         } else {

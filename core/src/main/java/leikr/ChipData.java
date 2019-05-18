@@ -36,34 +36,40 @@ public class ChipData {
         assetManager.load(ICON_PATH, Texture.class);
         assetManager.finishLoading();
     }
-    
-    public ChipData(String title, String auth, String type, String vers, int pla, String about, AssetManager am){
+
+    public ChipData(String title, String auth, String type, String vers, int pla, String about, AssetManager am) {
         cpp = new CustomProgramProperties(title, auth, type, vers, pla, about);
         this.assetManager = am;
         ICON_PATH = "./Data/Images/start_new.png";
         assetManager.load(ICON_PATH, Texture.class);
-        assetManager.finishLoading();        
+        assetManager.finishLoading();
     }
-    
-    public Texture getIcon(){
+
+    public Texture getIcon() {
         return assetManager.get(ICON_PATH, Texture.class);
     }
-    public String getTitle(){
+
+    public String getTitle() {
         return cpp.TITLE;
     }
-    public String getAuthor(){
+
+    public String getAuthor() {
         return cpp.AUTHOR;
     }
-    public String getType(){
+
+    public String getType() {
         return cpp.TYPE;
     }
-    public String getVersion(){
+
+    public String getVersion() {
         return cpp.VERSION;
     }
-    public int getPlayers(){
+
+    public int getPlayers() {
         return cpp.PLAYERS;
     }
-    public String getAbout(){
+
+    public String getAbout() {
         return cpp.ABOUT;
     }
 }
