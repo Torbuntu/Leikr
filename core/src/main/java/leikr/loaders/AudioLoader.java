@@ -33,6 +33,9 @@ public class AudioLoader {
 
     String musicRootPath = GameRuntime.getProgramPath() + "/Audio/Music/";
     String soundRootPath = GameRuntime.getProgramPath() + "/Audio/Sound/";
+    
+    Music mPlayer;
+    Sound sPlayer;
 
     public AudioLoader() {
         soundManager = new AssetManager();
@@ -67,27 +70,27 @@ public class AudioLoader {
     }
 
     public void sound(String fileName) {
-        Sound tmp = soundManager.get(soundRootPath + fileName + ".wav", Sound.class);
-        tmp.play();
+        sPlayer = soundManager.get(soundRootPath + fileName + ".wav", Sound.class);
+        sPlayer.play();
     }
 
     public void sound(String fileName, float vol, float pit, float pan) {
         //vol: range [0,1]
         //pit: 0.5 and 2.0
         //pan: panning in the range -1 (full left) to 1 (full right). 0 is center position.
-        Sound tmp = soundManager.get(soundRootPath + fileName + ".wav", Sound.class);
-        tmp.play(vol, pit, pan);
+        sPlayer = soundManager.get(soundRootPath + fileName + ".wav", Sound.class);
+        sPlayer.play(vol, pit, pan);
     }
 
     public void music(String fileName) {
-        Music tmp = musicManager.get(musicRootPath + fileName + ".wav", Music.class);
-        tmp.play();
+        mPlayer = musicManager.get(musicRootPath + fileName + ".wav", Music.class);
+        mPlayer.play();
     }
 
     public void music(String fileName, boolean loop) {
-        Music tmp = musicManager.get(musicRootPath + fileName + ".wav", Music.class);
-        tmp.setLooping(loop);
-        tmp.play();
+        mPlayer = musicManager.get(musicRootPath + fileName + ".wav", Music.class);
+        mPlayer.setLooping(loop);
+        mPlayer.play();
     }
 
     public void stopMusic() {
@@ -98,8 +101,8 @@ public class AudioLoader {
     }
 
     public void stopMusic(String fileName) {
-        Music m = musicManager.get(musicRootPath + fileName + ".wav", Music.class);
-        m.stop();
+        mPlayer = musicManager.get(musicRootPath + fileName + ".wav", Music.class);
+        mPlayer.stop();
     }
 
     public void disposeAudioLoader() {
