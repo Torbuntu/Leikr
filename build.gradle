@@ -59,6 +59,8 @@ project(":desktop") {
     dependencies {
         implementation project(":core")
         implementation "org.mini2Dx:mini2Dx-desktop:$mini2DxVersion"
+        
+        implementation "org.apache.commons:commons-io:1.3.2"
     }
     parcl {
         exe {

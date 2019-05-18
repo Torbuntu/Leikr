@@ -13,6 +13,6 @@ else
 	fi
 fi
 
-JVM_ARGS="-jar -Xmx1g -XX:+CMSClassUnloadingEnabled -Djava.security.manager -Djava.security.policy=./Sys/mysecurity.policy"
+JVM_ARGS="-jar -Xmx1g -XX:+CMSClassUnloadingEnabled"
 
-exec "$JAVA_COMMAND" $JVM_ARGS "Leikr-0.0.3.jar"
+exec "$JAVA_COMMAND" $JVM_ARGS "Leikr-0.0.3.jar" "release"
