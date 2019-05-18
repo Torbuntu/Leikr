@@ -1,5 +1,28 @@
 apply plugin: 'java'
 apply plugin: "application"
+apply plugin: 'com.github.johnrengelman.shadow'
+
+shadowJar {
+    baseName = 'Leikr'
+    classifier = null
+    //Exclude Asset directories from inside the jar.
+    exclude 'Data'
+    exclude 'Programs'
+}
+
+task deployLeikr {
+    dependsOn shadowJar
+    doLast {
+        println "From $projectDir/../assets"
+        println "To $projectDir/build/libs"
+        copy {
+            from "$projectDir/../assets"
+            into "$projectDir/build/libs"
+        } 
+    }
+
+}
+
 
 sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]

@@ -1,0 +1,18 @@
+#!/bin/bash
+APPLICATION_HOME="$( cd "$( dirname "$0" )" && pwd )"
+cd "$APPLICATION_HOME"
+
+if [ -d "jre" ] ; then
+	JAVA_COMMAND="$APPLICATION_HOME/jre/bin/java"
+else
+	if ! type "java" > /dev/null; then
+		echo "java is required but not installed"
+		exit 1
+	else
+		JAVA_COMMAND="java"
+	fi
+fi
+
+JVM_ARGS="-jar -Xmx1g -XX:+CMSClassUnloadingEnabled -Djava.security.manager -Djava.security.policy=./Sys/mysecurity.policy"
+
+exec "$JAVA_COMMAND" $JVM_ARGS "Leikr-0.0.3.jar"
