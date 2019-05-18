@@ -1,5 +1,4 @@
 grant{
-
 	permission java.util.PropertyPermission "*", "read";
 	permission java.util.PropertyPermission "org.lwjgl.input.Mouse.allowNegativeMouseCoords", "write";
 	permission java.util.PropertyPermission "org.lwjgl.librarypath", "write";
@@ -7,7 +6,8 @@ grant{
 	//Grant access to the primary Leikr dirs
 	permission java.io.FilePermission "Programs", "read,write";
 	permission java.io.FilePermission "Programs/-", "read,write";
-	permission java.io.FilePermission "Data/-", "read";
+	permission java.io.FilePermission "Data/-", "read,write";
+	permission java.io.FilePermission "Sys/-", "read";
 	
 	permission java.lang.RuntimePermission "loadLibrary.*";
 	permission java.lang.RuntimePermission "getenv.*", "read";
@@ -90,7 +90,8 @@ grant codeBase "file:libs/core-0.0.2.jar"{
 	//attempt to sandbox to these dirs only.
 	permission java.io.FilePermission "Programs", "read,write";
 	permission java.io.FilePermission "Programs/-", "read,write";
-	permission java.io.FilePermission "Data/-", "read";	
+	permission java.io.FilePermission "Data/-", "read,write";	
+	permission java.io.FilePermission "Sys/-", "read";
 };
 
 grant codeBase "file:libs/desktop-0.0.2.jar"{	
