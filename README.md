@@ -16,11 +16,11 @@ Powered by [Mini2Dx](https://mini2dx.org/)
 
 2. Run the gradlew command: 
 
-`./gradlew desktop:launchDesktop`
+`./gradlew desktop:launchDesktop` or `gradlew desktop:launchDesktop` depending on your OS.
 
 ## Building a release 
 
-to build a release on your platform run: `./gradlew clean build bundleNative`
+to build a release on your platform run: `./gradlew clean build bundleNative` or `gradlew clean build bundleNative`
 
 the release will show up in the `./leikr/desktop/build/` directory and then under the platform you are running on.
 for example on linux `desktop/build/linux/`
