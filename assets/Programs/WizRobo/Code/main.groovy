@@ -616,11 +616,18 @@ class WizRobo extends leikr.Engine {
                 if(collide(wizard, it)){
                     wizard.health--
                     if(wizard.f){
-                        wizard.x = wizard.x +32
+                        wizard.x = wizard.x +8
+                        if(solid(wizard.x-4, wizard.x-4)){
+                    		wizard.x = wizard.x - 4
+                    	}
                     }else{
-                        wizard.x = wizard.x -32
+                        wizard.x = wizard.x -8
+                        if(solid(wizard.x-4, wizard.x-4)){
+                    		wizard.x = wizard.x + 4
+                    	}
                     }
                     wizard.y -= 8
+                    
                 }
             }
         }
