@@ -32,6 +32,7 @@ Data/
 Programs/
 Leikr
 libs/
+Sys/
 ```
 
 
@@ -41,6 +42,7 @@ libs/
 Projects structure
 ```
 Data/
+Sys/
 Programs/
   YourGameName/
      /Art/
