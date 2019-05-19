@@ -18,6 +18,9 @@ public class DesktopLauncher {
     public static void main(String[] arg) {
         if (arg.length > 0 && arg[0].equalsIgnoreCase("release")) {
             checkForPolicy();
+            System.out.println("Setting policy...");
+            System.setProperty("java.security.policy", new File("Sys/mysecurity.policy").getAbsolutePath());
+            System.setSecurityManager(new SecurityManager());
         }
         DesktopMini2DxConfig config = new DesktopMini2DxConfig(GameRuntime.GAME_IDENTIFIER);
         config.vSyncEnabled = false;
@@ -31,11 +34,10 @@ public class DesktopLauncher {
 
     static void checkForPolicy() {
         if (!new File("./Sys/mysecurity.policy").exists()) {
+            System.out.println("Policy not found. Creating...");
             try {
                 FileUtils.forceMkdir(new File("./Sys"));
                 copy("Sys/mysecurity.policy", "./Sys/mysecurity.policy");
-                System.setProperty("java.security.policy", new File("Sys/mysecurity.policy").getAbsolutePath());
-                System.setSecurityManager(new SecurityManager());
             } catch (IOException ex) {
                 Logger.getLogger(DesktopLauncher.class.getName()).log(Level.SEVERE, null, ex);
             }

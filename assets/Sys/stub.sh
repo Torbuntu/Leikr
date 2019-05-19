@@ -6,7 +6,7 @@ if test -n "$JAVA_HOME"; then
     java="$JAVA_HOME/bin/java"
 fi
 
-$java_args = "-Xmx1g -XX:+CMSClassUnloadingEnabled"
+java_args="-jar -Xmx1g -XX:+CMSClassUnloadingEnabled"
 
-exec "$java" -jar $java_args $MYSELF "$@"
+exec "$java" $java_args $MYSELF "release"
 exit 1 
