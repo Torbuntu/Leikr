@@ -46,18 +46,20 @@ import org.mini2Dx.core.screen.Transition;
 public class MenuScreen extends BasicGameScreen {
 
     public static int ID = 0;
+
+    public static String GAME_NAME;
+    private final String menuBg;
+
     boolean START = false;
     boolean NEW_PROGRAM = false;
     boolean page = true;
     int cursor;
     int offset;
-    public static String GAME_NAME;
-    private final String menuBg;
-    ArrayList<ChipData> programs;
 
     AssetManager assetManager;
     FitViewport viewport;
     ArrayList<String> gameList;
+    ArrayList<ChipData> programs;
 
     public MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
