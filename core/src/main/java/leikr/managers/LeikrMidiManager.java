@@ -15,18 +15,13 @@
  */
 package leikr.managers;
 
-import com.sun.media.sound.SF2SoundbankReader;
 import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.sound.midi.Instrument;
-import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiChannel;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.Soundbank;
+import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
 
 /**
@@ -38,21 +33,87 @@ import javax.sound.midi.Synthesizer;
 public class LeikrMidiManager {
 
     Synthesizer synth;
+    MidiChannel[] channels;
+    Sequencer sequencer;
 
     public LeikrMidiManager() {
         try {
+            sequencer = MidiSystem.getSequencer();
+        } catch (MidiUnavailableException ex) {
+            Logger.getLogger(LeikrMidiManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        initializeSynthesizer();
+
+        //Demo code
+        channels[0].programChange(synth.getLoadedInstruments()[0].getPatch().getProgram());
+        playChannel(
+                0,
+                new int[]{0, 60, 40, 50, 60},
+                new int[]{0, 100, 100, 100, 100},
+                new int[]{0, 500, 500, 500, 500}
+        );
+        //END Demo code
+    }
+
+    private void initializeSynthesizer() {
+        try {
+            if (synth != null && synth.isOpen()) {
+                synth.close();
+            }
             synth = MidiSystem.getSynthesizer();
             synth.open();
-            Soundbank sb = MidiSystem.getSoundbank(new File("Data/Audio/Famicom.sf2"));
-            for(Instrument i : sb.getInstruments()){
-                System.out.println(i.getName());
-            }
-            synth.loadAllInstruments(sb);
-            MidiChannel[] chan = synth.getChannels();
-            chan[0].allNotesOff();
-            chan[0].noteOn(400, 10);
-        } catch (MidiUnavailableException | InvalidMidiDataException | IOException ex) {
+            synth.unloadAllInstruments(synth.getDefaultSoundbank());
+            synth.loadAllInstruments(MidiSystem.getSoundbank(new File("Data/Audio/Famicom.sf2")));
+            channels = synth.getChannels();
+        } catch (Exception ex) {
             Logger.getLogger(LeikrMidiManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    void initializeSynthesizer(String soundBank) {
+        try {
+            synth.close();
+            synth = MidiSystem.getSynthesizer();
+            synth.open();
+            synth.unloadAllInstruments(synth.getDefaultSoundbank());
+            synth.loadAllInstruments(MidiSystem.getSoundbank(new File(soundBank)));
+            channels = synth.getChannels();
+        } catch (Exception ex) {
+            Logger.getLogger(LeikrMidiManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void playChannel(int channel, int[] notes, int[] velocities, int[] durations) {
+        if (synth.isOpen()) {
+            for (int i = 0; i < notes.length; i++) {
+                channels[channel].noteOn(notes[i], velocities[i]);
+                try {
+                    Thread.sleep(durations[i]);
+                    channels[channel].allNotesOff();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(LeikrMidiManager.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        channels[channel].allNotesOff();
+    }
 }
+
+/*
+try {
+            synth = MidiSystem.getSynthesizer();
+            synth.open();
+            synth.unloadAllInstruments(synth.getDefaultSoundbank());
+            synth.loadAllInstruments(MidiSystem.getSoundbank(new File("Data/Audio/Famicom.sf2")));
+            channels = synth.getChannels();
+            for (Instrument in : synth.getLoadedInstruments()) {
+                System.out.println("Playing: " + in.getName() + ", ID: " + in.getPatch().getProgram());
+                channels[0].programChange(0, in.getPatch().getProgram());
+                channels[0].noteOn(40, 100);
+                Thread.sleep(500);
+                channels[0].allSoundOff();
+            }
+        } catch (MidiUnavailableException | InvalidMidiDataException | IOException | InterruptedException ex) {
+            Logger.getLogger(LeikrMidiManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+ */

@@ -108,6 +108,7 @@ public class MenuScreen extends BasicGameScreen {
 
     @Override
     public void preTransitionIn(Transition transitionIn) {
+
         if (GameRuntime.checkLaunchTitle()) {
             GameRuntime.setProgramPath("Programs/" + GAME_NAME);
             START = true;

@@ -10,15 +10,12 @@ import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
-import leikr.managers.LeikrMidiManager;
 import org.apache.commons.io.FileUtils;
 import org.mini2Dx.core.Mdx;
 
 public class DesktopLauncher {
 
     public static void main(String[] arg) {
-        //LeikrMidiManager mid = new LeikrMidiManager(); // Testing the Leikr Midi. 
-        
         if (arg.length > 0 && arg[0].equalsIgnoreCase("release")) {
             checkForPolicy();
             System.out.println("Setting policy...");
