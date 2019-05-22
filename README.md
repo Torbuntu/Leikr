@@ -137,3 +137,11 @@ class MyGame extends leikr.Engine{
 | Maps | .tmx maps loadabled from `Maps` directory. (currently unlimited) Animated tiles supported. |
 | Audio | .WAV files loaded from `Audio/Sound` and `Audio/Music`  (Limitations TBD) |
 | Controls | 2xUSB controllers/Full Keyboard. Tested using SNES style controllers on Linux. Note: The controllers are configurable using the Program `Controllers` which comes with the system. It maps inputs to the file `Data/system.properties` |
+
+
+## Supported Platforms
+
+| Platform | Support Level | Status | Notes |
+|----|----|----|----|
+| Desktop | Full | Up to date | Fedora and other Linux distributions officially supported first. Windows also known to work. No status on Apple computer builds available. Since this is a Java program, it *should just work* on any mainstream desktop OS. However, due to native libs this produce odd results on less common systems. |
+| R-PI3b+ | Partial | Outdated | This requires custom builds of the native libs for LibGDX and LWJGL. Due to this, builds for this come slowly or only when tim epermits. The only currently supported OS for this is default Raspbian with OpenGL drivers activated and GPU memory boosted. This will be a full release in the future.|
