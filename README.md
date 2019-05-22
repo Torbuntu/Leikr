@@ -1,10 +1,14 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-# Leikr
+# Leikr Game System
+| [Wiki](https://github.com/torbuntu/leikr/wiki) | [itch.io](https://torbuntu.itch.io/leikr) | [Releases](https://github.com/torbuntu/leikr/releases) |
+
 A Java Fantasy Console
 
 Powered by [Mini2Dx](https://mini2dx.org/)
 
-![](title_menu.gif?raw=true)
+| Preview |
+|----|
+| ![](title_menu.gif?raw=true) |
 
 ## Running from source 
 
@@ -34,8 +38,6 @@ Leikr
 libs/
 Sys/
 ```
-
-
 
 ## Starting your own Program
 
@@ -87,16 +89,13 @@ class MyGame extends leikr.Engine{
 ```
 
 
-## specs:
+## specs: 
 
-screen: 240x160
-
-Sprites: 2,048 max. Each sprite gets split into 8x8, 16x16, 32x32 and 64x64 pixel sprites.
-
-Art: Can load images to be used as backgrounds or however else you wish.
-
-Maps: .tmx maps loadabled from `Maps` directory. (currently unlimited) Animated tiles supported.
-
-Audio: .WAV files loaded from `Audio/Sound` and `Audio/Music`  (Limitations TBD)
-
-Controls: 2xUSB controllers/Full Keyboard. Tested using SNES style controllers on Linux. Note: The controllers are configurable using the Program `Controllers` which comes with the system. It maps inputs to the system properties file in `Data`
+| Spec |      |
+|----|----|
+| Resolution | 240x160 |
+| Sprites    | 2,048 max. Each sprite gets split into 8x8, 16x16, 32x32 and 64x64 pixel sprites. |
+| Art | Can load images to be used as backgrounds or however else you wish. |
+| Maps | .tmx maps loadabled from `Maps` directory. (currently unlimited) Animated tiles supported. |
+| Audio | .WAV files loaded from `Audio/Sound` and `Audio/Music`  (Limitations TBD) |
+| Controls | 2xUSB controllers/Full Keyboard. Tested using SNES style controllers on Linux. Note: The controllers are configurable using the Program `Controllers` which comes with the system. It maps inputs to the file `Data/system.properties` |
