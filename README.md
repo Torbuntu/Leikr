@@ -60,22 +60,20 @@ depending on your OS.
 
 to build a release on your platform run: 
 
-`>./gradlew clean build bundleNative` 
+`>./gradlew clean build desktop:deployLeikr` 
 
 or 
 
-`>gradlew clean build bundleNative`
+`>gradlew clean build desktop:deployLeikr`
 
-the release will show up in the `./leikr/desktop/build/` directory and then under the platform you are running on.
-for example on linux `desktop/build/linux/`
-
-then copy the `Data` and `Programs` folders from the `leikr/assets/` directory to the location of the launch script. You should end up with the following:
+the release will show up in the `./leikr/desktop/build/libs` directory. You should end up with the following:
 
 ```
 Data/
 Programs/
 Leikr
-libs/
+Leikr.bat
+Leikr-x.x.x.jar
 Sys/
 ```
 
