@@ -10,21 +10,61 @@ Powered by [Mini2Dx](https://mini2dx.org/)
 |----|
 | ![](title_menu.gif?raw=true) |
 
+## Running from release
+
+#### note: If downloading from itch.io, make sure to document where the install path is for accessing the files.
+
+A release is a folder which contains everything required to run the Leikr Game System. Best practice would be to download the release from one of the distribution sources (Currently: [itch.io](https://torbuntu.itch.io/leikr) or [github](https://github.com/torbuntu/leikr/releases))
+
+Inside this folder should look something like this:
+
+```
+Leikr/
+    Data/
+    Programs/
+    Leikr
+    Leikr.bat
+    Leikr-x.x.x.jar
+    Sys/    
+```
+
+Depending on your system, you can either launch the system through the `Leikr` shell script, or the `Leikr.bat` if you're on a windows system. Or, if you'd rather launch the system manually the java way, use the command `java -jar Leikr-x.x.x.jar release`
+
+The `release` argument triggers the system to apply the sandboxing security policy.
+
+
 ## Running from source 
 
-#### note: `Programs` and `Data` are in the `/leikr/assets/` directory. 
+#### notes: `Programs` and `Data` are in the `/leikr/assets/` directory. It is *NOT* recommended to run untrusted user programs from this method. Gradle currently does not apply the security sandbox policy. 
+
+###### `>` is the terminal icon, don't type this.
 
 1. git clone the project. Then enter the `leikr` directory.
 
-`git clone https://github.com/torbuntu/leikr.git`
+```
+> git clone https://github.com/torbuntu/leikr.git
+> cd Leikr
+```
 
 2. Run the gradlew command: 
 
-`./gradlew desktop:launchDesktop` or `gradlew desktop:launchDesktop` depending on your OS.
+`>./gradlew desktop:launchDesktop` 
+
+or 
+
+`>gradlew desktop:launchDesktop` 
+
+depending on your OS.
 
 ## Building a release 
 
-to build a release on your platform run: `./gradlew clean build bundleNative` or `gradlew clean build bundleNative`
+to build a release on your platform run: 
+
+`>./gradlew clean build bundleNative` 
+
+or 
+
+`>gradlew clean build bundleNative`
 
 the release will show up in the `./leikr/desktop/build/` directory and then under the platform you are running on.
 for example on linux `desktop/build/linux/`
