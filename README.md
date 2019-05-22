@@ -107,7 +107,7 @@ Programs/
 Add `main.groovy` in the `Code/` directory. 
 main.groovy contents to be runnable should be similar to the following template:
 
-```
+```java
 //extend the engine to get the API 
 class MyGame extends leikr.Engine{
 
