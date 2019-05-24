@@ -505,5 +505,12 @@ public abstract class Engine implements InputProcessor {
     public void spriteSc(int id, float x, float y, float scaleX, float scaleY, float degr){
         screen.spriteSc(id, x, y, scaleX, scaleY, degr);
     }
+    
+    public final void clip(float x, float y, float w, float h){
+        screen.clip(x, y, w, h);
+    }
+    public final void clip(){
+        screen.clip();
+    }
     //END Experimental
 }

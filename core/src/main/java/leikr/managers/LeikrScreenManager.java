@@ -450,5 +450,17 @@ public class LeikrScreenManager {
         pixMap.drawLine(x1, y1, x2, y2);
     }
     //end shape drawing methods
+    
+    
+    //EXPERIMENTAL METHODS
+    public final void clip(float x, float y, float w, float h){
+        g.setClip(x, y, w, h);        
+    }
+    
+    public final void clip(){
+        g.removeClip();
+    }
+    
+    //END EXPERIMENTAL
 
 }
