@@ -147,7 +147,7 @@ public abstract class Engine implements InputProcessor {
 
     //Start Helper methods
     //Not a very helpful method, but I like to see how things perform.
-    final void FPS() {
+    public final void FPS() {
         logger.log();
     }
 
@@ -225,27 +225,27 @@ public abstract class Engine implements InputProcessor {
     //end Map methods
 
     //start color methods
-    final void drawColor(int color) {
+    public final void drawColor(int color) {
         screen.drawColor(color);
     }
 
-    final void drawColor(float r, float gr, float b) {
+    public final void drawColor(float r, float gr, float b) {
         screen.drawColor(r, gr, b);
     }
 
-    final Color getDrawColor(int color) {
+    public final Color getDrawColor(int color) {
         return screen.getDrawColor(color);
     }
 
-    final void bgColor(int color) {
+    public final void bgColor(int color) {
         screen.bgColor(color);
     }
 
-    final void bgColor(float r, float gr, float b) {
+    public final void bgColor(float r, float gr, float b) {
         screen.bgColor(r, gr, b);
     }
 
-    final void bgColor(float[] color) {
+    public final void bgColor(float[] color) {
         screen.bgColor(color);
     }
     //end color methods
@@ -329,27 +329,27 @@ public abstract class Engine implements InputProcessor {
         screen.pixel(x, y, c);
     }
 
-    final void rect(int x, int y, int w, int h) {
+    public final void rect(int x, int y, int w, int h) {
         screen.rect(x, y, w, h);
     }
 
-    final void rect(int x, int y, int w, int h, boolean fill) {
+    public final void rect(int x, int y, int w, int h, boolean fill) {
         screen.rect(x, y, w, h, fill);
     }
 
-    final void circle(int x, int y, int r) {
+    public final void circle(int x, int y, int r) {
         screen.circle(x, y, r);
     }
 
-    final void circle(int x, int y, int r, boolean fill) {
+    public final void circle(int x, int y, int r, boolean fill) {
         screen.circle(x, y, r, fill);
     }
 
-    final void triangle(int x, int y, int x2, int y2, int x3, int y3) {
+    public final void triangle(int x, int y, int x2, int y2, int x3, int y3) {
         screen.triangle(x, y, x2, y2, x3, y3);
     }
 
-    final void line(int x1, int y1, int x2, int y2) {
+    public final void line(int x1, int y1, int x2, int y2) {
         screen.line(x1, y1, x2, y2);
     }
     //end shape drawing methods

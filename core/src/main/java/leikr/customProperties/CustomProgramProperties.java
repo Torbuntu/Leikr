@@ -37,6 +37,7 @@ public class CustomProgramProperties {
     public String VERSION;
     public int PLAYERS;
     public String ABOUT;
+    public boolean JAVA_ENGINE;
 
     public CustomProgramProperties(String gamePath) {
 
@@ -51,6 +52,7 @@ public class CustomProgramProperties {
             USE_SCRIPT = (prop.getProperty("use_script") != null) ? Boolean.valueOf(prop.getProperty("use_script")) : false;
             USE_COMPILED = (prop.getProperty("use_compiled") != null) ? Boolean.valueOf(prop.getProperty("use_compiled")) : false;
             COMPILE_SOURCE = (prop.getProperty("compile_source") != null) ? Boolean.valueOf(prop.getProperty("compile_source")) : false;
+            JAVA_ENGINE = (prop.getProperty("java_engine") != null) ? Boolean.valueOf(prop.getProperty("java_engine")) : false;
 
             TITLE = (prop.getProperty("title") != null) ? prop.getProperty("title") : "unknown";
             TYPE = (prop.getProperty("type") != null) ? prop.getProperty("type") : "Program";

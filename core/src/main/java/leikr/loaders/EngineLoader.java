@@ -23,12 +23,17 @@ import groovy.util.ResourceException;
 import groovy.util.ScriptException;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
 import leikr.customProperties.CustomProgramProperties;
 import leikr.Engine;
 import leikr.GameRuntime;
@@ -62,6 +67,9 @@ public class EngineLoader implements Callable<Engine> {
         }
         if (cp.USE_COMPILED) {
             return getCompiledEngine();
+        }
+        if (cp.JAVA_ENGINE) {
+            return getJavaSourceEngine();
         }
         return getSourceEngine();
 
@@ -127,5 +135,21 @@ public class EngineLoader implements Callable<Engine> {
         Binding bd = new Binding();
         GroovyScriptEngine gse = new GroovyScriptEngine(paths);
         return (Engine) gse.run("main.groovy", bd);
+    }
+
+    private Engine getJavaSourceEngine() {
+        try {
+            // Create URL for loading the external files.
+            URLClassLoader urlCl = new URLClassLoader(new URL[]{new File(rootPath + "Compiled").toURI().toURL()});
+
+            //Compile the Java source code.
+            compileEngine();
+            
+            //New instance
+            return (Engine) urlCl.loadClass(MenuScreen.GAME_NAME).newInstance();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 }
