@@ -41,6 +41,7 @@ import leikr.screens.MenuScreen;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.tools.Compiler;
+import org.python.util.PythonInterpreter;
 
 /**
  *
@@ -70,6 +71,9 @@ public class EngineLoader implements Callable<Engine> {
         }
         if (cp.JAVA_ENGINE) {
             return getJavaSourceEngine();
+        }
+        if (cp.PYTHON_ENGINE) {
+            return getJythonSourceEngine();
         }
         return getSourceEngine();
 
@@ -144,12 +148,21 @@ public class EngineLoader implements Callable<Engine> {
 
             //Compile the Java source code.
             compileEngine();
-            
+
             //New instance
             return (Engine) urlCl.loadClass(MenuScreen.GAME_NAME).newInstance();
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
         }
+    }
+
+    private Engine getJythonSourceEngine() {
+        PythonInterpreter interpreter = new PythonInterpreter();
+        interpreter.execfile(rootPath + MenuScreen.GAME_NAME + ".py");
+
+        String outClass = "MyGame = " + MenuScreen.GAME_NAME + "()";
+        interpreter.exec(outClass);
+        return (Engine) interpreter.get("MyGame", Engine.class);
     }
 }
