@@ -9,6 +9,7 @@ Powered by [Mini2Dx](https://mini2dx.org/)
 | Preview |
 |----|
 | ![](title_menu.gif?raw=true) |
+| ![](demo_leikr_0.0.4.gif?raw=true) |
 
 ## Running from release
 
