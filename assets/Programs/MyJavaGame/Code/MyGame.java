@@ -1,5 +1,5 @@
 
-public class MyGame extends leikr.Engine {
+public class MyJavaGame extends leikr.Engine {
 	
 	int y, sy;
 	
