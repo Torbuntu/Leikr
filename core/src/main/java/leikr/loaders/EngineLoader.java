@@ -23,7 +23,6 @@ import groovy.util.ResourceException;
 import groovy.util.ScriptException;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -32,8 +31,6 @@ import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
 import leikr.customProperties.CustomProgramProperties;
 import leikr.Engine;
 import leikr.GameRuntime;
@@ -41,7 +38,6 @@ import leikr.screens.MenuScreen;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.tools.Compiler;
-import org.python.util.PythonInterpreter;
 
 /**
  *
@@ -72,9 +68,7 @@ public class EngineLoader implements Callable<Engine> {
         if (cp.JAVA_ENGINE) {
             return getJavaSourceEngine();
         }
-        if (cp.PYTHON_ENGINE) {
-            return getJythonSourceEngine();
-        }
+
         return getSourceEngine();
 
     }
@@ -157,12 +151,4 @@ public class EngineLoader implements Callable<Engine> {
         }
     }
 
-    private Engine getJythonSourceEngine() {
-        PythonInterpreter interpreter = new PythonInterpreter();
-        interpreter.execfile(rootPath + MenuScreen.GAME_NAME + ".py");
-
-        String outClass = "MyGame = " + MenuScreen.GAME_NAME + "()";
-        interpreter.exec(outClass);
-        return (Engine) interpreter.get("MyGame", Engine.class);
-    }
 }

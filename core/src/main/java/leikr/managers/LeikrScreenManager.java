@@ -261,13 +261,13 @@ public class LeikrScreenManager {
         drawColor(color[0], color[1], color[2]);
         g.drawString(text, x, y, width);
     }
-    
-    public final void text(String text, float x, float y, float width, int align, int color){
+
+    public final void text(String text, float x, float y, float width, int align, int color) {
         drawColor(color);
         g.drawString(text, x, y, width, align);
     }
-    
-    public final void text(String text, float x, float y, float width, int align, float[] color){
+
+    public final void text(String text, float x, float y, float width, int align, float[] color) {
         drawColor(color[0], color[1], color[2]);
         g.drawString(text, x, y, width, align);
     }
@@ -351,6 +351,53 @@ public class LeikrScreenManager {
     }
     //end sizable sprites
 
+    //START special sprite mode
+    public final void spriteSc(int id, float x, float y, float scale) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        Sprite t = spriteLoader.getSprite(id, 0);
+        t.scale(scale);
+        g.drawSprite(t, x, y);
+        t.scale(-scale);
+        USED_SPRITES++;
+    }
+    public final void spriteSc(int id, float x, float y, float scaleX, float scaleY) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        Sprite t = spriteLoader.getSprite(id, 0);
+        t.setScale(scaleX, scaleY);
+        g.drawSprite(t, x, y);
+        t.setScale(-scaleX, -scaleY);
+        USED_SPRITES++;
+    }
+    public final void spriteSc(int id, float x, float y, float scaleX, float scaleY, float degr) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        Sprite t = spriteLoader.getSprite(id, 0);
+        t.setScale(scaleX, scaleY);
+        t.rotate(degr);
+        g.drawSprite(t, x, y);
+        t.rotate(-degr);
+        t.setScale(-scaleX, -scaleY);
+        USED_SPRITES++;
+    }
+    public final void spriteSc(int id, float x, float y, float scaleX, float scaleY, boolean flipX, boolean flipY) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        Sprite t = spriteLoader.getSprite(id, 0);
+        t.setScale(scaleX, scaleY);
+        t.flip(flipX, flipY);
+        g.drawSprite(t, x, y);
+        t.flip(!flipX, !flipY);
+        t.setScale(-scaleX, -scaleY);
+        USED_SPRITES++;
+    }
+    //END special sprite mode
+
     //start shape drawing methods
     public void clpx() {
         pixMap.setColor(Color.CLEAR);
@@ -395,10 +442,10 @@ public class LeikrScreenManager {
         }
     }
 
-    public final void triangle(int x, int y, int x2, int y2, int x3, int y3){
+    public final void triangle(int x, int y, int x2, int y2, int x3, int y3) {
         pixMap.fillTriangle(x, y, x2, y2, x3, y3);
     }
-    
+
     public final void line(int x1, int y1, int x2, int y2) {
         pixMap.drawLine(x1, y1, x2, y2);
     }

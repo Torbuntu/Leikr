@@ -76,7 +76,7 @@ public abstract class Engine implements InputProcessor {
     public LeikrScreenManager screen;
 
     //custom prop functions
-    int getUsedSprites() {
+    public int getUsedSprites() {
         return screen.getUsedSprites();
     }
     //end custom prop functions
@@ -161,65 +161,65 @@ public abstract class Engine implements InputProcessor {
     //End helper methods.
 
     //Image methods
-    final void loadImages() {
+    public final void loadImages() {
         screen.loadImages();
     }
 
-    final void image(String name, float x, float y) {
+    public final void image(String name, float x, float y) {
         screen.image(name, x, y);
     }
 
-    final void image(String name, float x, float y, float w, float h) {
+    public final void image(String name, float x, float y, float w, float h) {
         screen.image(name, x, y, w, h);
     }
 
-    final void image(String name, float x, float y, float w, float h, boolean flipv) {
+    public final void image(String name, float x, float y, float w, float h, boolean flipv) {
         screen.image(name, x, y, w, h, flipv);
     }
     //end Image methods
 
     //Map methods
-    final void loadMap(String map) {
+    public final void loadMap(String map) {
         screen.loadMap(map);
     }
 
-    final void map() {
+    public final void map() {
         screen.map();
     }
 
-    final void map(int x, int y) {
+    public final void map(int x, int y) {
         screen.map(x, y);
     }
 
-    final void map(int x, int y, int layer) {
+    public final void map(int x, int y, int layer) {
         screen.map(x, y, layer);
     }
 
-    final void map(int x, int y, int sx, int sy, int w, int h) {
+    public final void map(int x, int y, int sx, int sy, int w, int h) {
         screen.map(x, y, sx, sy, w, h);
     }
 
-    final void map(int x, int y, int sx, int sy, int w, int h, int layer) {
+    public final void map(int x, int y, int sx, int sy, int w, int h, int layer) {
         screen.map(x, y, sx, sy, w, h, layer);
     }
 
-    final int mapGet(int x, int y) {
+    public final int mapGet(int x, int y) {
         return screen.mapGet(x, y);
     }
 
-    final void mapSet(int x, int y, int id) {
+    public final void mapSet(int x, int y, int id) {
         screen.mapSet(x, y, id);
     }
 
-    final void mapRemove(int x, int y) {
+    public final void mapRemove(int x, int y) {
         screen.mapRemove(x, y);
     }
 
-    final int getMapHeight() {
+    public final int getMapHeight() {
         return screen.getMapHeight();
     }
 
-    final int getMapWidth() {
+    public final int getMapWidth() {
         return screen.getMapWidth();
     }
     //end Map methods
@@ -251,63 +251,63 @@ public abstract class Engine implements InputProcessor {
     //end color methods
 
     //text methods
-    final void text(String text, float x, float y, int color) {
+    public final void text(String text, float x, float y, int color) {
         screen.text(text, x, y, color);
     }
 
-    final void text(String text, float x, float y, float[] color) {
+    public final void text(String text, float x, float y, float[] color) {
         screen.text(text, x, y, color);
     }
 
-    final void text(String text, float x, float y, float width, int color) {
+    public final void text(String text, float x, float y, float width, int color) {
         screen.text(text, x, y, width, color);
     }
 
-    final void text(String text, float x, float y, float width, float[] color) {
+    public final void text(String text, float x, float y, float width, float[] color) {
         screen.text(text, x, y, width, color);
     }
 
-    final void text(String text, float x, float y, float width, int align, int color) {
+    public final void text(String text, float x, float y, float width, int align, int color) {
         screen.text(text, x, y, width, align, color);
     }
 
-    final void text(String text, float x, float y, float width, int align, float[] color) {
+    public final void text(String text, float x, float y, float width, int align, float[] color) {
         screen.text(text, x, y, width, align, color);
     }
     //end text methods
 
     //start 8x8 sprites
-    final void sprite(int id, float x, float y) {
+    public final void sprite(int id, float x, float y) {
         screen.sprite(id, x, y);
     }
 
-    final void sprite(int id, float x, float y, float degr) {
+    public final void sprite(int id, float x, float y, float degr) {
         screen.sprite(id, x, y, degr);
     }
 
-    final void sprite(int id, float x, float y, boolean clockwise) {
+    public final void sprite(int id, float x, float y, boolean clockwise) {
         screen.sprite(id, x, y, clockwise);
     }
 
-    final void sprite(int id, float x, float y, boolean flipX, boolean flipY) {
+    public final void sprite(int id, float x, float y, boolean flipX, boolean flipY) {
         screen.sprite(id, x, y, flipX, flipY);
     }
     //end 8x8 sprites
 
     //start sizable sprites
-    final void sprite(int id, float x, float y, int size) {
+    public final void sprite(int id, float x, float y, int size) {
         screen.sprite(id, x, y, size);
     }
 
-    final void sprite(int id, float x, float y, float degr, int size) {
+    public final void sprite(int id, float x, float y, float degr, int size) {
         screen.sprite(id, x, y, degr, size);
     }
 
-    final void sprite(int id, float x, float y, boolean clockwise, int size) {
+    public final void sprite(int id, float x, float y, boolean clockwise, int size) {
         screen.sprite(id, x, y, clockwise, size);
     }
 
-    final void sprite(int id, float x, float y, boolean flipX, boolean flipY, int size) {
+    public final void sprite(int id, float x, float y, boolean flipX, boolean flipY, int size) {
         screen.sprite(id, x, y, flipX, flipY, size);
     }
     //end sizable sprites
@@ -355,27 +355,27 @@ public abstract class Engine implements InputProcessor {
     //end shape drawing methods
 
     //start Audio handling
-    final void sfx(String name) {
+    public final void sfx(String name) {
         audioLoader.sound(name);
     }
 
-    final void sfx(String name, float vol, float pit, float pan) {
+    public final void sfx(String name, float vol, float pit, float pan) {
         audioLoader.sound(name, vol, pit, pan);
     }
 
-    final void music(String name) {
+    public final void music(String name) {
         audioLoader.music(name);
     }
 
-    final void music(String name, boolean loop) {
+    public final void music(String name, boolean loop) {
         audioLoader.music(name, loop);
     }
 
-    final void stopAllMusic() {
+    public final void stopAllMusic() {
         audioLoader.stopMusic();
     }
 
-    final void stopMusic(String fileName) {
+    public final void stopMusic(String fileName) {
         audioLoader.stopMusic(fileName);
     }
     //end audio handling
@@ -423,11 +423,11 @@ public abstract class Engine implements InputProcessor {
 
     //END Math utils
     //start input handling
-    final boolean button(BTN button) {
+    public final boolean button(BTN button) {
         return (null != p1ControllerListener) ? p1ControllerListener.button(button) : false;
     }
 
-    final boolean button(BTN button, int player) {
+    public final boolean button(BTN button, int player) {
         if (null != p1ControllerListener && player == 0) {
             return p1ControllerListener.button(button);
         }
@@ -438,12 +438,12 @@ public abstract class Engine implements InputProcessor {
         return false;
     }
 
-    final boolean getButton(int code) {
+    public final boolean getButton(int code) {
         return playerOneController.getButton(code);
     }
 
     //detect keyboard key presses
-    final boolean key(String key) {
+    public final boolean key(String key) {
         return Gdx.input.isKeyPressed(Keys.valueOf(key));
     }
 
@@ -494,6 +494,16 @@ public abstract class Engine implements InputProcessor {
     //Experimental API methods
     public void tint(int color) {
         g.setTint(getDrawColor(color));
+    }
+    
+    public void spriteSc(int id, float x, float y, float scale){
+        screen.spriteSc(id, x, y, scale);
+    }
+    public void spriteSc(int id, float x, float y, float scaleX, float scaleY){
+        screen.spriteSc(id, x, y, scaleX, scaleY);
+    }
+    public void spriteSc(int id, float x, float y, float scaleX, float scaleY, float degr){
+        screen.spriteSc(id, x, y, scaleX, scaleY, degr);
     }
     //END Experimental
 }

@@ -37,7 +37,7 @@ class Shapes extends leikr.Engine {
             pixel(x2+rx-5, y2+ry-5)//bottom right
         }
         box.square(screen, 0,20,20,20)
-        
+        sprite(0, 10, 10, 32.5f)
         text("Hello, World!", 0, 80, 240, 1, 1)
     }	
 }
