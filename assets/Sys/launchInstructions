@@ -1,1 +1,0 @@
-cat stub.sh Leikr-{version}.jar > Leikr && chmod +x Leikr
