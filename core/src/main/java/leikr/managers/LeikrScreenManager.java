@@ -48,7 +48,6 @@ public class LeikrScreenManager {
 
     Pixmap pixMap;
     Texture pixTex;
-    boolean usePix;
 
     /**
      * Properties set by Custom Properties
@@ -65,8 +64,6 @@ public class LeikrScreenManager {
         mapLoader = new MapLoader();
         pixMap = new Pixmap(GameRuntime.WIDTH, GameRuntime.HEIGHT, Pixmap.Format.RGBA8888);
         pixTex = new Texture(pixMap);
-        usePix = false;
-
     }
 
     //Helper methods
@@ -82,17 +79,7 @@ public class LeikrScreenManager {
         USED_SPRITES = 0;
     }
 
-    public void postRender() {
-        if (usePix) {
-            g.drawTexture(pixTex, 0, 0);
-        }
-    }
-
     public void preUpdate(float delta) {
-        if (usePix) {
-            pixTex.dispose();//Must dispose, else memory leak occurs.
-            pixTex = new Texture(pixMap);
-        }
         if (null == mapLoader.getMap()) {
             return;//don't update the map if it is null
         }
@@ -103,12 +90,10 @@ public class LeikrScreenManager {
         spriteLoader.disposeSprites();
         imageLoader.disposeImages();
         mapLoader.disposeMap();
+        pixMap.dispose();
+        pixTex.dispose();
     }
-
     //End Engine methods
-    public void usePixels() {
-        usePix = true;
-    }
 
     //Image methods
     public final void loadImages() {
@@ -362,6 +347,7 @@ public class LeikrScreenManager {
         t.scale(-scale);
         USED_SPRITES++;
     }
+
     public final void spriteSc(int id, float x, float y, float scaleX, float scaleY) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
@@ -372,6 +358,7 @@ public class LeikrScreenManager {
         t.setScale(-scaleX, -scaleY);
         USED_SPRITES++;
     }
+
     public final void spriteSc(int id, float x, float y, float scaleX, float scaleY, float degr) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
@@ -384,6 +371,7 @@ public class LeikrScreenManager {
         t.setScale(-scaleX, -scaleY);
         USED_SPRITES++;
     }
+
     public final void spriteSc(int id, float x, float y, float scaleX, float scaleY, boolean flipX, boolean flipY) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
@@ -402,24 +390,29 @@ public class LeikrScreenManager {
     public void clpx() {
         pixMap.setColor(Color.CLEAR);
         pixMap.fill();
+        applyPixmapDrawTexture();
     }
 
     public void pixel(int x, int y) {
         pixMap.drawPixel(x, y);
+        applyPixmapDrawTexture();
     }
 
     public void pixel(int x, int y, int color) {
         drawColor(color);
         pixMap.drawPixel(x, y);
+        applyPixmapDrawTexture();
     }
 
     public void pixel(int x, int y, float[] c) {
         drawColor(c[0], c[1], c[2]);
         pixMap.drawPixel(x, y);
+        applyPixmapDrawTexture();
     }
 
     public final void rect(int x, int y, int w, int h) {
         pixMap.drawRectangle(x, y, w, h);
+        applyPixmapDrawTexture();
     }
 
     public final void rect(int x, int y, int w, int h, boolean fill) {
@@ -428,10 +421,12 @@ public class LeikrScreenManager {
         } else {
             pixMap.drawRectangle(x, y, w, h);
         }
+        applyPixmapDrawTexture();
     }
 
     public final void circle(int x, int y, int r) {
         pixMap.drawCircle(x, y, r);
+        applyPixmapDrawTexture();
     }
 
     public final void circle(int x, int y, int r, boolean fill) {
@@ -440,27 +435,33 @@ public class LeikrScreenManager {
         } else {
             pixMap.drawCircle(x, y, r);
         }
+        applyPixmapDrawTexture();
     }
 
     public final void triangle(int x, int y, int x2, int y2, int x3, int y3) {
         pixMap.fillTriangle(x, y, x2, y2, x3, y3);
+        applyPixmapDrawTexture();
     }
 
     public final void line(int x1, int y1, int x2, int y2) {
         pixMap.drawLine(x1, y1, x2, y2);
+        applyPixmapDrawTexture();
+    }
+
+    private void applyPixmapDrawTexture() {
+        pixTex.draw(pixMap, 0, 0);
+        g.drawTexture(pixTex, 0, 0);
     }
     //end shape drawing methods
-    
-    
+
     //EXPERIMENTAL METHODS
-    public final void clip(float x, float y, float w, float h){
-        g.setClip(x, y, w, h);        
+    public final void clip(float x, float y, float w, float h) {
+        g.setClip(x, y, w, h);
     }
-    
-    public final void clip(){
+
+    public final void clip() {
         g.removeClip();
     }
-    
-    //END EXPERIMENTAL
 
+    //END EXPERIMENTAL
 }

@@ -5,7 +5,6 @@ class GraphicDemo extends leikr.Engine {
     	x = 70
     	deg = 0
     	xs = 1f
-        usePixels()
     }
     void update(float delta){
         FPS()

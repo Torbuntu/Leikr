@@ -113,14 +113,6 @@ public abstract class Engine implements InputProcessor {
         screen.preRender(this.g);
     }
 
-    public final void postRender() {
-        screen.postRender();
-    }
-
-    public void usePixels() {
-        screen.usePixels();
-    }
-
     /**
      * Override functions for game scripting. These are abstract and are
      * required to be implemented in the game code.
