@@ -305,10 +305,7 @@ public abstract class Engine implements InputProcessor {
     //end sizable sprites
 
     //start shape drawing methods
-    public void clpx() {
-        screen.clpx();
-    }
-
+    
     public void pixel(int x, int y) {
         screen.pixel(x, y);
     }

@@ -176,7 +176,7 @@ class WizRobo extends leikr.Engine {
     	}
     	wizard.charged = false
     	bolt.attack = true
-    	clpx()
+    	
     	bolt.f = wizard.f
     	if(wizard.f){
             bolt.vx = -3   		

@@ -23,7 +23,7 @@ public class DesktopLauncher {
             System.setSecurityManager(new SecurityManager());
         }
         DesktopMini2DxConfig config = new DesktopMini2DxConfig(GameRuntime.GAME_IDENTIFIER);
-        config.vSyncEnabled = false;
+        config.vSyncEnabled = true;
         config.title = "Leikr";
         config.width = 720;
         config.height = 480;

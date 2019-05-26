@@ -6,7 +6,6 @@ public class MyJavaGame extends leikr.Engine {
     public void create(){
     	y = 20;
     	sy = 1;
-        usePixels();
     }
     public void update(float delta){
         if(y >= 30 && sy == 1) sy = -1;
@@ -14,7 +13,7 @@ public class MyJavaGame extends leikr.Engine {
         y += sy;
     }
     public void render(){	
-    	clpx();
+    	
 		pixel(120, 80, 2);
 		
 		drawColor(2); //only pixel takes a color, so we set red for the following

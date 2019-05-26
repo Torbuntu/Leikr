@@ -16,8 +16,6 @@
 package leikr.managers;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import leikr.GameRuntime;
 import leikr.loaders.ImageLoader;
 import leikr.loaders.MapLoader;
@@ -46,9 +44,6 @@ public class LeikrScreenManager {
 
     Graphics g;
 
-    Pixmap pixMap;
-    Texture pixTex;
-
     /**
      * Properties set by Custom Properties
      *
@@ -62,8 +57,6 @@ public class LeikrScreenManager {
         spriteLoader = new SpriteLoader();
         imageLoader = new ImageLoader();
         mapLoader = new MapLoader();
-        pixMap = new Pixmap(GameRuntime.WIDTH, GameRuntime.HEIGHT, Pixmap.Format.RGBA8888);
-        pixTex = new Texture(pixMap);
     }
 
     //Helper methods
@@ -90,8 +83,6 @@ public class LeikrScreenManager {
         spriteLoader.disposeSprites();
         imageLoader.disposeImages();
         mapLoader.disposeMap();
-        pixMap.dispose();
-        pixTex.dispose();
     }
     //End Engine methods
 
@@ -162,13 +153,11 @@ public class LeikrScreenManager {
     //start color methods
     public final void drawColor(int color) {
         g.setColor(getDrawColor(color));
-        pixMap.setColor(getDrawColor(color));
     }
 
     public final void drawColor(float r, float gr, float b) {
         Color tmp = new Color(r, gr, b, 1f);
         g.setColor(tmp);
-        pixMap.setColor(tmp);
     }
 
     public final Color getDrawColor(int color) {
@@ -387,70 +376,58 @@ public class LeikrScreenManager {
     //END special sprite mode
 
     //start shape drawing methods
-    public void clpx() {
-        pixMap.setColor(Color.CLEAR);
-        pixMap.fill();
-        applyPixmapDrawTexture();
-    }
-
     public void pixel(int x, int y) {
-        pixMap.drawPixel(x, y);
-        applyPixmapDrawTexture();
+        g.drawLineSegment(x, y, x+1, y);
     }
 
     public void pixel(int x, int y, int color) {
         drawColor(color);
-        pixMap.drawPixel(x, y);
-        applyPixmapDrawTexture();
+        pixel(x, y);
     }
 
     public void pixel(int x, int y, float[] c) {
         drawColor(c[0], c[1], c[2]);
-        pixMap.drawPixel(x, y);
-        applyPixmapDrawTexture();
+        pixel(x, y);
     }
 
     public final void rect(int x, int y, int w, int h) {
-        pixMap.drawRectangle(x, y, w, h);
-        applyPixmapDrawTexture();
+        g.drawRect(x, y, w, h);
     }
 
     public final void rect(int x, int y, int w, int h, boolean fill) {
         if (fill) {
-            pixMap.fillRectangle(x, y, w, h);
+            g.fillRect(x, y, w, h);
         } else {
-            pixMap.drawRectangle(x, y, w, h);
+            g.drawRect(x, y, w, h);
         }
-        applyPixmapDrawTexture();
     }
 
     public final void circle(int x, int y, int r) {
-        pixMap.drawCircle(x, y, r);
-        applyPixmapDrawTexture();
+        g.drawCircle(x, y, r);
     }
 
     public final void circle(int x, int y, int r, boolean fill) {
         if (fill) {
-            pixMap.fillCircle(x, y, r);
+            g.fillCircle(x, y, r);
         } else {
-            pixMap.drawCircle(x, y, r);
+            g.drawCircle(x, y, r);
         }
-        applyPixmapDrawTexture();
     }
 
     public final void triangle(int x, int y, int x2, int y2, int x3, int y3) {
-        pixMap.fillTriangle(x, y, x2, y2, x3, y3);
-        applyPixmapDrawTexture();
+        g.drawTriangle(x, y, x2, y2, x3, y3);
     }
 
-    public final void line(int x1, int y1, int x2, int y2) {
-        pixMap.drawLine(x1, y1, x2, y2);
-        applyPixmapDrawTexture();
+    public final void triangle(int x, int y, int x2, int y2, int x3, int y3, boolean fill) {
+        if (fill) {
+            g.fillTriangle(x, y, x2, y2, x3, y3);
+        } else {
+            g.drawTriangle(x, y, x2, y2, x3, y3);
+        }
     }
 
-    private void applyPixmapDrawTexture() {
-        pixTex.draw(pixMap, 0, 0);
-        g.drawTexture(pixTex, 0, 0);
+    public final void line(int x, int y, int x2, int y2) {
+        g.drawLineSegment(x, y, x2, y2);
     }
     //end shape drawing methods
 

@@ -4,7 +4,7 @@ class Shapes extends leikr.Engine {
 
     int x, y, x2, y2, r, t, amt, rx, ry, cx, cy, cw, ch, cd, cr
     Box box = new Box()
-    	
+
     void create(){
         x = 120
         y = 80
@@ -33,9 +33,11 @@ class Shapes extends leikr.Engine {
     }
     void render(){	
         t+=1
-        clpx()
         clip(cx, cy, cw, ch)
+        rect(20,20,1,1)
         bgColor(9)
+        drawColor(7)
+        rect(100,80,45,45)
         for(int i = 0; i < amt; i++){
             x = cos(i / 10 + t/40)*40
             y = sin(i / 10 + t/40)*40
@@ -45,14 +47,14 @@ class Shapes extends leikr.Engine {
 
             drawColor((i%14)+2)
             pixel(-x2+rx+5, -y2+ry+5)//top left
-            pixel(-x2+rx+5, y2+ry-5)//bottom left
+            rect(-x2+rx+5, y2+ry-5, 1, 1)//bottom left
 
-            pixel(x2+rx-5, -y2+ry+5)//top right
-            pixel(x2+rx-5, y2+ry-5)//bottom right
+            circle(x2+rx-5, -y2+ry+5, 1)//top right
+            circle(x2+rx-5, y2+ry-5, 1)//bottom right
         }
         box.square(screen, 0,20,20,20)
         sprite(0, 10, 10, 32.5f)
-        clip()
+        //clip()
 
         text("Hello, World!", 0, 80, 240, 1, 1)
         
