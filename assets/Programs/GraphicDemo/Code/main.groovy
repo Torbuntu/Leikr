@@ -15,7 +15,6 @@ class GraphicDemo extends leikr.Engine {
         deg++
     }
     void render(){	
-        clpx()
         clip((float)(x-20f), 30f, 50f, 60f)  
         
         spriteSc(0, x, 50, 3f, 5f, deg)
