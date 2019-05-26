@@ -788,7 +788,7 @@ class WizRobo extends leikr.Engine {
     
     
     //Debug
-    void debuglvl(){
+    void debuglvl(){    	
         if(key("0")){
             level = 0
             title = true

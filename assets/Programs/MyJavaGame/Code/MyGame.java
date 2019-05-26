@@ -11,6 +11,9 @@ public class MyJavaGame extends leikr.Engine {
         if(y >= 30 && sy == 1) sy = -1;
         if(y <= 5 && sy == -1) sy = 1;
         y += sy;
+        if(key("X")){
+			loadProgram("Shapes")
+		}
     }
     public void render(){	
     	
@@ -30,6 +33,7 @@ public class MyJavaGame extends leikr.Engine {
 		drawColor(1);
 		line(5, 50, 120, 55);
 		
+		text("Press X to go to Shapes Demo", 0, 150, 1)		
     }	
 }
 

@@ -19,6 +19,7 @@ import com.badlogic.gdx.Gdx;
 import leikr.Engine;
 import leikr.GameRuntime;
 import leikr.loaders.EngineLoader;
+import leikr.managers.LeikrSystemManager;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.screen.BasicGameScreen;
@@ -35,6 +36,7 @@ public class EngineScreen extends BasicGameScreen {
     public static int ID = 1;
 
     Engine engine;
+    LeikrSystemManager system;
     static boolean BACK = false;
     static boolean ERROR = false;
     String errorMessage;
@@ -74,6 +76,7 @@ public class EngineScreen extends BasicGameScreen {
 
     @Override
     public void initialise(GameContainer gc) {
+        system = new LeikrSystemManager();
     }
 
     @Override
@@ -81,6 +84,7 @@ public class EngineScreen extends BasicGameScreen {
         ERROR = false;
         BACK = false;
         if (null != engine) {
+            engine.setActive(false);
             engine.dispose();
             engine = null; // release all objects for gc
         }
@@ -93,7 +97,8 @@ public class EngineScreen extends BasicGameScreen {
             return;
         }
         try {
-            engine.preCreate(EngineLoader.cp.MAX_SPRITES);
+            system.setRunning(true);
+            engine.preCreate(EngineLoader.cp.MAX_SPRITES, system);
             engine.create();
             Gdx.input.setInputProcessor(engine);
         } catch (Exception ex) {
@@ -112,6 +117,11 @@ public class EngineScreen extends BasicGameScreen {
             enterErrorScreen(sm);
             return;
         }
+        if (!system.update(sm)) {
+            System.out.println("update is false");
+            return;
+        }
+
         try {
             engine.preUpdate(delta);
             engine.update(delta);

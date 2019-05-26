@@ -26,6 +26,7 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.MathUtils;
 import leikr.loaders.AudioLoader;
 import leikr.managers.LeikrScreenManager;
+import leikr.managers.LeikrSystemManager;
 import leikr.screens.EngineScreen;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -74,6 +75,7 @@ public abstract class Engine implements InputProcessor {
      */
     private AudioLoader audioLoader;
     public LeikrScreenManager screen;
+    public LeikrSystemManager system;
 
     //custom prop functions
     public int getUsedSprites() {
@@ -81,11 +83,12 @@ public abstract class Engine implements InputProcessor {
     }
     //end custom prop functions
 
-    public final void preCreate(int mSprites) {
+    public final void preCreate(int mSprites, LeikrSystemManager system) {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         logger = new FPSLogger();
         audioLoader = new AudioLoader();
         screen = new LeikrScreenManager(mSprites);
+        this.system = system;
         active = true;
         try {
             Controllers.clearListeners();
@@ -500,6 +503,10 @@ public abstract class Engine implements InputProcessor {
     }
     public final void clip(){
         screen.clip();
+    }
+    
+    public void loadProgram(String name){
+        system.loadProgram(name);
     }
     //END Experimental
 }
