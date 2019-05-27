@@ -97,12 +97,6 @@ public class CreditScreen extends BasicGameScreen {
     }
 
     @Override
-    public void onResize(int width, int height) {
-        Gdx.app.log("INFO", "Game window changed to " + width + "x" + height);
-        viewport.onResize(width, height);
-    }
-
-    @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
         checkInput(sm);
         if (timer > 300) {

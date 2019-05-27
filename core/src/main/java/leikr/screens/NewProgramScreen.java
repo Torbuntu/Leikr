@@ -48,12 +48,6 @@ public class NewProgramScreen extends BasicGameScreen {
     }
 
     @Override
-    public void onResize(int width, int height) {
-        Gdx.app.log("INFO", "Game window changed to " + width + "x" + height);
-        viewport.onResize(width, height);
-    }
-
-    @Override
     public void preTransitionIn(Transition trns) {
         try {
             String[] programs = new File("Programs").list();

@@ -30,7 +30,6 @@ import java.util.Arrays;
 import leikr.ChipData;
 import leikr.GameRuntime;
 import leikr.customProperties.CustomSystemProperties;
-import leikr.loaders.FontLoader;
 import org.mini2Dx.core.font.MonospaceFont;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
@@ -101,13 +100,7 @@ public class MenuScreen extends BasicGameScreen {
     }
 
     @Override
-    public void onResize(int width, int height) {
-        viewport.onResize(width, height);
-    }
-
-    @Override
     public void initialise(GameContainer gc) {
-
     }
 
     @Override

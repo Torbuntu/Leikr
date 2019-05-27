@@ -88,11 +88,6 @@ public class ErrorScreen extends BasicGameScreen {
     }
 
     @Override
-    public void onResize(int width, int height) {
-        viewport.onResize(width, height);
-    }
-
-    @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
         if (MENU) {
             MENU = false;
