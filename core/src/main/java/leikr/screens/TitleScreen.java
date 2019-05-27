@@ -24,7 +24,6 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import leikr.GameRuntime;
-import leikr.loaders.FontLoader;
 import org.mini2Dx.core.font.MonospaceFont;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
@@ -44,7 +43,6 @@ public class TitleScreen extends BasicGameScreen {
 
     public static int ID = 2;
     AssetManager assetManager;
-    FontLoader fontLoader;
     MonospaceFont font;
     FitViewport viewport;
     boolean CREDITS = false;
@@ -71,8 +69,7 @@ public class TitleScreen extends BasicGameScreen {
 
     @Override
     public void initialise(GameContainer gc) {
-        fontLoader = new FontLoader();
-        font = fontLoader.getFont(assetManager);
+        font = GameRuntime.primaryFontLoader.getDefaultFont();
         try {
             Controllers.clearListeners();
             if (Controllers.getControllers().size > 0) {

@@ -30,6 +30,8 @@ import java.util.Arrays;
 import leikr.ChipData;
 import leikr.GameRuntime;
 import leikr.customProperties.CustomSystemProperties;
+import leikr.loaders.FontLoader;
+import org.mini2Dx.core.font.MonospaceFont;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -56,6 +58,8 @@ public class MenuScreen extends BasicGameScreen {
     int cursor;
     int offset;
 
+    MonospaceFont font;
+
     AssetManager assetManager;
     FitViewport viewport;
     ArrayList<String> gameList;
@@ -66,7 +70,7 @@ public class MenuScreen extends BasicGameScreen {
         menuBg = "Data/Images/menu_bg.png";
 
         this.assetManager.load(menuBg, Texture.class);
-
+        font = GameRuntime.primaryFontLoader.getDefaultFont();
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         initMenuList();
     }
@@ -103,11 +107,11 @@ public class MenuScreen extends BasicGameScreen {
 
     @Override
     public void initialise(GameContainer gc) {
+
     }
 
     @Override
     public void preTransitionIn(Transition transitionIn) {
-
         if (GameRuntime.checkLaunchTitle()) {
             GameRuntime.setProgramPath("Programs/" + GAME_NAME);
             START = true;
@@ -193,6 +197,7 @@ public class MenuScreen extends BasicGameScreen {
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
+        font.load(assetManager);
         if (START) {
             START = false;
             sm.enterGameScreen(LoadScreen.ID, null, null);
@@ -211,6 +216,7 @@ public class MenuScreen extends BasicGameScreen {
     @Override
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
+        g.setFont(font);
         g.setColor(Color.WHITE);
         if (null != gameList && gameList.size() > 0) {
             for (int i = 0; i < gameList.size(); i++) {

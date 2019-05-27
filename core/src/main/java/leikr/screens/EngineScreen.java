@@ -16,6 +16,7 @@
 package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import leikr.Engine;
 import leikr.GameRuntime;
 import leikr.loaders.EngineLoader;
@@ -40,6 +41,11 @@ public class EngineScreen extends BasicGameScreen {
     static boolean BACK = false;
     static boolean ERROR = false;
     String errorMessage;
+    AssetManager manager;
+
+    public EngineScreen(AssetManager manager) {
+        this.manager = manager;
+    }
 
     public static void setBack(boolean setback) {
         BACK = setback;
@@ -76,7 +82,7 @@ public class EngineScreen extends BasicGameScreen {
 
     @Override
     public void initialise(GameContainer gc) {
-        system = new LeikrSystemManager();
+        system = new LeikrSystemManager(manager);
     }
 
     @Override
@@ -111,14 +117,17 @@ public class EngineScreen extends BasicGameScreen {
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         if (BACK) {
+            system.resetFont();
             enterMenuScreen(sm);
         }
         if (ERROR) {
+            system.resetFont();
             enterErrorScreen(sm);
             return;
         }
         if (!system.update(sm)) {
-            System.out.println("update is false");
+            system.resetFont();
+            System.out.println("Transition initiated from running program.");
             return;
         }
 
@@ -143,6 +152,7 @@ public class EngineScreen extends BasicGameScreen {
             return;
         }
         try {
+            system.render(g);
             engine.preRender(g);
             engine.render();
         } catch (Exception ex) {

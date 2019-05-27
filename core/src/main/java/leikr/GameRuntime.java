@@ -19,6 +19,7 @@ import leikr.customProperties.CustomSystemProperties;
 import leikr.screens.EngineScreen;
 import leikr.screens.MenuScreen;
 import com.badlogic.gdx.assets.AssetManager;
+import leikr.loaders.FontLoader;
 import leikr.screens.CreditScreen;
 import leikr.screens.ErrorScreen;
 import leikr.screens.LoadScreen;
@@ -29,7 +30,7 @@ import org.mini2Dx.core.game.ScreenBasedGame;
 public class GameRuntime extends ScreenBasedGame {
 
     public static final String GAME_IDENTIFIER = "torbuntu.leikr";
-    
+
     //Start out in the Programs/ directory. Append either the Launch Title, or in MenuScreen append program titles including the directory
     public static String PROGRAM_PATH = "Programs/";
     public static String LAUNCH_TITLE;
@@ -39,6 +40,8 @@ public class GameRuntime extends ScreenBasedGame {
 
     AssetManager assetManager;
     CustomSystemProperties csp;
+
+    public static FontLoader primaryFontLoader = new FontLoader();
 
     public GameRuntime() {
         csp = new CustomSystemProperties();
@@ -50,34 +53,36 @@ public class GameRuntime extends ScreenBasedGame {
     }
 
     /**
-     * setProgramPath
-     *    Pass in a path to a program: EG "Programs/MyProgramTitle" 
-     *    The directory "Programs" is required, as seen on MenuScreen
-     * @param name 
+     * setProgramPath Pass in a path to a program: EG "Programs/MyProgramTitle"
+     * The directory "Programs" is required, as seen on MenuScreen
+     *
+     * @param name
      */
     public static void setProgramPath(String name) {
         PROGRAM_PATH = name;
     }
 
     /**
-     * getProgramPath
-     * Returns the variable PROGRAM_PATH which should contain "Programs/" as the 
-     * root directory.
-     * @return 
+     * getProgramPath Returns the variable PROGRAM_PATH which should contain
+     * "Programs/" as the root directory.
+     *
+     * @return
      */
     public static String getProgramPath() {
         return PROGRAM_PATH;
     }
-    
-    public static boolean checkLaunchTitle(){
+
+    public static boolean checkLaunchTitle() {
         return (null != LAUNCH_TITLE && LAUNCH_TITLE.length() > 3);
     }
 
     @Override
     public void initialise() {
         assetManager = new AssetManager();
+        primaryFontLoader.initializeDefaultFont(assetManager);
+
         this.addScreen(new MenuScreen(assetManager));//0
-        this.addScreen(new EngineScreen());//1
+        this.addScreen(new EngineScreen(assetManager));//1
         this.addScreen(new TitleScreen(assetManager));//2
         this.addScreen(new CreditScreen(assetManager));//3
         this.addScreen(new ErrorScreen(assetManager));//4

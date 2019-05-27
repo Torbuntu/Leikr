@@ -47,12 +47,17 @@ public class LoadScreen extends BasicGameScreen {
 
     @Override
     public void preTransitionIn(Transition transition) {
+        service = Executors.newFixedThreadPool(5);
         engineGetter = service.submit(new EngineLoader());
     }
 
     @Override
+    public void postTransitionOut(Transition tansition) {
+        service.shutdownNow();
+    }
+
+    @Override
     public void initialise(GameContainer gc) {
-        service = Executors.newFixedThreadPool(5);
     }
 
     @Override

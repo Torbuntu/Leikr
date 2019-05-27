@@ -307,8 +307,21 @@ public abstract class Engine implements InputProcessor {
     }
     //end sizable sprites
 
+    //start scaled sprites
+    public void spriteSc(int id, float x, float y, float scale) {
+        screen.spriteSc(id, x, y, scale);
+    }
+
+    public void spriteSc(int id, float x, float y, float scaleX, float scaleY) {
+        screen.spriteSc(id, x, y, scaleX, scaleY);
+    }
+
+    public void spriteSc(int id, float x, float y, float scaleX, float scaleY, float degr) {
+        screen.spriteSc(id, x, y, scaleX, scaleY, degr);
+    }
+
+    //end scaled sprites
     //start shape drawing methods
-    
     public void pixel(int x, int y) {
         screen.pixel(x, y);
     }
@@ -481,32 +494,30 @@ public abstract class Engine implements InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
-
     //end input handling
+
+    //START System api
+    public void loadProgram(String name) {
+        system.loadProgram(name);
+    }
+
+    public void setFont(String path, int spacing, int width, int height) {
+        system.setCustomFont(path, spacing, width, height);
+    }
+    //END System API
+
     //Experimental API methods
     public void tint(int color) {
         g.setTint(getDrawColor(color));
     }
-    
-    public void spriteSc(int id, float x, float y, float scale){
-        screen.spriteSc(id, x, y, scale);
-    }
-    public void spriteSc(int id, float x, float y, float scaleX, float scaleY){
-        screen.spriteSc(id, x, y, scaleX, scaleY);
-    }
-    public void spriteSc(int id, float x, float y, float scaleX, float scaleY, float degr){
-        screen.spriteSc(id, x, y, scaleX, scaleY, degr);
-    }
-    
-    public final void clip(float x, float y, float w, float h){
+
+    public final void clip(float x, float y, float w, float h) {
         screen.clip(x, y, w, h);
     }
-    public final void clip(){
+
+    public final void clip() {
         screen.clip();
     }
-    
-    public void loadProgram(String name){
-        system.loadProgram(name);
-    }
+
     //END Experimental
 }
