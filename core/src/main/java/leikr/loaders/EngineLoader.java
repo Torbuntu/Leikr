@@ -109,7 +109,7 @@ public class EngineLoader implements Callable<Engine> {
         }
         cc.setTargetDirectory(COMPILED);
         Compiler compiler = new Compiler(cc);
-
+        
         Arrays.asList(new File(rootPath).list()).stream()
                 .filter(x -> !x.equals("Compiled"))
                 .forEach(path -> compiler.compile(new File(rootPath + path)));

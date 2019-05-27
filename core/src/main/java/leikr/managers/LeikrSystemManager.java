@@ -35,6 +35,7 @@ public class LeikrSystemManager {
 
     public LeikrSystemManager(AssetManager manager) {
         this.manager = manager;
+        font = GameRuntime.primaryFontLoader.getDefaultFont();
     }
 
     //START API
