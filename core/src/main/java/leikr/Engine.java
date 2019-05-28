@@ -525,10 +525,6 @@ public abstract class Engine implements InputProcessor {
     public void tint(int color) {
         g.setTint(getDrawColor(color));
     }
-    
-    public void pixel(float[] color, int x, int y){
-        screen.pixel(color, x, y);
-    }
 
     public final void clip(float x, float y, float w, float h) {
         screen.clip(x, y, w, h);

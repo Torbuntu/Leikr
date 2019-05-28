@@ -33,12 +33,9 @@ class Shapes extends leikr.Engine {
     }
     void render(){	
         t+=1
-        clip(cx, cy, cw, ch)
-        //bgColor(9)
-        //drawColor(7)
+       // clip(cx, cy, cw, ch)
         drawColor(15)
         rect(0, 12, 50, 10, true)
-        //      
         for(int i = 0; i < 34; i++){
             pixel(i, i+10, 18)
         }

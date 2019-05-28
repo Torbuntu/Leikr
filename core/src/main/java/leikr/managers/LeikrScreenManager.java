@@ -488,12 +488,6 @@ public class LeikrScreenManager {
     public void pixel(int color, int x, int y) {
         g.drawSprite(pixelSheet.getSprite(color), x, y);
     }
-    
-    public void pixel(float[] color, int x, int y) {
-        Sprite tmp = pixelSheet.getSprite(32);
-        tmp.setColor(color[0], color[1], color[2], 1f);
-        g.drawSprite(tmp, x, y);
-    }
 
     public final void rect(int x, int y, int w, int h) {
         g.drawRect(x, y, w, h);

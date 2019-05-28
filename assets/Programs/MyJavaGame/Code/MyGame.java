@@ -16,7 +16,7 @@ public class MyJavaGame extends leikr.Engine {
     }
     public void render(){	
     	
-		pixel(120, 80, 2);
+		pixel(23, 120, 80);
 		
 		drawColor(2); //only pixel takes a color, so we set red for the following
 		rect(10, 100, 45, 45);
