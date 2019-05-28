@@ -443,7 +443,7 @@ public class LeikrScreenManager {
 
     //START animated sprites
     public Animation makeAnimSprite(int[] ids, float[] length) {
-        Animation tmp = new Animation();
+        Animation<Sprite> tmp = new Animation<>();
         for (int i = 0; i < ids.length; i++) {
             tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i], 0), length[i]);
         }
@@ -451,7 +451,7 @@ public class LeikrScreenManager {
     }
 
     public Animation makeAnimSprite(int[] ids, float[] length, boolean loop) {
-        Animation tmp = new Animation();
+        Animation<Sprite> tmp = new Animation<>();
         for (int i = 0; i < ids.length; i++) {
             tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i], 0), length[i]);
         }
@@ -460,7 +460,7 @@ public class LeikrScreenManager {
     }
 
     public Animation makeAnimSprite(int[] ids, float[] length, int size) {
-        Animation tmp = new Animation();
+        Animation<Sprite> tmp = new Animation<>();
         for (int i = 0; i < ids.length; i++) {
             tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i], size), length[i]);
         }
@@ -468,7 +468,7 @@ public class LeikrScreenManager {
     }
 
     public Animation makeAnimSprite(int[] ids, float[] length, int size, boolean loop) {
-        Animation tmp = new Animation();
+        Animation<Sprite> tmp = new Animation<>();
         for (int i = 0; i < ids.length; i++) {
             tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i], size), length[i]);
         }
