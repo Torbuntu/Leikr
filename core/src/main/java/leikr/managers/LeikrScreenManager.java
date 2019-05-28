@@ -16,12 +16,17 @@
 package leikr.managers;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.Texture;
 import leikr.GameRuntime;
 import leikr.loaders.ImageLoader;
 import leikr.loaders.MapLoader;
 import leikr.loaders.SpriteLoader;
+import org.mini2Dx.core.graphics.Animation;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.Sprite;
+import org.mini2Dx.core.graphics.SpriteSheet;
 
 /**
  *
@@ -42,6 +47,7 @@ public class LeikrScreenManager {
     ImageLoader imageLoader;
     MapLoader mapLoader;
 
+    SpriteSheet pixelSheet;
     Graphics g;
 
     /**
@@ -52,11 +58,32 @@ public class LeikrScreenManager {
     private final int MAX_SPRITES;
     private int USED_SPRITES;
 
+    /**
+     * LeikrScreenManager constructor
+     *
+     * @param mSprites
+     */
     public LeikrScreenManager(int mSprites) {
         MAX_SPRITES = mSprites;
         spriteLoader = new SpriteLoader();
         imageLoader = new ImageLoader();
         mapLoader = new MapLoader();
+        constructPixelSheet();
+    }
+
+    /**
+     * constructPixelSheet
+     *
+     * Constructs the sprite sheet of colors available for pixel drawing
+     */
+    private void constructPixelSheet() {
+        Pixmap colorMap = new Pixmap(34, 1, Format.RGBA8888);
+        for (int i = 0; i < 34; i++) {
+            colorMap.setColor(getDrawColor(i));
+            colorMap.drawPixel(i, 0);
+        }
+        pixelSheet = new SpriteSheet(new Texture(colorMap), 1, 1);
+        colorMap.dispose();
     }
 
     //Helper methods
@@ -151,52 +178,91 @@ public class LeikrScreenManager {
     //end Map methods
 
     //start color methods
-    public final void drawColor(int color) {
-        g.setColor(getDrawColor(color));
-    }
-
-    public final void drawColor(float r, float gr, float b) {
-        Color tmp = new Color(r, gr, b, 1f);
-        g.setColor(tmp);
-    }
-
     public final Color getDrawColor(int color) {
         switch (color) {
             case 0:
                 return (Color.BLACK);
             case 1:
-                return (Color.WHITE);
-            case 2:
-                return (Color.RED);
-            case 3:
-                return (Color.GREEN);
-            case 4:
                 return (Color.BLUE);
-            case 5:
-                return (Color.YELLOW);
-            case 6:
+            case 2:
                 return (Color.BROWN);
-            case 7:
-                return (Color.MAGENTA);
-            case 8:
-                return (Color.CYAN);
-            case 9:
-                return (Color.TEAL);
-            case 10:
-                return (Color.TAN);
-            case 11:
-                return (Color.FOREST);
-            case 12:
-                return (Color.PINK);
-            case 13:
-                return (Color.ORANGE);
-            case 14:
-                return (Color.PURPLE);
-            case 15:
+            case 3:
+                return (Color.CHARTREUSE);
+            case 4:
+                return (Color.CLEAR);
+            case 5:
                 return (Color.CORAL);
+            case 6:
+                return (Color.CYAN);
+            case 7:
+                return (Color.DARK_GRAY);
+            case 8:
+                return (Color.FIREBRICK);
+            case 9:
+                return (Color.FOREST);
+            case 10:
+                return (Color.GOLD);
+            case 11:
+                return (Color.GOLDENROD);
+            case 12:
+                return (Color.GRAY);
+            case 13:
+                return (Color.GREEN);
+            case 14:
+                return (Color.LIGHT_GRAY);
+            case 15:
+                return (Color.LIME);
+            case 16:
+                return (Color.MAGENTA);
+            case 17:
+                return (Color.MAROON);
+            case 18:
+                return (Color.NAVY);
+            case 19:
+                return (Color.OLIVE);
+            case 20:
+                return (Color.ORANGE);
+            case 21:
+                return (Color.PINK);
+            case 22:
+                return (Color.PURPLE);
+            case 23:
+                return (Color.RED);
+            case 24:
+                return (Color.ROYAL);
+            case 25:
+                return (Color.SALMON);
+            case 26:
+                return (Color.SCARLET);
+            case 27:
+                return (Color.SKY);
+            case 28:
+                return (Color.SLATE);
+            case 29:
+                return (Color.TAN);
+            case 30:
+                return (Color.TEAL);
+            case 31:
+                return (Color.VIOLET);
+            case 32:
+                return (Color.WHITE);
+            case 33:
+                return (Color.YELLOW);
             default:
                 return Color.BLACK;
         }
+    }
+
+    public final void drawColor(int color) {
+        g.setColor(getDrawColor(color));
+    }
+
+    public final void drawColor(float r, float gr, float b) {
+        g.setColor(new Color(r, gr, b, 1f));
+    }
+
+    public final void drawColor(float[] c) {
+        g.setColor(new Color(c[0], c[1], c[2], 1f));
     }
 
     public final void bgColor(int color) {
@@ -375,19 +441,58 @@ public class LeikrScreenManager {
     }
     //END special sprite mode
 
+    //START animated sprites
+    public Animation makeAnimSprite(int[] ids, float[] length) {
+        Animation tmp = new Animation();
+        for (int i = 0; i < ids.length; i++) {
+            tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i], 0), length[i]);
+        }
+        return tmp;
+    }
+
+    public Animation makeAnimSprite(int[] ids, float[] length, boolean loop) {
+        Animation tmp = new Animation();
+        for (int i = 0; i < ids.length; i++) {
+            tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i], 0), length[i]);
+        }
+        tmp.setLooping(true);
+        return tmp;
+    }
+
+    public Animation makeAnimSprite(int[] ids, float[] length, int size) {
+        Animation tmp = new Animation();
+        for (int i = 0; i < ids.length; i++) {
+            tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i], size), length[i]);
+        }
+        return tmp;
+    }
+
+    public Animation makeAnimSprite(int[] ids, float[] length, int size, boolean loop) {
+        Animation tmp = new Animation();
+        for (int i = 0; i < ids.length; i++) {
+            tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i], size), length[i]);
+        }
+        tmp.setLooping(loop);
+        return tmp;
+    }
+
+    public void spriteAnim(Animation sprite, float x, float y) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        sprite.draw(g, x, y);
+    }
+    //END animated sprites
+
     //start shape drawing methods
-    public void pixel(int x, int y) {
-        g.drawLineSegment(x, y, x+1, y);
+    public void pixel(int color, int x, int y) {
+        g.drawSprite(pixelSheet.getSprite(color), x, y);
     }
-
-    public void pixel(int x, int y, int color) {
-        drawColor(color);
-        pixel(x, y);
-    }
-
-    public void pixel(int x, int y, float[] c) {
-        drawColor(c[0], c[1], c[2]);
-        pixel(x, y);
+    
+    public void pixel(float[] color, int x, int y) {
+        Sprite tmp = pixelSheet.getSprite(32);
+        tmp.setColor(color[0], color[1], color[2], 1f);
+        g.drawSprite(tmp, x, y);
     }
 
     public final void rect(int x, int y, int w, int h) {

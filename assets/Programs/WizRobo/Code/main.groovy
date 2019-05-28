@@ -18,6 +18,7 @@ class WizRobo extends leikr.Engine {
     def lvlFinalstart = false
 	    
     def time = 0
+    def tmpAnimSprite 
 		    
     def solid(x,y){
         float mx = (x)/8 
@@ -506,6 +507,8 @@ class WizRobo extends leikr.Engine {
     void create(){		
         loadImages()
         loadMap("title")
+    	tmpAnimSprite = makeAnimSprite([1,2,3,0] as int[], [0.5f,0.5f,0.5f,0.5f] as float[], true)
+    
     }
     
     void updateGui(){
@@ -550,6 +553,7 @@ class WizRobo extends leikr.Engine {
 
     void update(float delta){
 		FPS()
+		tmpAnimSprite.update(delta)
         debuglvl()       
         if(gameOver){
         	if(key("Enter") || button(BTN.START)){
@@ -781,7 +785,9 @@ class WizRobo extends leikr.Engine {
         default:
             renderDefault()
             break;
-        }        
+        }      
+        
+        spriteAnim(tmpAnimSprite, 10, 10)  
     }
     
     

@@ -28,6 +28,7 @@ import leikr.loaders.AudioLoader;
 import leikr.managers.LeikrScreenManager;
 import leikr.managers.LeikrSystemManager;
 import leikr.screens.EngineScreen;
+import org.mini2Dx.core.graphics.Animation;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 
@@ -319,19 +320,33 @@ public abstract class Engine implements InputProcessor {
     public void spriteSc(int id, float x, float y, float scaleX, float scaleY, float degr) {
         screen.spriteSc(id, x, y, scaleX, scaleY, degr);
     }
-
     //end scaled sprites
+
+    //start animated sprites
+    public Animation makeAnimSprite(int[] ids, float[] lengths) {
+        return screen.makeAnimSprite(ids, lengths);
+    }
+
+    public Animation makeAnimSprite(int[] ids, float[] lengths, boolean loop) {
+        return screen.makeAnimSprite(ids, lengths, loop);
+    }
+
+    public Animation makeAnimSprite(int[] ids, float[] lengths, int size) {
+        return screen.makeAnimSprite(ids, lengths, size);
+    }
+
+    public Animation makeAnimSprite(int[] ids, float[] lengths, int size, boolean loop) {
+        return screen.makeAnimSprite(ids, lengths, size, loop);
+    }
+
+    public void spriteAnim(Animation sprite, float x, float y) {
+        screen.spriteAnim(sprite, x, y);
+    }
+    //END animated sprites
+
     //start shape drawing methods
-    public void pixel(int x, int y) {
-        screen.pixel(x, y);
-    }
-
-    public void pixel(int x, int y, int color) {
-        screen.pixel(x, y, color);
-    }
-
-    public void pixel(int x, int y, float[] c) {
-        screen.pixel(x, y, c);
+    public void pixel(int color, int x, int y) {
+        screen.pixel(color, x, y);
     }
 
     public final void rect(int x, int y, int w, int h) {
@@ -509,6 +524,10 @@ public abstract class Engine implements InputProcessor {
     //Experimental API methods
     public void tint(int color) {
         g.setTint(getDrawColor(color));
+    }
+    
+    public void pixel(float[] color, int x, int y){
+        screen.pixel(color, x, y);
     }
 
     public final void clip(float x, float y, float w, float h) {
