@@ -161,6 +161,19 @@ class WizRobo extends leikr.Engine {
     	}
     }
     
+    def walkingDust(){
+    	def i = randInt(8)
+		def j = randInt(8)
+		if(wizard.f){			
+			pixel(14, (int)(wizard.x + 9+i), (int)(wizard.y -j+6))
+    		pixel(14, (int)(wizard.x + 9+j), (int)(wizard.y -i+6))
+		}else{
+			pixel(14, (int)(wizard.x-i-1), (int)(wizard.y -j+6))
+    		pixel(14, (int)(wizard.x-j-1), (int)(wizard.y -i+6))
+		}
+
+    }
+    
     void chargep(){
     	if(bolt.attack){
             return
@@ -647,10 +660,10 @@ class WizRobo extends leikr.Engine {
         sprite(healthSpids[1], 96, 0)
         sprite(healthSpids[2], 88, 0)
         
-        text("lvl:"+level, 112, 0, 1)
+        text("lvl:"+level, 112, 0, 32)
         
         sprite(29, 160, 0)
-        text(":"+wizard.scrolls, 168, 0, 1)
+        text(":"+wizard.scrolls, 168, 0, 32)
     }
     
     void renderDefault(){
@@ -708,7 +721,7 @@ class WizRobo extends leikr.Engine {
         enemies.each{it ->
             if(it.alive){
                 sprite(it.spid, it.x, it.y, it.f, false, 2)
-                text("["+it.health+"]", (it.x+8).toFloat(), (it.y-8).toFloat(), 2)
+                text("["+it.health+"]", (it.x+8).toFloat(), (it.y-8).toFloat(), 23)
             }
         }  
     }	
@@ -719,15 +732,15 @@ class WizRobo extends leikr.Engine {
         enemies.each{it ->
             if(it.alive){
                 sprite(it.spid, it.x, it.y, it.f, false, 2)
-                text("["+it.health+"]", (it.x+8).toFloat(), (it.y-8).toFloat(), 2)
+                text("["+it.health+"]", (it.x+8).toFloat(), (it.y-8).toFloat(), 23)
             }
         }  
     }	
     
     void renderGameOver(){
-    	text("Game Over!", 46, 32, 1)
-    	text("Thanks for playing this demo.", 8, 42, 1)
-    	text("Press Enter to play again.", 8, 54, 1)
+    	text("Game Over!", 46, 32, 32)
+    	text("Thanks for playing this demo.", 8, 42, 32)
+    	text("Press Enter to play again.", 8, 54, 32)
     }
 	
     void render(){
@@ -740,8 +753,8 @@ class WizRobo extends leikr.Engine {
         if(title){
             image("stonewall", 0,0)
 	    	map()
-            text("Escape the dungeon!", 46, 32, 1)
-            text("Move: arrows. Jump: Space. Charge: X. Shoot: Z. Start: Enter", 12, 110, 116, 1)
+            text("Escape the dungeon!", 46, 32, 32)
+            text("Move: arrows. Jump: Space. Charge: X. Shoot: Z. Start: Enter", 12, 110, 116, 32)
             return
         }else{
 	    	image("stonewall", 0,8)
@@ -749,7 +762,7 @@ class WizRobo extends leikr.Engine {
 		}
 
 		if(key("S")){
-            text("Scrolls: "+wizard.scrolls, 46, 32, 1)
+            text("Scrolls: "+wizard.scrolls, 46, 32, 32)
         }
 		
         renderGui()
@@ -757,6 +770,7 @@ class WizRobo extends leikr.Engine {
             sprite(9, (wizard.x).toFloat(), (wizard.y-8).toFloat(), wizard.cf, false)
         }
         sprite(wizard.spid, wizard.x.toFloat(), wizard.y.toFloat(), wizard.f, false)
+        if(wizard.walking) walkingDust()
         if(bolt.attack){
             sprite(bolt.spid, bolt.x, bolt.y, bolt.f, false)
         }
