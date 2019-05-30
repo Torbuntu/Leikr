@@ -360,10 +360,6 @@ public class LeikrScreenManager {
         drawSpriteRotate(id, 0, degr, x, y);
     }
 
-    public final void sprite(int id, float x, float y, boolean clockwise) {
-        drawSprite90(id, x, y, 0, clockwise);
-    }
-
     public final void sprite(int id, float x, float y, boolean flipX, boolean flipY) {
         drawSpriteFlip(id, x, y, 0, flipX, flipY);
     }
@@ -380,10 +376,6 @@ public class LeikrScreenManager {
 
     public final void sprite(int id, float x, float y, float degr, int size) {
         drawSpriteRotate(id, size, degr, x, y);
-    }
-
-    public final void sprite(int id, float x, float y, boolean clockwise, int size) {
-        drawSprite90(id, x, y, size, clockwise);
     }
 
     public final void sprite(int id, float x, float y, boolean flipX, boolean flipY, int size) {
@@ -481,6 +473,15 @@ public class LeikrScreenManager {
             return;
         }
         sprite.draw(g, x, y);
+    }
+
+    public void spriteAnim(Animation sprite, float x, float y, boolean flipH, boolean flipV) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        sprite.flip(flipH, flipV);
+        sprite.draw(g, x, y);
+        sprite.flip(!flipH, !flipV);
     }
     //END animated sprites
 

@@ -281,10 +281,6 @@ public abstract class Engine implements InputProcessor {
         screen.sprite(id, x, y, degr);
     }
 
-    public final void sprite(int id, float x, float y, boolean clockwise) {
-        screen.sprite(id, x, y, clockwise);
-    }
-
     public final void sprite(int id, float x, float y, boolean flipX, boolean flipY) {
         screen.sprite(id, x, y, flipX, flipY);
     }
@@ -297,10 +293,6 @@ public abstract class Engine implements InputProcessor {
 
     public final void sprite(int id, float x, float y, float degr, int size) {
         screen.sprite(id, x, y, degr, size);
-    }
-
-    public final void sprite(int id, float x, float y, boolean clockwise, int size) {
-        screen.sprite(id, x, y, clockwise, size);
     }
 
     public final void sprite(int id, float x, float y, boolean flipX, boolean flipY, int size) {
@@ -341,6 +333,10 @@ public abstract class Engine implements InputProcessor {
 
     public void spriteAnim(Animation sprite, float x, float y) {
         screen.spriteAnim(sprite, x, y);
+    }
+
+    public void spriteAnim(Animation sprite, float x, float y, boolean flipH, boolean flipV) {
+        screen.spriteAnim(sprite, x, y, flipH, flipV);
     }
     //END animated sprites
 

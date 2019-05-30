@@ -74,6 +74,7 @@ public class EngineLoader implements Callable<Engine> {
     }
 
     private Engine getSourceEngine() throws CompilationFailedException, IOException, InstantiationException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        gcl.clearCache();
         Arrays.asList(new File(rootPath).list()).stream()
                 .filter(x -> !x.equals("main.groovy") && !x.equals("Compiled"))
                 .forEach(path -> {
