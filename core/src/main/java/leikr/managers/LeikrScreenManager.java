@@ -455,7 +455,7 @@ public class LeikrScreenManager {
         for (int i = 0; i < ids.length; i++) {
             tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i], 0), length[i]);
         }
-        tmp.setLooping(true);
+        tmp.setLooping(loop);
         return tmp;
     }
 
