@@ -1,19 +1,19 @@
 class Player{
 	float x = 40, y = 20, vx = 0, vy = 0, gv = 2
 	
-	def idleAnimation
-	def walkingAnimation
-	def runningAnimation  
-	def jumpingAnimation 
+	def idleAnimation, walkingAnimation, runningAnimation, jumpingAnimation
 	
 	//0 = idle, 1 = walk, 2 = run, 3 = jump
 	def state = 0
 	
 	//true = left, false = right
-	boolean facing = true, ground = false
+	boolean facing = true, ground = false, jumping = false
 	
 	def frameSpeedTen = [0.1f,0.1f,0.1f,0.1f,0.1f,0.1f,0.1f,0.1f,0.1f,0.1f]
 	def frameSpeedEight = [0.1f,0.1f,0.1f,0.1f,0.1f,0.1f,0.1f,0.1f]
+	
+	def jumpTime = 10
+	
 	
 	def makePlayerCat(screen){
 		idleAnimation = screen.makeAnimSprite(0..9 as int[], frameSpeedTen as float[], 2, true)
@@ -47,7 +47,16 @@ class Player{
 		jumpingAnimation.update(delta)
 		
 		//Movement
-		vy = 0
+		if(jumping && jumpTime > 0){
+			vy--
+			jumpTime--
+		}else{
+			vy = 0
+		}
+		if(jumpTime == 0){
+			jumpTime = 10
+			jumping = false
+		}
 		vx = 0
 		switch(state){
 			case 1:
@@ -59,15 +68,15 @@ class Player{
 				break
 			case 2:
 				if(facing){
-					vx = -3
+					vx = -2
 				}else{				
-					vx = 3
+					vx = 2
 				}
 				break
 		}
 			
-		if(!ground){
-			vy = 3
+		if(!ground && !jumping){
+			vy = 2
 			state = 3
 		}
 		

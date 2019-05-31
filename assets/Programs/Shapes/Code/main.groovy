@@ -8,7 +8,7 @@ class Shapes extends leikr.Engine {
     void create(){
         x = 120
         y = 80
-        amt = 500
+        amt = 1000
         t = 0
         rx = 120
         ry = 80
@@ -35,9 +35,9 @@ class Shapes extends leikr.Engine {
         t+=1
        // clip(cx, cy, cw, ch)
         drawColor(15)
-        rect(0, 12, 50, 10, true)
+        rect(0, 12, 40, 10, true)
         for(int i = 0; i < 34; i++){
-            pixel(i, i+10, 18)
+            pixel(i, i+3, 18)
         }
         
         for(int i = 0; i < amt; i++){
