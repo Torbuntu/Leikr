@@ -145,7 +145,7 @@ public class EngineLoader implements Callable<Engine> {
             compileEngine();
 
             //New instance
-            return (Engine) urlCl.loadClass(MenuScreen.GAME_NAME).newInstance();
+            return (Engine) urlCl.loadClass(MenuScreen.GAME_NAME).getConstructors()[0].newInstance();
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;

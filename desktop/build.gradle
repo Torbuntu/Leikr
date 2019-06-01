@@ -23,8 +23,6 @@ task deployLeikr {
 
 }
 
-
-sourceCompatibility = 1.8
 sourceSets.main.java.srcDirs = [ "src/" ]
 
 mainClassName = "leikr.desktop.DesktopLauncher"
