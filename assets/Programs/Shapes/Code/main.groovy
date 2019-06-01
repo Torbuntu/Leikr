@@ -3,8 +3,7 @@ import java.io.File //for bad guy code test
 class Shapes extends leikr.Engine {
 
     int x, y, x2, y2, r, t, amt, rx, ry, cx, cy, cw, ch, cd, cr
-    Box box = new Box()
-
+    
     void create(){
         x = 120
         y = 80
@@ -33,19 +32,13 @@ class Shapes extends leikr.Engine {
     }
     void render(){	
         t+=1
-       // clip(cx, cy, cw, ch)
+        // clip(cx, cy, cw, ch)
         drawColor(15)
         rect(0, 12, 40, 10, true)
         for(int i = 0; i < 34; i++){
             pixel(i, i+3, 18)
         }
-
-		for(int i = 0; i < 240; i++){
-			for(int j = 0; j < 160; j++){
-				drawColor((i%32)+1)
-				pixel((i%33)+1, i, j)
-			}
-		}        
+ 
 
         for(int i = 0; i < amt; i++){
             x = cos(i / 10 + t/40)*40
@@ -60,20 +53,8 @@ class Shapes extends leikr.Engine {
             pixel((i%33)+1, x2+rx-5, -y2+ry+5)//top right
             pixel((i%33)+1, x2+rx-5, y2+ry-5)//bottom rigt
         }
-        //box.square(screen, 0,20,20,20)
-        //sprite(0, 10, 10, 32.5f)
- 
-	    //clip()
-
-
-		for(int i = 0; i < 240; i++){
-             for(int j = 0; j < 160; j++){
-                 pixel(((i*j)%33)+1, i, j)
-             }
-         }
-
         text("Hello, World!", 0, 80, 240, 1, 32)
+
+    }
         
-        
-    }	
-}
+}	
