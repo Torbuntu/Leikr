@@ -61,9 +61,9 @@ class Player{
 		switch(state){
 			case 1:
 				if(facing){
-					vx = -1
+					vx = -1.5
 				}else{				
-					vx = 1
+					vx = 1.5
 				}
 				break
 			case 2:
@@ -76,7 +76,7 @@ class Player{
 		}
 			
 		if(!ground && !jumping){
-			vy = 2
+			vy = 3
 			state = 3
 		}
 		
