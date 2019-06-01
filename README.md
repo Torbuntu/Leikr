@@ -41,6 +41,8 @@ The `release` argument triggers the system to apply the sandboxing security poli
 
 ###### `>` is the terminal icon, don't type this.
 
+###### Java is required to run this program. Best used with AdoptOpenJDK. 
+
 1. git clone the project. Then enter the `leikr` directory.
 
 ```
