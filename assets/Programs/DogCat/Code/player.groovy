@@ -12,7 +12,7 @@ class Player{
 	def frameSpeedTen = [0.1f,0.1f,0.1f,0.1f,0.1f,0.1f,0.1f,0.1f,0.1f,0.1f]
 	def frameSpeedEight = [0.1f,0.1f,0.1f,0.1f,0.1f,0.1f,0.1f,0.1f]
 	
-	def jumpTime = 10
+	def jumpTime = 12
 	
 	
 	def makePlayerCat(screen){
@@ -48,13 +48,13 @@ class Player{
 		
 		//Movement
 		if(jumping && jumpTime > 0){
-			vy--
+			vy-=0.5f
 			jumpTime--
 		}else{
 			vy = 0
 		}
 		if(jumpTime == 0){
-			jumpTime = 10
+			jumpTime = 12
 			jumping = false
 		}
 		vx = 0
@@ -76,12 +76,17 @@ class Player{
 		}
 			
 		if(!ground && !jumping){
-			vy = 3
+			vy += 3
 			state = 3
 		}
 		
 		y += vy
 		x += vx
+		
+		if(y>= 160) {
+			x=40
+			y=20
+		}
 	}	
 
 	def draw(screen){

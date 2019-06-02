@@ -9,7 +9,9 @@ class DogCat extends leikr.Engine {
     def solid(x,y){
         float mx = (x)/32 
         float my = (y)/32
-        return	(mapGet((int)mx,(int)my) >= 81)
+        int id = mapGet((int)mx,(int)my)
+        println(id)
+        return	( id > 81 && id <= 96)
     }	  
     
     void update(float delta){
@@ -35,7 +37,7 @@ class DogCat extends leikr.Engine {
 			p.vy = -0.5f
 			p.jumping = true
 		}
-		if(solid(p.x,p.y+32) || solid(p.x+32, p.y+32)){
+		if(solid(p.x+8,p.y+32) || solid(p.x+16, p.y+32)){
 			p.onGround()
 		}else{
 			p.falling()
