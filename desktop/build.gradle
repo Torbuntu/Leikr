@@ -8,6 +8,8 @@ shadowJar {
     //Exclude Asset directories from inside the jar.
     exclude 'Data'
     exclude 'Programs'
+    exclude 'Leikr'
+    exclude 'Leikr.bat'
 }
 
 task deployLeikr {
@@ -20,7 +22,6 @@ task deployLeikr {
             into "$projectDir/build/libs"
         } 
     }
-
 }
 
 sourceSets.main.java.srcDirs = [ "src/" ]

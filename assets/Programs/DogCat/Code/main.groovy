@@ -10,7 +10,6 @@ class DogCat extends leikr.Engine {
         float mx = (x)/32 
         float my = (y)/32
         int id = mapGet((int)mx,(int)my)
-        println(id)
         return	( id > 81 && id <= 96)
     }	  
     
@@ -33,6 +32,7 @@ class DogCat extends leikr.Engine {
 			}
 		}
 		if(key("Up") && p.vy == 0 && !p.jumping){
+			sfx("jump")
 			p.setState(3)//3 jumping
 			p.vy = -0.5f
 			p.jumping = true

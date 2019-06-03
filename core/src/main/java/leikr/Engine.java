@@ -24,7 +24,7 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.MathUtils;
-import leikr.loaders.AudioLoader;
+import leikr.managers.LeikrAudioManager;
 import leikr.managers.LeikrScreenManager;
 import leikr.managers.LeikrSystemManager;
 import leikr.screens.EngineScreen;
@@ -74,9 +74,9 @@ public abstract class Engine implements InputProcessor {
      *
      * The loaders are used to load the custom assets for a game at startup.
      */
-    private AudioLoader audioLoader;
     public LeikrScreenManager screen;
     public LeikrSystemManager system;
+    public LeikrAudioManager audio;
 
     //custom prop functions
     public int getUsedSprites() {
@@ -87,7 +87,7 @@ public abstract class Engine implements InputProcessor {
     public final void preCreate(int mSprites, LeikrSystemManager system) {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         logger = new FPSLogger();
-        audioLoader = new AudioLoader();
+        audio = new LeikrAudioManager();
         screen = new LeikrScreenManager(mSprites);
         this.system = system;
         active = true;
@@ -130,7 +130,7 @@ public abstract class Engine implements InputProcessor {
 
     //disposes the game objects on exit
     public final void dispose() {
-        audioLoader.disposeAudioLoader();
+        audio.dispose();
         screen.dispose();
         if (null != playerOneController) {
             playerOneController.removeListener(p1ControllerListener);
@@ -372,27 +372,27 @@ public abstract class Engine implements InputProcessor {
 
     //start Audio handling
     public final void sfx(String name) {
-        audioLoader.sound(name);
+        audio.sfx(name);
     }
 
     public final void sfx(String name, float vol, float pit, float pan) {
-        audioLoader.sound(name, vol, pit, pan);
+        audio.sfx(name, vol, pit, pan);
     }
 
     public final void music(String name) {
-        audioLoader.music(name);
+        audio.music(name);
     }
 
     public final void music(String name, boolean loop) {
-        audioLoader.music(name, loop);
+        audio.music(name, loop);
     }
 
     public final void stopAllMusic() {
-        audioLoader.stopMusic();
+        audio.stopAllMusic();
     }
 
     public final void stopMusic(String fileName) {
-        audioLoader.stopMusic(fileName);
+        audio.stopMusic(fileName);
     }
     //end audio handling
 
