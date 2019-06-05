@@ -16,7 +16,9 @@ import org.mini2Dx.core.Mdx;
 public class DesktopLauncher {
 
     public static void main(String[] arg) {
-        if (arg.length > 0 && arg[0].equalsIgnoreCase("release")) {
+        if (arg.length > 0 && arg[0].equalsIgnoreCase("insecure")) {
+            Logger.getLogger(DesktopLauncher.class.getName()).log(Level.WARNING, "Leikr is running without security policy.");
+        }else{
             checkForPolicy();
             System.out.println("Setting policy...");
             System.setProperty("java.security.policy", new File("Sys/mysecurity.policy").getAbsolutePath());

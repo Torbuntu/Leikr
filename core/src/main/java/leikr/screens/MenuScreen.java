@@ -23,10 +23,12 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import leikr.ChipData;
 import leikr.GameRuntime;
 import leikr.customProperties.CustomSystemProperties;
@@ -64,6 +66,8 @@ public class MenuScreen extends BasicGameScreen {
     ArrayList<String> gameList;
     ArrayList<ChipData> programs;
 
+    float time = 0;
+
     public MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
         menuBg = "Data/Images/menu_bg.png";
@@ -75,6 +79,9 @@ public class MenuScreen extends BasicGameScreen {
     }
 
     private void initMenuList() {
+
+        setCursor();
+
         gameList = new ArrayList<>(Arrays.asList(new File("Programs/").list()));
         programs = new ArrayList<>();
 
@@ -82,6 +89,7 @@ public class MenuScreen extends BasicGameScreen {
         offset = 0;
 
         if (gameList != null && gameList.size() > 0) {
+            Collections.sort(gameList);
             GAME_NAME = gameList.get(0);
             loadPrograms();
             gameList.add("Start new...");
@@ -89,6 +97,14 @@ public class MenuScreen extends BasicGameScreen {
             gameList.add("Start new...");
             programs.add(new ChipData("New Game", "System", "Template", "1.0", 0, "Initializes a new program template", assetManager));
         }
+    }
+
+    private void setCursor() {
+        Pixmap map = new Pixmap(8, 8, Pixmap.Format.RGBA8888);
+        map.setColor(Color.RED);
+        map.fillCircle(0, 0, 8);
+        Gdx.graphics.setCursor(Gdx.graphics.newCursor(map, 0, 0));
+        map.dispose();
     }
 
     private void loadPrograms() {
@@ -153,7 +169,7 @@ public class MenuScreen extends BasicGameScreen {
             if (Controllers.getControllers().size > 0) {
                 Controllers.getControllers().get(0).addListener(new ControllerAdapter() {
                     @Override
-                    public boolean buttonUp(Controller controller, int buttonIndex) {
+                    public boolean buttonDown(Controller controller, int buttonIndex) {
                         if (buttonIndex == CustomSystemProperties.START || buttonIndex == CustomSystemProperties.A) {
                             if (cursor == gameList.size() - 1) {
                                 NEW_PROGRAM = true;
@@ -191,6 +207,27 @@ public class MenuScreen extends BasicGameScreen {
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         font.load(assetManager);
+        time += delta;
+        if (Gdx.input.getY() > 145 && cursor < gameList.size() - 1 && Gdx.input.isTouched() && time > 0.2) {
+            cursor++;
+            GAME_NAME = gameList.get(cursor);
+            time = 0;
+        }
+        if (Gdx.input.getY() < 116 && cursor > 0 && Gdx.input.isTouched() && time > 0.2) {
+            cursor--;
+            GAME_NAME = gameList.get(cursor);
+            time = 0;
+        }
+        if (Gdx.input.getY() > 117 && Gdx.input.getY() < 145 && Gdx.input.isTouched()) {
+            if (cursor == gameList.size() - 1) {
+                NEW_PROGRAM = true;
+                System.out.println("initializing new game...");
+            } else {
+                START = true;
+                System.out.println("Loading program: " + GAME_NAME);
+                GameRuntime.setProgramPath("Programs/" + GAME_NAME);
+            }
+        }
         if (START) {
             START = false;
             sm.enterGameScreen(LoadScreen.ID, null, null);

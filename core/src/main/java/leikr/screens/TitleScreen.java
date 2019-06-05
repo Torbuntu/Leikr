@@ -75,7 +75,7 @@ public class TitleScreen extends BasicGameScreen {
             if (Controllers.getControllers().size > 0) {
                 Controllers.getControllers().get(0).addListener(new ControllerAdapter() {
                     @Override
-                    public boolean buttonUp(Controller controller, int buttonIndex) {
+                    public boolean buttonDown(Controller controller, int buttonIndex) {
                         CREDITS = true;
                         return true;
                     }
@@ -93,7 +93,7 @@ public class TitleScreen extends BasicGameScreen {
         logo.update(f);
 
         checkInput(sm);
-        if(timer > 300){
+        if(Gdx.input.isTouched() || timer > 300){
             CREDITS = true;
         }
         timer++;

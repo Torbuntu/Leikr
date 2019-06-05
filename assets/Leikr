@@ -15,4 +15,4 @@ fi
 
 JVM_ARGS="-jar -Xmx1g -XX:+CMSClassUnloadingEnabled"
 
-exec "$JAVA_COMMAND" $JVM_ARGS "Leikr-0.0.5.jar" "release"
+exec "$JAVA_COMMAND" $JVM_ARGS "Leikr-0.0.5.jar" 

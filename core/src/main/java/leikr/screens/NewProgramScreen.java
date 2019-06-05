@@ -1,7 +1,17 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2019 torbuntu.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package leikr.screens;
 
@@ -36,6 +46,9 @@ public class NewProgramScreen extends BasicGameScreen {
     FitViewport viewport;
 
     boolean BACK = false;
+    boolean CREATE = false;
+    boolean FINISH = false;
+    String newName = "";
 
     String newLocation = "New Program template generated at: /Programs/";
 
@@ -49,34 +62,33 @@ public class NewProgramScreen extends BasicGameScreen {
 
     @Override
     public void preTransitionIn(Transition trns) {
-        try {
-            String[] programs = new File("Programs").list();
-            int index = 0;
-            String NP = "NewProgram";
-            for (String name : programs) {
-                if (name.contains(NP)) {
-                    index++;
-                }
-            }
-            if (index > 0) {
-                FileUtils.copyDirectory(new File("Data/Templates/NewProgram"), new File("Programs/NewProgram" + index));
-                newLocation += "NewProgram" + index + "/";
-            } else {
-                FileUtils.copyDirectory(new File("Data/Templates/NewProgram"), new File("Programs/NewProgram"));
-                newLocation += "NewProgram/";
-            }
-            System.out.println("NewProgram template copied to Programs directory");
-        } catch (IOException ex) {
-            Logger.getLogger(NewProgramScreen.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyDown(int i) {
-                if (i == Input.Keys.ESCAPE || i == Input.Keys.Q || i == Input.Keys.ENTER || i == Input.Keys.SPACE) {
+                if (FINISH) {
+                    if (i == Input.Keys.Q || i == Input.Keys.SPACE) {
+                        BACK = true;
+                    }
+                }
+                if (i == Input.Keys.ESCAPE) {
                     BACK = true;
                 }
+                if (i == Input.Keys.ENTER) {
+                    CREATE = true;
+                }
+                if (i == Input.Keys.BACKSPACE && newName.length() > 0) {
+                    newName = newName.substring(0, newName.length() - 1);
+                }
                 return false;
+            }
+
+            @Override
+            public boolean keyTyped(char c) {
+                if ((int) c > 64 && (int) c < 127) {
+                    newName = newName + c;
+                }
+                return true;
             }
         });
         try {
@@ -102,6 +114,31 @@ public class NewProgramScreen extends BasicGameScreen {
             BACK = false;
             sm.enterGameScreen(MenuScreen.ID, null, null);
         }
+        if (CREATE) {
+            try {
+                String[] programs = new File("Programs").list();
+                int index = 0;
+                String NP = newName.length() > 0 ? newName : "NewProgram";
+                for (String name : programs) {
+                    if (name.contains(NP)) {
+                        index++;
+                    }
+                }
+                if (index > 0) {
+                    FileUtils.copyDirectory(new File("Data/Templates/NewProgram"), new File("Programs/" + NP + index));
+                    newLocation += NP + index + "/";
+                } else {
+                    FileUtils.copyDirectory(new File("Data/Templates/NewProgram"), new File("Programs/" + NP));
+                    newLocation += NP + "/";
+                }
+                System.out.println(NP + " template copied to Programs directory");
+                FINISH = true;
+            } catch (IOException ex) {
+                Logger.getLogger(NewProgramScreen.class.getName()).log(Level.SEVERE, null, ex);
+                CREATE = false;
+            }
+            CREATE = false;
+        }
     }
 
     @Override
@@ -111,11 +148,17 @@ public class NewProgramScreen extends BasicGameScreen {
     @Override
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
-        g.drawString(newLocation, 0, 0, 232);
-        g.setColor(Color.BLACK);
-        g.drawRect(0, 152, 240, 8);
-        g.setColor(Color.GREEN);
-        g.drawString(":q to quit", 0, 152);
+        if (!FINISH) {
+            g.setColor(Color.GREEN);
+            g.drawString("Enter new program name: ", 0, 0);
+            g.drawString(newName, 0, 12, 232);
+        } else {
+            g.drawString(newLocation, 0, 0, 232);
+            g.setColor(Color.BLACK);
+            g.drawRect(0, 152, 240, 8);
+            g.setColor(Color.GREEN);
+            g.drawString(":q to quit", 0, 152);
+        }
     }
 
     @Override
