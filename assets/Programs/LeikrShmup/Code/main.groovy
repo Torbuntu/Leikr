@@ -20,6 +20,7 @@ class LeikrShmup extends leikr.Engine {
         bullets.each{
         	it.update(delta)
         }
+        bullets.remove{it.gone == true}
     }
     void render(){	
 		p.draw(screen)

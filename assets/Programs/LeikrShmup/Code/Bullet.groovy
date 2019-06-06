@@ -1,6 +1,7 @@
 class Bullet{
 
 	def x, y, speed
+	boolean hit, gone
 	
 	Bullet(px, py){
 		x = px+16
@@ -10,6 +11,7 @@ class Bullet{
 	
 	def update(delta){
 		x += speed
+		if(x > 240) gone = true
 	}
 	
 	def draw(screen){
