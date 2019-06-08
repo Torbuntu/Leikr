@@ -413,11 +413,11 @@ public abstract class Engine implements InputProcessor {
         return MathUtils.sinDeg(deg);
     }
 
-    public float ceil(float value) {
+    public int ceil(float value) {
         return MathUtils.ceil(value);
     }
 
-    public float floor(float value) {
+    public int floor(float value) {
         return MathUtils.floor(value);
     }
 
