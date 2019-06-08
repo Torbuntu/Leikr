@@ -1,5 +1,5 @@
 class Player{
-	float x = 40, y = 20, vx = 0, vy = 0, gv = 2
+	float x = 80, y = 20, vx = 0, vy = 0, gv = 2, coin = 0
 	
 	def idleAnimation, walkingAnimation, runningAnimation, jumpingAnimation
 	
@@ -57,24 +57,7 @@ class Player{
 			jumpTime = 12
 			jumping = false
 		}
-		vx = 0
-		switch(state){
-			case 1:
-				if(facing){
-					vx = -1.5
-				}else{				
-					vx = 1.5
-				}
-				break
-			case 2:
-				if(facing){
-					vx = -2
-				}else{				
-					vx = 2
-				}
-				break
-		}
-			
+					
 		if(!ground && !jumping){
 			vy += 3
 			state = 3
@@ -83,8 +66,11 @@ class Player{
 		y += vy
 		x += vx
 		
+		vx = 0
+		
+		
 		if(y>= 160) {
-			x=40
+			x=80
 			y=20
 		}
 	}	
