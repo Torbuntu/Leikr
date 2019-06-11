@@ -1,6 +1,6 @@
 
 public class MyJavaGame extends leikr.Engine {
-	
+
 	int y, sy, t, steam;
     public void create(){
     	y = 20;
@@ -16,12 +16,12 @@ public class MyJavaGame extends leikr.Engine {
 			loadProgram("Shapes")
 		}
 		if(key("Up") || key("Down") || key("Left") || key("Right")) steam++;
-		if(steam > 300) steam = 1;
+		if(steam > 3000) steam = 1;
 		t++;
 		if( t > 100 ) t = 0;
     }
     public void render(){	
-    	
+  	
 		pixel((t%34), 120, 80);
 		
 		drawColor(23); //only pixel takes a color, so we set red for the following
@@ -38,7 +38,7 @@ public class MyJavaGame extends leikr.Engine {
 		drawColor(1);
 		line(5, 50, 120, 55);
 		
-		sprite((steam%10)+1, 150, 84, 1)
+		sprite((steam%3)+1, 150, 84, 1)
 		sprite(0, 150, 100, 1)
 		
 		text("Press X to go to Shapes Demo", 0, 150, 32)		
