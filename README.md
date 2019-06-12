@@ -99,7 +99,7 @@ Programs/
             theme.wav
             intro.wav
      /Code/ 
-         main.groovy
+         YourGameName.groovy
      /Maps/
          overworld.tmx
          underworld.tmx
