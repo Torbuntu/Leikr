@@ -1,5 +1,6 @@
-
 public class MyJavaGame extends leikr.Engine {
+
+	
 
 	int y, sy, t, steam;
     public void create(){

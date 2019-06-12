@@ -1,5 +1,5 @@
 class Player{
-	float x = 80, y = 20, vx = 0, vy = 0, gv = 2, coin = 0
+	float x = 110, y = 20, vx = 0, vy = 0, gv = 2, coin = 0
 	
 	def idleAnimation, walkingAnimation, runningAnimation, jumpingAnimation
 	
@@ -14,8 +14,7 @@ class Player{
 	
 	def jumpTime = 12
 	
-	
-	def makePlayerCat(screen){
+	def Player(screen){
 		idleAnimation = screen.makeAnimSprite(0..9 as int[], frameSpeedTen as float[], 2, true)
 		walkingAnimation = screen.makeAnimSprite(10..19 as int[], frameSpeedTen  as float[], 2, true)
 		runningAnimation = screen.makeAnimSprite(20..27 as int[], frameSpeedEight as float[], 2, true)

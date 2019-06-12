@@ -1,3 +1,7 @@
+import Bullet
+import Enemy
+import Player
+
 class LeikrShmup extends leikr.Engine {
 	
 	Player p = new Player()
@@ -5,7 +9,6 @@ class LeikrShmup extends leikr.Engine {
 	def enemies = []
 	
     void create(){
-        
     }
     
     void update(float delta){

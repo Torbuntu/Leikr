@@ -1,6 +1,9 @@
+import Player
+import Menu
+
 class DogCat extends leikr.Engine {
 
-	Player p = new Player()
+	def p
 	Menu menu = new Menu()
 	
 	int mapX = 0, mapY = 0
@@ -8,8 +11,8 @@ class DogCat extends leikr.Engine {
 	// Engine methods
     void create(){
         loadMap("map")
-        p.makePlayerCat(screen)
         music("Map", true)
+        p  = new Player(screen)
     }  
     
     void update(float delta){
