@@ -1,7 +1,12 @@
+import Enemy
+import Wizard
+import Bolt
+
 class WizRobo extends leikr.Engine {
-    def wizard = [:]	
-    def bolt = [:]
+    def wizard 
+    def bolt 
     def enemies = []
+    def enemy1, enemy2, enemy3, enemy4, enemy5
     def enemyDeadSpids = [85,86,87]
     
     def healthSpids = [193,193,193]
@@ -85,7 +90,7 @@ class WizRobo extends leikr.Engine {
             wizard.spid = wizard.jmsid
         }
         //standing
-        if(wizard.g && !wizard.w){
+        if(wizard.g){
             wizard.spid = 0
         }
         
@@ -235,14 +240,10 @@ class WizRobo extends leikr.Engine {
     
     // INIT methods
     void init(){
-    	wizard = [x: 10, y: 100, vx: 0, vy: 0, width: 8, height: 8, spid: 0, f: false, g: true, jmsid: 4,
-            jumping: false, s: false, walkAnim: [1,2,3,0], waIndex: 0, walking: false,
-            waTime: 0, left: "Left", right: "Right", up: "Space", down:"Down", charged: false, chargedTime: 0, cf: false,
-            scrolls: 0, health: 3]
-    			
-    	bolt = [x:0, y:0, vx:0, width:8, height:8, spid: 0, spids: [5,6,7,8], charge: 0, attack: false, hit: false]
+    	wizard = new Wizard()    			
+    	bolt = new Bolt()
         
-    	def enemy1 = [x: 72, y: 72, width:8, height:8, f:false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 1, y: 1], keyB: [x: 1, y: 1]]
+    	def enemy1 = new Enemy()
         enemies = [] // only needed when the game loops around during development.
         enemies.add(enemy1)
 
@@ -253,8 +254,8 @@ class WizRobo extends leikr.Engine {
         wizard.x = 10
         wizard.y = 144
         
-    	def enemy1 = [x: 208, y: 64, vs: 0.2, l: 208, r: 224, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 28, y: 3], keyB: [x:28, y:2]]        
-        def enemy2 = [x: 64, y: 80, vs: 0, l:64, r:64, width: 8, height: 8, f:false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 29, y: 3], keyB: [x:29, y:2]]
+    	def enemy1 = new Enemy(208, 64, 0.2, 208, 224, [x: 28, y: 3], [x:28, y:2])    
+        def enemy2 = new Enemy( 64, 80,   0,  64,  64, [x: 29, y: 3], [x:29, y:2])
         enemies = []
         enemies.addAll([enemy1, enemy2]) 
     	loadMap("lvl1")
@@ -264,9 +265,9 @@ class WizRobo extends leikr.Engine {
         wizard.x = 0
         wizard.y = 24
         
-    	def enemy1 = [x: 72, y: 96, vs: 0.2, l:72, r:88, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 27, y: 17], keyB: [x:28, y:17]]        
-        def enemy2 = [x: 152, y: 72, vs: 0.2, l:152, r:168, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 27, y: 18], keyB: [x:28, y:18]]        
-        def enemy3 = [x: 208, y: 72, vs: 0.2, l: 208, r:224, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 27, y: 19], keyB: [x:28, y:19]]
+    	def enemy1 = new Enemy(  72, 96, 0.2,  72,   88, [x: 27, y: 17], [x:28, y:17])        
+        def enemy2 = new Enemy( 152, 72, 0.2, 152,  168, [x: 27, y: 18], [x:28, y:18])        
+        def enemy3 = new Enemy( 208, 72, 0.2, 208,  224, [x: 27, y: 19], [x:28, y:19])
         enemies = []
         enemies.addAll([enemy1, enemy2, enemy3])
     	loadMap("lvl2")
@@ -276,10 +277,10 @@ class WizRobo extends leikr.Engine {
         wizard.x = 220
         wizard.y = 0
         
-    	def enemy1 = [x: 8, y: 64, vs: 0.2, l:8, r:24, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 26, y: 13], keyB: [x:26, y:14]]        
-        def enemy2 = [x: 8, y: 144, vs: 0.2, l:8, r:56, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 27, y: 13], keyB: [x:27, y:14]]        
-        def enemy3 = [x: 184, y: 80, vs: 0.2, l:184, r:200, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 28, y: 13], keyB: [x:28, y:14]]        
-        def enemy4 = [x: 32, y: 80, vs: 0.2, l:32, r:48, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 29, y: 13], keyB: [x:29, y:14]]
+    	def enemy1 = new Enemy(   8,  64, 0.2,   8,  24, [x: 26, y: 13], [x:26, y:14])      
+        def enemy2 = new Enemy(   8, 144, 0.2,   8,  56, [x: 27, y: 13], [x:27, y:14])        
+        def enemy3 = new Enemy( 184,  80, 0.2, 184, 200, [x: 28, y: 13], [x:28, y:14]) 
+        def enemy4 = new Enemy(  32,  80, 0.2,  32,  48, [x: 29, y: 13], [x:29, y:14])
         enemies = []
         enemies.addAll([enemy1, enemy2, enemy3, enemy4])
         
@@ -290,11 +291,11 @@ class WizRobo extends leikr.Engine {
         wizard.x = 10
         wizard.y = 110
         
-    	def enemy1 = [x: 24, y: 88, vs: 0.2, l:24, r:40, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 3, y: 17], keyB: [x:3, y:18]]        
-        def enemy2 = [x: 96, y: 88, vs: 0.2, l:96, r:104, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 17, y: 2], keyB: [x:17, y:3]]        
-        def enemy3 = [x: 96, y: 24, vs: 0.2, l:56, r:128, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 29, y: 9], keyB: [x:29, y:10]]        
-        def enemy4 = [x: 8, y: 144, vs: 0.2, l:8, r:16, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 28, y: 10], keyB: [x:28, y:9]]
-        def enemy5 = [x: 168, y: 80, vs: 0.2, l:168, r:168, width: 8, height: 8, f: false, spid: 10, alive: true, remove: false, animTime: 0, walkAnim: [10,11,12,13], waIndex: 0, keyA: [x: 27, y: 9], keyB: [x:27, y:10]]
+    	def enemy1 = new Enemy(  24,  88, 0.2,  24,  40, [x: 3, y: 17],  [x:3, y:18])       
+        def enemy2 = new Enemy(  96,  88, 0.2,  96, 104, [x: 17, y: 2],  [x:17, y:3])     
+        def enemy3 = new Enemy(  96,  24, 0.2,  56, 128, [x: 29, y: 9], [x:29, y:10])   
+        def enemy4 = new Enemy(   8, 144, 0.2,   8,  16, [x: 28, y: 10], [x:28, y:9])
+        def enemy5 = new Enemy( 168,  80, 0.2, 168, 168, [x: 27, y: 9], [x:27, y:10])
         enemies = []
         enemies.addAll([enemy1, enemy2, enemy3, enemy4, enemy5])
         
@@ -304,9 +305,8 @@ class WizRobo extends leikr.Engine {
     void initlvl5(){
     	wizard.x = 10
         wizard.y = 80
-    			
         
-    	def enemy1 = [x: 40, y: 72, vs: 0.6, l: 40, r: 184, width: 32, height: 32, f: false, spid: 60, alive: true, remove: false, animTime: 0, walkAnim: [60,61,62,63], waIndex: 0, keyA: [x: 27, y: 1], keyB: [x:28, y:1], health: 8]      
+    	def enemy1 = new Enemy(40, 72, 0.6, 40, 184, 32, 32, false, 60,  true, false, 0, [60,61,62,63],  0, [x: 27, y: 1], [x:28, y:1],  8)
         enemies = [] // only needed when the game loops around during development.
         enemies.add(enemy1)
 
@@ -317,9 +317,9 @@ class WizRobo extends leikr.Engine {
         wizard.x = 10
         wizard.y = 100
         
-    	def enemy1 = [x: 190, y: 120, vs: 0.2, l: 8, r: 200, width: 32, height: 32, f: false, spid: 60, alive: true, remove: false, animTime: 0, walkAnim: [60,61,62,63], waIndex: 0, keyA: [x: 28, y: 3], keyB: [x:28, y:2], health: 8]      
+    	def enemy1 = new Enemy(190, 120, 0.2, 8, 200, 32, 32, false, 60, true, false, 0, [60,61,62,63], 0, [x: 28, y: 3], [x:28, y:2], 8)  
     	
-    	def enemy2 = [x: 30, y: 120, vs: 0.6, l: 8, r: 200, width: 32, height: 32, f: false, spid: 60, alive: true, remove: false, animTime: 0, walkAnim: [60,61,62,63], waIndex: 0, keyA: [x: 28, y: 3], keyB: [x:28, y:2], health: 8]   
+    	def enemy2 = new Enemy(30, 120, 0.6, 8, 200, 32, 32, false, 60, true, false, 0, [60,61,62,63], 0, [x: 28, y: 3], [x:28, y:2],  8)
         
         enemies = []
         enemies.addAll([enemy1,enemy2]) 
@@ -770,7 +770,7 @@ class WizRobo extends leikr.Engine {
             sprite(9, (wizard.x).toFloat(), (wizard.y-8).toFloat(), wizard.cf, false)
         }
         sprite(wizard.spid, wizard.x.toFloat(), wizard.y.toFloat(), wizard.f, false)
-        if(wizard.walking) walkingDust()
+      //  if(wizard.walking) walkingDust()
         if(bolt.attack){
             sprite(bolt.spid, bolt.x, bolt.y, bolt.f, false)
         }

@@ -325,17 +325,6 @@ public class LeikrScreenManager {
         USED_SPRITES++;
     }
 
-    private void drawSprite90(int id, float x, float y, int size, boolean clockwise) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, size);
-        t.rotate90(clockwise);
-        g.drawSprite(t, x, y);
-        t.rotate90(!clockwise);
-        USED_SPRITES++;
-    }
-
     private void drawSpriteFlip(int id, float x, float y, int size, boolean flipX, boolean flipY) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;

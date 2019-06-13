@@ -13,6 +13,6 @@ else
 	fi
 fi
 
-JVM_ARGS="-jar -Xmx1g -XX:+CMSClassUnloadingEnabled"
+JVM_ARGS="-Xmx128M -XX:+CMSClassUnloadingEnabled -jar"
 
-exec "$JAVA_COMMAND" $JVM_ARGS "Leikr-0.0.5.jar" 
+exec "$JAVA_COMMAND" $JVM_ARGS "Leikr-0.0.6.jar" 

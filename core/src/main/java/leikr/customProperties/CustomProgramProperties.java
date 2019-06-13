@@ -30,7 +30,6 @@ public class CustomProgramProperties {
     public int MAX_SPRITES;
     public boolean USE_COMPILED;
     public boolean COMPILE_SOURCE;
-    public boolean USE_SCRIPT;
     public String TITLE;
     public String TYPE;
     public String AUTHOR;
@@ -49,7 +48,6 @@ public class CustomProgramProperties {
             if (MAX_SPRITES > 2048) {
                 MAX_SPRITES = 2048;
             }
-            USE_SCRIPT = (prop.getProperty("use_script") != null) ? Boolean.valueOf(prop.getProperty("use_script")) : false;
             USE_COMPILED = (prop.getProperty("use_compiled") != null) ? Boolean.valueOf(prop.getProperty("use_compiled")) : false;
             COMPILE_SOURCE = (prop.getProperty("compile_source") != null) ? Boolean.valueOf(prop.getProperty("compile_source")) : false;
             JAVA_ENGINE = (prop.getProperty("java_engine") != null) ? Boolean.valueOf(prop.getProperty("java_engine")) : false;

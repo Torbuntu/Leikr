@@ -15,18 +15,14 @@
  */
 package leikr.loaders;
 
-import groovy.lang.Binding;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovySystem;
-import groovy.util.GroovyScriptEngine;
 import groovy.util.ResourceException;
 import groovy.util.ScriptException;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
@@ -35,6 +31,7 @@ import leikr.customProperties.CustomProgramProperties;
 import leikr.Engine;
 import leikr.GameRuntime;
 import leikr.screens.MenuScreen;
+import org.apache.commons.lang3.ArrayUtils;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.tools.Compiler;
@@ -45,7 +42,7 @@ import org.codehaus.groovy.tools.Compiler;
  */
 public class EngineLoader implements Callable<Engine> {
 
-    static GroovyClassLoader gcl = new GroovyClassLoader(ClassLoader.getSystemClassLoader());
+    public static GroovyClassLoader gcl;
     public static CustomProgramProperties cp;
     String rootPath;
 
@@ -56,9 +53,8 @@ public class EngineLoader implements Callable<Engine> {
     //Returns either a pre-compiled game Engine, an Engine compiled from sources, or null. Returning Null helps the EngineScreen return to the MenuScreen.
     public Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, ResourceException, ScriptException {
         cp = new CustomProgramProperties(GameRuntime.getProgramPath());
-        if (cp.USE_SCRIPT) {
-            return getScriptedEngine();
-        }
+        gcl = new GroovyClassLoader(ClassLoader.getSystemClassLoader());
+
         if (cp.COMPILE_SOURCE) {
             compileEngine();
         }
@@ -70,21 +66,18 @@ public class EngineLoader implements Callable<Engine> {
         }
 
         return getSourceEngine();
-
     }
 
-    private Engine getSourceEngine() throws CompilationFailedException, IOException, InstantiationException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    private Engine getSourceEngine() throws MalformedURLException, CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         gcl.clearCache();
-        Arrays.asList(new File(rootPath).list()).stream()
-                .filter(x -> !x.equals("main.groovy") && !x.equals("Compiled"))
-                .forEach(path -> {
-                    try {
-                        gcl.parseClass(new File(rootPath + path));
-                    } catch (CompilationFailedException | IOException ex) {
-                        Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                });
-        return (Engine) gcl.parseClass(new File(rootPath + "main.groovy")).getDeclaredConstructors()[0].newInstance();//loads the game code  
+        gcl.addURL(new File(rootPath).toURI().toURL());
+        return (Engine) gcl.parseClass(new File(rootPath + MenuScreen.GAME_NAME + ".groovy")).getDeclaredConstructors()[0].newInstance();//loads the game code  
+    }
+
+    private Engine getJavaSourceEngine() throws MalformedURLException, CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        gcl.clearCache();
+        gcl.addURL(new File(rootPath).toURI().toURL());
+        return (Engine) gcl.parseClass(new File(rootPath + MenuScreen.GAME_NAME + ".java")).getDeclaredConstructors()[0].newInstance();//loads the game code  
     }
 
     private Engine getCompiledEngine() throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
@@ -105,51 +98,36 @@ public class EngineLoader implements Callable<Engine> {
     private void compileEngine() {
         String COMPILED = rootPath + "Compiled/";
         CompilerConfiguration cc = new CompilerConfiguration();
+        cc.setClasspath(rootPath);
         if (!(new File(COMPILED).exists())) {
             new File(COMPILED).mkdir();
         }
         cc.setTargetDirectory(COMPILED);
         Compiler compiler = new Compiler(cc);
-        
-        Arrays.asList(new File(rootPath).list()).stream()
-                .filter(x -> !x.equals("Compiled"))
-                .forEach(path -> compiler.compile(new File(rootPath + path)));
+
+        File[] files = ArrayUtils.removeElement(new File(rootPath).listFiles(), new File(rootPath + "Compiled"));
+        compiler.compile(files);
     }
 
+    /**
+     * destroy
+     *
+     * Clears the class loader cache and attempts to clear the
+     * metaClassRegistry. This is a testing method and may be removed.
+     */
     public void destroy() {
-        gcl.clearCache();
-        for (Class<?> c : gcl.getLoadedClasses()) {
-            GroovySystem.getMetaClassRegistry().removeMetaClass(c);
+        if (null != gcl) {
+            gcl.clearCache();
+            for (Class<?> c : gcl.getLoadedClasses()) {
+                GroovySystem.getMetaClassRegistry().removeMetaClass(c);
+            }
         }
+        gcl = null;
     }
 
     @Override
     public Engine call() throws Exception {
+        destroy();//Make sure gcl is ready for new class loader. May be useless.
         return getEngine();
     }
-
-    //TODO: these are for testing
-    private Engine getScriptedEngine() throws IOException, ResourceException, ScriptException {
-        String[] paths = {rootPath};
-        Binding bd = new Binding();
-        GroovyScriptEngine gse = new GroovyScriptEngine(paths);
-        return (Engine) gse.run("main.groovy", bd);
-    }
-
-    private Engine getJavaSourceEngine() {
-        try {
-            // Create URL for loading the external files.
-            URLClassLoader urlCl = new URLClassLoader(new URL[]{new File(rootPath + "Compiled").toURI().toURL()});
-
-            //Compile the Java source code.
-            compileEngine();
-
-            //New instance
-            return (Engine) urlCl.loadClass(MenuScreen.GAME_NAME).getConstructors()[0].newInstance();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
 }

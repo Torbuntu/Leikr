@@ -51,7 +51,8 @@ public class MenuScreen extends BasicGameScreen {
     public static int ID = 0;
 
     public static String GAME_NAME;
-    private final String menuBg;
+    
+    private final static String MENU_BG = "Data/Images/menu_bg.png";
 
     boolean START = false;
     boolean NEW_PROGRAM = false;
@@ -70,9 +71,7 @@ public class MenuScreen extends BasicGameScreen {
 
     public MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
-        menuBg = "Data/Images/menu_bg.png";
-
-        this.assetManager.load(menuBg, Texture.class);
+        this.assetManager.load(MENU_BG, Texture.class);
         font = GameRuntime.primaryFontLoader.getDefaultFont();
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         initMenuList();
@@ -277,7 +276,7 @@ public class MenuScreen extends BasicGameScreen {
             g.drawString("No programs detected... ", 8, 104);
         }
         //Menu tops everything else.
-        g.drawTexture(assetManager.get(menuBg, Texture.class), 0, 0);
+        g.drawTexture(assetManager.get(MENU_BG, Texture.class), 0, 0);
 
     }
 

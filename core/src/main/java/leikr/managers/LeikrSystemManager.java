@@ -18,6 +18,7 @@ package leikr.managers;
 import com.badlogic.gdx.assets.AssetManager;
 import leikr.GameRuntime;
 import leikr.screens.LoadScreen;
+import leikr.screens.MenuScreen;
 import org.mini2Dx.core.font.MonospaceFont;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.screen.ScreenManager;
@@ -55,6 +56,7 @@ public class LeikrSystemManager {
 
     public void loadProgram(String name) {
         GameRuntime.setProgramPath("Programs/" + name);
+        MenuScreen.GAME_NAME = name;
         LOAD_PROGRAM = true;
     }
     //END API

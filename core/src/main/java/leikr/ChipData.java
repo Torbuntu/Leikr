@@ -26,7 +26,7 @@ import leikr.customProperties.CustomProgramProperties;
 public class ChipData {
 
     public CustomProgramProperties cpp;
-    private String ICON_PATH;
+    private final String ICON_PATH;
     AssetManager assetManager;
 
     public ChipData(String programTitle, AssetManager am) {
