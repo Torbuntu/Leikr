@@ -23,10 +23,24 @@ import leikr.loaders.AudioLoader;
  */
 public class LeikrAudioManager {
 
-    private final AudioLoader audioLoader;
+    private AudioLoader audioLoader;
+
+    private static LeikrAudioManager instance;
 
     public LeikrAudioManager() {
-        audioLoader = new AudioLoader();
+        audioLoader = AudioLoader.getAudioLoader();
+    }
+
+    public static LeikrAudioManager getLeikrAudioManager() {
+        if (instance == null) {
+            instance = new LeikrAudioManager();
+        }
+        instance.resetLeikrAudioManager();
+        return instance;
+    }
+
+    private void resetLeikrAudioManager() {
+        audioLoader = AudioLoader.getAudioLoader();
     }
 
     //START loaded audio methods

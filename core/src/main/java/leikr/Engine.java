@@ -87,19 +87,19 @@ public abstract class Engine implements InputProcessor {
     public final void preCreate(int mSprites, LeikrSystemManager system) {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         logger = new FPSLogger();
-        audio = new LeikrAudioManager();
-        screen = new LeikrScreenManager(mSprites);
+        audio = LeikrAudioManager.getLeikrAudioManager();
+        screen = LeikrScreenManager.getLeikrScreenManager(mSprites);
         this.system = system;
         active = true;
         try {
             Controllers.clearListeners();
             if (Controllers.getControllers().size > 0) {
-                p1ControllerListener = new LeikrControllerListener();
+                p1ControllerListener = LeikrControllerListener.getLeikrControllerListenerA();
                 Controllers.getControllers().get(0).addListener(p1ControllerListener);
 
             }
             if (Controllers.getControllers().size > 1) {
-                p2ControllerListener = new LeikrControllerListener();
+                p2ControllerListener = LeikrControllerListener.getLeikrControllerListenerB();
                 Controllers.getControllers().get(1).addListener(p2ControllerListener);
             }
         } catch (Exception ex) {

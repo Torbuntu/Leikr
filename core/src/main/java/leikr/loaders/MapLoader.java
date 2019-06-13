@@ -29,13 +29,27 @@ public class MapLoader {
 
     TiledMap tiledMap;
 
-    String rootPath = GameRuntime.getProgramPath() + "/Maps/";
+    String rootPath;
+
+    private static MapLoader instance;
 
     public void loadMap(String name) {
         if (null != tiledMap) {
             tiledMap.dispose();
         }
         tiledMap = new TiledMap(new FileHandle(rootPath + name + ".tmx"));
+    }
+
+    public static MapLoader getMapLoader() {
+        if (instance == null) {
+            instance = new MapLoader();
+        }
+        instance.resetMapLoader();
+        return instance;
+    }
+
+    private void resetMapLoader() {
+        rootPath = GameRuntime.getProgramPath() + "/Maps/";
     }
 
     public TiledMap getMap() {
@@ -65,7 +79,7 @@ public class MapLoader {
     // Gets the tileId of the cell located at x and y. 
     public int getMapTileId(int x, int y) {
         try {
-            return tiledMap.getTile( x,  y, 0).getTileId(1);
+            return tiledMap.getTile(x, y, 0).getTileId(1);
         } catch (Exception ex) {
             //System.out.println(ex);
             return -1;
@@ -75,9 +89,9 @@ public class MapLoader {
     public void setMapTile(int x, int y, int id) {
         tiledMap.getTileLayer(0).setTileId(x, y, id);
     }
-    
-    public void removeMapTile(int x, int y){
-        tiledMap.getTileLayer(0).setTileId(x,y, -1);
+
+    public void removeMapTile(int x, int y) {
+        tiledMap.getTileLayer(0).setTileId(x, y, -1);
     }
 
     public void disposeMap() {

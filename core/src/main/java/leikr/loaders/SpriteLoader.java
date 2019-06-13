@@ -36,18 +36,32 @@ public class SpriteLoader {
 
     String rootPath;
 
+    private static SpriteLoader instance;
+
     public SpriteLoader() {
         assetManager = new AssetManager();
+    }
 
+    public static SpriteLoader getSpriteLoader() {
+        if (instance == null) {
+            instance = new SpriteLoader();
+        }
+        instance.resetSpriteLoader();
+        instance.loadSpriteSheets();
+        instance.addSpritesToSpriteBank();
+
+        return instance;
+    }
+
+    private void resetSpriteLoader() {
+        assetManager.clear();
         rootPath = GameRuntime.getProgramPath() + "/Sprites/Sprites.png";
-
-        loadSpriteSheets();
-        addSpritesToSpriteBank();
     }
 
     private void loadSpriteSheets() {
         assetManager.load(rootPath, Texture.class);
         assetManager.finishLoading();
+
     }
 
     private void addSpritesToSpriteBank() {

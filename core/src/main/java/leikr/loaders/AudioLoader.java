@@ -31,16 +31,33 @@ public class AudioLoader {
     AssetManager soundManager;
     AssetManager musicManager;
 
-    String musicRootPath = GameRuntime.getProgramPath() + "/Audio/Music/";
-    String soundRootPath = GameRuntime.getProgramPath() + "/Audio/Sound/";
-    
+    String musicRootPath;
+    String soundRootPath;
+
     Music mPlayer;
     Sound sPlayer;
+
+    private static AudioLoader instance;
 
     public AudioLoader() {
         soundManager = new AssetManager();
         musicManager = new AssetManager();
-        loadAudio();
+    }
+
+    public static AudioLoader getAudioLoader() {
+        if (instance == null) {
+            instance = new AudioLoader();
+        }
+        instance.resetAudioLoader();
+        instance.loadAudio();
+        return instance;
+    }
+
+    private void resetAudioLoader() {
+        soundManager.clear();
+        musicManager.clear();
+        musicRootPath = GameRuntime.getProgramPath() + "/Audio/Music/";
+        soundRootPath = GameRuntime.getProgramPath() + "/Audio/Sound/";
     }
 
     private void loadAudio() {
@@ -106,8 +123,14 @@ public class AudioLoader {
     }
 
     public void disposeAudioLoader() {
-        musicManager.dispose();
-        soundManager.dispose();
+        if (mPlayer != null) {
+            mPlayer.dispose();
+        }
+        if (sPlayer != null) {
+            sPlayer.dispose();
+        }
+        //musicManager.dispose();
+        //soundManager.dispose();
     }
 
 }

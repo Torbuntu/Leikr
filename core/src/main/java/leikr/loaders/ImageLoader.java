@@ -28,10 +28,25 @@ import leikr.GameRuntime;
 public class ImageLoader {
 
     AssetManager assetManager;
-    String rootPath = GameRuntime.getProgramPath() + "/Art/";
+    String rootPath;
+
+    private static ImageLoader instance;
 
     public ImageLoader() {
         assetManager = new AssetManager();
+    }
+
+    public static ImageLoader getImageLoader() {
+        if (instance == null) {
+            instance = new ImageLoader();
+        }
+        instance.reloadImageLoader();
+        return instance;
+    }
+
+    private void reloadImageLoader() {
+        rootPath = GameRuntime.getProgramPath() + "/Art/";
+        assetManager.clear();
         Arrays.asList(new File(rootPath).list()).stream()
                 .forEach(path -> assetManager.load(rootPath + path, Texture.class));
 

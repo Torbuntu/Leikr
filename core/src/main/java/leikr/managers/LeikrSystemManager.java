@@ -33,10 +33,24 @@ public class LeikrSystemManager {
     private boolean RUNNING = true;
     AssetManager manager;
     MonospaceFont font;
+    
+    private static LeikrSystemManager instance;
 
-    public LeikrSystemManager(AssetManager manager) {
-        this.manager = manager;
+    public LeikrSystemManager() {
+        this.manager = new AssetManager();
         font = GameRuntime.primaryFontLoader.getDefaultFont();
+    }
+
+    public static LeikrSystemManager getLeikrSystemManager() {
+        if (instance == null) {
+            instance = new LeikrSystemManager();
+        }
+        instance.reset();
+        return instance;
+    }
+    
+    private void reset(){
+        manager.clear();
     }
 
     //START API

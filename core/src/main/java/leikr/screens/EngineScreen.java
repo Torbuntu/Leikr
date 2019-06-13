@@ -82,7 +82,7 @@ public class EngineScreen extends BasicGameScreen {
 
     @Override
     public void initialise(GameContainer gc) {
-        system = new LeikrSystemManager(manager);
+        system = LeikrSystemManager.getLeikrSystemManager();
     }
 
     @Override

@@ -32,6 +32,23 @@ public class LeikrControllerListener implements ControllerListener {
     HashMap<Object, Boolean> buttons = new HashMap<>();
     HashMap<Object, Object> btnCodes = new HashMap<>();
 
+    private static LeikrControllerListener instance;
+    private static LeikrControllerListener instanceTwo;
+
+    public static LeikrControllerListener getLeikrControllerListenerA() {
+        if (instance == null) {
+            instance = new LeikrControllerListener();
+        }
+        return instance;
+    }
+
+    public static LeikrControllerListener getLeikrControllerListenerB() {
+        if (instanceTwo == null) {
+            instanceTwo = new LeikrControllerListener();
+        }
+        return instanceTwo;
+    }
+
     public LeikrControllerListener() {
         buttons.put(Engine.BTN.A, false);
         buttons.put(Engine.BTN.B, false);

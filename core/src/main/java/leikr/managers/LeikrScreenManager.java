@@ -50,12 +50,14 @@ public class LeikrScreenManager {
     SpriteSheet pixelSheet;
     Graphics g;
 
+    private static LeikrScreenManager instance;
+
     /**
      * Properties set by Custom Properties
      *
      * These can be overwritten for a more custom experience.
      */
-    private final int MAX_SPRITES;
+    private int MAX_SPRITES;
     private int USED_SPRITES;
 
     /**
@@ -63,12 +65,23 @@ public class LeikrScreenManager {
      *
      * @param mSprites
      */
-    public LeikrScreenManager(int mSprites) {
-        MAX_SPRITES = mSprites;
-        spriteLoader = new SpriteLoader();
-        imageLoader = new ImageLoader();
-        mapLoader = new MapLoader();
+    private LeikrScreenManager() {
         constructPixelSheet();
+    }
+
+    public static LeikrScreenManager getLeikrScreenManager(int mSprites) {
+        if (instance == null) {
+            instance = new LeikrScreenManager();
+        }
+        instance.resetLeikrScreenManager(mSprites);
+        return instance;
+    }
+
+    private void resetLeikrScreenManager(int mSprites) {
+        MAX_SPRITES = mSprites;
+        spriteLoader = SpriteLoader.getSpriteLoader();
+        imageLoader = ImageLoader.getImageLoader();
+        mapLoader = MapLoader.getMapLoader();
     }
 
     /**
@@ -107,9 +120,9 @@ public class LeikrScreenManager {
     }
 
     public void dispose() {
-        spriteLoader.disposeSprites();
-        imageLoader.disposeImages();
-        mapLoader.disposeMap();
+        //spriteLoader.disposeSprites();
+        //imageLoader.disposeImages();
+        //mapLoader.disposeMap();
     }
     //End Engine methods
 
