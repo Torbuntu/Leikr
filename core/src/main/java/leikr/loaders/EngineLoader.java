@@ -42,18 +42,29 @@ import org.codehaus.groovy.tools.Compiler;
  */
 public class EngineLoader implements Callable<Engine> {
 
-    public static GroovyClassLoader gcl;
-    public static CustomProgramProperties cp;
+    public GroovyClassLoader gcl;
+    public CustomProgramProperties cp;
     String rootPath;
 
-    public EngineLoader() {
+    private static EngineLoader instance;
+
+    public static EngineLoader getEngineLoader() {
+        if (instance == null) {
+            instance = new EngineLoader();
+        }
+        instance.reset();
+        return instance;
+    }
+
+    private void reset() {
+        destroy();
         rootPath = GameRuntime.getProgramPath() + "/Code/";
+        cp = new CustomProgramProperties(GameRuntime.getProgramPath());
+        gcl = new GroovyClassLoader(ClassLoader.getSystemClassLoader());
     }
 
     //Returns either a pre-compiled game Engine, an Engine compiled from sources, or null. Returning Null helps the EngineScreen return to the MenuScreen.
     public Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, ResourceException, ScriptException {
-        cp = new CustomProgramProperties(GameRuntime.getProgramPath());
-        gcl = new GroovyClassLoader(ClassLoader.getSystemClassLoader());
 
         if (cp.COMPILE_SOURCE) {
             compileEngine();
@@ -122,7 +133,6 @@ public class EngineLoader implements Callable<Engine> {
                 GroovySystem.getMetaClassRegistry().removeMetaClass(c);
             }
         }
-        gcl = null;
     }
 
     @Override

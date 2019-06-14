@@ -104,7 +104,7 @@ public class EngineScreen extends BasicGameScreen {
         }
         try {
             system.setRunning(true);
-            engine.preCreate(EngineLoader.cp.MAX_SPRITES, system);
+            engine.preCreate(EngineLoader.getEngineLoader().cp.MAX_SPRITES, system);
             engine.create();
             Gdx.input.setInputProcessor(engine);
         } catch (Exception ex) {
