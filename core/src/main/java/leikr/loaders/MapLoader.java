@@ -33,6 +33,9 @@ public class MapLoader {
 
     private static MapLoader instance;
 
+    private MapLoader() {
+    }
+
     public void loadMap(String name) {
         if (null != tiledMap) {
             tiledMap.dispose();

@@ -67,7 +67,7 @@ public class MenuScreen extends BasicGameScreen {
     ArrayList<String> gameList;
     ArrayList<ChipData> programs;
 
-    float time = 0;
+    float time = 0;// Create a lock on the mouse click for the up/down selection of programs.
 
     public MenuScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
@@ -258,13 +258,13 @@ public class MenuScreen extends BasicGameScreen {
             g.setColor(Color.WHITE);
 
             if (page) {
-                g.drawString("Title  : " + programs.get(cursor).getTitle(), 8, 104);
-                g.drawString("Author : " + programs.get(cursor).getAuthor(), 8, 114);
-                g.drawString("Type   : " + programs.get(cursor).getType(), 8, 124);
-                g.drawString("Players: " + programs.get(cursor).getPlayers(), 8, 134);
-                g.drawString("Version: " + programs.get(cursor).getVersion(), 8, 144);
+                g.drawString(programs.get(cursor).getTitle(), 8, 104);
+                g.drawString(programs.get(cursor).getAuthor(), 8, 114);
+                g.drawString(programs.get(cursor).getType(), 8, 124);
+                g.drawString(programs.get(cursor).getPlayers(), 8, 134);
+                g.drawString(programs.get(cursor).getVersion(), 8, 144);
             } else {
-                g.drawString("About: " + programs.get(cursor).getAbout(), 8, 104, 224);
+                g.drawString(programs.get(cursor).getAbout(), 8, 104, 224);
             }
 
             g.drawTexture(programs.get(cursor).getIcon(), 120, 8, 112, 80);

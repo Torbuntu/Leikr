@@ -65,7 +65,7 @@ public class ChipData {
         return cpp.VERSION;
     }
 
-    public int getPlayers() {
+    public String getPlayers() {
         return cpp.PLAYERS;
     }
 

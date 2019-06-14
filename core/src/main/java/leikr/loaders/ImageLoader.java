@@ -32,7 +32,7 @@ public class ImageLoader {
 
     private static ImageLoader instance;
 
-    public ImageLoader() {
+    private ImageLoader() {
         assetManager = new AssetManager();
     }
 
@@ -62,7 +62,7 @@ public class ImageLoader {
     }
 
     public void disposeImages() {
-        assetManager.dispose();
+        assetManager.clear();
     }
 
 }

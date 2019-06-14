@@ -27,7 +27,7 @@ public class LeikrAudioManager {
 
     private static LeikrAudioManager instance;
 
-    public LeikrAudioManager() {
+    private LeikrAudioManager() {
         audioLoader = AudioLoader.getAudioLoader();
     }
 

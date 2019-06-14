@@ -34,7 +34,7 @@ public class CustomProgramProperties {
     public String TYPE;
     public String AUTHOR;
     public String VERSION;
-    public int PLAYERS;
+    public String PLAYERS;
     public String ABOUT;
     public boolean JAVA_ENGINE;
 
@@ -52,12 +52,12 @@ public class CustomProgramProperties {
             COMPILE_SOURCE = (prop.getProperty("compile_source") != null) ? Boolean.valueOf(prop.getProperty("compile_source")) : false;
             JAVA_ENGINE = (prop.getProperty("java_engine") != null) ? Boolean.valueOf(prop.getProperty("java_engine")) : false;
 
-            TITLE = (prop.getProperty("title") != null) ? prop.getProperty("title") : "unknown";
-            TYPE = (prop.getProperty("type") != null) ? prop.getProperty("type") : "Program";
-            AUTHOR = (prop.getProperty("author") != null) ? prop.getProperty("author") : "unknown";
-            VERSION = (prop.getProperty("version") != null) ? prop.getProperty("version") : "0.1";
-            PLAYERS = (prop.getProperty("players") != null) ? Integer.parseInt(prop.getProperty("players")) : 1;
-            ABOUT = (prop.getProperty("about") != null) ? prop.getProperty("about") : "A Leikr Program.";
+            TITLE = "Title  : " + ((prop.getProperty("title") != null) ? prop.getProperty("title") : "unknown");
+            TYPE = "Type   : " + ((prop.getProperty("type") != null) ? prop.getProperty("type") : "Program");
+            AUTHOR = "Author : " + ((prop.getProperty("author") != null) ? prop.getProperty("author") : "unknown");
+            VERSION = "Version: " + ((prop.getProperty("version") != null) ? prop.getProperty("version") : "0.1");
+            PLAYERS = "Players: " + ((prop.getProperty("players") != null) ? Integer.parseInt(prop.getProperty("players")) : 1);
+            ABOUT = "About: " + ((prop.getProperty("about") != null) ? prop.getProperty("about") : "A Leikr Program.");
         } catch (IOException | NumberFormatException ex) {
             System.out.println(ex.getMessage());
         }
@@ -65,11 +65,11 @@ public class CustomProgramProperties {
     }
 
     public CustomProgramProperties(String title, String type, String author, String version, int players, String about) {
-        TITLE = title;
-        TYPE = type;
-        AUTHOR = author;
-        VERSION = version;
-        PLAYERS = players;
-        ABOUT = about;
+        TITLE = "Title  : " + title;
+        TYPE = "Type   : " + type;
+        AUTHOR = "Author : " + author;
+        VERSION = "Version: " + version;
+        PLAYERS = "Players: " + players;
+        ABOUT = "About: " + about;
     }
 }

@@ -52,19 +52,13 @@ public class LoadScreen extends BasicGameScreen {
     String loadPhrase = "Loading... ";
 
     public LoadScreen() {
-        service = Executors.newFixedThreadPool(5);
-
+        service = Executors.newFixedThreadPool(1);
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
     }
 
     @Override
     public void preTransitionIn(Transition transition) {
         engineGetter = service.submit(EngineLoader.getEngineLoader());
-    }
-
-    @Override
-    public void postTransitionOut(Transition tansition) {
-//        service.shutdownNow();
     }
 
     @Override

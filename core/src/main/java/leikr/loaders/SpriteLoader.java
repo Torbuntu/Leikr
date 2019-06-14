@@ -38,7 +38,7 @@ public class SpriteLoader {
 
     private static SpriteLoader instance;
 
-    public SpriteLoader() {
+    private SpriteLoader() {
         assetManager = new AssetManager();
     }
 
@@ -86,7 +86,7 @@ public class SpriteLoader {
     }
 
     public void disposeSprites() {
-        assetManager.dispose();
+        assetManager.clear();
     }
 
 }

@@ -120,9 +120,9 @@ public class LeikrScreenManager {
     }
 
     public void dispose() {
-        //spriteLoader.disposeSprites();
-        //imageLoader.disposeImages();
-        //mapLoader.disposeMap();
+        spriteLoader.disposeSprites();
+        imageLoader.disposeImages();
+        mapLoader.disposeMap();
     }
     //End Engine methods
 

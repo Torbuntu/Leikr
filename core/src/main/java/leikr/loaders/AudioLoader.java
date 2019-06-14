@@ -39,7 +39,7 @@ public class AudioLoader {
 
     private static AudioLoader instance;
 
-    public AudioLoader() {
+    private AudioLoader() {
         soundManager = new AssetManager();
         musicManager = new AssetManager();
     }
@@ -129,8 +129,8 @@ public class AudioLoader {
         if (sPlayer != null) {
             sPlayer.dispose();
         }
-        //musicManager.dispose();
-        //soundManager.dispose();
+        musicManager.clear();
+        soundManager.clear();
     }
 
 }

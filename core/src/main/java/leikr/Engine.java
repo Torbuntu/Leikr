@@ -46,7 +46,7 @@ public abstract class Engine implements InputProcessor {
     //used by the Engine Screen to determine if the game should be actively running.
     boolean active;
 
-    public static enum BTN {
+    public enum BTN {
         X,
         A,
         B,

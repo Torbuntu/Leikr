@@ -135,9 +135,17 @@ public class EngineLoader implements Callable<Engine> {
         }
     }
 
+    /**
+     * call()
+     * 
+     * This method is used by the ExecutorService to spawn a new thread to load
+     * the Engine object async. 
+     * 
+     * @return The Engine object for running the loaded Leikr program
+     * @throws Exception 
+     */
     @Override
     public Engine call() throws Exception {
-        destroy();//Make sure gcl is ready for new class loader. May be useless.
         return getEngine();
     }
 }
