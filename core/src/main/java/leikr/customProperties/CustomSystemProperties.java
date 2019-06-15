@@ -44,7 +44,7 @@ public class CustomSystemProperties {
 
     public static int HORIZONTAL_AXIS;
     public static int VERTICAL_AXIS;
-    
+
     public static boolean DEBUG;
 
     public CustomSystemProperties() {
@@ -69,12 +69,10 @@ public class CustomSystemProperties {
             DOWN = (prop.getProperty("btn_down") != null) ? Integer.parseInt(prop.getProperty("btn_down")) : 1;
             LEFT = (prop.getProperty("btn_left") != null) ? Integer.parseInt(prop.getProperty("btn_left")) : -1;
             RIGHT = (prop.getProperty("btn_right") != null) ? Integer.parseInt(prop.getProperty("btn_right")) : 1;
-            
+
             HORIZONTAL_AXIS = (prop.getProperty("axis_horizontal") != null) ? Integer.parseInt(prop.getProperty("axis_horizontal")) : 0;
             VERTICAL_AXIS = (prop.getProperty("axis_vertical") != null) ? Integer.parseInt(prop.getProperty("axis_vertical")) : 1;
 
-
-            
         } catch (IOException | NumberFormatException ex) {
             System.out.println(ex.getMessage());
         }

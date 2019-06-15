@@ -8,6 +8,7 @@ public class MyJavaGame extends leikr.Engine {
     	sy = 1;
     	t = 0;
     	steam = 1;
+    	loadMap("map");
     }
     public void update(float delta){
         if(y >= 30 && sy == 1) sy = -1;
@@ -22,7 +23,7 @@ public class MyJavaGame extends leikr.Engine {
 		if( t > 100 ) t = 0;
     }
     public void render(){	
-  	
+		map();
 		pixel((t%34), 120, 80);
 		
 		drawColor(23); //only pixel takes a color, so we set red for the following
