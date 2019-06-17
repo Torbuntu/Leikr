@@ -21,9 +21,8 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
-import java.io.File;
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
@@ -33,7 +32,6 @@ import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
-import org.apache.commons.io.FileUtils;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 
 /**
@@ -62,7 +60,8 @@ public class NewProgramScreen extends BasicGameScreen {
 
     @Override
     public void preTransitionIn(Transition trns) {
-
+        newLocation = "New Program template generated at: /Programs/";
+        newName = "";
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyDown(int i) {
@@ -112,28 +111,29 @@ public class NewProgramScreen extends BasicGameScreen {
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
         if (BACK) {
             BACK = false;
+            FINISH = false;
             sm.enterGameScreen(MenuScreen.ID, null, null);
         }
         if (CREATE) {
             try {
-                String[] programs = new File("Programs").list();
                 int index = 0;
                 String NP = newName.length() > 0 ? newName : "NewProgram";
-                for (String name : programs) {
-                    if (name.contains(NP)) {
+                for (FileHandle name : Gdx.files.local("Programs").list()) {
+                    if (name.name().contains(NP)) {
                         index++;
                     }
                 }
                 if (index > 0) {
-                    FileUtils.copyDirectory(new File("Data/Templates/NewProgram"), new File("Programs/" + NP + index));
-                    newLocation += NP + index + "/";
-                } else {
-                    FileUtils.copyDirectory(new File("Data/Templates/NewProgram"), new File("Programs/" + NP));
-                    newLocation += NP + "/";
+                    NP = NP + index;
                 }
+                for (FileHandle file : Gdx.files.local("Data/Templates/NewProgram").list()) {
+                    Gdx.files.internal("Data/Templates/NewProgram/" + file.name()).copyTo(Gdx.files.local("Programs/" + NP));
+                }
+                Gdx.files.local("Programs/" + NP + "/Code/main.groovy").moveTo(Gdx.files.local("Programs/" + NP + "/Code/" + NP + ".groovy"));
+                newLocation += NP + "/";
                 System.out.println(NP + " template copied to Programs directory");
                 FINISH = true;
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 Logger.getLogger(NewProgramScreen.class.getName()).log(Level.SEVERE, null, ex);
                 CREATE = false;
             }

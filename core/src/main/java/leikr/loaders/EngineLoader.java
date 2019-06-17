@@ -15,6 +15,7 @@
  */
 package leikr.loaders;
 
+import com.badlogic.gdx.Gdx;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovySystem;
 import groovy.util.ResourceException;
@@ -84,23 +85,23 @@ public class EngineLoader implements Callable<Engine> {
     private Engine getSourceEngine() throws MalformedURLException, CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         gcl.clearCache();
         gcl.addURL(new File(rootPath).toURI().toURL());
-        return (Engine) gcl.parseClass(new File(rootPath + MenuScreen.GAME_NAME + ".groovy")).getDeclaredConstructors()[0].newInstance();//loads the game code  
+        return (Engine) gcl.parseClass(Gdx.files.internal(rootPath + MenuScreen.GAME_NAME + ".groovy").file()).getDeclaredConstructors()[0].newInstance();//loads the game code  
     }
 
     private Engine getJavaSourceEngine() throws MalformedURLException, CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         gcl.clearCache();
         gcl.addURL(new File(rootPath).toURI().toURL());
-        return (Engine) gcl.parseClass(new File(rootPath + MenuScreen.GAME_NAME + ".java")).getDeclaredConstructors()[0].newInstance();//loads the game code  
+        return (Engine) gcl.parseClass(Gdx.files.internal(rootPath + MenuScreen.GAME_NAME + ".java").file()).getDeclaredConstructors()[0].newInstance();//loads the game code  
     }
 
     private Engine getCompiledEngine() throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
         String COMPILED = rootPath + "Compiled/";
         gcl.addURL(new File(COMPILED).toURI().toURL());
-        Arrays.asList(new File(COMPILED).list()).stream()
-                .filter(x -> !x.equals(MenuScreen.GAME_NAME + ".class"))
+        Arrays.asList(Gdx.files.local(COMPILED).list()).stream()
+                .filter(x -> !x.name().equals(MenuScreen.GAME_NAME + ".class"))
                 .forEach(classFile -> {
                     try {
-                        gcl.loadClass(classFile.replace(".class", ""), false, true);
+                        gcl.loadClass(classFile.name().replace(".class", ""), false, true);
                     } catch (ClassNotFoundException | CompilationFailedException ex) {
                         Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
                     }

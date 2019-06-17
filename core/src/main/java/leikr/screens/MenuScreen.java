@@ -22,12 +22,11 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import leikr.ChipData;
 import leikr.GameRuntime;
@@ -81,8 +80,11 @@ public class MenuScreen extends BasicGameScreen {
 
         setCursor();
 
-        gameList = new ArrayList<>(Arrays.asList(new File("Programs/").list()));
+        gameList = new ArrayList<>();
         programs = new ArrayList<>();
+        for (FileHandle file : Gdx.files.local("Programs/").list()) {
+            gameList.add(file.name());
+        }
 
         cursor = 0;
         offset = 0;

@@ -21,7 +21,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import leikr.GameRuntime;
 import org.mini2Dx.core.font.MonospaceFont;
@@ -52,7 +51,7 @@ public class TitleScreen extends BasicGameScreen {
 
     public TitleScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
-        logo = new TiledMap(new FileHandle("./Data/Logo/Logo.tmx"));
+        logo = new TiledMap(Gdx.files.local("./Data/Logo/Logo.tmx"));
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
     }
 

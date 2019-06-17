@@ -15,11 +15,12 @@
  */
 package leikr.loaders;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
-import java.io.File;
 import leikr.GameRuntime;
 
 /**
@@ -62,8 +63,8 @@ public class AudioLoader {
 
     private void loadAudio() {
         try {
-            for (String path : new File(soundRootPath).list()) {
-                soundManager.load(soundRootPath + path, Sound.class);
+            for (FileHandle path : Gdx.files.local(soundRootPath).list()) {
+                soundManager.load(soundRootPath + path.name(), Sound.class);
             }
             soundManager.finishLoading();
         } catch (Exception ex) {
@@ -71,8 +72,8 @@ public class AudioLoader {
         }
 
         try {
-            for (String path : new File(musicRootPath).list()) {
-                musicManager.load(musicRootPath + path, Music.class);
+            for (FileHandle path : Gdx.files.local(musicRootPath).list()) {
+                musicManager.load(musicRootPath + path.name(), Music.class);
             }
             musicManager.finishLoading();
         } catch (Exception ex) {
