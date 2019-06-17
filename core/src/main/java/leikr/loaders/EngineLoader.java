@@ -65,7 +65,9 @@ public class EngineLoader implements Callable<Engine> {
 
     //Returns either a pre-compiled game Engine, an Engine compiled from sources, or null. Returning Null helps the EngineScreen return to the MenuScreen.
     public Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, ResourceException, ScriptException {
-
+        if(GameRuntime.checkLaunchTitle()){
+            MenuScreen.GAME_NAME = GameRuntime.LAUNCH_TITLE;
+        }
         if (cp.COMPILE_SOURCE) {
             compileEngine();
         }

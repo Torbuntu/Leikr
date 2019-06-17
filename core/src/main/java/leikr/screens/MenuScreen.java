@@ -51,7 +51,7 @@ public class MenuScreen extends BasicGameScreen {
     public static int ID = 0;
 
     public static String GAME_NAME;
-    
+
     private final static String MENU_BG = "Data/Images/menu_bg.png";
 
     boolean START = false;
@@ -121,10 +121,11 @@ public class MenuScreen extends BasicGameScreen {
     @Override
     public void preTransitionIn(Transition transitionIn) {
         if (GameRuntime.checkLaunchTitle()) {
-            GameRuntime.setProgramPath("Programs/" + GAME_NAME);
+            GAME_NAME = GameRuntime.LAUNCH_TITLE;
             START = true;
+        } else {
+            initMenuList();
         }
-        initMenuList();
     }
 
     @Override
