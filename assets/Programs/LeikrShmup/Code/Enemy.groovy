@@ -1,6 +1,6 @@
 class Enemy{
 
-	def x, y, speed
+	def x, y, speed, width = 16, height = 16
 	boolean hit, gone
 	def type
 	Random rand = new Random()
@@ -16,7 +16,8 @@ class Enemy{
 	}
 	
 	def draw(screen){
-		screen.drawColor(23)
-		screen.circle(x, (int)y, 8, true)	
+		screen.sprite(16,x,y,1)
+//		screen.drawColor(23)
+//		screen.circle(x, (int)y, 8, true)	
 	}
 }

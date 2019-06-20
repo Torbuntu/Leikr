@@ -5,7 +5,7 @@ class Bullet{
 	
 	Bullet(px, py){
 		x = px+16
-		y = py+6
+		y = py+12
 		speed = 10
 	}
 	
@@ -15,7 +15,8 @@ class Bullet{
 	}
 	
 	def draw(screen){
-		screen.drawColor(3)
-		screen.rect(x, y, 4, 4, true)	
+		screen.sprite(4,x,y)
+//		screen.drawColor(3)
+//		screen.rect(x, y, 4, 4, true)	
 	}
 }

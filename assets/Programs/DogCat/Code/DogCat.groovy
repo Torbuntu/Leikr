@@ -82,9 +82,7 @@ class DogCat extends leikr.Engine {
 		coin(p.x+12, p.y+15)
 		coin(p.x+20, p.y+15)
 		p.update(delta)
-		
-		
-		
+				
     }
     
     void render(){	

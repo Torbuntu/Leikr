@@ -1,6 +1,6 @@
 class Player{
 
-	def x, y, speedX, speedY
+	def x, y, speedX, speedY, width=32, height = 32
 	
 	Player(){
 		x = 10
@@ -21,8 +21,9 @@ class Player{
 	}
 	
 	def draw(screen){
-		screen.drawColor(1)
-		screen.rect(x, y, 16, 16, true)	
-		screen.rect((int)(x+16), (int)(y+6), 6, 4, true)	
+		screen.sprite(0,x,y,2)
+//		screen.drawColor(1)
+//		screen.rect(x, y, 16, 16, true)	
+//		screen.rect((int)(x+16), (int)(y+6), 6, 4, true)	
 	}
 }
