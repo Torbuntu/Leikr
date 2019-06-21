@@ -35,7 +35,7 @@ grant{
 };
 
 //Leikr specific
-grant codeBase "file:Leikr-0.0.6.jar"{	
+grant codeBase "file:Leikr-0.0.7.jar"{	
 	//Necessary to access XRANDR
 	permission java.security.AllPermission;
 };
