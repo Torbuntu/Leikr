@@ -61,7 +61,7 @@ public abstract class Engine implements InputProcessor {
         LEFT
     }
 
-    /**
+    /*
      * Controllers and listeners for handling custom controller input
      */
     LeikrControllerListener p1ControllerListener;
@@ -69,7 +69,7 @@ public abstract class Engine implements InputProcessor {
     Controller playerOneController;
     Controller playerTwoController;
 
-    /**
+    /*
      * Loaders
      *
      * The loaders are used to load the custom assets for a game at startup.
@@ -84,6 +84,15 @@ public abstract class Engine implements InputProcessor {
     }
     //end custom prop functions
 
+    
+    /**
+     * preCreate
+     * gets the audio, screen and system singletons. 
+     * sets up the controllers if there are any connected.
+     * 
+     * @param mSprites maximum allowed sprites to draw at one time
+     * @param system object used to interact with the Leikr system at runtime
+     */
     public final void preCreate(int mSprites, LeikrSystemManager system) {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         logger = new FPSLogger();
@@ -107,17 +116,35 @@ public abstract class Engine implements InputProcessor {
         }
     }
 
+    /**
+     * preUpdate
+     * 
+     * run just before the Engine update method. Used to update system objects
+     * behind the scenes.
+     * 
+     * @param delta 
+     */
     public final void preUpdate(float delta) {
         screen.preUpdate(delta);
     }
 
+    /**
+     * preRender
+     * 
+     * run just before the Engine render method. Used to set up system objects
+     * before doing any Engine rendering. 
+     * 
+     * Applies viewport and preRenders the screen.
+     * 
+     * @param g 
+     */
     public final void preRender(Graphics g) {
         this.g = g;
         viewport.apply(this.g);
         screen.preRender(this.g);
     }
 
-    /**
+    /*
      * Override functions for game scripting. These are abstract and are
      * required to be implemented in the game code.
      */

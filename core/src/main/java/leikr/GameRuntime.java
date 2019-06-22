@@ -15,7 +15,6 @@
  */
 package leikr;
 
-import com.badlogic.gdx.Gdx;
 import leikr.customProperties.CustomSystemProperties;
 import leikr.screens.EngineScreen;
 import leikr.screens.MenuScreen;
@@ -45,7 +44,6 @@ public class GameRuntime extends ScreenBasedGame {
     public static FontLoader primaryFontLoader = new FontLoader();
 
     public GameRuntime(String[] arg) {
-        
         csp = new CustomSystemProperties();
         if (csp.LAUNCH_TITLE.length() > 3) {
             LAUNCH_TITLE = csp.LAUNCH_TITLE;

@@ -38,7 +38,7 @@ import org.mini2Dx.core.graphics.SpriteSheet;
  */
 public class LeikrScreenManager {
 
-    /**
+    /*
      * Loaders
      *
      * The loaders are used to load the custom assets for a game at startup.
@@ -52,7 +52,7 @@ public class LeikrScreenManager {
 
     private static LeikrScreenManager instance;
 
-    /**
+    /*
      * Properties set by Custom Properties
      *
      * These can be overwritten for a more custom experience.

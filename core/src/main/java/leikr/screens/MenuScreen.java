@@ -28,7 +28,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import java.util.ArrayList;
 import java.util.Collections;
-import leikr.ChipData;
+import leikr.customProperties.ChipData;
 import leikr.GameRuntime;
 import leikr.customProperties.CustomSystemProperties;
 import org.mini2Dx.core.font.MonospaceFont;
@@ -55,7 +55,7 @@ public class MenuScreen extends BasicGameScreen {
 
     boolean START = false;
     boolean NEW_PROGRAM = false;
-    boolean page = true;
+    boolean PAGE = true;
     int cursor;
     int offset;
 
@@ -161,7 +161,7 @@ public class MenuScreen extends BasicGameScreen {
                     Gdx.app.exit();
                 }
                 if (i == Keys.LEFT || i == Keys.RIGHT) {
-                    page = !page;
+                    PAGE = !PAGE;
                 }
                 return false;
             }
@@ -195,7 +195,7 @@ public class MenuScreen extends BasicGameScreen {
                             }
                             return true;
                         } else {
-                            page = !page;
+                            PAGE = !PAGE;
                         }
                         return false;
                     }
@@ -260,7 +260,7 @@ public class MenuScreen extends BasicGameScreen {
 
             g.setColor(Color.WHITE);
 
-            if (page) {
+            if (PAGE) {
                 g.drawString(programs.get(cursor).getTitle(), 8, 104);
                 g.drawString(programs.get(cursor).getAuthor(), 8, 114);
                 g.drawString(programs.get(cursor).getType(), 8, 124);
