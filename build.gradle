@@ -3,8 +3,6 @@ buildscript {
         mavenLocal()
         mavenCentral()
         jcenter()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
     dependencies {
         classpath 'org.mini2Dx:butler:1.1.3'
@@ -24,8 +22,6 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
     }
     
     gradle.projectsEvaluated {
