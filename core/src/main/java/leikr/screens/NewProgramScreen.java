@@ -126,8 +126,9 @@ public class NewProgramScreen extends BasicGameScreen {
                 if (index > 0) {
                     NP = NP + index;
                 }
+                Gdx.files.local("Programs/"+NP).mkdirs();
                 for (FileHandle file : Gdx.files.local("Data/Templates/NewProgram").list()) {
-                    Gdx.files.internal("Data/Templates/NewProgram/" + file.name()).copyTo(Gdx.files.local("Programs/" + NP));
+                    Gdx.files.local("Data/Templates/NewProgram/" + file.name()).copyTo(Gdx.files.local("Programs/" + NP));
                 }
                 Gdx.files.local("Programs/" + NP + "/Code/main.groovy").moveTo(Gdx.files.local("Programs/" + NP + "/Code/" + NP + ".groovy"));
                 newLocation += NP + "/";
