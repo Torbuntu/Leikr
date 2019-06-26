@@ -1,18 +1,3 @@
-/*
- * Copyright 2019 torbuntu.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
@@ -26,6 +11,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
 import java.util.Collections;
 import leikr.customProperties.ChipData;
@@ -66,6 +52,9 @@ public class MenuScreen extends BasicGameScreen {
     ArrayList<String> gameList;
     ArrayList<ChipData> programs;
 
+    Vector2 realMouse;
+    Vector2 leikrMouse;
+
     float time = 0;// Create a lock on the mouse click for the up/down selection of programs.
 
     public MenuScreen(AssetManager assetManager) {
@@ -73,12 +62,13 @@ public class MenuScreen extends BasicGameScreen {
         this.assetManager.load(MENU_BG, Texture.class);
         font = GameRuntime.primaryFontLoader.getDefaultFont();
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
+        realMouse = new Vector2();
+        leikrMouse = new Vector2();
         initMenuList();
     }
 
     private void initMenuList() {
-
-        setCursor();
+        Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(1,1,Pixmap.Format.RGBA8888), 0, 0));
 
         gameList = new ArrayList<>();
         programs = new ArrayList<>();
@@ -98,14 +88,6 @@ public class MenuScreen extends BasicGameScreen {
             gameList.add("Start new...");
             programs.add(new ChipData("New Game", "System", "Template", "1.0", 0, "Initializes a new program template", assetManager));
         }
-    }
-
-    private void setCursor() {
-        Pixmap map = new Pixmap(8, 8, Pixmap.Format.RGBA8888);
-        map.setColor(Color.RED);
-        map.fillCircle(0, 0, 8);
-        Gdx.graphics.setCursor(Gdx.graphics.newCursor(map, 0, 0));
-        map.dispose();
     }
 
     private void loadPrograms() {
@@ -206,21 +188,28 @@ public class MenuScreen extends BasicGameScreen {
         }
     }
 
+    private void updateMouse() {
+        realMouse.x = Gdx.input.getX();
+        realMouse.y = Gdx.input.getY();
+        viewport.toWorldCoordinates(leikrMouse, realMouse.x, realMouse.y);
+    }
+
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         font.load(assetManager);
+        updateMouse();
         time += delta;
-        if (Gdx.input.getY() > 145 && cursor < gameList.size() - 1 && Gdx.input.isTouched() && time > 0.2) {
+        if (leikrMouse.y > 51 && cursor < gameList.size() - 1 && Gdx.input.isTouched() && time > 0.2) {
             cursor++;
             GAME_NAME = gameList.get(cursor);
             time = 0;
         }
-        if (Gdx.input.getY() < 116 && cursor > 0 && Gdx.input.isTouched() && time > 0.2) {
+        if (leikrMouse.y < 36 && cursor > 0 && Gdx.input.isTouched() && time > 0.2) {
             cursor--;
             GAME_NAME = gameList.get(cursor);
             time = 0;
         }
-        if (Gdx.input.getY() > 117 && Gdx.input.getY() < 145 && Gdx.input.isTouched()) {
+        if (leikrMouse.y > 37 && leikrMouse.y < 50 && Gdx.input.isTouched()) {
             if (cursor == gameList.size() - 1) {
                 NEW_PROGRAM = true;
                 System.out.println("initializing new game...");
@@ -281,6 +270,9 @@ public class MenuScreen extends BasicGameScreen {
         //Menu tops everything else.
         g.drawTexture(assetManager.get(MENU_BG, Texture.class), 0, 0);
 
+        //Mouse
+        g.setColor(Color.RED);
+        g.drawLineSegment(leikrMouse.x, leikrMouse.y, leikrMouse.x+4, leikrMouse.y+3);
     }
 
     @Override

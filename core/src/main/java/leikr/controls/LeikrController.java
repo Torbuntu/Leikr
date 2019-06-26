@@ -1,18 +1,3 @@
-/*
- * Copyright 2019 torbuntu.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package leikr.controls;
 
 import com.badlogic.gdx.controllers.Controller;
@@ -27,29 +12,29 @@ import leikr.customProperties.CustomSystemProperties;
  *
  * @author tor
  */
-public class LeikrControllerListener implements ControllerListener {
+public class LeikrController implements ControllerListener {
 
     HashMap<Object, Boolean> buttons = new HashMap<>();
     HashMap<Object, Object> btnCodes = new HashMap<>();
 
-    private static LeikrControllerListener instance;
-    private static LeikrControllerListener instanceTwo;
+    private static LeikrController instance;
+    private static LeikrController instanceTwo;
 
-    public static LeikrControllerListener getLeikrControllerListenerA() {
+    public static LeikrController getLeikrControllerListenerA() {
         if (instance == null) {
-            instance = new LeikrControllerListener();
+            instance = new LeikrController();
         }
         return instance;
     }
 
-    public static LeikrControllerListener getLeikrControllerListenerB() {
+    public static LeikrController getLeikrControllerListenerB() {
         if (instanceTwo == null) {
-            instanceTwo = new LeikrControllerListener();
+            instanceTwo = new LeikrController();
         }
         return instanceTwo;
     }
 
-    public LeikrControllerListener() {
+    public LeikrController() {
         buttons.put(Engine.BTN.A, false);
         buttons.put(Engine.BTN.B, false);
         buttons.put(Engine.BTN.X, false);

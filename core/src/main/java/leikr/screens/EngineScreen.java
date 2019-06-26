@@ -1,22 +1,8 @@
-/*
- * Copyright 2019 torbuntu.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package leikr.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import leikr.Engine;
 import leikr.GameRuntime;
 import leikr.loaders.EngineLoader;
@@ -106,11 +92,10 @@ public class EngineScreen extends BasicGameScreen {
             system.setRunning(true);
             engine.preCreate(EngineLoader.getEngineLoader().cp.MAX_SPRITES, system);
             engine.create();
-            Gdx.input.setInputProcessor(engine);
         } catch (Exception ex) {
             ERROR = true;
             errorMessage = "Error in program `create` method. " + ex.getLocalizedMessage();
-            ex.printStackTrace();
+            Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -137,7 +122,7 @@ public class EngineScreen extends BasicGameScreen {
         } catch (Exception ex) {
             ERROR = true;
             errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
-            ex.printStackTrace();
+            Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -158,7 +143,7 @@ public class EngineScreen extends BasicGameScreen {
         } catch (Exception ex) {
             ERROR = true;
             errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();
-            ex.printStackTrace();
+            Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

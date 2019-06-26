@@ -1,21 +1,6 @@
-/*
- * Copyright 2019 torbuntu.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package leikr;
 
-import leikr.controls.LeikrControllerListener;
+import leikr.controls.LeikrController;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
@@ -24,6 +9,8 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.MathUtils;
+import leikr.controls.LeikrKeyboard;
+import leikr.controls.LeikrMouse;
 import leikr.managers.LeikrAudioManager;
 import leikr.managers.LeikrScreenManager;
 import leikr.managers.LeikrSystemManager;
@@ -36,7 +23,7 @@ import org.mini2Dx.core.graphics.viewport.FitViewport;
  *
  * @author tor
  */
-public abstract class Engine implements InputProcessor {
+public abstract class Engine implements InputProcessor{
 
     //Mini2DX specific classes for managing the screen state and drawing.
     Graphics g;
@@ -45,7 +32,7 @@ public abstract class Engine implements InputProcessor {
 
     //used by the Engine Screen to determine if the game should be actively running.
     boolean active;
-
+    
     public enum BTN {
         X,
         A,
@@ -64,10 +51,13 @@ public abstract class Engine implements InputProcessor {
     /*
      * Controllers and listeners for handling custom controller input
      */
-    LeikrControllerListener p1ControllerListener;
-    LeikrControllerListener p2ControllerListener;
+    public LeikrController controllerA;
+    public LeikrController controllerB;
     Controller playerOneController;
     Controller playerTwoController;
+
+    public LeikrMouse mouse;
+    public LeikrKeyboard keyboard;
 
     /*
      * Loaders
@@ -84,12 +74,10 @@ public abstract class Engine implements InputProcessor {
     }
     //end custom prop functions
 
-    
     /**
-     * preCreate
-     * gets the audio, screen and system singletons. 
-     * sets up the controllers if there are any connected.
-     * 
+     * preCreate gets the audio, screen and system singletons. sets up the
+     * controllers if there are any connected.
+     *
      * @param mSprites maximum allowed sprites to draw at one time
      * @param system object used to interact with the Leikr system at runtime
      */
@@ -103,40 +91,53 @@ public abstract class Engine implements InputProcessor {
         try {
             Controllers.clearListeners();
             if (Controllers.getControllers().size > 0) {
-                p1ControllerListener = LeikrControllerListener.getLeikrControllerListenerA();
-                Controllers.getControllers().get(0).addListener(p1ControllerListener);
+                controllerA = LeikrController.getLeikrControllerListenerA();
+                Controllers.getControllers().get(0).addListener(controllerA);
 
             }
             if (Controllers.getControllers().size > 1) {
-                p2ControllerListener = LeikrControllerListener.getLeikrControllerListenerB();
-                Controllers.getControllers().get(1).addListener(p2ControllerListener);
+                controllerB = LeikrController.getLeikrControllerListenerB();
+                Controllers.getControllers().get(1).addListener(controllerB);
             }
         } catch (Exception ex) {
             System.out.println("Controllers not active: " + ex.getMessage());
         }
+        // input processors
+        mouse = LeikrMouse.getLeikrMouse(viewport);
+        keyboard = LeikrKeyboard.getLeikrKeyboard();
+        Gdx.input.setInputProcessor(this);
     }
 
     /**
-     * preUpdate
-     * 
-     * run just before the Engine update method. Used to update system objects
+     * Run just before the Engine update method. Used to update system objects
      * behind the scenes.
      * 
-     * @param delta 
+     * mouse positions updates
+     * 
+     * checks for ESCAPE press to exit (needed here to avoid overwriting in the 
+     * handler.
+     * 
+     * update screen objects
+     *
+     * @param delta
      */
     public final void preUpdate(float delta) {
+        mouse.updateMouse();
+        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+            EngineScreen.setBack(true);
+        }
         screen.preUpdate(delta);
     }
 
     /**
      * preRender
-     * 
+     *
      * run just before the Engine render method. Used to set up system objects
-     * before doing any Engine rendering. 
-     * 
+     * before doing any Engine rendering.
+     *
      * Applies viewport and preRenders the screen.
-     * 
-     * @param g 
+     *
+     * @param g
      */
     public final void preRender(Graphics g) {
         this.g = g;
@@ -160,10 +161,10 @@ public abstract class Engine implements InputProcessor {
         audio.dispose();
         screen.dispose();
         if (null != playerOneController) {
-            playerOneController.removeListener(p1ControllerListener);
+            playerOneController.removeListener(controllerA);
         }
         if (null != playerTwoController) {
-            playerTwoController.removeListener(p2ControllerListener);
+            playerTwoController.removeListener(controllerB);
         }
     }
     //dispose
@@ -463,43 +464,65 @@ public abstract class Engine implements InputProcessor {
     public float randFloat(float start, float end) {
         return MathUtils.random(start, end);
     }
-
     //END Math utils
-    //start input handling
+    
+    //START input handling
     public final boolean button(BTN button) {
-        return (null != p1ControllerListener) ? p1ControllerListener.button(button) : false;
+        return (null != controllerA) ? controllerA.button(button) : false;
     }
 
     public final boolean button(BTN button, int player) {
-        if (null != p1ControllerListener && player == 0) {
-            return p1ControllerListener.button(button);
+        if (null != controllerA && player == 0) {
+            return controllerA.button(button);
         }
-        if (null != p2ControllerListener && player == 1) {
-            return p2ControllerListener.button(button);
+        if (null != controllerB && player == 1) {
+            return controllerB.button(button);
         }
         //default search is false, in case there are no controllers.
         return false;
     }
 
+    // Gets the result based on the button's ID. Not recommended.
     public final boolean getButton(int code) {
         return playerOneController.getButton(code);
     }
 
-    //detect keyboard key presses
+    //detect keyboard key presses (polling continuously)
     public final boolean key(String key) {
-        return Gdx.input.isKeyPressed(Keys.valueOf(key));
+        return keyboard.key(key);
+    }
+    
+    //detect single key press.
+    public final boolean keyPress(String key){
+        return keyboard.keyPress(key);
+    }
+    
+    /**
+     * Button codes Left = 0 Middle = 2 Right = 1
+     *
+     * @param btn
+     * @return
+     */
+    public final boolean mouseClick(int btn){
+        return mouse.mouseClick(btn);
+    }
+    
+    public final float mouseX(){
+        return mouse.mouseX();
+    }
+    
+    public final float mouseY(){
+        return mouse.mouseY();
     }
 
+    
     @Override
-    public boolean keyDown(int keyCode) {
-        if (keyCode == Keys.ESCAPE) {
-            EngineScreen.setBack(true);
-        }
+    public boolean keyDown(int keycode) {
         return false;
     }
 
     @Override
-    public boolean keyUp(int keyCode) {
+    public boolean keyUp(int keycode) {
         return false;
     }
 
@@ -532,6 +555,7 @@ public abstract class Engine implements InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
+    
     //end input handling
 
     //START System api
@@ -547,6 +571,10 @@ public abstract class Engine implements InputProcessor {
     //Experimental API methods
     public void tint(int color) {
         g.setTint(getDrawColor(color));
+    }
+    
+    public void tint(){
+        g.removeTint();
     }
 
     public final void clip(float x, float y, float w, float h) {
