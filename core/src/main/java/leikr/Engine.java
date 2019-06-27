@@ -1,6 +1,5 @@
 package leikr;
 
-import leikr.controls.LeikrController;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
@@ -9,6 +8,7 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.MathUtils;
+import leikr.controls.LeikrController;
 import leikr.controls.LeikrKeyboard;
 import leikr.controls.LeikrMouse;
 import leikr.managers.LeikrAudioManager;
@@ -79,14 +79,14 @@ public abstract class Engine implements InputProcessor{
      * controllers if there are any connected.
      *
      * @param mSprites maximum allowed sprites to draw at one time
-     * @param system object used to interact with the Leikr system at runtime
+     * @param sys object used to interact with the Leikr system at runtime
      */
-    public final void preCreate(int mSprites, LeikrSystemManager system) {
+    public final void preCreate(int mSprites, LeikrSystemManager sys) {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         logger = new FPSLogger();
         audio = LeikrAudioManager.getLeikrAudioManager();
         screen = LeikrScreenManager.getLeikrScreenManager(mSprites);
-        this.system = system;
+        system = sys;
         active = true;
         try {
             Controllers.clearListeners();

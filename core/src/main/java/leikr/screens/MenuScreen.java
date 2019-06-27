@@ -68,7 +68,7 @@ public class MenuScreen extends BasicGameScreen {
     }
 
     private void initMenuList() {
-        Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(1,1,Pixmap.Format.RGBA8888), 0, 0));
+        Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap(1, 1, Pixmap.Format.RGBA8888), 0, 0));
 
         gameList = new ArrayList<>();
         programs = new ArrayList<>();

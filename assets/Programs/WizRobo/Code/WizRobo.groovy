@@ -569,14 +569,14 @@ class WizRobo extends leikr.Engine {
 		tmpAnimSprite.update(delta)
         debuglvl()       
         if(gameOver){
-        	if(key("Enter") || button(BTN.START)){
+        	if(keyPress("Enter") || button(BTN.START)){
         		title = true
         		gameOver = false
         		return
         	}
         }
     	if(title){
-            if(key("Enter") || button(BTN.START)){
+            if(keyPress("Enter") || button(BTN.START)){
                 title = false
                 init()
             }

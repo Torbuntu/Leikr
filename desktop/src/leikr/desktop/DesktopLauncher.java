@@ -12,10 +12,10 @@ import org.mini2Dx.core.Mdx;
 public class DesktopLauncher {
 
     public static void main(String[] arg) {
-         if (arg.length > 0 && arg[0].equalsIgnoreCase("insecure")) {
+        if (arg.length > 0 && arg[0].equalsIgnoreCase("insecure")) {
             Logger.getLogger(Security.class.getName()).log(Level.WARNING, "Leikr is running without security policy.");
         } else {
-            System.out.println("Setting policy...");
+            Logger.getLogger(Security.class.getName()).log(Level.INFO, "Setting Leikr security policy.");
             System.setProperty("java.security.policy", new File("Sys/mysecurity.policy").getAbsolutePath());
             System.setSecurityManager(new SecurityManager());
         }
@@ -28,6 +28,4 @@ public class DesktopLauncher {
         System.out.println("OS: " + Mdx.os.name());
         new DesktopMini2DxGame(new GameRuntime(arg), config);
     }
-
-
 }

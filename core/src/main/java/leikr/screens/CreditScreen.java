@@ -68,7 +68,6 @@ public class CreditScreen extends BasicGameScreen {
                         MENU = true;
                         return false;
                     }
-
                 });
             }
         } catch (Exception ex) {
