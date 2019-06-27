@@ -1,5 +1,6 @@
 package leikr.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -85,6 +86,7 @@ public class EngineScreen extends BasicGameScreen {
 
     @Override
     public void postTransitionIn(Transition transition) {
+        Gdx.input.setCursorCatched(true);//remove cursor
         if (ERROR) {
             return;
         }
