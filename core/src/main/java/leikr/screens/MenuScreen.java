@@ -9,6 +9,8 @@ import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Cursor;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
@@ -64,10 +66,13 @@ public class MenuScreen extends BasicGameScreen {
         realMouse = new Vector2();
         leikrMouse = new Vector2();
         initMenuList();
+        
+        Pixmap m = new Pixmap(Gdx.files.internal("Internal/Cursor.png"));
+        Gdx.graphics.setCursor(Gdx.graphics.newCursor(m, 0, 0));
+        m.dispose();
     }
 
     private void initMenuList() {
-        Gdx.input.setCursorCatched(true);//remove cursor
         gameList = new ArrayList<>();
         programs = new ArrayList<>();
         for (FileHandle file : Gdx.files.local("Programs/").list()) {
@@ -175,7 +180,12 @@ public class MenuScreen extends BasicGameScreen {
                             }
                             return true;
                         } else {
-                            PAGE = !PAGE;
+                            if (value == CustomSystemProperties.LEFT) {
+                                PAGE = true;
+                            }
+                            if (value == CustomSystemProperties.RIGHT) {
+                                PAGE = false;
+                            }
                         }
                         return false;
                     }
@@ -270,7 +280,7 @@ public class MenuScreen extends BasicGameScreen {
 
         //Mouse
         g.setColor(Color.RED);
-        g.drawLineSegment(leikrMouse.x, leikrMouse.y, leikrMouse.x + 4, leikrMouse.y + 3);
+        g.drawLineSegment(leikrMouse.x, leikrMouse.y, leikrMouse.x + 6, leikrMouse.y + 4);
     }
 
     @Override
