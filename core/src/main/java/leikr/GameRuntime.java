@@ -1,9 +1,11 @@
 package leikr;
 
+import com.badlogic.gdx.Gdx;
 import leikr.customProperties.CustomSystemProperties;
 import leikr.screens.EngineScreen;
 import leikr.screens.MenuScreen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Pixmap;
 import leikr.loaders.FontLoader;
 import leikr.screens.CreditScreen;
 import leikr.screens.ErrorScreen;
@@ -28,6 +30,11 @@ public class GameRuntime extends ScreenBasedGame {
 
     public static FontLoader primaryFontLoader = new FontLoader();
 
+    /**
+     * Creates CustomSystemProperties for detecting launch title.
+     *
+     * @param arg
+     */
     public GameRuntime(String[] arg) {
         csp = new CustomSystemProperties();
         if (csp.LAUNCH_TITLE.length() > 3) {
@@ -65,7 +72,9 @@ public class GameRuntime extends ScreenBasedGame {
     public void initialise() {
         assetManager = new AssetManager();
         primaryFontLoader.initializeDefaultFont(assetManager);
-
+        Pixmap m = new Pixmap(Gdx.files.internal("Internal/Cursor.png"));
+        Gdx.graphics.setCursor(Gdx.graphics.newCursor(m, 0, 0));
+        m.dispose();
         this.addScreen(new MenuScreen(assetManager));//0
         this.addScreen(new EngineScreen(assetManager));//1
         this.addScreen(new TitleScreen(assetManager));//2
