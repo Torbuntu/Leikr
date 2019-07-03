@@ -93,7 +93,6 @@ public abstract class Engine implements InputProcessor{
             if (Controllers.getControllers().size > 0) {
                 controllerA = LeikrController.getLeikrControllerListenerA();
                 Controllers.getControllers().get(0).addListener(controllerA);
-
             }
             if (Controllers.getControllers().size > 1) {
                 controllerB = LeikrController.getLeikrControllerListenerB();

@@ -30,6 +30,7 @@ public class CreditScreen extends BasicGameScreen {
     FitViewport viewport;
     boolean MENU = false;
     int timer = 0;
+    ControllerAdapter creditAdapter;
 
     public CreditScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
@@ -58,17 +59,26 @@ public class CreditScreen extends BasicGameScreen {
     }
 
     @Override
+    public void preTransitionOut(Transition transitionOut) {
+        Controllers.clearListeners();
+        if (Controllers.getControllers().size > 0) {
+            Controllers.getControllers().get(0).removeListener(creditAdapter);
+        }
+    }
+
+    @Override
     public void postTransitionIn(Transition transitionIn) {
         try {
             Controllers.clearListeners();
             if (Controllers.getControllers().size > 0) {
-                Controllers.getControllers().get(0).addListener(new ControllerAdapter() {
+                creditAdapter = new ControllerAdapter() {
                     @Override
                     public boolean buttonDown(Controller controller, int buttonIndex) {
                         MENU = true;
                         return false;
                     }
-                });
+                };
+                Controllers.getControllers().get(0).addListener(creditAdapter);
             }
         } catch (Exception ex) {
             System.out.println("No controllers active on Credit Screen. " + ex.getMessage());

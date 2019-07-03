@@ -54,6 +54,8 @@ public class MenuScreen extends BasicGameScreen {
     Vector2 realMouse;
     Vector2 leikrMouse;
 
+    ControllerAdapter menuControllerAdapter;
+
     float time = 0;// Create a lock on the mouse click for the up/down selection of programs.
 
     public MenuScreen(AssetManager assetManager) {
@@ -64,6 +66,46 @@ public class MenuScreen extends BasicGameScreen {
         realMouse = new Vector2();
         leikrMouse = new Vector2();
         initMenuList();
+        createControllerAdapter();
+    }
+
+    private void createControllerAdapter() {
+        menuControllerAdapter = new ControllerAdapter() {
+            @Override
+            public boolean buttonDown(Controller controller, int buttonIndex) {
+                if (buttonIndex == CustomSystemProperties.START || buttonIndex == CustomSystemProperties.A) {
+                    if (cursor == gameList.size() - 1) {
+                        NEW_PROGRAM = true;
+                    } else {
+                        GameRuntime.setProgramPath("Programs/" + GAME_NAME);
+                        START = true;
+                    }
+                }
+                return false;
+            }
+
+            @Override
+            public boolean axisMoved(Controller controller, int axisCode, float value) {
+                if (axisCode == CustomSystemProperties.VERTICAL_AXIS) {
+                    if (value == 1 && cursor < gameList.size() - 1) {
+                        cursor++;
+                        GAME_NAME = gameList.get(cursor);
+                    } else if (value == -1 && cursor > 0) {
+                        cursor--;
+                        GAME_NAME = gameList.get(cursor);
+                    }
+                    return true;
+                } else {
+                    if (value == CustomSystemProperties.LEFT) {
+                        PAGE = true;
+                    }
+                    if (value == CustomSystemProperties.RIGHT) {
+                        PAGE = false;
+                    }
+                }
+                return false;
+            }
+        };
     }
 
     private void initMenuList() {
@@ -110,6 +152,14 @@ public class MenuScreen extends BasicGameScreen {
     }
 
     @Override
+    public void preTransitionOut(Transition transitionIn) {
+        Controllers.clearListeners();
+        if (Controllers.getControllers().size > 0) {
+            Controllers.getControllers().get(0).removeListener(menuControllerAdapter);
+        }
+    }
+
+    @Override
     public void postTransitionIn(Transition transitionIn) {
         if (GameRuntime.checkLaunchTitle()) {
             return;
@@ -148,42 +198,7 @@ public class MenuScreen extends BasicGameScreen {
         try {
             Controllers.clearListeners();
             if (Controllers.getControllers().size > 0) {
-                Controllers.getControllers().get(0).addListener(new ControllerAdapter() {
-                    @Override
-                    public boolean buttonDown(Controller controller, int buttonIndex) {
-                        if (buttonIndex == CustomSystemProperties.START || buttonIndex == CustomSystemProperties.A) {
-                            if (cursor == gameList.size() - 1) {
-                                NEW_PROGRAM = true;
-                            } else {
-                                GameRuntime.setProgramPath("Programs/" + GAME_NAME);
-                                START = true;
-                            }
-                        }
-                        return false;
-                    }
-
-                    @Override
-                    public boolean axisMoved(Controller controller, int axisCode, float value) {
-                        if (axisCode == CustomSystemProperties.VERTICAL_AXIS) {
-                            if (value == 1 && cursor < gameList.size() - 1) {
-                                cursor++;
-                                GAME_NAME = gameList.get(cursor);
-                            } else if (value == -1 && cursor > 0) {
-                                cursor--;
-                                GAME_NAME = gameList.get(cursor);
-                            }
-                            return true;
-                        } else {
-                            if (value == CustomSystemProperties.LEFT) {
-                                PAGE = true;
-                            }
-                            if (value == CustomSystemProperties.RIGHT) {
-                                PAGE = false;
-                            }
-                        }
-                        return false;
-                    }
-                });
+                Controllers.getControllers().get(0).addListener(menuControllerAdapter);
             }
         } catch (Exception ex) {
             System.out.println("No controllers active on Menu Screen. " + ex.getMessage());

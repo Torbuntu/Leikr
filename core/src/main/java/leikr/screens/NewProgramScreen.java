@@ -33,6 +33,8 @@ public class NewProgramScreen extends BasicGameScreen {
     boolean FINISH = false;
     String newName = "";
 
+    ControllerAdapter newProgAdapter;
+
     String newLocation = "New Program template generated at: /Programs/";
 
     public NewProgramScreen() {
@@ -41,6 +43,24 @@ public class NewProgramScreen extends BasicGameScreen {
 
     @Override
     public void initialise(GameContainer gc) {
+    }
+
+    private void createControllerAdapter() {
+        newProgAdapter = new ControllerAdapter() {
+            @Override
+            public boolean buttonDown(Controller controller, int buttonIndex) {
+                BACK = true;
+                return false;
+            }
+        };
+    }
+
+    @Override
+    public void preTransitionOut(Transition transOut) {
+        Controllers.clearListeners();
+        if (Controllers.getControllers().size > 0) {
+            Controllers.getControllers().get(0).removeListener(newProgAdapter);
+        }
     }
 
     @Override
@@ -78,13 +98,7 @@ public class NewProgramScreen extends BasicGameScreen {
         try {
             Controllers.clearListeners();
             if (Controllers.getControllers().size > 0) {
-                Controllers.getControllers().get(0).addListener(new ControllerAdapter() {
-                    @Override
-                    public boolean buttonDown(Controller controller, int buttonIndex) {
-                        BACK = true;
-                        return false;
-                    }
-                });
+                Controllers.getControllers().get(0).addListener(newProgAdapter);
             }
         } catch (Exception ex) {
             System.out.println("No controllers active on NewProgram Screen. ");
@@ -111,7 +125,7 @@ public class NewProgramScreen extends BasicGameScreen {
                 if (index > 0) {
                     NP = NP + index;
                 }
-                Gdx.files.local("Programs/"+NP).mkdirs();
+                Gdx.files.local("Programs/" + NP).mkdirs();
                 for (FileHandle file : Gdx.files.local("Data/Templates/NewProgram").list()) {
                     Gdx.files.local("Data/Templates/NewProgram/" + file.name()).copyTo(Gdx.files.local("Programs/" + NP));
                 }
