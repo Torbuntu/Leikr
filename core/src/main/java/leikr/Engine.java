@@ -113,8 +113,6 @@ public abstract class Engine implements InputProcessor{
      * 
      * mouse positions updates
      * 
-     * checks for ESCAPE press to exit (needed here to avoid overwriting in the 
-     * handler.
      * 
      * update screen objects
      *
@@ -122,9 +120,6 @@ public abstract class Engine implements InputProcessor{
      */
     public final void preUpdate(float delta) {
         mouse.updateMouse();
-        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-            EngineScreen.setBack(true);
-        }
         screen.preUpdate(delta);
     }
 

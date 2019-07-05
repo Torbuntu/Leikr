@@ -1,6 +1,9 @@
 package leikr.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.Engine;
@@ -9,6 +12,7 @@ import leikr.loaders.EngineLoader;
 import leikr.managers.LeikrSystemManager;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
@@ -28,6 +32,10 @@ public class EngineScreen extends BasicGameScreen {
     static boolean ERROR = false;
     String errorMessage;
     AssetManager manager;
+    FitViewport viewport;
+
+    private static boolean PAUSE = false;
+    private static boolean CONFIRM = false;
 
     public EngineScreen(AssetManager manager) {
         this.manager = manager;
@@ -35,6 +43,10 @@ public class EngineScreen extends BasicGameScreen {
 
     public static void setBack(boolean setback) {
         BACK = setback;
+    }
+
+    public static void setPause(boolean pause) {
+        PAUSE = pause;
     }
 
     void enterMenuScreen(ScreenManager sm) {
@@ -69,6 +81,7 @@ public class EngineScreen extends BasicGameScreen {
     @Override
     public void initialise(GameContainer gc) {
         system = LeikrSystemManager.getLeikrSystemManager();
+        viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
     }
 
     @Override
@@ -83,6 +96,11 @@ public class EngineScreen extends BasicGameScreen {
         System.out.println("Engine classes disposed.");
     }
 
+    @Override
+    public void preTransitionIn(Transition trans){
+        PAUSE = false;
+    }
+    
     @Override
     public void postTransitionIn(Transition transition) {
         if (ERROR) {
@@ -101,6 +119,9 @@ public class EngineScreen extends BasicGameScreen {
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
+        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+            PAUSE = !PAUSE;
+        }
         if (BACK) {
             system.resetFont();
             enterMenuScreen(sm);
@@ -116,13 +137,29 @@ public class EngineScreen extends BasicGameScreen {
             return;
         }
 
-        try {
-            engine.preUpdate(delta);
-            engine.update(delta);
-        } catch (Exception ex) {
-            ERROR = true;
-            errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
-            Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+        if (!PAUSE) {
+            try {
+                engine.preUpdate(delta);
+                engine.update(delta);
+            } catch (Exception ex) {
+                ERROR = true;
+                errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
+                Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            if (Gdx.input.isKeyJustPressed(Keys.LEFT)) {
+                CONFIRM = true;
+            }
+            if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
+                CONFIRM = false;
+            }
+            if(Gdx.input.isKeyJustPressed(Keys.ENTER)){
+                if(CONFIRM){
+                    setBack(true);
+                }else{
+                    PAUSE = false;
+                }
+            }
         }
 
     }
@@ -136,14 +173,32 @@ public class EngineScreen extends BasicGameScreen {
         if (null != engine && !engine.getActive() || ERROR) {
             return;
         }
-        try {
-            system.render(g);
-            engine.preRender(g);
-            engine.render();
-        } catch (Exception ex) {
-            ERROR = true;
-            errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();
-            Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+
+        if (!PAUSE) {
+            try {
+                system.render(g);
+                engine.preRender(g);
+                engine.render();
+            } catch (Exception ex) {
+                ERROR = true;
+                errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();
+                Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            viewport.apply(g);
+            g.setColor(Color.WHITE);
+            g.drawString("-- Paused --", 0, 60, 240, 1);
+            g.drawString("Exit to main menu?", 0, 74, 240, 1);
+            g.drawString("Yes    No", 0, 90, 240, 1);
+            
+            if(CONFIRM){
+                g.setColor(Color.GREEN);
+                g.drawRect(78, 86, 36, 16);
+            }else{
+                g.setColor(Color.RED);
+                g.drawRect(130, 86, 36, 16);
+            }
+
         }
     }
 
