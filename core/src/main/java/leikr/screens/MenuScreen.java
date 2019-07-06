@@ -11,6 +11,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import leikr.customProperties.ChipData;
@@ -286,7 +287,7 @@ public class MenuScreen extends BasicGameScreen {
         }
         //Menu tops everything else.
         g.drawTexture(assetManager.get(MENU_BG, Texture.class), 0, 0);
-
+        
         //Mouse
         g.setColor(Color.RED);
         g.drawLineSegment(leikrMouse.x, leikrMouse.y, leikrMouse.x + 6, leikrMouse.y + 4);
