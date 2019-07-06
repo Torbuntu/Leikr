@@ -72,7 +72,7 @@ class WizRobo extends leikr.Engine {
         }
 	
         //check jumping.
-        if(((key(wizard.up) || button(BTN.A)) || key("Up")) && wizard.vy==0){        	
+        if(((key(wizard.up) || button(BTN.B)) || key("Up")) && wizard.vy==0){        	
             wizard.vy=-3.5            
             wizard.g = false 
         }	
@@ -107,10 +107,10 @@ class WizRobo extends leikr.Engine {
     	}
     	
         //action buttons
-    	if(key("X") || button(BTN.Y)){
+    	if(key("X") || button(BTN.A)){
             chargep()
     	}
-    	if(key("Z") || button(BTN.B)){
+    	if(key("Z") || button(BTN.Y)){
             attackp()
     	}
     	
