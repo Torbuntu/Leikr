@@ -49,9 +49,14 @@ public class EngineLoader implements Callable<Engine> {
         gcl = new GroovyClassLoader(ClassLoader.getSystemClassLoader());
     }
 
-    //Returns either a pre-compiled game Engine, an Engine compiled from sources, or null. Returning Null helps the EngineScreen return to the MenuScreen.
+    /**
+     * Returns either a pre-compiled game Engine, an Engine compiled from
+     * sources, or null. Returning Null helps the EngineScreen return to the
+     * MenuScreen.
+     * @return Engine object
+     */
     public Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, ResourceException, ScriptException {
-        if(GameRuntime.checkLaunchTitle()){
+        if (GameRuntime.checkLaunchTitle()) {
             MenuScreen.GAME_NAME = GameRuntime.LAUNCH_TITLE;
         }
         if (cp.COMPILE_SOURCE) {
@@ -125,12 +130,12 @@ public class EngineLoader implements Callable<Engine> {
 
     /**
      * call()
-     * 
+     *
      * This method is used by the ExecutorService to spawn a new thread to load
-     * the Engine object async. 
-     * 
+     * the Engine object async.
+     *
      * @return The Engine object for running the loaded Leikr program
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public Engine call() throws Exception {
