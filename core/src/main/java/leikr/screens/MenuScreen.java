@@ -289,17 +289,17 @@ public class MenuScreen extends BasicGameScreen {
         font.load(assetManager);
         updateMouse();
         time += delta;
-        if (leikrMouse.y > 51 && cursor < filteredPrograms.size() - 1 && Gdx.input.isTouched() && time > 0.2) {
+        if (leikrMouse.y >= 52 && leikrMouse.y <= 56 && leikrMouse.x >= 108 && leikrMouse.x <= 115 && cursor < filteredPrograms.size() - 1 && Gdx.input.isTouched() && time > 0.2) {
             cursor++;
             GAME_NAME = filteredPrograms.get(cursor).getDirectory();
             time = 0;
         }
-        if (leikrMouse.y < 36 && cursor > 0 && Gdx.input.isTouched() && time > 0.2) {
+        if (leikrMouse.y <= 36 && leikrMouse.y >= 32 && leikrMouse.x >= 108 && leikrMouse.x <= 115 && cursor > 0 && Gdx.input.isTouched() && time > 0.2) {
             cursor--;
             GAME_NAME = filteredPrograms.get(cursor).getDirectory();
             time = 0;
         }
-        if (leikrMouse.y > 37 && leikrMouse.y < 50 && Gdx.input.isTouched()) {
+        if (leikrMouse.y >= 42 && leikrMouse.y <= 46 && leikrMouse.x >= 108 && leikrMouse.x <= 115 && Gdx.input.isTouched()) {
             if (GAME_NAME.equals("Start new...")) {
                 NEW_PROGRAM = true;
                 System.out.println("initializing new game...");
@@ -321,11 +321,14 @@ public class MenuScreen extends BasicGameScreen {
         //Update offset position
         offset = cursor * 8;
 
-        if (Gdx.input.isKeyJustPressed(Keys.W)) {
+        //Category shifting        
+        if (Gdx.input.isKeyJustPressed(Keys.W) || (leikrMouse.y <= 16 && leikrMouse.y >= 9 && leikrMouse.x > 107 && leikrMouse.x < 111 && Gdx.input.isTouched() && time > 0.2)) {
             shiftCategoryRight();
+            time = 0;
         }
-        if (Gdx.input.isKeyJustPressed(Keys.Q)) {
+        if (Gdx.input.isKeyJustPressed(Keys.Q) || (leikrMouse.y <= 16 && leikrMouse.y >= 9 && leikrMouse.x > 112 && leikrMouse.x < 116 && Gdx.input.isTouched() && time > 0.2)) {
             shiftCategoryLeft();
+            time = 0;
         }
         if (Gdx.input.isKeyJustPressed(Keys.P)) {
             System.out.println(GAME_NAME);
