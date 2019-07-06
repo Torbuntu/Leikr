@@ -11,9 +11,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.stream.Collectors;
 import leikr.customProperties.ChipData;
 import leikr.GameRuntime;
 import leikr.customProperties.CustomSystemProperties;
@@ -44,13 +43,16 @@ public class MenuScreen extends BasicGameScreen {
     boolean PAGE = true;
     int cursor;
     int offset;
+    int category = 0; //0: Program, 1: Game, 2: Utility, 3: Demo, 4: System
+    String categoryDisplay = "Programs";
 
     MonospaceFont font;
 
     AssetManager assetManager;
     FitViewport viewport;
-    ArrayList<String> gameList;
     ArrayList<ChipData> programs;
+
+    ArrayList<ChipData> filteredPrograms;
 
     Vector2 realMouse;
     Vector2 leikrMouse;
@@ -66,8 +68,29 @@ public class MenuScreen extends BasicGameScreen {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         realMouse = new Vector2();
         leikrMouse = new Vector2();
+        filteredPrograms = new ArrayList<>();
         initMenuList();
         createControllerAdapter();
+    }
+
+    private void shiftCategoryLeft() {
+        category--;
+        if (category < 0) {
+            category = 4;
+        }
+        cursor = 0;
+        updateProgramCategory();
+        GAME_NAME = filteredPrograms.get(cursor).getDirectory();
+    }
+
+    private void shiftCategoryRight() {
+        category++;
+        if (category > 4) {
+            category = 0;
+        }
+        cursor = 0;
+        updateProgramCategory();
+        GAME_NAME = filteredPrograms.get(cursor).getDirectory();
     }
 
     private void createControllerAdapter() {
@@ -75,12 +98,20 @@ public class MenuScreen extends BasicGameScreen {
             @Override
             public boolean buttonDown(Controller controller, int buttonIndex) {
                 if (buttonIndex == CustomSystemProperties.START || buttonIndex == CustomSystemProperties.A) {
-                    if (cursor == gameList.size() - 1) {
+                    if (GAME_NAME.equals("Start new...")) {
                         NEW_PROGRAM = true;
-                    } else {
+                    } else if (GAME_NAME.length() > 2) {
                         GameRuntime.setProgramPath("Programs/" + GAME_NAME);
                         START = true;
                     }
+                }
+                if (buttonIndex == CustomSystemProperties.LEFT_BUMPER) {
+                    shiftCategoryLeft();
+                    return true;
+                }
+                if (buttonIndex == CustomSystemProperties.RIGHT_BUMPER) {
+                    shiftCategoryRight();
+                    return true;
                 }
                 return false;
             }
@@ -88,12 +119,12 @@ public class MenuScreen extends BasicGameScreen {
             @Override
             public boolean axisMoved(Controller controller, int axisCode, float value) {
                 if (axisCode == CustomSystemProperties.VERTICAL_AXIS) {
-                    if (value == 1 && cursor < gameList.size() - 1) {
+                    if (value == 1 && cursor < filteredPrograms.size() - 1) {
                         cursor++;
-                        GAME_NAME = gameList.get(cursor);
+                        GAME_NAME = filteredPrograms.get(cursor).getDirectory();
                     } else if (value == -1 && cursor > 0) {
                         cursor--;
-                        GAME_NAME = gameList.get(cursor);
+                        GAME_NAME = filteredPrograms.get(cursor).getDirectory();
                     }
                     return true;
                 } else {
@@ -110,32 +141,18 @@ public class MenuScreen extends BasicGameScreen {
     }
 
     private void initMenuList() {
-        gameList = new ArrayList<>();
         programs = new ArrayList<>();
         for (FileHandle file : Gdx.files.local("Programs/").list()) {
-            gameList.add(file.name());
+            programs.add(new ChipData(file.name(), assetManager));
         }
 
         cursor = 0;
         offset = 0;
 
-        if (gameList != null && gameList.size() > 0) {
-            Collections.sort(gameList);
-            GAME_NAME = gameList.get(0);
-            loadPrograms();
-            gameList.add("Start new...");
-        } else {
-            gameList.add("Start new...");
-            programs.add(new ChipData("New Game", "System", "Template", "1.0", 0, "Initializes a new program template", assetManager));
-        }
-    }
-
-    private void loadPrograms() {
-        gameList.forEach((game) -> {
-            programs.add(new ChipData("Programs/" + game, assetManager));
-        });
-        programs.add(new ChipData("New Game", "System", "Template", "1.0", 0, "Initializes a new program template", assetManager));
+        programs.add(new ChipData("New Game", "System", "Template", "1.0", 0, "Initializes a new program template", assetManager, "Start new..."));
         assetManager.finishLoading();
+        updateProgramCategory();
+        GAME_NAME = programs.get(0).getDirectory();
     }
 
     @Override
@@ -170,17 +187,17 @@ public class MenuScreen extends BasicGameScreen {
             public boolean keyDown(int i) {
                 if (i == Keys.UP && cursor > 0) {
                     cursor--;
-                    GAME_NAME = gameList.get(cursor);
+                    GAME_NAME = filteredPrograms.get(cursor).getDirectory();
                 }
-                if (i == Keys.DOWN && cursor < gameList.size() - 1) {
+                if (i == Keys.DOWN && cursor < filteredPrograms.size() - 1) {
                     cursor++;
-                    GAME_NAME = gameList.get(cursor);
+                    GAME_NAME = filteredPrograms.get(cursor).getDirectory();
                 }
                 if (i == Keys.ENTER) {
-                    if (cursor == gameList.size() - 1) {
+                    if (GAME_NAME.equals("Start new...")) {
                         System.out.println("initializing new game...");
                         NEW_PROGRAM = true;
-                    } else {
+                    } else if (GAME_NAME.length() > 2) {
                         System.out.println("Loading program: " + GAME_NAME);
                         GameRuntime.setProgramPath("Programs/" + GAME_NAME);
                         START = true;
@@ -212,23 +229,50 @@ public class MenuScreen extends BasicGameScreen {
         viewport.toWorldCoordinates(leikrMouse, realMouse.x, realMouse.y);
     }
 
+    private void updateProgramCategory() {
+        switch (category) {
+            case 0:
+                categoryDisplay = "Program";
+                break;
+            case 1:
+                categoryDisplay = "Game";
+                break;
+            case 2:
+                categoryDisplay = "Utility";
+                break;
+            case 3:
+                categoryDisplay = "Demo";
+                break;
+            case 4:
+                categoryDisplay = "System";
+                break;
+            default:
+                categoryDisplay = "Program";
+                break;
+        }
+
+        filteredPrograms = programs.stream().filter(cd -> cd.getType().equals(categoryDisplay)).collect(Collectors
+                .toCollection(ArrayList::new));
+
+    }
+
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         font.load(assetManager);
         updateMouse();
         time += delta;
-        if (leikrMouse.y > 51 && cursor < gameList.size() - 1 && Gdx.input.isTouched() && time > 0.2) {
+        if (leikrMouse.y > 51 && cursor < filteredPrograms.size() - 1 && Gdx.input.isTouched() && time > 0.2) {
             cursor++;
-            GAME_NAME = gameList.get(cursor);
+            GAME_NAME = filteredPrograms.get(cursor).getDirectory();
             time = 0;
         }
         if (leikrMouse.y < 36 && cursor > 0 && Gdx.input.isTouched() && time > 0.2) {
             cursor--;
-            GAME_NAME = gameList.get(cursor);
+            GAME_NAME = filteredPrograms.get(cursor).getDirectory();
             time = 0;
         }
         if (leikrMouse.y > 37 && leikrMouse.y < 50 && Gdx.input.isTouched()) {
-            if (cursor == gameList.size() - 1) {
+            if (GAME_NAME.equals("Start new...")) {
                 NEW_PROGRAM = true;
                 System.out.println("initializing new game...");
             } else {
@@ -245,7 +289,19 @@ public class MenuScreen extends BasicGameScreen {
             NEW_PROGRAM = false;
             sm.enterGameScreen(NewProgramScreen.ID, null, null);
         }
+
+        //Update offset position
         offset = cursor * 8;
+
+        if (Gdx.input.isKeyJustPressed(Keys.W)) {
+            shiftCategoryLeft();
+        }
+        if (Gdx.input.isKeyJustPressed(Keys.Q)) {
+            shiftCategoryLeft();
+        }
+        if (Gdx.input.isKeyJustPressed(Keys.P)) {
+            System.out.println(GAME_NAME);
+        }
     }
 
     @Override
@@ -257,9 +313,9 @@ public class MenuScreen extends BasicGameScreen {
         viewport.apply(g);
         g.setFont(font);
         g.setColor(Color.WHITE);
-        if (null != gameList && gameList.size() > 0) {
-            for (int i = 0; i < gameList.size(); i++) {
-                g.drawString(gameList.get(i), 8, (8 * i) + 40 - offset);
+        if (null != filteredPrograms && filteredPrograms.size() > 0) {
+            for (int i = 0; i < filteredPrograms.size(); i++) {
+                g.drawString(filteredPrograms.get(i).getTitle(), 8, (8 * i) + 40 - offset);
             }
             g.setColor(Color.BLACK);
             g.fillRect(118, 6, 120, 90);
@@ -268,16 +324,16 @@ public class MenuScreen extends BasicGameScreen {
             g.setColor(Color.WHITE);
 
             if (PAGE) {
-                g.drawString(programs.get(cursor).getTitle(), 8, 104);
-                g.drawString(programs.get(cursor).getAuthor(), 8, 114);
-                g.drawString(programs.get(cursor).getType(), 8, 124);
-                g.drawString(programs.get(cursor).getPlayers(), 8, 134);
-                g.drawString(programs.get(cursor).getVersion(), 8, 144);
+                g.drawString("Title  : " + filteredPrograms.get(cursor).getTitle(), 8, 104);
+                g.drawString("Author : " + filteredPrograms.get(cursor).getAuthor(), 8, 114);
+                g.drawString("Type   : " + filteredPrograms.get(cursor).getType(), 8, 124);
+                g.drawString("Players: " + filteredPrograms.get(cursor).getPlayers(), 8, 134);
+                g.drawString("Version: " + filteredPrograms.get(cursor).getVersion(), 8, 144);
             } else {
-                g.drawString(programs.get(cursor).getAbout(), 8, 104, 224);
+                g.drawString("About: " + filteredPrograms.get(cursor).getAbout(), 8, 104, 224);
             }
 
-            g.drawTexture(programs.get(cursor).getIcon(), 120, 8, 112, 80);
+            g.drawTexture(filteredPrograms.get(cursor).getIcon(), 120, 8, 112, 80);
 
         } else {
             g.drawString("X", 8, 8);
@@ -287,7 +343,11 @@ public class MenuScreen extends BasicGameScreen {
         }
         //Menu tops everything else.
         g.drawTexture(assetManager.get(MENU_BG, Texture.class), 0, 0);
-        
+
+        //Display Category
+        g.setColor(Color.WHITE);
+        g.drawString(categoryDisplay, 16, 8);
+
         //Mouse
         g.setColor(Color.RED);
         g.drawLineSegment(leikrMouse.x, leikrMouse.y, leikrMouse.x + 6, leikrMouse.y + 4);
