@@ -80,7 +80,11 @@ public class MenuScreen extends BasicGameScreen {
         }
         cursor = 0;
         updateProgramCategory();
-        GAME_NAME = filteredPrograms.get(cursor).getDirectory();
+        if (filteredPrograms.size() > 0) {
+            GAME_NAME = filteredPrograms.get(cursor).getDirectory();
+        } else {
+            GAME_NAME = "";
+        }
     }
 
     private void shiftCategoryRight() {
@@ -90,7 +94,11 @@ public class MenuScreen extends BasicGameScreen {
         }
         cursor = 0;
         updateProgramCategory();
-        GAME_NAME = filteredPrograms.get(cursor).getDirectory();
+        if (filteredPrograms.size() > 0) {
+            GAME_NAME = filteredPrograms.get(cursor).getDirectory();
+        } else {
+            GAME_NAME = "";
+        }
     }
 
     private void createControllerAdapter() {
@@ -153,6 +161,39 @@ public class MenuScreen extends BasicGameScreen {
         assetManager.finishLoading();
         updateProgramCategory();
         GAME_NAME = programs.get(0).getDirectory();
+    }
+
+    private void updateMouse() {
+        realMouse.x = Gdx.input.getX();
+        realMouse.y = Gdx.input.getY();
+        viewport.toWorldCoordinates(leikrMouse, realMouse.x, realMouse.y);
+    }
+
+    private void updateProgramCategory() {
+        switch (category) {
+            case 0:
+                categoryDisplay = "Program";
+                break;
+            case 1:
+                categoryDisplay = "Game";
+                break;
+            case 2:
+                categoryDisplay = "Utility";
+                break;
+            case 3:
+                categoryDisplay = "Demo";
+                break;
+            case 4:
+                categoryDisplay = "System";
+                break;
+            default:
+                categoryDisplay = "Program";
+                break;
+        }
+
+        filteredPrograms = programs.stream().filter(cd -> cd.getType().equals(categoryDisplay)).collect(Collectors
+                .toCollection(ArrayList::new));
+
     }
 
     @Override
@@ -223,39 +264,6 @@ public class MenuScreen extends BasicGameScreen {
         }
     }
 
-    private void updateMouse() {
-        realMouse.x = Gdx.input.getX();
-        realMouse.y = Gdx.input.getY();
-        viewport.toWorldCoordinates(leikrMouse, realMouse.x, realMouse.y);
-    }
-
-    private void updateProgramCategory() {
-        switch (category) {
-            case 0:
-                categoryDisplay = "Program";
-                break;
-            case 1:
-                categoryDisplay = "Game";
-                break;
-            case 2:
-                categoryDisplay = "Utility";
-                break;
-            case 3:
-                categoryDisplay = "Demo";
-                break;
-            case 4:
-                categoryDisplay = "System";
-                break;
-            default:
-                categoryDisplay = "Program";
-                break;
-        }
-
-        filteredPrograms = programs.stream().filter(cd -> cd.getType().equals(categoryDisplay)).collect(Collectors
-                .toCollection(ArrayList::new));
-
-    }
-
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         font.load(assetManager);
@@ -294,7 +302,7 @@ public class MenuScreen extends BasicGameScreen {
         offset = cursor * 8;
 
         if (Gdx.input.isKeyJustPressed(Keys.W)) {
-            shiftCategoryLeft();
+            shiftCategoryRight();
         }
         if (Gdx.input.isKeyJustPressed(Keys.Q)) {
             shiftCategoryLeft();
