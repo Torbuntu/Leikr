@@ -43,6 +43,7 @@ public class MenuScreen extends BasicGameScreen {
     boolean PAGE = true;
     int cursor;
     int offset;
+
     int category = 0; //0: Program, 1: Game, 2: Utility, 3: Demo, 4: System
     String categoryDisplay = "Programs";
 
@@ -50,8 +51,8 @@ public class MenuScreen extends BasicGameScreen {
 
     AssetManager assetManager;
     FitViewport viewport;
-    ArrayList<ChipData> programs;
 
+    ArrayList<ChipData> programs;
     ArrayList<ChipData> filteredPrograms;
 
     Vector2 realMouse;
@@ -73,6 +74,57 @@ public class MenuScreen extends BasicGameScreen {
         createControllerAdapter();
     }
 
+    /**
+     * Initializes the program list and sets the initial program to GAME_NAME
+     */
+    private void initMenuList() {
+        programs = new ArrayList<>();
+        for (FileHandle file : Gdx.files.local("Programs/").list()) {
+            programs.add(new ChipData(file.name(), assetManager));
+        }
+
+        cursor = 0;
+        offset = 0;
+
+        programs.add(new ChipData("New Game", "System", "Template", "1.0", 0, "Initializes a new program template", assetManager, "Start new..."));
+        assetManager.finishLoading();
+        updateProgramCategory();
+        GAME_NAME = programs.get(0).getDirectory();
+    }
+
+    /**
+     * update the display category and list.
+     */
+    private void updateProgramCategory() {
+        switch (category) {
+            case 0:
+                categoryDisplay = "Program";
+                break;
+            case 1:
+                categoryDisplay = "Game";
+                break;
+            case 2:
+                categoryDisplay = "Utility";
+                break;
+            case 3:
+                categoryDisplay = "Demo";
+                break;
+            case 4:
+                categoryDisplay = "System";
+                break;
+            default:
+                categoryDisplay = "Program";
+                break;
+        }
+
+        filteredPrograms = programs.stream().filter(cd -> cd.getType().equals(categoryDisplay)).collect(Collectors
+                .toCollection(ArrayList::new));
+    }
+
+    /**
+     * Selects the category to the left, updating the filtered list of programs.
+     * updates the GAME_NAME selection.
+     */
     private void shiftCategoryLeft() {
         category--;
         if (category < 0) {
@@ -87,6 +139,10 @@ public class MenuScreen extends BasicGameScreen {
         }
     }
 
+    /**
+     * Selects the category to the right, updating the filtered list of
+     * programs. updates the GAME_NAME selection.
+     */
     private void shiftCategoryRight() {
         category++;
         if (category > 4) {
@@ -101,6 +157,9 @@ public class MenuScreen extends BasicGameScreen {
         }
     }
 
+    /**
+     * Creates a reusable controller adapter object.
+     */
     private void createControllerAdapter() {
         menuControllerAdapter = new ControllerAdapter() {
             @Override
@@ -148,52 +207,13 @@ public class MenuScreen extends BasicGameScreen {
         };
     }
 
-    private void initMenuList() {
-        programs = new ArrayList<>();
-        for (FileHandle file : Gdx.files.local("Programs/").list()) {
-            programs.add(new ChipData(file.name(), assetManager));
-        }
-
-        cursor = 0;
-        offset = 0;
-
-        programs.add(new ChipData("New Game", "System", "Template", "1.0", 0, "Initializes a new program template", assetManager, "Start new..."));
-        assetManager.finishLoading();
-        updateProgramCategory();
-        GAME_NAME = programs.get(0).getDirectory();
-    }
-
+    /**
+     * translate the mouse coordinates to viewport
+     */
     private void updateMouse() {
         realMouse.x = Gdx.input.getX();
         realMouse.y = Gdx.input.getY();
         viewport.toWorldCoordinates(leikrMouse, realMouse.x, realMouse.y);
-    }
-
-    private void updateProgramCategory() {
-        switch (category) {
-            case 0:
-                categoryDisplay = "Program";
-                break;
-            case 1:
-                categoryDisplay = "Game";
-                break;
-            case 2:
-                categoryDisplay = "Utility";
-                break;
-            case 3:
-                categoryDisplay = "Demo";
-                break;
-            case 4:
-                categoryDisplay = "System";
-                break;
-            default:
-                categoryDisplay = "Program";
-                break;
-        }
-
-        filteredPrograms = programs.stream().filter(cd -> cd.getType().equals(categoryDisplay)).collect(Collectors
-                .toCollection(ArrayList::new));
-
     }
 
     @Override
