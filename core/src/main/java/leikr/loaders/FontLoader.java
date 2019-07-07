@@ -16,10 +16,10 @@ public class FontLoader {
     MonospaceFont defaultFont;
 
     public void initializeDefaultFont(AssetManager manager) {
-        manager.load("./Data/Images/LeikrFontA.png", Texture.class);
+        manager.load("./Data/Images/Fonts/zx_evolution_8x8.png", Texture.class);
         manager.finishLoading();
         FontParameters params = new FontParameters();
-        params.texturePath = "./Data/Images/LeikrFontA.png";
+        params.texturePath = "./Data/Images/Fonts/zx_evolution_8x8.png";
         params.spacing = 0;
         params.frameWidth = 8;
         params.frameHeight = 8;
