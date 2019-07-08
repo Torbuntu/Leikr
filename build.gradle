@@ -14,7 +14,7 @@ allprojects {
     version = '0.0.9'
     ext {
         appName = 'Leikr'
-        mini2DxVersion = '1.9.6'
+        mini2DxVersion = '1.9.7'
         gdxVersion = '1.9.10'
     }
 
