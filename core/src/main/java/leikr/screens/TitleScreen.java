@@ -102,8 +102,8 @@ public class TitleScreen extends BasicGameScreen {
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
         g.setFont(font);
-        logo.draw(g, 36, 64);
-        g.drawString("Leikr Game System", 56, 88);
+        logo.draw(g, 40, 56);
+        g.drawString("Leikr Game System", 8, 80, 240, 1);
     }
 
     @Override
