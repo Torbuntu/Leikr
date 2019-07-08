@@ -122,9 +122,11 @@ public class EngineScreen extends BasicGameScreen {
         if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             if (PAUSE) {
                 PAUSE = false;
+                engine.audio.resumeAllAudio();
                 engine.onResume();
             } else {
                 PAUSE = true;
+                engine.audio.pauseAllAudio();
                 engine.onPause();
             }
         }
@@ -164,6 +166,7 @@ public class EngineScreen extends BasicGameScreen {
                     setBack(true);
                 } else {
                     PAUSE = false;
+                    engine.audio.resumeAllAudio();
                     engine.onResume();
                 }
             }
