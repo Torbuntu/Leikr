@@ -15,13 +15,6 @@ class DogCat extends leikr.Engine {
         p  = new Player(screen)
     }  
     
-    @Override public void onPause(){
-    	pauseAudio()
-    }
-    @Override public void onResume(){
-    	music("Map", true)
-    }
-    
     void update(float delta){
     	if(menu.activeMenu){
             if(key("Enter")) menu.activeMenu = false
