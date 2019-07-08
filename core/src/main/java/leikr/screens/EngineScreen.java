@@ -97,10 +97,10 @@ public class EngineScreen extends BasicGameScreen {
     }
 
     @Override
-    public void preTransitionIn(Transition trans){
+    public void preTransitionIn(Transition trans) {
         PAUSE = false;
     }
-    
+
     @Override
     public void postTransitionIn(Transition transition) {
         if (ERROR) {
@@ -120,7 +120,13 @@ public class EngineScreen extends BasicGameScreen {
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-            PAUSE = !PAUSE;
+            if (PAUSE) {
+                PAUSE = false;
+                engine.onResume();
+            } else {
+                PAUSE = true;
+                engine.onPause();
+            }
         }
         if (BACK) {
             system.resetFont();
@@ -153,11 +159,12 @@ public class EngineScreen extends BasicGameScreen {
             if (Gdx.input.isKeyJustPressed(Keys.RIGHT)) {
                 CONFIRM = false;
             }
-            if(Gdx.input.isKeyJustPressed(Keys.ENTER)){
-                if(CONFIRM){
+            if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+                if (CONFIRM) {
                     setBack(true);
-                }else{
+                } else {
                     PAUSE = false;
+                    engine.onResume();
                 }
             }
         }
@@ -190,11 +197,11 @@ public class EngineScreen extends BasicGameScreen {
             g.drawString("-- Paused --", 0, 60, 240, 1);
             g.drawString("Exit to main menu?", 0, 74, 240, 1);
             g.drawString("Yes    No", 0, 90, 240, 1);
-            
-            if(CONFIRM){
+
+            if (CONFIRM) {
                 g.setColor(Color.GREEN);
                 g.drawRect(78, 86, 36, 16);
-            }else{
+            } else {
                 g.setColor(Color.RED);
                 g.drawRect(130, 86, 36, 16);
             }

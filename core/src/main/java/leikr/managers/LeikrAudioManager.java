@@ -52,6 +52,14 @@ public class LeikrAudioManager {
     public final void stopMusic(String fileName) {
         audioLoader.stopMusic(fileName);
     }
+    
+    public void pauseAllAudio(){
+        audioLoader.pauseAllAudio();
+    }
+    
+    public void resumeAllAudio(){
+        audioLoader.resumeAllAudio();
+    }
     //END loaded audio methods
 
     //Engine methods

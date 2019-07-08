@@ -1,7 +1,6 @@
 package leikr;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.Controllers;
@@ -14,7 +13,6 @@ import leikr.controls.LeikrMouse;
 import leikr.managers.LeikrAudioManager;
 import leikr.managers.LeikrScreenManager;
 import leikr.managers.LeikrSystemManager;
-import leikr.screens.EngineScreen;
 import org.mini2Dx.core.graphics.Animation;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -23,7 +21,7 @@ import org.mini2Dx.core.graphics.viewport.FitViewport;
  *
  * @author tor
  */
-public abstract class Engine implements InputProcessor{
+public abstract class Engine implements InputProcessor {
 
     //Mini2DX specific classes for managing the screen state and drawing.
     Graphics g;
@@ -32,7 +30,7 @@ public abstract class Engine implements InputProcessor{
 
     //used by the Engine Screen to determine if the game should be actively running.
     boolean active;
-    
+
     public enum BTN {
         X,
         A,
@@ -110,10 +108,10 @@ public abstract class Engine implements InputProcessor{
     /**
      * Run just before the Engine update method. Used to update system objects
      * behind the scenes.
-     * 
+     *
      * mouse positions updates
-     * 
-     * 
+     *
+     *
      * update screen objects
      *
      * @param delta
@@ -149,6 +147,14 @@ public abstract class Engine implements InputProcessor{
 
     abstract public void render();
     // end override functions
+
+    // Optional override methods
+    public void onPause() {
+    }
+
+    public void onResume() {
+    }
+    // END Optional override methods.
 
     //disposes the game objects on exit
     public final void dispose() {
@@ -416,6 +422,10 @@ public abstract class Engine implements InputProcessor{
     public final void stopMusic(String fileName) {
         audio.stopMusic(fileName);
     }
+
+    public final void pauseAudio() {
+        audio.pauseAllAudio();
+    }
     //end audio handling
 
     //START Math utils
@@ -459,7 +469,7 @@ public abstract class Engine implements InputProcessor{
         return MathUtils.random(start, end);
     }
     //END Math utils
-    
+
     //START input handling
     public final boolean button(BTN button) {
         return (null != controllerA) ? controllerA.button(button) : false;
@@ -485,31 +495,30 @@ public abstract class Engine implements InputProcessor{
     public final boolean key(String key) {
         return keyboard.key(key);
     }
-    
+
     //detect single key press.
-    public final boolean keyPress(String key){
+    public final boolean keyPress(String key) {
         return keyboard.keyPress(key);
     }
-    
+
     /**
      * Button codes Left = 0 Middle = 2 Right = 1
      *
      * @param btn
      * @return
      */
-    public final boolean mouseClick(int btn){
+    public final boolean mouseClick(int btn) {
         return mouse.mouseClick(btn);
     }
-    
-    public final float mouseX(){
+
+    public final float mouseX() {
         return mouse.mouseX();
     }
-    
-    public final float mouseY(){
+
+    public final float mouseY() {
         return mouse.mouseY();
     }
 
-    
     @Override
     public boolean keyDown(int keycode) {
         return false;
@@ -549,9 +558,8 @@ public abstract class Engine implements InputProcessor{
     public boolean scrolled(int amount) {
         return false;
     }
-    
-    //end input handling
 
+    //end input handling
     //START System api
     public void loadProgram(String name) {
         system.loadProgram(name);
@@ -566,8 +574,8 @@ public abstract class Engine implements InputProcessor{
     public void tint(int color) {
         g.setTint(getDrawColor(color));
     }
-    
-    public void tint(){
+
+    public void tint() {
         g.removeTint();
     }
 

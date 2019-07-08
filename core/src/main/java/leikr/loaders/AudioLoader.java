@@ -103,9 +103,34 @@ public class AudioLoader {
         }
     }
 
+    public void stopSound() {
+        Array<Sound> allSound = new Array<>();
+        for (Sound m : soundManager.getAll(Sound.class, allSound)) {
+            m.stop();
+        }
+    }
+
     public void stopMusic(String fileName) {
         mPlayer = musicManager.get(musicRootPath + fileName + ".wav", Music.class);
         mPlayer.stop();
+    }
+
+    public void pauseAllAudio() {
+        if (mPlayer != null) {
+            mPlayer.pause();
+        }
+        if (sPlayer != null) {
+            sPlayer.pause();
+        }
+    }
+
+    public void resumeAllAudio() {
+        if (mPlayer != null) {
+            mPlayer.play();
+        }
+        if (sPlayer != null) {
+            sPlayer.play();
+        }
     }
 
     public void disposeAudioLoader() {
