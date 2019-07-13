@@ -70,6 +70,8 @@ public class MenuScreen extends BasicGameScreen {
         realMouse = new Vector2();
         leikrMouse = new Vector2();
         filteredPrograms = new ArrayList<>();
+        cursor = 0;
+        offset = 0;
         initMenuList();
         createControllerAdapter();
     }
@@ -82,14 +84,10 @@ public class MenuScreen extends BasicGameScreen {
         for (FileHandle file : Gdx.files.local("Programs/").list()) {
             programs.add(new ChipData(file.name(), assetManager));
         }
-
-        cursor = 0;
-        offset = 0;
-
         programs.add(new ChipData("New Game", "System", "Template", "1.0", 0, "Initializes a new program template", assetManager, "Start new..."));
         assetManager.finishLoading();
         updateProgramCategory();
-        GAME_NAME = programs.get(0).getDirectory();
+        GAME_NAME = filteredPrograms.size() > 0 ? filteredPrograms.get(0).getDirectory() : programs.get(0).getDirectory();
     }
 
     /**
@@ -224,20 +222,20 @@ public class MenuScreen extends BasicGameScreen {
     }
 
     @Override
+    public void preTransitionOut(Transition transitionIn) {
+        Controllers.clearListeners();
+        if (Controllers.getControllers().size > 0) {
+            Controllers.getControllers().get(0).removeListener(menuControllerAdapter);
+        }
+    }
+
+    @Override
     public void preTransitionIn(Transition transitionIn) {
         if (GameRuntime.checkLaunchTitle()) {
             GAME_NAME = GameRuntime.LAUNCH_TITLE;
             START = true;
         } else {
             initMenuList();
-        }
-    }
-
-    @Override
-    public void preTransitionOut(Transition transitionIn) {
-        Controllers.clearListeners();
-        if (Controllers.getControllers().size > 0) {
-            Controllers.getControllers().get(0).removeListener(menuControllerAdapter);
         }
     }
 
