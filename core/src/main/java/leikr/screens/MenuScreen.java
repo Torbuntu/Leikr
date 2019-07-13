@@ -87,7 +87,7 @@ public class MenuScreen extends BasicGameScreen {
         programs.add(new ChipData("New Game", "System", "Template", "1.0", 0, "Initializes a new program template", assetManager, "Start new..."));
         assetManager.finishLoading();
         updateProgramCategory();
-        GAME_NAME = filteredPrograms.size() > 0 ? filteredPrograms.get(0).getDirectory() : programs.get(0).getDirectory();
+        GAME_NAME = filteredPrograms.size() > 0 ? filteredPrograms.get(cursor).getDirectory() : programs.get(cursor).getDirectory();
     }
 
     /**
