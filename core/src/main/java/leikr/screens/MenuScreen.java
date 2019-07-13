@@ -44,7 +44,7 @@ public class MenuScreen extends BasicGameScreen {
     int cursor;
     int offset;
 
-    int category = 0; //0: Program, 1: Game, 2: Utility, 3: Demo, 4: System
+    int category = 0; //0: Program, 1: Game, 2: Utility, 3: Demo, 4: System, 5: Tool
     String categoryDisplay = "Programs";
 
     MonospaceFont font;
@@ -112,6 +112,9 @@ public class MenuScreen extends BasicGameScreen {
             case 4:
                 categoryDisplay = "System";
                 break;
+            case 5:
+                categoryDisplay = "Tool";
+                break;
             default:
                 categoryDisplay = "Program";
                 break;
@@ -128,7 +131,7 @@ public class MenuScreen extends BasicGameScreen {
     private void shiftCategoryLeft() {
         category--;
         if (category < 0) {
-            category = 4;
+            category = 5;
         }
         cursor = 0;
         updateProgramCategory();
@@ -145,7 +148,7 @@ public class MenuScreen extends BasicGameScreen {
      */
     private void shiftCategoryRight() {
         category++;
-        if (category > 4) {
+        if (category > 5) {
             category = 0;
         }
         cursor = 0;

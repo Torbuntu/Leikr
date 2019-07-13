@@ -106,19 +106,26 @@ public abstract class Engine implements InputProcessor {
     }
 
     /**
-     * Run just before the Engine update method. Used to update system objects
-     * behind the scenes.
-     *
-     * mouse positions updates
+     * Run just before the Engine update method.Used to update system objects
+     * behind the scenes. mouse positions updates
      *
      *
      * update screen objects
      *
      * @param delta
+     * @return if should continue
      */
-    public final void preUpdate(float delta) {
+    public final boolean preUpdate(float delta) {
         mouse.updateMouse();
         screen.preUpdate(delta);
+        if (controllerA != null) {
+            return (controllerA.button(BTN.START));
+        }
+        if (controllerB != null) {
+            return (controllerB.button(BTN.START));
+        }
+        return false;
+
     }
 
     /**

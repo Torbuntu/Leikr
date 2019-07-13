@@ -3,11 +3,15 @@ package leikr.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerAdapter;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.Engine;
 import leikr.GameRuntime;
+import leikr.customProperties.CustomSystemProperties;
 import leikr.loaders.EngineLoader;
 import leikr.managers.LeikrSystemManager;
 import org.mini2Dx.core.game.GameContainer;
@@ -37,16 +41,79 @@ public class EngineScreen extends BasicGameScreen {
     private static boolean PAUSE = false;
     private static boolean CONFIRM = false;
 
+    private ControllerAdapter pauseControllerAdapter;
+
     public EngineScreen(AssetManager manager) {
         this.manager = manager;
+        createControllerAdapter();
     }
 
-    public static void setBack(boolean setback) {
-        BACK = setback;
+    /**
+     * Creates a reusable controller adapter object.
+     */
+    private void createControllerAdapter() {
+        pauseControllerAdapter = new ControllerAdapter() {
+            @Override
+            public boolean buttonDown(Controller controller, int buttonIndex) {
+                if (buttonIndex == CustomSystemProperties.START || buttonIndex == CustomSystemProperties.A) {
+                    resume();
+                }
+                if (buttonIndex == CustomSystemProperties.B) {
+                    CONFIRM = false;
+                    resume();
+                }
+                if (buttonIndex == CustomSystemProperties.LEFT_BUMPER) {
+                    CONFIRM = true;
+                }
+                if (buttonIndex == CustomSystemProperties.RIGHT_BUMPER) {
+                    CONFIRM = false;
+                }
+                return false;
+            }
+
+            @Override
+            public boolean axisMoved(Controller controller, int axisCode, float value) {
+                if (axisCode == CustomSystemProperties.HORIZONTAL_AXIS) {
+                    if (CustomSystemProperties.RIGHT == value) {
+                        CONFIRM = false;
+                    }
+                    if (CustomSystemProperties.LEFT == value) {
+                        CONFIRM = true;
+                    }
+                }
+                return false;
+            }
+        };
     }
 
-    public static void setPause(boolean pause) {
-        PAUSE = pause;
+    private void addController() {
+        if (Controllers.getControllers().size > 0) {
+            Controllers.getControllers().get(0).addListener(pauseControllerAdapter);
+        }
+    }
+
+    private void removeController() {
+        if (Controllers.getControllers().size > 0) {
+            Controllers.getControllers().get(0).removeListener(pauseControllerAdapter);
+        }
+    }
+
+    private void pause() {
+        addController();
+        PAUSE = true;
+        engine.audio.pauseAllAudio();
+        engine.onPause();
+    }
+
+    private void resume() {
+        removeController();
+        if (CONFIRM) {
+            BACK = true;
+        } else {
+            PAUSE = false;
+            engine.audio.resumeAllAudio();
+            engine.onResume();
+        }
     }
 
     void enterMenuScreen(ScreenManager sm) {
@@ -121,13 +188,9 @@ public class EngineScreen extends BasicGameScreen {
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             if (PAUSE) {
-                PAUSE = false;
-                engine.audio.resumeAllAudio();
-                engine.onResume();
+                resume();
             } else {
-                PAUSE = true;
-                engine.audio.pauseAllAudio();
-                engine.onPause();
+                pause();
             }
         }
         if (BACK) {
@@ -147,7 +210,9 @@ public class EngineScreen extends BasicGameScreen {
 
         if (!PAUSE) {
             try {
-                engine.preUpdate(delta);
+                if (engine.preUpdate(delta)) {
+                    pause();
+                }
                 engine.update(delta);
             } catch (Exception ex) {
                 ERROR = true;
@@ -162,16 +227,9 @@ public class EngineScreen extends BasicGameScreen {
                 CONFIRM = false;
             }
             if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
-                if (CONFIRM) {
-                    setBack(true);
-                } else {
-                    PAUSE = false;
-                    engine.audio.resumeAllAudio();
-                    engine.onResume();
-                }
+                resume();
             }
         }
-
     }
 
     @Override
