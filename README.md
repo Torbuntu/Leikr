@@ -2,7 +2,7 @@
 # Leikr Game System
 | [Wiki](https://github.com/torbuntu/leikr/wiki) | [itch.io](https://torbuntu.itch.io/leikr) | [Releases](https://github.com/torbuntu/leikr/releases) | [About](https://torbuntu.github.io/Leikr/docs/about) |
 
-A Java Fantasy Console
+A Java Game System (Fantasy Console)
 
 Powered by [Mini2Dx](https://mini2dx.org/)
 
