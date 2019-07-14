@@ -141,6 +141,10 @@ public class EngineScreen extends BasicGameScreen {
         }
     }
 
+    void reloadEngine(ScreenManager sm) {
+        sm.enterGameScreen(LoadScreen.ID, null, null);
+    }
+
     public void setEngine(Engine engine) {
         this.engine = engine;
     }
@@ -186,6 +190,9 @@ public class EngineScreen extends BasicGameScreen {
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
+        if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Keys.R) || Gdx.input.isKeyPressed(Keys.F5)) {
+            reloadEngine(sm);
+        }
         if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             if (PAUSE) {
                 resume();

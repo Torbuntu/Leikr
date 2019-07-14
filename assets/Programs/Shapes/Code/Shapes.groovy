@@ -7,7 +7,7 @@ class Shapes extends leikr.Engine {
     void create(){
         x = 120
         y = 80
-        amt = 500
+        amt = 5
         t = 0
         rx = 120
         ry = 80
