@@ -125,7 +125,6 @@ public abstract class Engine implements InputProcessor {
             return (controllerB.button(BTN.START));
         }
         return false;
-
     }
 
     /**
@@ -177,9 +176,24 @@ public abstract class Engine implements InputProcessor {
     //dispose
 
     //Start Helper methods
-    //Not a very helpful method, but I like to see how things perform.
+    
+    /**
+     * Prints the FPS to the console
+     */
     public final void FPS() {
         logger.log();
+    }
+
+    /**
+     * 
+     * @return FPS as integer
+     */
+    public int getFPS() {
+        return Gdx.graphics.getFramesPerSecond();
+    }
+    
+    public long getFrame(){
+        return Gdx.graphics.getFrameId();
     }
 
     public final boolean getActive() {
