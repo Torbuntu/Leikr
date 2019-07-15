@@ -176,7 +176,6 @@ public abstract class Engine implements InputProcessor {
     //dispose
 
     //Start Helper methods
-    
     /**
      * Prints the FPS to the console
      */
@@ -185,14 +184,14 @@ public abstract class Engine implements InputProcessor {
     }
 
     /**
-     * 
+     *
      * @return FPS as integer
      */
     public int getFPS() {
         return Gdx.graphics.getFramesPerSecond();
     }
-    
-    public long getFrame(){
+
+    public long getFrame() {
         return Gdx.graphics.getFrameId();
     }
 
@@ -202,6 +201,14 @@ public abstract class Engine implements InputProcessor {
 
     public final void setActive(boolean state) {
         this.active = state;
+    }
+
+    public final void pause() {
+        system.pause();
+    }
+
+    public final void loadSpriteSheet(String progName) {
+        system.loadSpriteSheet(progName);
     }
     //End helper methods.
 
@@ -606,6 +613,18 @@ public abstract class Engine implements InputProcessor {
 
     public final void clip() {
         screen.clip();
+    }
+
+    public boolean collides(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2) {
+        return x1 + w1 >= x2 && x2 + w2 >= x1 || y1 + h1 >= y2 && y2 + h2 >= y1;
+    }
+
+    public boolean collides(float[] a, float[] b) {
+        return a[0] + a[2] >= b[0] && b[0] + b[2] >= a[0] || a[1] + a[3] >= b[1] && b[1] + b[3] >= a[1];
+    }
+
+    public boolean point(float x, float y, float x2, float y2, float w, float h) {
+        return x >= x2 && x <= x2 + w && y >= y2 && y <= y2 + h;
     }
 
     //END Experimental

@@ -8,6 +8,8 @@ class ColorTester extends leikr.Engine {
     int bx=177
     int w=16,h=16
     
+    int exitX = 231, exitY = 2, exitS = 7
+    
     int mx, my
     
     void create(){
@@ -42,6 +44,8 @@ class ColorTester extends leikr.Engine {
 			
 			if(buttonColorChange(b, yt, bx)) b += 0.01f
 			if(buttonColorChange(b, yb, bx)) b -= 0.01f			
+			
+			if(mx >= exitX && mx <= exitX+exitS && my >= exitY && my <= exitY+exitS) pause()
 		}
     }
     void render(){	

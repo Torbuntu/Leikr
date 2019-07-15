@@ -288,7 +288,7 @@ public class MenuScreen extends BasicGameScreen {
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         font.load(assetManager);
-        updateMouse();
+        updateMouse();        
         time += delta;
         if (leikrMouse.y >= 52 && leikrMouse.y <= 56 && leikrMouse.x >= 108 && leikrMouse.x <= 115 && cursor < filteredPrograms.size() - 1 && Gdx.input.isTouched() && time > 0.2) {
             cursor++;

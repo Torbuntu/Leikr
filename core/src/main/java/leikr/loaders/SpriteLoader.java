@@ -38,6 +38,18 @@ public class SpriteLoader {
         return instance;
     }
 
+    public void loadManualSpritesheets(String programName) {
+        try {
+            assetManager.clear();
+            rootPath = "Programs/" + programName + "/Sprites/Sprites.png";
+            instance.loadSpriteSheets();
+            instance.addSpritesToSpriteBank();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("Manual Sprite sheet not loadable.");
+        }
+    }
+
     private void resetSpriteLoader() {
         assetManager.clear();
         rootPath = GameRuntime.getProgramPath() + "/Sprites/Sprites.png";

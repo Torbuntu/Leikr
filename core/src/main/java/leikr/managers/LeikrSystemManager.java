@@ -2,6 +2,8 @@ package leikr.managers;
 
 import com.badlogic.gdx.assets.AssetManager;
 import leikr.GameRuntime;
+import leikr.loaders.SpriteLoader;
+import leikr.screens.EngineScreen;
 import leikr.screens.LoadScreen;
 import leikr.screens.MenuScreen;
 import org.mini2Dx.core.font.MonospaceFont;
@@ -57,6 +59,18 @@ public class LeikrSystemManager {
         GameRuntime.setProgramPath("Programs/" + name);
         MenuScreen.GAME_NAME = name;
         LOAD_PROGRAM = true;
+    }
+    
+    /**
+     * A kind of hacky entry to the EngineScreen PAUSE boolean.
+     */
+    public void pause(){
+        EngineScreen.PAUSE = true;
+    }
+    
+    public void loadSpriteSheet(String sheetName){
+        SpriteLoader sl = SpriteLoader.getSpriteLoader();
+        sl.loadManualSpritesheets(sheetName);        
     }
     //END API
 

@@ -38,7 +38,7 @@ public class EngineScreen extends BasicGameScreen {
     AssetManager manager;
     FitViewport viewport;
 
-    private static boolean PAUSE = false;
+    public static boolean PAUSE = false;
     private static boolean CONFIRM = false;
 
     private ControllerAdapter pauseControllerAdapter;

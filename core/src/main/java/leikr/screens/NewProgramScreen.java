@@ -39,6 +39,7 @@ public class NewProgramScreen extends BasicGameScreen {
 
     public NewProgramScreen() {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
+        createControllerAdapter();
     }
 
     @Override
