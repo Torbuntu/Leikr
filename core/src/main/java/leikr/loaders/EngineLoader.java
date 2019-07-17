@@ -148,6 +148,13 @@ public class EngineLoader implements Callable<Engine> {
         return -1;
     }
 
+    /**
+     * Compiles groovy sources in a the path input and puts the class files in
+     * the out directory
+     *
+     * @param path
+     * @param out
+     */
     public void compile(String path, String out) {
         String output = GameRuntime.getProgramPath() + "/" + out;
         String COMPILED = Gdx.files.local(output).toString();
@@ -171,8 +178,10 @@ public class EngineLoader implements Callable<Engine> {
     }
 
     /**
-     * Adds a URL to the groovy class loader for the @newInstance(String name) method to work
-     * @param path 
+     * Adds a URL to the groovy class loader for the @newInstance(String name)
+     * method to work
+     *
+     * @param path
      */
     public void loadLib(String path) {
         String COMPILED = GameRuntime.getProgramPath() + "/" + path + "/";
@@ -186,7 +195,7 @@ public class EngineLoader implements Callable<Engine> {
 
     /**
      * Instantiates an object from loaded lib classes
-     * 
+     *
      * @param name
      * @return the new object instantiated
      */

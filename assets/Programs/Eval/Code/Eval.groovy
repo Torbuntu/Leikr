@@ -2,7 +2,7 @@ class Eval extends leikr.Engine {
 	
 	def result
     void create(){        
-        loadLib("out/")
+        loadLib("lib/", "out/")
         result = newInstance("Test").get()        
     }
     
@@ -12,6 +12,10 @@ class Eval extends leikr.Engine {
     }
     
     
-    void update(float delta){}
+    void update(float delta){
+    	if(key("Space")){
+    		compile("lib", 1)
+    	}
+    }
 }
 
