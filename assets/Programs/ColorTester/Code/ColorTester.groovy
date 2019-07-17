@@ -12,6 +12,8 @@ class ColorTester extends leikr.Engine {
     
     int mx, my
     
+   	def thing
+    
     void create(){
        r = 0f
        g = 0f
@@ -19,6 +21,8 @@ class ColorTester extends leikr.Engine {
        loadImages()
        mx = mouseX() as int
        my = mouseY() as int
+       thing = compile("ColorTester/help")//compile continuous
+       println thing.getClass()
     }
     boolean buttonColorChange(color, torb, cx){
     	return mx >= cx && mx <= cx+w && my >= torb && my <= torb+h
@@ -47,6 +51,10 @@ class ColorTester extends leikr.Engine {
 			
 			if(mx >= exitX && mx <= exitX+exitS && my >= exitY && my <= exitY+exitS) pause()
 		}
+		
+		
+		thing = compile("ColorTester/help")//compile continuous
+		thing.update()
     }
     void render(){	
     	image("BG",0,0)
@@ -65,6 +73,12 @@ class ColorTester extends leikr.Engine {
     	//mouse
     	drawColor(5)
     	line(mx, my, (mx+3) as int, (my+4) as int)
+    	
+    	//thing test
+    	if(thing != null){
+    		drawColor(thing.c)
+    		rect(thing.x, thing.y, thing.w, thing.h, true)
+    	}
     }
         
 }	

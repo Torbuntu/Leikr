@@ -2,6 +2,7 @@ package leikr.managers;
 
 import com.badlogic.gdx.assets.AssetManager;
 import leikr.GameRuntime;
+import leikr.loaders.EngineLoader;
 import leikr.loaders.SpriteLoader;
 import leikr.screens.EngineScreen;
 import leikr.screens.LoadScreen;
@@ -71,6 +72,10 @@ public class LeikrSystemManager {
     public void loadSpriteSheet(String sheetName){
         SpriteLoader sl = SpriteLoader.getSpriteLoader();
         sl.loadManualSpritesheets(sheetName);        
+    }
+    
+    public Object compile(String path){
+        return EngineLoader.getEngineLoader().compile(path);
     }
     //END API
 

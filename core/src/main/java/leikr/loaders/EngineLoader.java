@@ -2,6 +2,7 @@ package leikr.loaders;
 
 import com.badlogic.gdx.Gdx;
 import groovy.lang.GroovyClassLoader;
+import groovy.lang.GroovyShell;
 import groovy.lang.GroovySystem;
 import groovy.util.ResourceException;
 import groovy.util.ScriptException;
@@ -51,9 +52,16 @@ public class EngineLoader implements Callable<Engine> {
 
     /**
      * Returns either a pre-compiled game Engine, an Engine compiled from
-     * sources, or null. Returning Null helps the EngineScreen return to the
-     * MenuScreen.
+     * sources, or null.Returning Null helps the EngineScreen return to the
+ MenuScreen.
      * @return Engine object
+     * @throws java.io.IOException
+     * @throws java.lang.InstantiationException
+     * @throws java.lang.IllegalAccessException
+     * @throws groovy.util.ResourceException
+     * @throws java.lang.reflect.InvocationTargetException
+     * @throws java.lang.ClassNotFoundException
+     * @throws groovy.util.ScriptException
      */
     public Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, ResourceException, ScriptException {
         if (GameRuntime.checkLaunchTitle()) {
@@ -127,6 +135,17 @@ public class EngineLoader implements Callable<Engine> {
             }
         }
     }
+    
+    //START API
+    public Object compile(String path){
+        try {
+            return gcl.parseClass(Gdx.files.local("Programs/"+path+".groovy").file()).getDeclaredConstructors()[0].newInstance();
+        } catch (CompilationFailedException | IOException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+    //END API
 
     /**
      * call()
