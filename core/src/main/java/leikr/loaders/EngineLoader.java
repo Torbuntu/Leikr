@@ -141,6 +141,8 @@ public class EngineLoader implements Callable<Engine> {
      */
     public Object compile(String path) {
         try {
+            String url = path.substring(0, path.lastIndexOf("/"));
+            gcl.addURL(new File(GameRuntime.getProgramPath()+"/"+url).toURI().toURL());
             return gcl.parseClass(Gdx.files.local(GameRuntime.getProgramPath() + "/" + path + ".groovy").file()).getDeclaredConstructors()[0].newInstance();
         } catch (CompilationFailedException | IOException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
