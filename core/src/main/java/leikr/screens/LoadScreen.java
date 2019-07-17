@@ -43,7 +43,7 @@ public class LoadScreen extends BasicGameScreen {
 
     @Override
     public void preTransitionIn(Transition transition) {
-        engineGetter = service.submit(EngineLoader.getEngineLoader());
+        engineGetter = service.submit(EngineLoader.getEngineLoader(true));
     }
 
     @Override

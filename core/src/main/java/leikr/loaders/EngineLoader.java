@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
-import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,15 +30,18 @@ public class EngineLoader implements Callable<Engine> {
 
     public GroovyClassLoader gcl;
     public CustomProgramProperties cp;
+    private GroovyShell sh;
     String rootPath;
 
     private static EngineLoader instance;
 
-    public static EngineLoader getEngineLoader() {
+    public static EngineLoader getEngineLoader(boolean reload) {
         if (instance == null) {
             instance = new EngineLoader();
         }
-        instance.reset();
+        if (reload) {
+            instance.reset();
+        }
         return instance;
     }
 
@@ -48,12 +50,14 @@ public class EngineLoader implements Callable<Engine> {
         rootPath = GameRuntime.getProgramPath() + "/Code/";
         cp = new CustomProgramProperties(GameRuntime.getProgramPath());
         gcl = new GroovyClassLoader(ClassLoader.getSystemClassLoader());
+        sh = new GroovyShell(gcl);
     }
 
     /**
      * Returns either a pre-compiled game Engine, an Engine compiled from
      * sources, or null.Returning Null helps the EngineScreen return to the
- MenuScreen.
+     * MenuScreen.
+     *
      * @return Engine object
      * @throws java.io.IOException
      * @throws java.lang.InstantiationException
@@ -83,27 +87,18 @@ public class EngineLoader implements Callable<Engine> {
     private Engine getSourceEngine() throws MalformedURLException, CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         gcl.clearCache();
         gcl.addURL(new File(rootPath).toURI().toURL());
-        return (Engine) gcl.parseClass(Gdx.files.internal(rootPath + MenuScreen.GAME_NAME + ".groovy").file()).getDeclaredConstructors()[0].newInstance();//loads the game code  
+        return (Engine) gcl.parseClass(Gdx.files.local(rootPath + MenuScreen.GAME_NAME + ".groovy").file()).getDeclaredConstructors()[0].newInstance();//loads the game code  
     }
 
     private Engine getJavaSourceEngine() throws MalformedURLException, CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         gcl.clearCache();
         gcl.addURL(new File(rootPath).toURI().toURL());
-        return (Engine) gcl.parseClass(Gdx.files.internal(rootPath + MenuScreen.GAME_NAME + ".java").file()).getDeclaredConstructors()[0].newInstance();//loads the game code  
+        return (Engine) gcl.parseClass(Gdx.files.local(rootPath + MenuScreen.GAME_NAME + ".java").file()).getDeclaredConstructors()[0].newInstance();//loads the game code  
     }
 
     private Engine getCompiledEngine() throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
         String COMPILED = rootPath + "Compiled/";
         gcl.addURL(new File(COMPILED).toURI().toURL());
-        Arrays.asList(Gdx.files.local(COMPILED).list()).stream()
-                .filter(x -> !x.name().equals(MenuScreen.GAME_NAME + ".class"))
-                .forEach(classFile -> {
-                    try {
-                        gcl.loadClass(classFile.name().replace(".class", ""), false, true);
-                    } catch (ClassNotFoundException | CompilationFailedException ex) {
-                        Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                });
         return (Engine) gcl.loadClass(MenuScreen.GAME_NAME).getConstructors()[0].newInstance();
     }
 
@@ -135,18 +130,115 @@ public class EngineLoader implements Callable<Engine> {
             }
         }
     }
-    
+
     //START API
-    public Object compile(String path){
+    /**
+     * compiles a groovy class file and tries to return an object instance
+     *
+     * @param path to groovy file
+     * @return either a new instance of the class in the path file, or -1 on
+     * fail
+     */
+    public Object compile(String path) {
         try {
-            return gcl.parseClass(Gdx.files.local("Programs/"+path+".groovy").file()).getDeclaredConstructors()[0].newInstance();
+            return gcl.parseClass(Gdx.files.local(GameRuntime.getProgramPath() + "/" + path + ".groovy").file()).getDeclaredConstructors()[0].newInstance();
         } catch (CompilationFailedException | IOException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
     }
-    //END API
 
+    public void compile(String path, String out) {
+        String output = GameRuntime.getProgramPath() + "/" + out;
+        String COMPILED = Gdx.files.local(output).toString();
+        try {
+            gcl.addURL(new File(COMPILED).toURI().toURL());
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        String codePath = GameRuntime.getProgramPath() + "/" + path;
+
+        CompilerConfiguration cc = new CompilerConfiguration();
+        cc.setClasspath(codePath);
+        if (!(new File(COMPILED).exists())) {
+            new File(COMPILED).mkdir();
+        }
+        cc.setTargetDirectory(COMPILED);
+        Compiler compiler = new Compiler(cc);
+        File[] files = ArrayUtils.removeElement(new File(codePath).listFiles(), new File(codePath + out));
+        compiler.compile(files);
+    }
+
+    /**
+     * Adds a URL to the groovy class loader for the @newInstance(String name) method to work
+     * @param path 
+     */
+    public void loadLib(String path) {
+        String COMPILED = GameRuntime.getProgramPath() + "/" + path + "/";
+        try {
+            gcl.addURL(new File(COMPILED).toURI().toURL());
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    /**
+     * Instantiates an object from loaded lib classes
+     * 
+     * @param name
+     * @return the new object instantiated
+     */
+    public Object newInstance(String name) {
+        try {
+            return gcl.loadClass(name).getDeclaredConstructors()[0].newInstance();
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+
+    /**
+     * Evaluates a groovy source code file or source in text, returning the
+     * result.
+     *
+     * @param code
+     * @param opt
+     * @return
+     */
+    public Object eval(String code, int opt) {
+        try {
+            switch (opt) {
+                case 0:
+                    return sh.evaluate(code);
+                case 1:
+                    return sh.evaluate(Gdx.files.local(GameRuntime.getProgramPath() + "/" + code + ".groovy").file());
+                default:
+                    return sh.evaluate(code);
+            }
+        } catch (CompilationFailedException | IllegalArgumentException | IOException ex) {
+            Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+
+    /**
+     * Unlike @eval(String code, int opt) this method only takes source code
+     *
+     * @param code
+     * @return
+     */
+    public Object eval(String code) {
+        try {
+            return sh.evaluate(code);
+        } catch (CompilationFailedException | IllegalArgumentException ex) {
+            Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+
+    //END API
     /**
      * call()
      *

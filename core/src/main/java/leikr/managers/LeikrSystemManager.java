@@ -69,14 +69,32 @@ public class LeikrSystemManager {
         EngineScreen.PAUSE = true;
     }
     
+    //START EngineLoader API
     public void loadSpriteSheet(String sheetName){
         SpriteLoader sl = SpriteLoader.getSpriteLoader();
         sl.loadManualSpritesheets(sheetName);        
     }
     
     public Object compile(String path){
-        return EngineLoader.getEngineLoader().compile(path);
+        return EngineLoader.getEngineLoader(false).compile(path);
     }
+    public void compile(String path, String out){
+        EngineLoader.getEngineLoader(false).compile(path, out);
+    }
+    public Object eval(String code, int opt){
+        return EngineLoader.getEngineLoader(false).eval(code, opt);
+    }
+    public Object eval(String code){
+        return EngineLoader.getEngineLoader(false).eval(code);
+    }
+    public void loadLib(String path){
+        EngineLoader.getEngineLoader(false).loadLib(path);
+    }
+    public Object newInstance(String name){
+        return EngineLoader.getEngineLoader(false).newInstance(name);
+    }
+    //END EngineLoader API
+    
     //END API
 
     //START game loop methods on EngineScreen

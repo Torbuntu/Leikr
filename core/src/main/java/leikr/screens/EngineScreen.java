@@ -179,7 +179,7 @@ public class EngineScreen extends BasicGameScreen {
         }
         try {
             system.setRunning(true);
-            engine.preCreate(EngineLoader.getEngineLoader().cp.MAX_SPRITES, system);
+            engine.preCreate(EngineLoader.getEngineLoader(false).cp.MAX_SPRITES, system);
             engine.create();
         } catch (Exception ex) {
             ERROR = true;

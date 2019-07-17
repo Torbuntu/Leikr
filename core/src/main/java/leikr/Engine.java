@@ -626,10 +626,26 @@ public abstract class Engine implements InputProcessor {
     public boolean point(float x, float y, float x2, float y2, float w, float h) {
         return x >= x2 && x <= x2 + w && y >= y2 && y <= y2 + h;
     }
-    
-    public Object compile(String path){
+
+    public Object compile(String path) {
         return system.compile(path);
     }
+    public void compile(String path, String out){
+        system.compile(path, out);
+    }
 
+    public Object eval(String code, int opt) {
+        return system.eval(code, opt);
+    }
+
+    public Object eval(String code) {
+        return system.eval(code);
+    }
+    public void loadLib(String path){
+        system.loadLib(path);
+    }
+    public Object newInstance(String name){
+        return system.newInstance(name);
+    }
     //END Experimental
 }
