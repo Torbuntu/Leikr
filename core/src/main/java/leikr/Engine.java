@@ -3,6 +3,7 @@ package leikr;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
@@ -30,21 +31,6 @@ public abstract class Engine implements InputProcessor {
 
     //used by the Engine Screen to determine if the game should be actively running.
     boolean active;
-
-    public enum BTN {
-        X,
-        A,
-        B,
-        Y,
-        LEFT_BUMPER,
-        RIGHT_BUMPER,
-        SELECT,
-        START,
-        UP,
-        RIGHT,
-        DOWN,
-        LEFT
-    }
 
     /*
      * Controllers and listeners for handling custom controller input
@@ -119,10 +105,10 @@ public abstract class Engine implements InputProcessor {
         mouse.updateMouse();
         screen.preUpdate(delta);
         if (controllerA != null) {
-            return (controllerA.button(BTN.START));
+            return (controllerA.button("START"));
         }
         if (controllerB != null) {
-            return (controllerB.button(BTN.START));
+            return (controllerB.button("START"));
         }
         return false;
     }
@@ -172,6 +158,7 @@ public abstract class Engine implements InputProcessor {
         if (null != playerTwoController) {
             playerTwoController.removeListener(controllerB);
         }
+        Controllers.clearListeners();
     }
     //dispose
 
@@ -499,11 +486,11 @@ public abstract class Engine implements InputProcessor {
     //END Math utils
 
     //START input handling
-    public final boolean button(BTN button) {
+    public final boolean button(String button) {
         return (null != controllerA) ? controllerA.button(button) : false;
     }
 
-    public final boolean button(BTN button, int player) {
+    public final boolean button(String button, int player) {
         if (null != controllerA && player == 0) {
             return controllerA.button(button);
         }
@@ -512,6 +499,19 @@ public abstract class Engine implements InputProcessor {
         }
         //default search is false, in case there are no controllers.
         return false;
+    }
+
+    public int btnCode(String button) {
+        return (null != controllerA) ? controllerA.btnCode(button) : -1;
+    }
+    public String btnName(int id){
+        return (controllerA != null) ? controllerA.btnName(id) : "Null";
+    }
+
+    public void setController(ControllerAdapter adap) {
+        if (controllerA != null) {
+            controllerA.setController(adap);
+        }
     }
 
     // Gets the result based on the button's ID. Not recommended.
@@ -630,7 +630,8 @@ public abstract class Engine implements InputProcessor {
     public Object compile(String path) {
         return system.compile(path);
     }
-    public void compile(String path, String out){
+
+    public void compile(String path, String out) {
         system.compile(path, out);
     }
 
@@ -641,10 +642,12 @@ public abstract class Engine implements InputProcessor {
     public Object eval(String code) {
         return system.eval(code);
     }
-    public void loadLib(String path){
+
+    public void loadLib(String path) {
         system.loadLib(path);
     }
-    public Object newInstance(String name){
+
+    public Object newInstance(String name) {
         return system.newInstance(name);
     }
     //END Experimental

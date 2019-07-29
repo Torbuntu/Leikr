@@ -1,11 +1,12 @@
 package leikr.controls;
 
 import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.ControllerListener;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
 import java.util.HashMap;
-import leikr.Engine;
 import leikr.customProperties.CustomSystemProperties;
 
 /**
@@ -16,9 +17,23 @@ public class LeikrController implements ControllerListener {
 
     HashMap<Object, Boolean> buttons = new HashMap<>();
     HashMap<Object, Object> btnCodes = new HashMap<>();
+    HashMap<Object, Object> btnLookup = new HashMap<>();
 
     private static LeikrController instance;
     private static LeikrController instanceTwo;
+    
+    String UP = "UP";
+    String DOWN = "DOWN";
+    String LEFT = "LEFT";
+    String RIGHT = "RIGHT";
+    String A = "A";
+    String B = "B";
+    String X = "X";
+    String Y = "Y";
+    String LEFT_BUMPER = "LEFT_BUMPER";
+    String RIGHT_BUMPER = "RIGHT_BUMPER";
+    String SELECT = "SELECT";
+    String START = "START";
 
     public static LeikrController getLeikrControllerListenerA() {
         if (instance == null) {
@@ -35,35 +50,65 @@ public class LeikrController implements ControllerListener {
     }
 
     public LeikrController() {
-        buttons.put(Engine.BTN.A, false);
-        buttons.put(Engine.BTN.B, false);
-        buttons.put(Engine.BTN.X, false);
-        buttons.put(Engine.BTN.Y, false);
-        buttons.put(Engine.BTN.LEFT_BUMPER, false);
-        buttons.put(Engine.BTN.RIGHT_BUMPER, false);
-        buttons.put(Engine.BTN.SELECT, false);
-        buttons.put(Engine.BTN.START, false);
+        buttons.put(A, false);
+        buttons.put(B, false);
+        buttons.put(X, false);
+        buttons.put(Y, false);
+        buttons.put(LEFT_BUMPER, false);
+        buttons.put(RIGHT_BUMPER, false);
+        buttons.put(SELECT, false);
+        buttons.put(START, false);
 
-        buttons.put(Engine.BTN.LEFT, false);
-        buttons.put(Engine.BTN.RIGHT, false);
-        buttons.put(Engine.BTN.UP, false);
-        buttons.put(Engine.BTN.DOWN, false);
+        buttons.put(LEFT, false);
+        buttons.put(RIGHT, false);
+        buttons.put(UP, false);
+        buttons.put(DOWN, false);
 
-        btnCodes.put(CustomSystemProperties.A, Engine.BTN.A);
-        btnCodes.put(CustomSystemProperties.B, Engine.BTN.B);
-        btnCodes.put(CustomSystemProperties.X, Engine.BTN.X);
-        btnCodes.put(CustomSystemProperties.Y, Engine.BTN.Y);
-        btnCodes.put(CustomSystemProperties.LEFT_BUMPER, Engine.BTN.LEFT_BUMPER);
-        btnCodes.put(CustomSystemProperties.RIGHT_BUMPER, Engine.BTN.RIGHT_BUMPER);
-        btnCodes.put(CustomSystemProperties.SELECT, Engine.BTN.SELECT);
-        btnCodes.put(CustomSystemProperties.START, Engine.BTN.START);
+        btnCodes.put(CustomSystemProperties.A, A);
+        btnCodes.put(CustomSystemProperties.B, B);
+        btnCodes.put(CustomSystemProperties.X, X);
+        btnCodes.put(CustomSystemProperties.Y, Y);
+        btnCodes.put(CustomSystemProperties.LEFT_BUMPER, LEFT_BUMPER);
+        btnCodes.put(CustomSystemProperties.RIGHT_BUMPER, RIGHT_BUMPER);
+        btnCodes.put(CustomSystemProperties.SELECT, SELECT);
+        btnCodes.put(CustomSystemProperties.START, START);
+        btnCodes.put(CustomSystemProperties.UP, UP);
+        btnCodes.put(CustomSystemProperties.DOWN, DOWN);
+        btnCodes.put(CustomSystemProperties.LEFT, LEFT);
+        btnCodes.put(CustomSystemProperties.RIGHT, RIGHT);
+        
+        btnLookup.put(A, CustomSystemProperties.A);
+        btnLookup.put(B, CustomSystemProperties.B);
+        btnLookup.put(X, CustomSystemProperties.X);
+        btnLookup.put(Y, CustomSystemProperties.Y);
+        btnLookup.put(LEFT_BUMPER, CustomSystemProperties.LEFT_BUMPER);
+        btnLookup.put(RIGHT_BUMPER, CustomSystemProperties.RIGHT_BUMPER);
+        btnLookup.put(SELECT, CustomSystemProperties.SELECT);
+        btnLookup.put(START, CustomSystemProperties.START);
+        btnLookup.put(UP, CustomSystemProperties.UP);
+        btnLookup.put(DOWN, CustomSystemProperties.DOWN);
+        btnLookup.put(LEFT, CustomSystemProperties.LEFT);
+        btnLookup.put(RIGHT, CustomSystemProperties.RIGHT);
     }
 
     //engine api for returning boolean status of button presses on snes style controller
-    public boolean button(Engine.BTN button) {
-        return (boolean) buttons.get(button);
+    public boolean button(String button) {
+        return (boolean) buttons.get(button.toUpperCase());
+    }
+    
+    public String btnName(int id){
+        return btnCodes.get(id).toString();
     }
 
+    public int btnCode(String button){
+        return (int) btnLookup.get(button.toUpperCase());
+    }
+    
+    public void setController(ControllerAdapter adap){
+        Controllers.clearListeners();
+        Controllers.addListener(adap);
+    }
+    
     @Override
     public boolean buttonDown(Controller controller, int buttonCode) {
         if (CustomSystemProperties.DEBUG) {
@@ -91,26 +136,26 @@ public class LeikrController implements ControllerListener {
             System.out.println(controller.getName() + " : " + axisCode + " | " + value);
         }
         if ((int) value == 0) {
-            buttons.replace(Engine.BTN.UP, false);
-            buttons.replace(Engine.BTN.DOWN, false);
-            buttons.replace(Engine.BTN.LEFT, false);
-            buttons.replace(Engine.BTN.RIGHT, false);
+            buttons.replace(UP, false);
+            buttons.replace(DOWN, false);
+            buttons.replace(LEFT, false);
+            buttons.replace(RIGHT, false);
         }
 
         if (axisCode == CustomSystemProperties.VERTICAL_AXIS) {
             if (value == CustomSystemProperties.DOWN) {
-                buttons.replace(Engine.BTN.DOWN, true);
+                buttons.replace(DOWN, true);
             }
             if (value == CustomSystemProperties.UP) {
-                buttons.replace(Engine.BTN.UP, true);
+                buttons.replace(UP, true);
             }
         }
         if (axisCode == CustomSystemProperties.HORIZONTAL_AXIS) {
             if (value == CustomSystemProperties.RIGHT) {
-                buttons.replace(Engine.BTN.RIGHT, true);
+                buttons.replace(RIGHT, true);
             }
             if (value == CustomSystemProperties.LEFT) {
-                buttons.replace(Engine.BTN.LEFT, true);
+                buttons.replace(LEFT, true);
             }
         }
 

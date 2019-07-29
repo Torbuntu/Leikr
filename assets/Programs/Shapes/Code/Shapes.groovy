@@ -1,13 +1,22 @@
 import java.io.File //for bad guy code test
+import com.badlogic.gdx.controllers.*;
 
 class Shapes extends leikr.Engine {
 
     int x, y, x2, y2, r, t, amt, rx, ry, i, j
-    
+
     void create(){
+        amt = 5      
+	    setController(new ControllerAdapter(){
+			@Override
+			public boolean buttonDown(Controller controller, int btCode) {
+				println (btnCode("RIGHT"))
+				amt += 10
+				return true
+			}
+		})
         x = 120
         y = 80
-        amt = 5
         t = 0
         rx = 120
         ry = 80
@@ -15,10 +24,10 @@ class Shapes extends leikr.Engine {
         //println new File("/").list() //bad guy code test
     }
     void update(float delta){
-        FPS()
-       
+
     }
     void render(){	
+
         t+=1
         // clip(cx, cy, cw, ch)
         drawColor(15)
