@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.MathUtils;
 import leikr.controls.LeikrController;
 import leikr.controls.LeikrKeyboard;
 import leikr.controls.LeikrMouse;
+import leikr.customProperties.CustomSystemProperties;
 import leikr.managers.LeikrAudioManager;
 import leikr.managers.LeikrScreenManager;
 import leikr.managers.LeikrSystemManager;
@@ -421,8 +422,8 @@ public abstract class Engine implements InputProcessor {
     public final void sfx(String name, float vol, float pit, float pan) {
         audio.sfx(name, vol, pit, pan);
     }
-    
-    public final void stopSfx(){
+
+    public final void stopSfx() {
         audio.stopSfx();
     }
 
@@ -508,7 +509,8 @@ public abstract class Engine implements InputProcessor {
     public int btnCode(String button) {
         return (null != controllerA) ? controllerA.btnCode(button) : -1;
     }
-    public String btnName(int id){
+
+    public String btnName(int id) {
         return (controllerA != null) ? controllerA.btnName(id) : "Null";
     }
 
@@ -516,6 +518,20 @@ public abstract class Engine implements InputProcessor {
         if (controllerA != null) {
             controllerA.setController(adap);
         }
+    }
+
+    public int horizontalAxis() {
+        if (controllerA != null) {
+            return CustomSystemProperties.HORIZONTAL_AXIS;
+        }
+        return 0;
+    }
+
+    public int verticalAxis() {
+        if (controllerA != null) {
+            return CustomSystemProperties.VERTICAL_AXIS;
+        }
+        return 0;
     }
 
     // Gets the result based on the button's ID. Not recommended.

@@ -23,7 +23,6 @@ class WizRobo extends leikr.Engine {
     def lvlFinalstart = false
 	    
     def time = 0
-    def tmpAnimSprite 
 		    
     def solid(x,y){
         float mx = (x)/8 
@@ -46,12 +45,12 @@ class WizRobo extends leikr.Engine {
         wizard.vx = 0
         wizard.spid = 0
         //check left or right moving
-        if((key(wizard.left) || button(BTN.LEFT)) && !solid(wizard.x-1, wizard.y) && !solid(wizard.x-1, wizard.y+7)){		
+        if((key(wizard.left) || button("LEFT")) && !solid(wizard.x-1, wizard.y) && !solid(wizard.x-1, wizard.y+7)){		
             wizard.vx =-1           
             wizard.f = true
             wizard.walking = true
         }
-        if((key(wizard.right) || button(BTN.RIGHT)) && !solid(wizard.x+8,wizard.y) && !solid(wizard.x+8,wizard.y+7)){
+        if((key(wizard.right) || button("RIGHT")) && !solid(wizard.x+8,wizard.y) && !solid(wizard.x+8,wizard.y+7)){
             wizard.vx = 1         
             wizard.f = false
             wizard.walking = true
@@ -72,7 +71,7 @@ class WizRobo extends leikr.Engine {
         }
 	
         //check jumping.
-        if(((key(wizard.up) || button(BTN.B)) || key("Up")) && wizard.vy==0){        	
+        if(((key(wizard.up) || button("B")) || key("Up")) && wizard.vy==0){        	
             wizard.vy=-3.5            
             wizard.g = false 
         }	
@@ -107,19 +106,19 @@ class WizRobo extends leikr.Engine {
     	}
     	
         //action buttons
-    	if(key("X") || button(BTN.A)){
+    	if(key("X") || button("A")){
             chargep()
     	}
-    	if(key("Z") || button(BTN.Y)){
+    	if(key("Z") || button("Y")){
             attackp()
     	}
     	
     	if(ladder()){
             wizard.vy = 0
-            if(key(wizard.down) || button(BTN.DOWN) || key("Down") ){
+            if(key(wizard.down) || button("DOWN") || key("Down") ){
                 wizard.vy = 0.6
             }
-            if(key(wizard.up) || button(BTN.UP) || key("Up")){
+            if(key(wizard.up) || button("UP") || key("Up")){
                 wizard.vy = -0.6
             }            
         }	
@@ -519,9 +518,7 @@ class WizRobo extends leikr.Engine {
   
     void create(){		
         loadImages()
-        loadMap("title")
-    	tmpAnimSprite = makeAnimSprite([1,2,3,0] as int[], [0.5f,0.5f,0.5f,0.5f] as float[], true)
-    
+        loadMap("title")    
     }
     
     void updateGui(){
@@ -566,17 +563,16 @@ class WizRobo extends leikr.Engine {
 
     void update(float delta){
 		FPS()
-		tmpAnimSprite.update(delta)
         debuglvl()       
         if(gameOver){
-        	if(keyPress("Enter") || button(BTN.START)){
+        	if(keyPress("Enter") || button("SELECT")){
         		title = true
         		gameOver = false
         		return
         	}
         }
     	if(title){
-            if(keyPress("Enter") || button(BTN.START)){
+            if(keyPress("Enter") || button("SELECT")){
                 title = false
                 init()
             }
@@ -801,7 +797,6 @@ class WizRobo extends leikr.Engine {
             break;
         }      
         
-        spriteAnim(tmpAnimSprite, 10, 10)  
     }
     
     

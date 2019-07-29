@@ -72,10 +72,7 @@ public class LeikrController implements ControllerListener {
         btnCodes.put(CustomSystemProperties.RIGHT_BUMPER, RIGHT_BUMPER);
         btnCodes.put(CustomSystemProperties.SELECT, SELECT);
         btnCodes.put(CustomSystemProperties.START, START);
-        btnCodes.put(CustomSystemProperties.UP, UP);
-        btnCodes.put(CustomSystemProperties.DOWN, DOWN);
-        btnCodes.put(CustomSystemProperties.LEFT, LEFT);
-        btnCodes.put(CustomSystemProperties.RIGHT, RIGHT);
+        
         
         btnLookup.put(A, CustomSystemProperties.A);
         btnLookup.put(B, CustomSystemProperties.B);
@@ -85,6 +82,7 @@ public class LeikrController implements ControllerListener {
         btnLookup.put(RIGHT_BUMPER, CustomSystemProperties.RIGHT_BUMPER);
         btnLookup.put(SELECT, CustomSystemProperties.SELECT);
         btnLookup.put(START, CustomSystemProperties.START);
+        
         btnLookup.put(UP, CustomSystemProperties.UP);
         btnLookup.put(DOWN, CustomSystemProperties.DOWN);
         btnLookup.put(LEFT, CustomSystemProperties.LEFT);
@@ -102,11 +100,18 @@ public class LeikrController implements ControllerListener {
 
     public int btnCode(String button){
         return (int) btnLookup.get(button.toUpperCase());
-    }
+    } 
     
     public void setController(ControllerAdapter adap){
         Controllers.clearListeners();
         Controllers.addListener(adap);
+    }
+    
+    public int horizontalAxis(){
+        return CustomSystemProperties.HORIZONTAL_AXIS;
+    }
+    public int verticalAxis(){
+        return CustomSystemProperties.VERTICAL_AXIS;
     }
     
     @Override

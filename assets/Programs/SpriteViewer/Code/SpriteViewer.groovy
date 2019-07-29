@@ -114,19 +114,19 @@ class SpriteViewer extends leikr.Engine {
         	} 
         }
               
-        if(keyPress("Right") || button(BTN.RIGHT) && t > 20){
+        if(keyPress("Right") || button("RIGHT") && t > 20){
         	if (ss < 3) ss++
         	t=0
         }
-        if(keyPress("Left") || button(BTN.LEFT) && t > 20){
+        if(keyPress("Left") || button("LEFT") && t > 20){
         	if (ss > 0) ss--
         	t=0
         }
-        if(keyPress("Up") || button(BTN.UP) && t > 20){
+        if(keyPress("Up") || button("UP") && t > 20){
         	idx++
         	t=0
         }
-        if(keyPress("Down") || button(BTN.DOWN) && t > 20){
+        if(keyPress("Down") || button("DOWN") && t > 20){
         	if(idx > 0) idx--
         	t=0
         }
