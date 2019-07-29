@@ -2,7 +2,6 @@ package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
@@ -244,37 +243,7 @@ public class MenuScreen extends BasicGameScreen {
         if (GameRuntime.checkLaunchTitle()) {
             return;
         }
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean keyDown(int i) {
-                if (i == Keys.UP && cursor > 0) {
-                    cursor--;
-                    GAME_NAME = filteredPrograms.get(cursor).getDirectory();
-                }
-                if (i == Keys.DOWN && cursor < filteredPrograms.size() - 1) {
-                    cursor++;
-                    GAME_NAME = filteredPrograms.get(cursor).getDirectory();
-                }
-                if (i == Keys.ENTER) {
-                    if (GAME_NAME.equals("Start new...")) {
-                        System.out.println("initializing new game...");
-                        NEW_PROGRAM = true;
-                    } else if (GAME_NAME.length() > 2) {
-                        System.out.println("Loading program: " + GAME_NAME);
-                        GameRuntime.setProgramPath("Programs/" + GAME_NAME);
-                        START = true;
-                    }
-                }
-                if (i == Keys.ESCAPE) {
-                    System.out.println("Good bye!");
-                    Gdx.app.exit();
-                }
-                if (i == Keys.LEFT || i == Keys.RIGHT) {
-                    PAGE = !PAGE;
-                }
-                return false;
-            }
-        });
+
         try {
             Controllers.clearListeners();
             if (Controllers.getControllers().size > 0) {
@@ -285,10 +254,39 @@ public class MenuScreen extends BasicGameScreen {
         }
     }
 
+    private void checkInput() {
+        if ((Gdx.input.isKeyJustPressed(Keys.UP) || Gdx.input.isKeyJustPressed(Keys.W)) && cursor > 0) {
+            cursor--;
+            GAME_NAME = filteredPrograms.get(cursor).getDirectory();
+        }
+        if ((Gdx.input.isKeyJustPressed(Keys.DOWN) || Gdx.input.isKeyJustPressed(Keys.S))  && cursor < filteredPrograms.size() - 1) {
+            cursor++;
+            GAME_NAME = filteredPrograms.get(cursor).getDirectory();
+        }
+        if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+            if (GAME_NAME.equals("Start new...")) {
+                System.out.println("initializing new game...");
+                NEW_PROGRAM = true;
+            } else if (GAME_NAME.length() > 2) {
+                System.out.println("Loading program: " + GAME_NAME);
+                GameRuntime.setProgramPath("Programs/" + GAME_NAME);
+                START = true;
+            }
+        }
+        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+            System.out.println("Good bye!");
+            Gdx.app.exit();
+        }
+        if (Gdx.input.isKeyJustPressed(Keys.Q) || Gdx.input.isKeyJustPressed(Keys.E)) {
+            PAGE = !PAGE;
+        }
+    }
+
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         font.load(assetManager);
-        updateMouse();        
+        updateMouse();
+        checkInput();
         time += delta;
         if (leikrMouse.y >= 52 && leikrMouse.y <= 56 && leikrMouse.x >= 108 && leikrMouse.x <= 115 && cursor < filteredPrograms.size() - 1 && Gdx.input.isTouched() && time > 0.2) {
             cursor++;
@@ -323,11 +321,11 @@ public class MenuScreen extends BasicGameScreen {
         offset = cursor * 8;
 
         //Category shifting        
-        if (Gdx.input.isKeyJustPressed(Keys.W) || (leikrMouse.y <= 16 && leikrMouse.y >= 9 && leikrMouse.x > 107 && leikrMouse.x < 111 && Gdx.input.isTouched() && time > 0.2)) {
+        if (Gdx.input.isKeyJustPressed(Keys.A) || (leikrMouse.y <= 16 && leikrMouse.y >= 9 && leikrMouse.x > 107 && leikrMouse.x < 111 && Gdx.input.isTouched() && time > 0.2)) {
             shiftCategoryRight();
             time = 0;
         }
-        if (Gdx.input.isKeyJustPressed(Keys.Q) || (leikrMouse.y <= 16 && leikrMouse.y >= 9 && leikrMouse.x > 112 && leikrMouse.x < 116 && Gdx.input.isTouched() && time > 0.2)) {
+        if (Gdx.input.isKeyJustPressed(Keys.D) || (leikrMouse.y <= 16 && leikrMouse.y >= 9 && leikrMouse.x > 112 && leikrMouse.x < 116 && Gdx.input.isTouched() && time > 0.2)) {
             shiftCategoryLeft();
             time = 0;
         }

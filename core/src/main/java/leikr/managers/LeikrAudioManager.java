@@ -36,6 +36,10 @@ public class LeikrAudioManager {
     public final void sfx(String name, float vol, float pit, float pan) {
         audioLoader.sound(name, vol, pit, pan);
     }
+    
+    public final void stopSfx(){
+        audioLoader.stopSound();
+    }
 
     public final void music(String name) {
         audioLoader.music(name);

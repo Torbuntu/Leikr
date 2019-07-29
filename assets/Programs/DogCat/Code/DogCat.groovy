@@ -1,4 +1,4 @@
-import Player
+veargbaergimport Player
 import Menu
 
 class DogCat extends leikr.Engine {

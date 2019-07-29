@@ -434,6 +434,10 @@ public abstract class Engine implements InputProcessor {
     public final void sfx(String name, float vol, float pit, float pan) {
         audio.sfx(name, vol, pit, pan);
     }
+    
+    public final void stopSfx(){
+        audio.stopSfx();
+    }
 
     public final void music(String name) {
         audio.music(name);

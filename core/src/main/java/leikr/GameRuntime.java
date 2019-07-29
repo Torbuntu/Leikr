@@ -26,7 +26,7 @@ public class GameRuntime extends ScreenBasedGame {
     public static int HEIGHT = 160;
 
     AssetManager assetManager;
-    CustomSystemProperties csp;
+    public CustomSystemProperties csp;
 
     public static FontLoader primaryFontLoader = new FontLoader();
 

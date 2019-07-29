@@ -1,14 +1,14 @@
 package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import leikr.GameRuntime;
+import leikr.customProperties.CustomSystemProperties;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Graphics;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -29,29 +29,64 @@ public class ErrorScreen extends BasicGameScreen {
     AssetManager assetManager;
     FitViewport viewport;
     boolean MENU = false;
+    boolean RELOAD = false;
     static String errorMessage;
+    ControllerAdapter errorControllerAdapter;
 
     public ErrorScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         errorMessage = "";
+        createControllerAdapter();
+    }
+
+    /**
+     * Creates a reusable controller adapter object.
+     */
+    private void createControllerAdapter() {
+        errorControllerAdapter = new ControllerAdapter() {
+            @Override
+            public boolean buttonDown(Controller controller, int buttonIndex) {
+                if (buttonIndex == CustomSystemProperties.START || buttonIndex == CustomSystemProperties.A || buttonIndex == CustomSystemProperties.SELECT || buttonIndex == CustomSystemProperties.B) {
+                    MENU = true;
+                }
+
+                if (buttonIndex == CustomSystemProperties.LEFT_BUMPER || buttonIndex == CustomSystemProperties.RIGHT_BUMPER) {
+                    RELOAD = true;
+                }
+                return true;
+            }
+        };
+    }
+
+    private void addController() {
+        if (Controllers.getControllers().size > 0) {
+            Controllers.getControllers().get(0).addListener(errorControllerAdapter);
+        }
+    }
+
+    private void removeController() {
+        if (Controllers.getControllers().size > 0) {
+            Controllers.getControllers().get(0).removeListener(errorControllerAdapter);
+        }
     }
 
     public static void setErrorMessage(String message) {
         errorMessage = message;
     }
 
+    void reloadEngine(ScreenManager sm) {
+        sm.enterGameScreen(LoadScreen.ID, null, null);
+    }
+
     @Override
     public void preTransitionIn(Transition transitionIn) {
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override
-            public boolean keyDown(int i) {
-                if (i == Input.Keys.ESCAPE || i == Input.Keys.ENTER || i == Input.Keys.SPACE || i == Input.Keys.Q) {
-                    MENU = true;
-                }
-                return true;
-            }
-        });
+        addController();
+    }
+
+    @Override
+    public void preTransitionOut(Transition transitionOut) {
+        removeController();
     }
 
     @Override
@@ -74,9 +109,13 @@ public class ErrorScreen extends BasicGameScreen {
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
-        if (MENU) {
+        if (MENU || Gdx.input.isKeyJustPressed(Keys.ESCAPE) || Gdx.input.isKeyJustPressed(Keys.ENTER) || Gdx.input.isKeyJustPressed(Keys.SPACE) || Gdx.input.isKeyJustPressed(Keys.Q)) {
             MENU = false;
             sm.enterGameScreen(MenuScreen.ID, new FadeOutTransition(Color.TEAL), new FadeInTransition(Color.FOREST));
+        }
+
+        if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Keys.R) || Gdx.input.isKeyPressed(Keys.F5)) {
+            reloadEngine(sm);
         }
     }
 
