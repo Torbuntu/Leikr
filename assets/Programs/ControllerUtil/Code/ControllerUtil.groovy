@@ -294,48 +294,48 @@ class ControllerUtil extends Engine {
     }
     
     void drawButtons(){        
-        if(button(BTN.UP) || key("Up")){
+        if(button("UP") || key("Up")){
             sprite(1, 40,42,false, false, 2)
         }
-        if(button(BTN.DOWN) || key("Down")){
+        if(button("DOWN") || key("Down")){
             sprite(1, 40, 102, false, true, 2)
         }
-        if(button(BTN.LEFT) || key("Left")){
+        if(button("LEFT") || key("Left")){
             sprite(2, 10, 72, true, false,2)
         }
-        if(button(BTN.RIGHT) || key("Right")){
+        if(button("RIGHT") || key("Right")){
             sprite(2, 70, 72, false, false,2)
         }
         
-        if(button(BTN.LEFT_BUMPER) || key("Q")){
+        if(button("LEFT_BUMPER") || key("Q")){
             sprite(0, 16,16,1)
             sprite(0, 32,16,1)
             sprite(0, 48,16,1)
             sprite(0, 64,16,1)
         }
-        if(button(BTN.RIGHT_BUMPER) || key("W")){
+        if(button("RIGHT_BUMPER") || key("W")){
             sprite(0, 160,16,1)
             sprite(0, 176,16,1)
             sprite(0, 192,16,1)
             sprite(0, 208,16,1)
         }
-        if(button(BTN.X) || key("S")){
+        if(button("X") || key("S")){
             sprite(3, 168, 40, false, false,2)
         }
-        if(button(BTN.Y) || key("A")){
+        if(button("Y") || key("A")){
             sprite(4, 136, 72, false, false,2)
         }
-        if(button(BTN.A) || key("X")){
+        if(button("A") || key("X")){
             sprite(5, 200, 72, false, false,2)
         }
-        if(button(BTN.B) || key("Z")){
+        if(button("B") || key("Z")){
             sprite(6, 168, 104, false, false,2)
         }
-        if(button(BTN.SELECT) || key("'")){
+        if(button("SELECT") || key("'")){
             sprite(0, 80, 136, false, false,1)
             sprite(0, 96, 136, false, false,1)
         }
-        if(button(BTN.START) || key("Enter")){
+        if(button("START") || key("Enter")){
             sprite(0, 128, 136, false, false,1)
             sprite(0, 144, 136, false, false,1)
         }
