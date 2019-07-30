@@ -102,10 +102,8 @@ class FoodChain extends leikr.Engine {
 		//END play variables
 	}
 	
-    void create(){
-        loadImages()
-        setController(new ControllerAdapter(){
-        	@Override
+	
+	@Override
         	public boolean buttonDown(Controller cont, int buttonId){
         		switch(state){
         			case 2:
@@ -166,7 +164,13 @@ class FoodChain extends leikr.Engine {
 				
 				return false;
 			}
-        })
+	
+	
+	
+	
+    void create(){
+        loadImages()      	
+       
     }
     
     //START UPDATE

@@ -23,7 +23,7 @@ import org.mini2Dx.core.graphics.viewport.FitViewport;
  *
  * @author tor
  */
-public abstract class Engine implements InputProcessor {
+public abstract class Engine extends ControllerAdapter implements InputProcessor {
 
     //Mini2DX specific classes for managing the screen state and drawing.
     Graphics g;
@@ -32,7 +32,7 @@ public abstract class Engine implements InputProcessor {
 
     //used by the Engine Screen to determine if the game should be actively running.
     boolean active;
-
+    
     /*
      * Controllers and listeners for handling custom controller input
      */
@@ -74,10 +74,11 @@ public abstract class Engine implements InputProcessor {
         system = sys;
         active = true;
         try {
-            Controllers.clearListeners();
+            Controllers.clearListeners();            
             if (Controllers.getControllers().size > 0) {
                 controllerA = LeikrController.getLeikrControllerListenerA();
                 Controllers.getControllers().get(0).addListener(controllerA);
+                Controllers.getControllers().get(0).addListener(this);
             }
             if (Controllers.getControllers().size > 1) {
                 controllerB = LeikrController.getLeikrControllerListenerB();
