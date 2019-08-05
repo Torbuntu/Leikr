@@ -77,7 +77,7 @@ public class GameRuntime extends ScreenBasedGame {
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(m, 0, 0));
         m.dispose();
         this.addScreen(new MenuScreen(assetManager));//0
-        this.addScreen(new EngineScreen(assetManager));//1
+        this.addScreen(new EngineScreen());//1
         this.addScreen(new TitleScreen(assetManager));//2
         this.addScreen(new CreditScreen(assetManager));//3
         this.addScreen(new ErrorScreen(assetManager));//4

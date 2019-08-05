@@ -1,19 +1,17 @@
 package leikr.controls;
 
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.ControllerAdapter;
-import com.badlogic.gdx.controllers.ControllerListener;
-import com.badlogic.gdx.controllers.Controllers;
-import com.badlogic.gdx.controllers.PovDirection;
-import com.badlogic.gdx.math.Vector3;
 import java.util.HashMap;
 import leikr.customProperties.CustomSystemProperties;
+import org.mini2Dx.core.input.BaseGamePadListener;
+import org.mini2Dx.core.input.GamePad;
 
 /**
  *
  * @author tor
  */
-public class LeikrController implements ControllerListener {
+
+//TODO: This whole input system needs to be fixed. Mapping is currently broken with the libgdx backends.
+public class LeikrController extends BaseGamePadListener {
 
     HashMap<Object, Boolean> buttons = new HashMap<>();
     HashMap<Object, Object> btnCodes = new HashMap<>();
@@ -21,7 +19,7 @@ public class LeikrController implements ControllerListener {
 
     private static LeikrController instance;
     private static LeikrController instanceTwo;
-    
+
     String UP = "UP";
     String DOWN = "DOWN";
     String LEFT = "LEFT";
@@ -72,8 +70,7 @@ public class LeikrController implements ControllerListener {
         btnCodes.put(CustomSystemProperties.RIGHT_BUMPER, RIGHT_BUMPER);
         btnCodes.put(CustomSystemProperties.SELECT, SELECT);
         btnCodes.put(CustomSystemProperties.START, START);
-        
-        
+
         btnLookup.put(A, CustomSystemProperties.A);
         btnLookup.put(B, CustomSystemProperties.B);
         btnLookup.put(X, CustomSystemProperties.X);
@@ -82,7 +79,7 @@ public class LeikrController implements ControllerListener {
         btnLookup.put(RIGHT_BUMPER, CustomSystemProperties.RIGHT_BUMPER);
         btnLookup.put(SELECT, CustomSystemProperties.SELECT);
         btnLookup.put(START, CustomSystemProperties.START);
-        
+
         btnLookup.put(UP, CustomSystemProperties.UP);
         btnLookup.put(DOWN, CustomSystemProperties.DOWN);
         btnLookup.put(LEFT, CustomSystemProperties.LEFT);
@@ -93,52 +90,51 @@ public class LeikrController implements ControllerListener {
     public boolean button(String button) {
         return (boolean) buttons.get(button.toUpperCase());
     }
-    
-    public String btnName(int id){
+
+    public String btnName(int id) {
         return btnCodes.get(id).toString();
     }
 
-    public int btnCode(String button){
+    public int btnCode(String button) {
         return (int) btnLookup.get(button.toUpperCase());
-    } 
-    
-    public void setController(ControllerAdapter adap){
-        Controllers.clearListeners();
-        Controllers.addListener(adap);
     }
-    
-    public int horizontalAxis(){
+
+    public void setController(BaseGamePadListener adap) {
+//        Mdx.input.getGamePads().clearListeners();
+//        Controllers.addListener(adap);
+    }
+
+    public int horizontalAxis() {
         return CustomSystemProperties.HORIZONTAL_AXIS;
     }
-    public int verticalAxis(){
+
+    public int verticalAxis() {
         return CustomSystemProperties.VERTICAL_AXIS;
-    }
-    
-    @Override
-    public boolean buttonDown(Controller controller, int buttonCode) {
-        if (CustomSystemProperties.DEBUG) {
-            System.out.println(controller.getName() + " : " + buttonCode);
-        }
-        buttons.replace(btnCodes.get(buttonCode), true);
-        return false;
     }
 
     @Override
-    public boolean buttonUp(Controller controller, int buttonCode) {
+    public void onButtonDown(GamePad controller, int buttonCode) {
         if (CustomSystemProperties.DEBUG) {
-            System.out.println(controller.getName() + " : " + buttonCode);
+            System.out.println(controller.getGamePadType().toFriendlyString() + " : " + buttonCode);
+        }
+        buttons.replace(btnCodes.get(buttonCode), true);
+    }
+
+    @Override
+    public void onButtonUp(GamePad controller, int buttonCode) {
+        if (CustomSystemProperties.DEBUG) {
+            System.out.println(controller.getGamePadType().toFriendlyString() + " : " + buttonCode);
         }
         buttons.replace(btnCodes.get(buttonCode), false);
-        return false;
     }
 
     //Keypad
     @Override
-    public boolean axisMoved(Controller controller, int axisCode, float value) {
+    public void onAxisChanged(GamePad controller, int axisCode, float value) {
         //Legacy codes: axis 0 = x axis -1 = left 1 = right
         //Legacy codes: axis 1 = y axis -1 = up 1 = down
         if (CustomSystemProperties.DEBUG) {
-            System.out.println(controller.getName() + " : " + axisCode + " | " + value);
+            System.out.println(controller.getGamePadType().toFriendlyString() + " : " + axisCode + " | " + value);
         }
         if ((int) value == 0) {
             buttons.replace(UP, false);
@@ -163,38 +159,5 @@ public class LeikrController implements ControllerListener {
                 buttons.replace(LEFT, true);
             }
         }
-
-        return false;
     }
-
-    //Unused methods
-    @Override
-    public void connected(Controller controller) {
-    }
-
-    @Override
-    public void disconnected(Controller controller) {
-        System.out.println("Controller lost...");
-    }
-
-    @Override
-    public boolean povMoved(Controller cntrlr, int i, PovDirection pd) {
-        return false;
-    }
-
-    @Override
-    public boolean xSliderMoved(Controller cntrlr, int i, boolean bln) {
-        return false;
-    }
-
-    @Override
-    public boolean ySliderMoved(Controller cntrlr, int i, boolean bln) {
-        return false;
-    }
-
-    @Override
-    public boolean accelerometerMoved(Controller cntrlr, int i, Vector3 vctr) {
-        return false;
-    }
-
 }

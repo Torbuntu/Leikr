@@ -21,7 +21,9 @@ public class ImageLoader {
     private static ImageLoader instance;
 
     private ImageLoader() {
+        assetLoader = new TextureLoader();
         assetManager = new AssetManager(new LocalFileHandleResolver());
+        assetManager.setAssetLoader(Texture.class, assetLoader);
     }
 
     public static ImageLoader getImageLoader() {

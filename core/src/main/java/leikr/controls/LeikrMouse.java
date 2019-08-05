@@ -1,6 +1,6 @@
 package leikr.controls;
 
-import com.badlogic.gdx.Gdx;
+import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.gdx.math.Vector2;
 
@@ -32,8 +32,8 @@ public class LeikrMouse {
     }
     
     public void updateMouse() {
-        realMouse.x = Gdx.input.getX();
-        realMouse.y = Gdx.input.getY();
+        realMouse.x = Mdx.input.getX();
+        realMouse.y = Mdx.input.getY();
         viewport.toWorldCoordinates(leikrMouse, realMouse.x, realMouse.y);
     }
 
@@ -42,13 +42,11 @@ public class LeikrMouse {
     }
 
     /**
-     * Button codes Left = 0 Middle = 2 Right = 1
-     *
-     * @param btn
+     * Detects a mouse click event.
      * @return
      */
-    public boolean mouseClick(int btn) {
-        return Gdx.input.isButtonPressed(btn);
+    public boolean mouseClick() {
+        return Mdx.input.justTouched();
     }
 
     public float mouseX() {

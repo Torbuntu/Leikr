@@ -1,16 +1,14 @@
 
 import leikr.Engine
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.utils.Array
-import com.badlogic.gdx.controllers.ControllerAdapter
-import com.badlogic.gdx.controllers.ControllerListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
+import org.mini2Dx.core.input.GamePad
 
 class ControllerUtil extends Engine {
     
@@ -76,54 +74,40 @@ class ControllerUtil extends Engine {
         saved = [X:false, A:false,B:false,Y:false,SELECT:false,START:false,LEFT_BUMPER:false,RIGHT_BUMPER:false,UP:false,DOWN:false,LEFT:false,RIGHT:false]
     }
     
+    
+     @Override
+    public void onButtonDown(GamePad controller, int buttonCode){
+        println buttonCode
+        lastButtonPressed = buttonCode
+        unpress = false
+	}
+	@Override
+	public void onButtonUp(GamePad controller, int buttonCode){
+        println buttonCode
+        if(lastButtonPressed == buttonCode){
+        	unpress = true
+        }
+	}
+	@Override
+	public void onAxisChanged(GamePad controller, int axisCode, float value) {
+
+        if(dpad_h){
+        	HORIZONTAL_AXIS = axisCode
+        }
+        if(dpad_v){
+        	VERTICAL_AXIS = axisCode
+        }
+        if(value.toInteger() == 0){
+        	unpress = true
+        }else{
+        	lastButtonPressed = value.toInteger()
+        	unpress = false
+        }
+	}
+    
     void create(){
         loadImages()
         readDataProps()
-        try{
-            if(Controllers.getControllers().size > 0){
-            	controller = Controllers.getControllers().get(0);
-            	controller.addListener(new ControllerAdapter() {
-                        @Override
-                        public boolean buttonDown(Controller controller, int buttonCode){
-                            println buttonCode
-                            lastButtonPressed = buttonCode
-                            unpress = false
-                            return true
-                    	}
-                    	@Override
-                    	public boolean buttonUp(Controller controller, int buttonCode){
-                            println buttonCode
-                            if(lastButtonPressed == buttonCode){
-                            	unpress = true
-                            }
-                            return true
-                    	}
-                    	@Override
-                    	public boolean axisMoved(Controller controller, int axisCode, float value) {
-
-                            if(dpad_h){
-                            	HORIZONTAL_AXIS = axisCode
-                            }
-                            if(dpad_v){
-                            	VERTICAL_AXIS = axisCode
-                            }
-                            if(value.toInteger() == 0){
-                            	unpress = true
-                            }else{
-                            	lastButtonPressed = value.toInteger()
-                            	unpress = false
-                            }
-                            return true
-                    	}
-                    });
-            }else{
-                activeController = false
-            }
-        }catch(Exception ex){
-            println ex.getMessage()
-            ex.printStackTrace()
-            ERROR = true
-        }
     }
     void update(float delta){
         if(activeController){
@@ -341,7 +325,7 @@ class ControllerUtil extends Engine {
         }
     }
     void render(){	
-        bgColor(0.6f, 0.6f, 0.6f)
+        bgColor("200,200,200")
         
         drawButtons()
         image("controller",0,0)    

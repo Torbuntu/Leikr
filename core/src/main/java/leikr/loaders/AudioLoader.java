@@ -13,7 +13,9 @@ import leikr.GameRuntime;
  * @author tor
  */
 public class AudioLoader {
-
+//TODO: Migrate asset management to MDX once alpha.2 is released with fix to Mdx.files.local().list
+    
+    
     AssetManager soundManager;
     AssetManager musicManager;
 

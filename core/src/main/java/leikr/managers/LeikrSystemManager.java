@@ -7,7 +7,7 @@ import leikr.screens.EngineScreen;
 import leikr.screens.LoadScreen;
 import leikr.screens.MenuScreen;
 import org.mini2Dx.core.font.MonospaceGameFont;
-import org.mini2Dx.core.Graphics;
+import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.files.LocalFileHandleResolver;
 import org.mini2Dx.core.screen.ScreenManager;
@@ -109,8 +109,8 @@ public class LeikrSystemManager {
         return RUNNING;
     }
 
-    public void render(Graphics g) {
-        g.setFont(font);
+    public void render() {
+        Mdx.graphicsContext.setFont(font);
     }
 
     public void setRunning(boolean run) {

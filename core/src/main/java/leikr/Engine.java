@@ -1,12 +1,7 @@
 package leikr;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.ControllerAdapter;
-import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.FPSLogger;
-import com.badlogic.gdx.math.MathUtils;
 import leikr.controls.LeikrController;
 import leikr.controls.LeikrKeyboard;
 import leikr.controls.LeikrMouse;
@@ -16,14 +11,19 @@ import leikr.managers.LeikrScreenManager;
 import leikr.managers.LeikrSystemManager;
 import org.mini2Dx.core.graphics.Animation;
 import org.mini2Dx.core.Graphics;
+import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
+import org.mini2Dx.core.input.BaseGamePadListener;
+import org.mini2Dx.core.input.GamePad;
+import org.mini2Dx.gdx.InputProcessor;
+import org.mini2Dx.gdx.math.MathUtils;
 
 /**
  *
  * @author tor
  */
-public abstract class Engine extends ControllerAdapter implements InputProcessor {
+public abstract class Engine extends BaseGamePadListener implements InputProcessor {
 
     //Mini2DX specific classes for managing the screen state and drawing.
     Graphics g;
@@ -32,14 +32,14 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
 
     //used by the Engine Screen to determine if the game should be actively running.
     boolean active;
-    
+
     /*
      * Controllers and listeners for handling custom controller input
      */
     public LeikrController controllerA;
     public LeikrController controllerB;
-    Controller playerOneController;
-    Controller playerTwoController;
+    GamePad playerOneController;
+    GamePad playerTwoController;
 
     public LeikrMouse mouse;
     public LeikrKeyboard keyboard;
@@ -74,15 +74,15 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         system = sys;
         active = true;
         try {
-            Controllers.clearListeners();            
-            if (Controllers.getControllers().size > 0) {
+            if (Mdx.input.getGamePads().size > 0) {
                 controllerA = LeikrController.getLeikrControllerListenerA();
-                Controllers.getControllers().get(0).addListener(controllerA);
-                Controllers.getControllers().get(0).addListener(this);
+                Mdx.input.getGamePads().get(0).addListener(controllerA);
+                Mdx.input.getGamePads().get(0).addListener(this);
             }
-            if (Controllers.getControllers().size > 1) {
+            if (Mdx.input.getGamePads().size > 1) {
                 controllerB = LeikrController.getLeikrControllerListenerB();
-                Controllers.getControllers().get(1).addListener(controllerB);
+                Mdx.input.getGamePads().get(1).addListener(controllerB);
+                Mdx.input.getGamePads().get(1).addListener(this);
             }
         } catch (Exception ex) {
             System.out.println("Controllers not active: " + ex.getMessage());
@@ -90,7 +90,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         // input processors
         mouse = LeikrMouse.getLeikrMouse(viewport);
         keyboard = LeikrKeyboard.getLeikrKeyboard();
-        Gdx.input.setInputProcessor(this);
+        Mdx.input.setInputProcessor(this);
     }
 
     /**
@@ -123,12 +123,10 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
      *
      * Applies viewport and preRenders the screen.
      *
-     * @param g
      */
-    public final void preRender(Graphics g) {
-        this.g = g;
-        viewport.apply(this.g);
-        screen.preRender(this.g);
+    public final void preRender() {
+        viewport.apply(Mdx.graphicsContext);
+        screen.preRender();
     }
 
     /*
@@ -160,7 +158,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         if (null != playerTwoController) {
             playerTwoController.removeListener(controllerB);
         }
-        Controllers.clearListeners();
+        //  Controllers.clearListeners();
     }
     //dispose
 
@@ -181,7 +179,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     }
 
     public long getFrame() {
-        return Gdx.graphics.getFrameId();
+        return Mdx.graphicsContext.getFrameId();
     }
 
     public final boolean getActive() {
@@ -382,6 +380,10 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     //END animated sprites
 
     //start shape drawing methods
+    public final void pixel(int color, int x, int y) {
+        screen.pixel(color, x, y);
+    }
+
     public final void rect(int x, int y, int w, int h) {
         screen.rect(x, y, w, h);
     }
@@ -507,7 +509,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         return (controllerA != null) ? controllerA.btnName(id) : "Null";
     }
 
-    public void setController(ControllerAdapter adap) {
+    public void setController(BaseGamePadListener adap) {
         if (controllerA != null) {
             controllerA.setController(adap);
         }
@@ -527,11 +529,6 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         return 0;
     }
 
-    // Gets the result based on the button's ID. Not recommended.
-    public final boolean getButton(int code) {
-        return playerOneController.getButton(code);
-    }
-
     //detect keyboard key presses (polling continuously)
     public final boolean key(String key) {
         return keyboard.key(key);
@@ -543,13 +540,12 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     }
 
     /**
-     * Button codes Left = 0 Middle = 2 Right = 1
+     * Detects a mouse click event.
      *
-     * @param btn
      * @return
      */
-    public final boolean mouseClick(int btn) {
-        return mouse.mouseClick(btn);
+    public final boolean mouseClick() {
+        return mouse.mouseClick();
     }
 
     public final float mouseX() {

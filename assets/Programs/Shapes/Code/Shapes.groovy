@@ -6,15 +6,13 @@ class Shapes extends leikr.Engine {
     int x, y, x2, y2, r, t, amt, rx, ry, i, j
 
     void create(){
-        amt = 5      
-	    setController(new ControllerAdapter(){
-			@Override
-			public boolean buttonDown(Controller controller, int btCode) {
-				
-			}
-		})
-        
+        amt = 32             
         //println new File("/").list() //bad guy code test
+        x = 120
+        y = 80
+        t = 0
+        rx = 120
+        ry = 80
     }
     void update(float delta){
 
@@ -23,11 +21,23 @@ class Shapes extends leikr.Engine {
 
         t+=1
         
-        for(j = 0; j < 240; j++){
-        	drawColor(j%32)
-            circle(j+3, 12, 1)
+        for(j = 0; j < 32; j++){
+            pixel(j, j, 1)
         }
  
+ 		 for(i = 0; i < amt; i++){
+            x = cos(i / 10 + t/40)*40
+            y = sin(i / 10 + t/40)*40
+            
+            x2 = 40 + cos(x / 10 + t/40)*40
+            y2 = 40 + sin(y / 10 + t/40)*40
+
+            pixel((i%33)+1, -x2+rx+5, -y2+ry+5)//top left
+            pixel((i%33)+1, -x2+rx+5, y2+ry-5)//bottom left
+			
+            pixel((i%33)+1, x2+rx-5, -y2+ry+5)//top right
+            pixel((i%33)+1, x2+rx-5, y2+ry-5)//bottom rigt
+        }
 
     }
         

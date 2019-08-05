@@ -5,10 +5,13 @@ import leikr.loaders.ImageLoader;
 import leikr.loaders.MapLoader;
 import leikr.loaders.SpriteLoader;
 import org.mini2Dx.core.graphics.Animation;
-import org.mini2Dx.core.Graphics;
+import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.Colors;
+import org.mini2Dx.core.graphics.Pixmap;
+import org.mini2Dx.core.graphics.PixmapFormat;
 import org.mini2Dx.core.graphics.Sprite;
+import org.mini2Dx.core.graphics.SpriteSheet;
 
 /**
  * This class is used to manage the drawing API for the Engine. It also provides
@@ -28,7 +31,7 @@ public class LeikrScreenManager {
     ImageLoader imageLoader;
     MapLoader mapLoader;
 
-    Graphics g;
+    SpriteSheet pixels;
 
     private static LeikrScreenManager instance;
 
@@ -46,6 +49,7 @@ public class LeikrScreenManager {
      * @param mSprites
      */
     private LeikrScreenManager() {
+        createPixmap();
     }
 
     public static LeikrScreenManager getLeikrScreenManager(int mSprites) {
@@ -62,6 +66,16 @@ public class LeikrScreenManager {
         imageLoader = ImageLoader.getImageLoader();
         mapLoader = MapLoader.getMapLoader();
     }
+    
+    private void createPixmap(){
+        Pixmap pm = Mdx.graphics.newPixmap(33, 1, PixmapFormat.RGBA8888);
+        for(int i = 0; i < 33; i++){
+            pm.setColor(getDrawColor(i));
+            pm.drawPixel(i, 0);
+        }
+        pixels = new SpriteSheet(Mdx.graphics.newTexture(pm), 1, 1);
+        pm.dispose();        
+    }
 
 
     //Helper methods
@@ -71,8 +85,7 @@ public class LeikrScreenManager {
     //End helper methods
 
     //Engine methods
-    public void preRender(Graphics g) {
-        this.g = g;
+    public void preRender() {
         //set to 0 before drawing anything
         USED_SPRITES = 0;
     }
@@ -97,15 +110,15 @@ public class LeikrScreenManager {
     }
 
     public final void image(String name, float x, float y) {
-        g.drawTexture(imageLoader.getImage(name), x, y);
+        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x, y);
     }
 
     public final void image(String name, float x, float y, float w, float h) {
-        g.drawTexture(imageLoader.getImage(name), x, y, w, h);
+        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x, y, w, h);
     }
 
     public final void image(String name, float x, float y, float w, float h, boolean flipv) {
-        g.drawTexture(imageLoader.getImage(name), x, y, w, h, flipv);
+        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x, y, w, h, flipv);
     }
     //end Image methods
 
@@ -115,23 +128,23 @@ public class LeikrScreenManager {
     }
 
     public final void map() {
-        mapLoader.drawMap(g);
+        mapLoader.drawMap(Mdx.graphicsContext);
     }
 
     public final void map(int x, int y) {
-        mapLoader.drawMap(g, x, y);
+        mapLoader.drawMap(Mdx.graphicsContext, x, y);
     }
 
     public final void map(int x, int y, int layer) {
-        mapLoader.drawMap(g, x, y, layer);
+        mapLoader.drawMap(Mdx.graphicsContext, x, y, layer);
     }
 
     public final void map(int x, int y, int sx, int sy, int w, int h) {
-        mapLoader.drawMap(g, x, y, sx, sy, w, h);
+        mapLoader.drawMap(Mdx.graphicsContext, x, y, sx, sy, w, h);
     }
 
     public final void map(int x, int y, int sx, int sy, int w, int h, int layer) {
-        mapLoader.drawMap(g, x, y, sx, sy, w, h, layer);
+        mapLoader.drawMap(Mdx.graphicsContext, x, y, sx, sy, w, h, layer);
     }
 
     public final int mapGet(int x, int y) {
@@ -230,29 +243,29 @@ public class LeikrScreenManager {
     }
 
     public final void drawColor(int color) {
-        g.setColor(getDrawColor(color));
+        Mdx.graphicsContext.setColor(getDrawColor(color));
     }
 
     public final void drawColor(String c) {
-        g.setColor(Colors.rgbToColor(c));
+        Mdx.graphicsContext.setColor(Colors.rgbToColor(c));
     }
 
     public final void drawColor(String c, boolean alpha) {
         if (alpha) {
-            g.setColor(Colors.rgbaToColor(c));
+            Mdx.graphicsContext.setColor(Colors.rgbaToColor(c));
         } else {
-            g.setColor(Colors.rgbToColor(c));
+            Mdx.graphicsContext.setColor(Colors.rgbToColor(c));
         }
     }
 
     public final void bgColor(int color) {
         drawColor(color);
-        g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
+        Mdx.graphicsContext.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
     }
 
     public final void bgColor(String c) {
         drawColor(c);
-        g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
+        Mdx.graphicsContext.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
     }
 
     //end color methods
@@ -260,32 +273,32 @@ public class LeikrScreenManager {
     //text methods
     public final void text(String text, float x, float y, int color) {
         drawColor(color);
-        g.drawString(text, x, y);
+        Mdx.graphicsContext.drawString(text, x, y);
     }
 
     public final void text(String text, float x, float y, String color) {
         drawColor(color);
-        g.drawString(text, x, y);
+        Mdx.graphicsContext.drawString(text, x, y);
     }
 
     public final void text(String text, float x, float y, float width, int color) {
         drawColor(color);
-        g.drawString(text, x, y, width);
+        Mdx.graphicsContext.drawString(text, x, y, width);
     }
 
     public final void text(String text, float x, float y, float width, String color) {
         drawColor(color);
-        g.drawString(text, x, y, width);
+        Mdx.graphicsContext.drawString(text, x, y, width);
     }
 
     public final void text(String text, float x, float y, float width, int align, int color) {
         drawColor(color);
-        g.drawString(text, x, y, width, align);
+        Mdx.graphicsContext.drawString(text, x, y, width, align);
     }
 
     public final void text(String text, float x, float y, float width, int align, String color) {
         drawColor(color);
-        g.drawString(text, x, y, width, align);
+        Mdx.graphicsContext.drawString(text, x, y, width, align);
     }
     //end text methods
 
@@ -296,7 +309,7 @@ public class LeikrScreenManager {
         }
         Sprite t = spriteLoader.getSprite(id, size);
         t.rotate(degr);
-        g.drawSprite(t, x, y);
+        Mdx.graphicsContext.drawSprite(t, x, y);
         t.rotate(-degr);
         USED_SPRITES++;
     }
@@ -307,7 +320,7 @@ public class LeikrScreenManager {
         }
         Sprite t = spriteLoader.getSprite(id, size);
         t.setFlip(flipX, flipY);
-        g.drawSprite(t, x, y);
+        Mdx.graphicsContext.drawSprite(t, x, y);
         t.setFlip(false, false);
         USED_SPRITES++;
     }
@@ -317,7 +330,7 @@ public class LeikrScreenManager {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        g.drawSprite(spriteLoader.getSprite(id, 0), x, y);
+        Mdx.graphicsContext.drawSprite(spriteLoader.getSprite(id, 0), x, y);
         USED_SPRITES++;
     }
 
@@ -335,7 +348,7 @@ public class LeikrScreenManager {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        g.drawSprite(spriteLoader.getSprite(id, size), x, y);
+        Mdx.graphicsContext.drawSprite(spriteLoader.getSprite(id, size), x, y);
         USED_SPRITES++;
     }
 
@@ -355,7 +368,7 @@ public class LeikrScreenManager {
         }
         Sprite t = spriteLoader.getSprite(id, 0);
         t.scale(scale);
-        g.drawSprite(t, x, y);
+        Mdx.graphicsContext.drawSprite(t, x, y);
         t.scale(-scale);
         USED_SPRITES++;
     }
@@ -366,7 +379,7 @@ public class LeikrScreenManager {
         }
         Sprite t = spriteLoader.getSprite(id, 0);
         t.setScale(scaleX, scaleY);
-        g.drawSprite(t, x, y);
+        Mdx.graphicsContext.drawSprite(t, x, y);
         t.setScale(-scaleX, -scaleY);
         USED_SPRITES++;
     }
@@ -378,7 +391,7 @@ public class LeikrScreenManager {
         Sprite t = spriteLoader.getSprite(id, 0);
         t.setScale(scaleX, scaleY);
         t.rotate(degr);
-        g.drawSprite(t, x, y);
+        Mdx.graphicsContext.drawSprite(t, x, y);
         t.rotate(-degr);
         t.setScale(-scaleX, -scaleY);
         USED_SPRITES++;
@@ -391,7 +404,7 @@ public class LeikrScreenManager {
         Sprite t = spriteLoader.getSprite(id, 0);
         t.setScale(scaleX, scaleY);
         t.flip(flipX, flipY);
-        g.drawSprite(t, x, y);
+        Mdx.graphicsContext.drawSprite(t, x, y);
         t.flip(!flipX, !flipY);
         t.setScale(-scaleX, -scaleY);
         USED_SPRITES++;
@@ -437,7 +450,7 @@ public class LeikrScreenManager {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        sprite.draw(g, x, y);
+        sprite.draw(Mdx.graphicsContext, x, y);
     }
 
     public void spriteAnim(Animation sprite, float x, float y, boolean flipH, boolean flipV) {
@@ -445,61 +458,64 @@ public class LeikrScreenManager {
             return;
         }
         sprite.flip(flipH, flipV);
-        sprite.draw(g, x, y);
+        sprite.draw(Mdx.graphicsContext, x, y);
         sprite.flip(!flipH, !flipV);
     }
     //END animated sprites
 
     //start shape drawing methods
+    public final void pixel(int color, int x, int y){
+        Mdx.graphicsContext.drawSprite(pixels.getSprite(color), x, y);
+    }
 
     public final void rect(int x, int y, int w, int h) {
-        g.drawRect(x, y, w, h);
+        Mdx.graphicsContext.drawRect(x, y, w, h);
     }
 
     public final void rect(int x, int y, int w, int h, boolean fill) {
         if (fill) {
-            g.fillRect(x, y, w, h);
+            Mdx.graphicsContext.fillRect(x, y, w, h);
         } else {
-            g.drawRect(x, y, w, h);
+            Mdx.graphicsContext.drawRect(x, y, w, h);
         }
     }
 
     public final void circle(int x, int y, int r) {
-        g.drawCircle(x, y, r);
+        Mdx.graphicsContext.drawCircle(x, y, r);
     }
 
     public final void circle(int x, int y, int r, boolean fill) {
         if (fill) {
-            g.fillCircle(x, y, r);
+            Mdx.graphicsContext.fillCircle(x, y, r);
         } else {
-            g.drawCircle(x, y, r);
+            Mdx.graphicsContext.drawCircle(x, y, r);
         }
     }
 
     public final void triangle(int x, int y, int x2, int y2, int x3, int y3) {
-        g.drawTriangle(x, y, x2, y2, x3, y3);
+        Mdx.graphicsContext.drawTriangle(x, y, x2, y2, x3, y3);
     }
 
     public final void triangle(int x, int y, int x2, int y2, int x3, int y3, boolean fill) {
         if (fill) {
-            g.fillTriangle(x, y, x2, y2, x3, y3);
+            Mdx.graphicsContext.fillTriangle(x, y, x2, y2, x3, y3);
         } else {
-            g.drawTriangle(x, y, x2, y2, x3, y3);
+            Mdx.graphicsContext.drawTriangle(x, y, x2, y2, x3, y3);
         }
     }
 
     public final void line(int x, int y, int x2, int y2) {
-        g.drawLineSegment(x, y, x2, y2);
+        Mdx.graphicsContext.drawLineSegment(x, y, x2, y2);
     }
     //end shape drawing methods
 
     //EXPERIMENTAL METHODS
     public final void clip(float x, float y, float w, float h) {
-        g.setClip(x, y, w, h);
+        Mdx.graphicsContext.setClip(x, y, w, h);
     }
 
     public final void clip() {
-        g.removeClip();
+        Mdx.graphicsContext.removeClip();
     }
 
     //END EXPERIMENTAL

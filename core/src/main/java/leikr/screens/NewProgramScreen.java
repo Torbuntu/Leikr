@@ -1,23 +1,21 @@
 package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.ControllerAdapter;
-import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.files.FileHandle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
+import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
+import org.mini2Dx.gdx.Input.Keys;
+import org.mini2Dx.gdx.InputProcessor;
 
 /**
  *
@@ -33,56 +31,40 @@ public class NewProgramScreen extends BasicGameScreen {
     boolean FINISH = false;
     String newName = "";
 
-    ControllerAdapter newProgAdapter;
-
     String newLocation = "New Program template generated at: /Programs/";
 
     public NewProgramScreen() {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
-        createControllerAdapter();
     }
 
     @Override
     public void initialise(GameContainer gc) {
     }
 
-    private void createControllerAdapter() {
-        newProgAdapter = new ControllerAdapter() {
-            @Override
-            public boolean buttonDown(Controller controller, int buttonIndex) {
-                BACK = true;
-                return false;
-            }
-        };
-    }
-
     @Override
     public void preTransitionOut(Transition transOut) {
-        Controllers.clearListeners();
-        if (Controllers.getControllers().size > 0) {
-            Controllers.getControllers().get(0).removeListener(newProgAdapter);
-        }
+
     }
 
     @Override
     public void preTransitionIn(Transition trns) {
         newLocation = "New Program template generated at: /Programs/";
         newName = "";
-        Gdx.input.setInputProcessor(new InputAdapter() {
+        Mdx.input.setInputProcessor(new InputProcessor() {
             @Override
             public boolean keyDown(int i) {
                 if (FINISH) {
-                    if (i == Input.Keys.Q || i == Input.Keys.SPACE) {
+                    if (i == Keys.Q || i == Keys.SPACE) {
                         BACK = true;
                     }
                 }
-                if (i == Input.Keys.ESCAPE) {
+                if (i == Keys.ESCAPE) {
                     BACK = true;
                 }
-                if (i == Input.Keys.ENTER) {
+                if (i == Keys.ENTER) {
                     CREATE = true;
                 }
-                if (i == Input.Keys.BACKSPACE && newName.length() > 0) {
+                if (i == Keys.BACKSPACE && newName.length() > 0) {
                     newName = newName.substring(0, newName.length() - 1);
                 }
                 return false;
@@ -95,16 +77,38 @@ public class NewProgramScreen extends BasicGameScreen {
                 }
                 return true;
             }
-        });
-        try {
-            Controllers.clearListeners();
-            if (Controllers.getControllers().size > 0) {
-                Controllers.getControllers().get(0).addListener(newProgAdapter);
+
+            @Override
+            public boolean keyUp(int keycode) {
+                return false;
             }
-        } catch (Exception ex) {
-            System.out.println("No controllers active on NewProgram Screen. ");
-            Logger.getLogger(NewProgramScreen.class.getName()).log(Level.INFO, null, ex);
-        }
+
+            @Override
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                return false;
+            }
+
+            @Override
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                return false;
+            }
+
+            @Override
+            public boolean touchDragged(int screenX, int screenY, int pointer) {
+                return false;
+            }
+
+            @Override
+            public boolean mouseMoved(int screenX, int screenY) {
+                return false;
+            }
+
+            @Override
+            public boolean scrolled(int amount) {
+               return false;
+            }
+        });
+     
     }
 
     @Override
@@ -126,11 +130,11 @@ public class NewProgramScreen extends BasicGameScreen {
                 if (index > 0) {
                     NP = NP + index;
                 }
-                Gdx.files.local("Programs/" + NP).mkdirs();
+                Mdx.files.local("Programs/" + NP).mkdirs();
                 for (FileHandle file : Gdx.files.local("Data/Templates/NewProgram").list()) {
-                    Gdx.files.local("Data/Templates/NewProgram/" + file.name()).copyTo(Gdx.files.local("Programs/" + NP));
+                    Mdx.files.local("Data/Templates/NewProgram/" + file.name()).copyTo(Mdx.files.local("Programs/" + NP));
                 }
-                Gdx.files.local("Programs/" + NP + "/Code/main.groovy").moveTo(Gdx.files.local("Programs/" + NP + "/Code/" + NP + ".groovy"));
+                Mdx.files.local("Programs/" + NP + "/Code/main.groovy").moveTo(Mdx.files.local("Programs/" + NP + "/Code/" + NP + ".groovy"));
                 newLocation += NP + "/";
                 System.out.println(NP + " template copied to Programs directory");
                 FINISH = true;
