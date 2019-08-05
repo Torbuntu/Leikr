@@ -2,11 +2,9 @@ package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
-import com.badlogic.gdx.graphics.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.Engine;
@@ -15,7 +13,9 @@ import leikr.customProperties.CustomSystemProperties;
 import leikr.loaders.EngineLoader;
 import leikr.managers.LeikrSystemManager;
 import org.mini2Dx.core.game.GameContainer;
-import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.Graphics;
+import org.mini2Dx.core.assets.AssetManager;
+import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
@@ -261,16 +261,16 @@ public class EngineScreen extends BasicGameScreen {
             }
         } else {
             viewport.apply(g);
-            g.setColor(Color.WHITE);
+            g.setColor(Colors.WHITE());
             g.drawString("-- Paused --", 0, 60, 240, 1);
             g.drawString("Exit to main menu?", 0, 74, 240, 1);
             g.drawString("Yes    No", 0, 90, 240, 1);
 
             if (CONFIRM) {
-                g.setColor(Color.GREEN);
+                g.setColor(Colors.GREEN());
                 g.drawRect(78, 86, 36, 16);
             } else {
-                g.setColor(Color.RED);
+                g.setColor(Colors.RED());
                 g.drawRect(130, 86, 36, 16);
             }
 

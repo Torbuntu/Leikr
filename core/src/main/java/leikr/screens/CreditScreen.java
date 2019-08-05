@@ -2,15 +2,15 @@ package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import leikr.GameRuntime;
 import org.mini2Dx.core.game.GameContainer;
-import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.Graphics;
+import org.mini2Dx.core.assets.AssetManager;
+import org.mini2Dx.core.graphics.Colors;
+import org.mini2Dx.core.graphics.Texture;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
@@ -47,9 +47,9 @@ public class CreditScreen extends BasicGameScreen {
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) || Gdx.input.isKeyPressed(Input.Keys.ENTER) || Gdx.input.isKeyPressed(Input.Keys.X) || MENU) {
             MENU = false;
             if (GameRuntime.checkLaunchTitle()) {
-                sm.enterGameScreen(LoadScreen.ID, new FadeOutTransition(Color.TEAL), new FadeInTransition(Color.FOREST));
+                sm.enterGameScreen(LoadScreen.ID, new FadeOutTransition(Colors.TEAL()), new FadeInTransition(Colors.FOREST()));
             } else {
-                sm.enterGameScreen(MenuScreen.ID, new FadeOutTransition(Color.TEAL), new FadeInTransition(Color.FOREST));
+                sm.enterGameScreen(MenuScreen.ID, new FadeOutTransition(Colors.TEAL()), new FadeInTransition(Colors.FOREST()));
             }
         }
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
@@ -107,7 +107,7 @@ public class CreditScreen extends BasicGameScreen {
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
         g.drawString("Powered by ", 0, 40, 240, 1);
-        g.drawTexture(assetManager.get("./Data/Images/mini2Dx.png"), 16, 64, 208, 87);
+        g.drawTexture(assetManager.get("./Data/Images/mini2Dx.png", Texture.class), 16, 64, 208, 87);
     }
 
     @Override

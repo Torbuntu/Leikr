@@ -1,8 +1,8 @@
 package leikr.controls;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
+import org.mini2Dx.gdx.math.Vector2;
 
 /**
  * The class to handle mouse interactions within Leikr programs

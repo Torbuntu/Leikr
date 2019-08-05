@@ -1,4 +1,4 @@
-veargbaergimport Player
+import Player
 import Menu
 
 class DogCat extends leikr.Engine {
@@ -90,11 +90,11 @@ class DogCat extends leikr.Engine {
             menu.drawMenu(screen)
             return
     	}
-    	bgColor(6)
+    	bgColor(10)
+    	
         map(mapX, mapY) 
 		
         p.draw(screen)
-		
         text("Coins: " + p.coin, 0,8,1)
     }	
     //End engine methods

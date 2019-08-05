@@ -1,13 +1,12 @@
 package leikr.desktop;
 
-import org.mini2Dx.desktop.DesktopMini2DxConfig;
 import com.badlogic.gdx.backends.lwjgl.DesktopMini2DxGame;
 import java.io.File;
 import java.security.Security;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
-import org.mini2Dx.core.Mdx;
+import org.mini2Dx.libgdx.desktop.DesktopMini2DxConfig;
 
 public class DesktopLauncher {
 
@@ -25,7 +24,6 @@ public class DesktopLauncher {
         config.width = 720;
         config.height = 480;
         config.fullscreen = false;
-        System.out.println("OS: " + Mdx.os.name());
         new DesktopMini2DxGame(new GameRuntime(arg), config);
     }
 }

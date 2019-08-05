@@ -2,27 +2,27 @@ package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 import leikr.customProperties.ChipData;
 import leikr.GameRuntime;
 import leikr.customProperties.CustomSystemProperties;
-import org.mini2Dx.core.font.MonospaceFont;
 import org.mini2Dx.core.game.GameContainer;
-import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.Graphics;
+import org.mini2Dx.core.assets.AssetManager;
+import org.mini2Dx.core.font.MonospaceGameFont;
+import org.mini2Dx.core.graphics.Colors;
+import org.mini2Dx.core.graphics.Texture;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
+import org.mini2Dx.gdx.math.Vector2;
 
 /**
  *
@@ -46,7 +46,7 @@ public class MenuScreen extends BasicGameScreen {
     int category = 0; //0: Program, 1: Game, 2: Utility, 3: Demo, 4: System, 5: Tool
     String categoryDisplay = "Programs";
 
-    MonospaceFont font;
+    MonospaceGameFont font;
 
     AssetManager assetManager;
     FitViewport viewport;
@@ -342,16 +342,16 @@ public class MenuScreen extends BasicGameScreen {
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
         g.setFont(font);
-        g.setColor(Color.WHITE);
+        g.setColor(Colors.WHITE());
         if (null != filteredPrograms && filteredPrograms.size() > 0) {
             for (int i = 0; i < filteredPrograms.size(); i++) {
                 g.drawString(filteredPrograms.get(i).getTitle(), 8, (8 * i) + 40 - offset);
             }
-            g.setColor(Color.BLACK);
+            g.setColor(Colors.BLACK());
             g.fillRect(118, 6, 120, 90);
             g.fillRect(6, 100, 240, 150);
 
-            g.setColor(Color.WHITE);
+            g.setColor(Colors.WHITE());
 
             if (PAGE) {
                 g.drawString("Title  : " + filteredPrograms.get(cursor).getTitle(), 8, 104);
@@ -375,11 +375,11 @@ public class MenuScreen extends BasicGameScreen {
         g.drawTexture(assetManager.get(MENU_BG, Texture.class), 0, 0);
 
         //Display Category
-        g.setColor(Color.WHITE);
+        g.setColor(Colors.WHITE());
         g.drawString(categoryDisplay, 16, 8);
 
         //Mouse
-        g.setColor(Color.RED);
+        g.setColor(Colors.RED());
         g.drawLineSegment(leikrMouse.x, leikrMouse.y, leikrMouse.x + 6, leikrMouse.y + 4);
     }
 

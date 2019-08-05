@@ -1,23 +1,20 @@
 package leikr.managers;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.Texture;
 import leikr.GameRuntime;
 import leikr.loaders.ImageLoader;
 import leikr.loaders.MapLoader;
 import leikr.loaders.SpriteLoader;
 import org.mini2Dx.core.graphics.Animation;
-import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.Graphics;
+import org.mini2Dx.core.graphics.Color;
+import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.Sprite;
-import org.mini2Dx.core.graphics.SpriteSheet;
 
 /**
  * This class is used to manage the drawing API for the Engine. It also provides
  * a screen instance which can be passed to non Engine extending classes in the
  * game code.
- * 
+ *
  * @author tor
  */
 public class LeikrScreenManager {
@@ -31,7 +28,6 @@ public class LeikrScreenManager {
     ImageLoader imageLoader;
     MapLoader mapLoader;
 
-    SpriteSheet pixelSheet;
     Graphics g;
 
     private static LeikrScreenManager instance;
@@ -50,7 +46,6 @@ public class LeikrScreenManager {
      * @param mSprites
      */
     private LeikrScreenManager() {
-        constructPixelSheet();
     }
 
     public static LeikrScreenManager getLeikrScreenManager(int mSprites) {
@@ -68,20 +63,6 @@ public class LeikrScreenManager {
         mapLoader = MapLoader.getMapLoader();
     }
 
-    /**
-     * constructPixelSheet
-     *
-     * Constructs the sprite sheet of colors available for pixel drawing
-     */
-    private void constructPixelSheet() {
-        Pixmap colorMap = new Pixmap(34, 1, Format.RGBA8888);
-        for (int i = 0; i < 34; i++) {
-            colorMap.setColor(getDrawColor(i));
-            colorMap.drawPixel(i, 0);
-        }
-        pixelSheet = new SpriteSheet(new Texture(colorMap), 1, 1);
-        colorMap.dispose();
-    }
 
     //Helper methods
     public int getUsedSprites() {
@@ -178,75 +159,73 @@ public class LeikrScreenManager {
     public final Color getDrawColor(int color) {
         switch (color) {
             case 0:
-                return (Color.BLACK);
+                return Colors.CLEAR();
             case 1:
-                return (Color.BLUE);
+                return Colors.WHITE();
             case 2:
-                return (Color.BROWN);
+                return Colors.WHITE_M1();
             case 3:
-                return (Color.CHARTREUSE);
+                return Colors.LIGHT_GRAY();
             case 4:
-                return (Color.CLEAR);
+                return Colors.GRAY();
             case 5:
-                return (Color.CORAL);
+                return Colors.DARK_GRAY();
             case 6:
-                return (Color.CYAN);
+                return Colors.BLACK_P1();
             case 7:
-                return (Color.DARK_GRAY);
+                return Colors.BLACK();
             case 8:
-                return (Color.FIREBRICK);
+                return Colors.RED();
             case 9:
-                return (Color.FOREST);
+                return Colors.GREEN();
             case 10:
-                return (Color.GOLD);
+                return Colors.BLUE();
             case 11:
-                return (Color.GOLDENROD);
+                return Colors.MAROON();
             case 12:
-                return (Color.GRAY);
+                return Colors.CORAL();
             case 13:
-                return (Color.GREEN);
+                return Colors.SALMON();
             case 14:
-                return (Color.LIGHT_GRAY);
+                return Colors.PINK();
             case 15:
-                return (Color.LIME);
+                return Colors.LIME();
             case 16:
-                return (Color.MAGENTA);
+                return Colors.FOREST();
             case 17:
-                return (Color.MAROON);
+                return Colors.OLIVE();
             case 18:
-                return (Color.NAVY);
+                return Colors.NAVY();
             case 19:
-                return (Color.OLIVE);
+                return Colors.ROYAL();
             case 20:
-                return (Color.ORANGE);
+                return Colors.SKY();
             case 21:
-                return (Color.PINK);
+                return Colors.CYAN();
             case 22:
-                return (Color.PURPLE);
+                return Colors.TEAL();
             case 23:
-                return (Color.RED);
+                return Colors.YELLOW();
             case 24:
-                return (Color.ROYAL);
+                return Colors.GOLD();
             case 25:
-                return (Color.SALMON);
+                return Colors.GOLDENROD();
             case 26:
-                return (Color.SCARLET);
+                return Colors.ORANGE();
             case 27:
-                return (Color.SKY);
+                return Colors.BROWN();
             case 28:
-                return (Color.SLATE);
+                return Colors.TAN();
             case 29:
-                return (Color.TAN);
+                return Colors.FIREBRICK();
             case 30:
-                return (Color.TEAL);
+                return Colors.PURPLE();
             case 31:
-                return (Color.VIOLET);
+                return Colors.VIOLET();
             case 32:
-                return (Color.WHITE);
-            case 33:
-                return (Color.YELLOW);
+                return Colors.MAGENTA();
             default:
-                return Color.BLACK;
+                return Colors.BLACK();
         }
     }
 
@@ -254,12 +233,16 @@ public class LeikrScreenManager {
         g.setColor(getDrawColor(color));
     }
 
-    public final void drawColor(float r, float gr, float b) {
-        g.setColor(new Color(r, gr, b, 1f));
+    public final void drawColor(String c) {
+        g.setColor(Colors.rgbToColor(c));
     }
 
-    public final void drawColor(float[] c) {
-        g.setColor(new Color(c[0], c[1], c[2], 1f));
+    public final void drawColor(String c, boolean alpha) {
+        if (alpha) {
+            g.setColor(Colors.rgbaToColor(c));
+        } else {
+            g.setColor(Colors.rgbToColor(c));
+        }
     }
 
     public final void bgColor(int color) {
@@ -267,15 +250,11 @@ public class LeikrScreenManager {
         g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
     }
 
-    public final void bgColor(float r, float gr, float b) {
-        drawColor(r, gr, b);
+    public final void bgColor(String c) {
+        drawColor(c);
         g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
     }
 
-    public final void bgColor(float[] color) {
-        drawColor(color[0], color[1], color[2]);
-        g.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
-    }
     //end color methods
 
     //text methods
@@ -284,8 +263,8 @@ public class LeikrScreenManager {
         g.drawString(text, x, y);
     }
 
-    public final void text(String text, float x, float y, float[] color) {
-        drawColor(color[0], color[1], color[2]);
+    public final void text(String text, float x, float y, String color) {
+        drawColor(color);
         g.drawString(text, x, y);
     }
 
@@ -294,8 +273,8 @@ public class LeikrScreenManager {
         g.drawString(text, x, y, width);
     }
 
-    public final void text(String text, float x, float y, float width, float[] color) {
-        drawColor(color[0], color[1], color[2]);
+    public final void text(String text, float x, float y, float width, String color) {
+        drawColor(color);
         g.drawString(text, x, y, width);
     }
 
@@ -304,8 +283,8 @@ public class LeikrScreenManager {
         g.drawString(text, x, y, width, align);
     }
 
-    public final void text(String text, float x, float y, float width, int align, float[] color) {
-        drawColor(color[0], color[1], color[2]);
+    public final void text(String text, float x, float y, float width, int align, String color) {
+        drawColor(color);
         g.drawString(text, x, y, width, align);
     }
     //end text methods
@@ -472,9 +451,6 @@ public class LeikrScreenManager {
     //END animated sprites
 
     //start shape drawing methods
-    public void pixel(int color, int x, int y) {
-        g.drawSprite(pixelSheet.getSprite(color), x, y);
-    }
 
     public final void rect(int x, int y, int w, int h) {
         g.drawRect(x, y, w, h);

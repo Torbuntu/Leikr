@@ -1,7 +1,8 @@
 package leikr.customProperties;
 
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
+import org.mini2Dx.core.assets.AssetManager;
+import org.mini2Dx.core.graphics.Texture;
+
 
 /**
  *

@@ -1,10 +1,12 @@
 package leikr.loaders;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import java.util.Arrays;
 import leikr.GameRuntime;
+import org.mini2Dx.core.assets.AssetManager;
+import org.mini2Dx.core.assets.loader.TextureLoader;
+import org.mini2Dx.core.files.LocalFileHandleResolver;
+import org.mini2Dx.core.graphics.Texture;
 
 /**
  *
@@ -13,12 +15,13 @@ import leikr.GameRuntime;
 public class ImageLoader {
 
     AssetManager assetManager;
+    TextureLoader assetLoader;
     String rootPath;
 
     private static ImageLoader instance;
 
     private ImageLoader() {
-        assetManager = new AssetManager();
+        assetManager = new AssetManager(new LocalFileHandleResolver());
     }
 
     public static ImageLoader getImageLoader() {
@@ -31,9 +34,10 @@ public class ImageLoader {
 
     private void reloadImageLoader() {
         rootPath = GameRuntime.getProgramPath() + "/Art/";
-        assetManager.clear();
-        Arrays.asList(Gdx.files.internal(rootPath).list()).stream()
+        //TODO: Replace the Gdx.files with Mdx.files when the .list() method works.
+        Arrays.asList(Gdx.files.local(rootPath).list()).stream()
                 .forEach(path -> assetManager.load(rootPath + path.name(), Texture.class));
+        assetManager.finishLoading();
 
         assetManager.finishLoading();
     }
@@ -43,11 +47,11 @@ public class ImageLoader {
     }
 
     public Texture getImage(String fileName) {
-        return assetManager.get(rootPath + fileName + ".png");
+        return assetManager.get(rootPath + fileName + ".png", Texture.class);
     }
 
     public void disposeImages() {
-        assetManager.clear();
+//        assetManager.clear();
     }
 
 }

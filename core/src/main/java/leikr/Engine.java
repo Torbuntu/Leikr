@@ -5,7 +5,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.math.MathUtils;
 import leikr.controls.LeikrController;
@@ -16,7 +15,8 @@ import leikr.managers.LeikrAudioManager;
 import leikr.managers.LeikrScreenManager;
 import leikr.managers.LeikrSystemManager;
 import org.mini2Dx.core.graphics.Animation;
-import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.Graphics;
+import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 
 /**
@@ -270,8 +270,8 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         screen.drawColor(color);
     }
 
-    public final void drawColor(float r, float gr, float b) {
-        screen.drawColor(r, gr, b);
+    public final void drawColor(String c) {
+        screen.drawColor(c);
     }
 
     public final Color getDrawColor(int color) {
@@ -282,11 +282,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         screen.bgColor(color);
     }
 
-    public final void bgColor(float r, float gr, float b) {
-        screen.bgColor(r, gr, b);
-    }
-
-    public final void bgColor(float[] color) {
+    public final void bgColor(String color) {
         screen.bgColor(color);
     }
     //end color methods
@@ -296,7 +292,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         screen.text(text, x, y, color);
     }
 
-    public final void text(String text, float x, float y, float[] color) {
+    public final void text(String text, float x, float y, String color) {
         screen.text(text, x, y, color);
     }
 
@@ -304,7 +300,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         screen.text(text, x, y, width, color);
     }
 
-    public final void text(String text, float x, float y, float width, float[] color) {
+    public final void text(String text, float x, float y, float width, String color) {
         screen.text(text, x, y, width, color);
     }
 
@@ -312,7 +308,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         screen.text(text, x, y, width, align, color);
     }
 
-    public final void text(String text, float x, float y, float width, int align, float[] color) {
+    public final void text(String text, float x, float y, float width, int align, String color) {
         screen.text(text, x, y, width, align, color);
     }
     //end text methods
@@ -386,10 +382,6 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     //END animated sprites
 
     //start shape drawing methods
-    public void pixel(int color, int x, int y) {
-        screen.pixel(color, x, y);
-    }
-
     public final void rect(int x, int y, int w, int h) {
         screen.rect(x, y, w, h);
     }

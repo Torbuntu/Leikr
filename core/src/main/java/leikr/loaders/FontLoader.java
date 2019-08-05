@@ -1,9 +1,9 @@
 package leikr.loaders;
 
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
-import org.mini2Dx.core.font.MonospaceFont;
-import org.mini2Dx.core.font.MonospaceFont.FontParameters;
+import org.mini2Dx.core.assets.AssetManager;
+import org.mini2Dx.core.font.MonospaceGameFont;
+import org.mini2Dx.core.font.MonospaceGameFont.FontParameters;
+import org.mini2Dx.core.graphics.Texture;
 
 /**
  *
@@ -13,7 +13,7 @@ import org.mini2Dx.core.font.MonospaceFont.FontParameters;
  */
 public class FontLoader {
 
-    MonospaceFont defaultFont;
+    MonospaceGameFont defaultFont;
 
     public void initializeDefaultFont(AssetManager manager) {
         manager.load("./Data/Images/Fonts/zx_evolution_8x8.png", Texture.class);
@@ -23,14 +23,14 @@ public class FontLoader {
         params.spacing = 0;
         params.frameWidth = 8;
         params.frameHeight = 8;
-        defaultFont = new MonospaceFont(params);
+        defaultFont = new MonospaceGameFont(params);
     }
 
-    public MonospaceFont getDefaultFont() {
+    public MonospaceGameFont getDefaultFont() {
         return defaultFont;
     }
 
-    public MonospaceFont getCustomFont(AssetManager manager, String fontPath, int spacing, int width, int height) {
+    public MonospaceGameFont getCustomFont(AssetManager manager, String fontPath, int spacing, int width, int height) {
         manager.load(fontPath, Texture.class);
         manager.finishLoading();
         FontParameters params = new FontParameters();
@@ -38,6 +38,6 @@ public class FontLoader {
         params.spacing = spacing;
         params.frameWidth = width;
         params.frameHeight = height;
-        return new MonospaceFont(params);
+        return new MonospaceGameFont(params);
     }
 }

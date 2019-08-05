@@ -1,8 +1,8 @@
 package leikr.loaders;
 
-import com.badlogic.gdx.Gdx;
 import leikr.GameRuntime;
-import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.Graphics;
+import org.mini2Dx.core.Mdx;
 import org.mini2Dx.tiled.TiledMap;
 
 /**
@@ -25,7 +25,7 @@ public class MapLoader {
         if (null != tiledMap) {
             tiledMap.dispose();
         }
-        tiledMap = new TiledMap(Gdx.files.local(rootPath + name + ".tmx"));
+        tiledMap = new TiledMap(Mdx.files.local(rootPath + name + ".tmx"));
     }
 
     public static MapLoader getMapLoader() {

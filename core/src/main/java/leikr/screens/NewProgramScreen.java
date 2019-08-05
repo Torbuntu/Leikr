@@ -7,12 +7,12 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Color;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
 import org.mini2Dx.core.game.GameContainer;
-import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.Graphics;
+import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
@@ -150,14 +150,14 @@ public class NewProgramScreen extends BasicGameScreen {
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
         if (!FINISH) {
-            g.setColor(Color.GREEN);
+            g.setColor(Colors.GREEN());
             g.drawString("Enter new program name: ", 0, 0);
             g.drawString(newName, 0, 12, 232);
         } else {
             g.drawString(newLocation, 0, 0, 232);
-            g.setColor(Color.BLACK);
+            g.setColor(Colors.BLACK());
             g.drawRect(0, 152, 240, 8);
-            g.setColor(Color.GREEN);
+            g.setColor(Colors.GREEN());
             g.drawString(":q to quit", 0, 152);
         }
     }

@@ -1,10 +1,12 @@
 package leikr.loaders;
 
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.Texture;
 import leikr.GameRuntime;
+import org.mini2Dx.core.assets.AssetManager;
+import org.mini2Dx.core.assets.loader.TextureLoader;
+import org.mini2Dx.core.files.LocalFileHandleResolver;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.SpriteSheet;
+import org.mini2Dx.core.graphics.Texture;
 
 /**
  *
@@ -13,6 +15,7 @@ import org.mini2Dx.core.graphics.SpriteSheet;
 public class SpriteLoader {
 
     AssetManager assetManager;
+    TextureLoader assetLoader;
 
     SpriteSheet spriteBank;
     SpriteSheet spriteBank16;
@@ -24,7 +27,9 @@ public class SpriteLoader {
     private static SpriteLoader instance;
 
     private SpriteLoader() {
-        assetManager = new AssetManager();
+        assetLoader = new TextureLoader();
+        assetManager = new AssetManager(new LocalFileHandleResolver());
+        assetManager.setAssetLoader(Texture.class, assetLoader);
     }
 
     public static SpriteLoader getSpriteLoader() {
@@ -40,7 +45,7 @@ public class SpriteLoader {
 
     public void loadManualSpritesheets(String programName) {
         try {
-            assetManager.clear();
+            disposeSprites();
             rootPath = "Programs/" + programName + "/Sprites/Sprites.png";
             instance.loadSpriteSheets();
             instance.addSpritesToSpriteBank();
@@ -51,7 +56,7 @@ public class SpriteLoader {
     }
 
     private void resetSpriteLoader() {
-        assetManager.clear();
+        disposeSprites();
         rootPath = GameRuntime.getProgramPath() + "/Sprites/Sprites.png";
     }
 
@@ -83,7 +88,7 @@ public class SpriteLoader {
     }
 
     public void disposeSprites() {
-        assetManager.clear();
+        //assetManager.clearAssetLoaders();
     }
 
 }

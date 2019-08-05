@@ -2,15 +2,16 @@ package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
-import com.badlogic.gdx.graphics.Color;
 import leikr.GameRuntime;
-import org.mini2Dx.core.font.MonospaceFont;
+import org.mini2Dx.core.font.MonospaceGameFont;
 import org.mini2Dx.core.game.GameContainer;
-import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.Graphics;
+import org.mini2Dx.core.Mdx;
+import org.mini2Dx.core.assets.AssetManager;
+import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
@@ -28,7 +29,7 @@ public class TitleScreen extends BasicGameScreen {
 
     public static int ID = 2;
     AssetManager assetManager;
-    MonospaceFont font;
+    MonospaceGameFont font;
     FitViewport viewport;
     boolean CREDITS = false;
 
@@ -39,14 +40,14 @@ public class TitleScreen extends BasicGameScreen {
 
     public TitleScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
-        logo = new TiledMap(Gdx.files.local("./Data/Logo/Logo.tmx"));
+        logo = new TiledMap(Mdx.files.local("./Data/Logo/Logo.tmx"));
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
     }
 
     void checkInput(ScreenManager sm) {
         if (Gdx.input.isKeyPressed(Keys.SPACE) || Gdx.input.isKeyPressed(Keys.ENTER) || CREDITS) {
             CREDITS = false;
-            sm.enterGameScreen(CreditScreen.ID, new FadeOutTransition(Color.TEAL), new FadeInTransition(Color.FOREST));
+            sm.enterGameScreen(CreditScreen.ID, new FadeOutTransition(Colors.TEAL()), new FadeInTransition(Colors.FOREST()));
         }
         if (Gdx.input.isKeyPressed(Keys.ESCAPE)) {
             System.out.println("Good bye!");

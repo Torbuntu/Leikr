@@ -1,6 +1,5 @@
 package leikr.screens;
 
-import com.badlogic.gdx.graphics.Color;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -11,7 +10,8 @@ import leikr.Engine;
 import leikr.GameRuntime;
 import leikr.loaders.EngineLoader;
 import org.mini2Dx.core.game.GameContainer;
-import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.Graphics;
+import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
@@ -56,7 +56,7 @@ public class LoadScreen extends BasicGameScreen {
             try {
                 EngineScreen scrn = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
                 scrn.setEngine((Engine) engineGetter.get());
-                sm.enterGameScreen(EngineScreen.ID, new FadeOutTransition(Color.TEAL), new FadeInTransition(Color.FOREST));
+                sm.enterGameScreen(EngineScreen.ID, new FadeOutTransition(Colors.TEAL()), new FadeInTransition(Colors.FOREST()));
             } catch (InterruptedException | ExecutionException ex) {
                 ErrorScreen.setErrorMessage("Error loading engine: " + ex.getMessage());
                 sm.enterGameScreen(ErrorScreen.ID, null, null);
@@ -89,9 +89,9 @@ public class LoadScreen extends BasicGameScreen {
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
         if (!engineGetter.isDone()) {
-            g.setColor(Color.FOREST);
+            g.setColor(Colors.FOREST());
             g.drawCircle(120, 80, 16);
-            g.setColor(Color.MAGENTA);
+            g.setColor(Colors.MAGENTA());
             g.fillCircle(120, 80, loadCircleCircumf);
             g.drawString(loadPhrase, 0, viewport.getHeight() - 9);
         }

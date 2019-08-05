@@ -1,14 +1,15 @@
 package leikr.managers;
 
-import com.badlogic.gdx.assets.AssetManager;
 import leikr.GameRuntime;
 import leikr.loaders.EngineLoader;
 import leikr.loaders.SpriteLoader;
 import leikr.screens.EngineScreen;
 import leikr.screens.LoadScreen;
 import leikr.screens.MenuScreen;
-import org.mini2Dx.core.font.MonospaceFont;
-import org.mini2Dx.core.graphics.Graphics;
+import org.mini2Dx.core.font.MonospaceGameFont;
+import org.mini2Dx.core.Graphics;
+import org.mini2Dx.core.assets.AssetManager;
+import org.mini2Dx.core.files.LocalFileHandleResolver;
 import org.mini2Dx.core.screen.ScreenManager;
 
 /**
@@ -20,12 +21,12 @@ public class LeikrSystemManager {
     private boolean LOAD_PROGRAM = false;
     private boolean RUNNING = true;
     AssetManager manager;
-    MonospaceFont font;
+    MonospaceGameFont font;
     
     private static LeikrSystemManager instance;
 
     public LeikrSystemManager() {
-        this.manager = new AssetManager();
+        this.manager = new AssetManager(new LocalFileHandleResolver());
         font = GameRuntime.primaryFontLoader.getDefaultFont();
     }
 
@@ -38,7 +39,7 @@ public class LeikrSystemManager {
     }
     
     private void reset(){
-        manager.clear();
+        manager.clearAssetLoaders();
     }
 
     //START API
