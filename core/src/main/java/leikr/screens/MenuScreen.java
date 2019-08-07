@@ -1,7 +1,6 @@
 package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
@@ -13,6 +12,7 @@ import leikr.GameRuntime;
 import leikr.customProperties.CustomSystemProperties;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
+import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.font.MonospaceGameFont;
 import org.mini2Dx.core.graphics.Colors;
@@ -22,6 +22,7 @@ import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
+import org.mini2Dx.gdx.Input.Keys;
 import org.mini2Dx.gdx.math.Vector2;
 
 /**
@@ -211,8 +212,8 @@ public class MenuScreen extends BasicGameScreen {
      * translate the mouse coordinates to viewport
      */
     private void updateMouse() {
-        realMouse.x = Gdx.input.getX();
-        realMouse.y = Gdx.input.getY();
+        realMouse.x = Mdx.input.getX();
+        realMouse.y = Mdx.input.getY();
         viewport.toWorldCoordinates(leikrMouse, realMouse.x, realMouse.y);
     }
 
@@ -255,15 +256,15 @@ public class MenuScreen extends BasicGameScreen {
     }
 
     private void checkInput() {
-        if ((Gdx.input.isKeyJustPressed(Keys.UP) || Gdx.input.isKeyJustPressed(Keys.W)) && cursor > 0) {
+        if ((Mdx.input.isKeyJustPressed(Keys.UP) || Mdx.input.isKeyJustPressed(Keys.W)) && cursor > 0) {
             cursor--;
             GAME_NAME = filteredPrograms.get(cursor).getDirectory();
         }
-        if ((Gdx.input.isKeyJustPressed(Keys.DOWN) || Gdx.input.isKeyJustPressed(Keys.S))  && cursor < filteredPrograms.size() - 1) {
+        if ((Mdx.input.isKeyJustPressed(Keys.DOWN) || Mdx.input.isKeyJustPressed(Keys.S))  && cursor < filteredPrograms.size() - 1) {
             cursor++;
             GAME_NAME = filteredPrograms.get(cursor).getDirectory();
         }
-        if (Gdx.input.isKeyJustPressed(Keys.ENTER)) {
+        if (Mdx.input.isKeyJustPressed(Keys.ENTER)) {
             if (GAME_NAME.equals("Start new...")) {
                 System.out.println("initializing new game...");
                 NEW_PROGRAM = true;
@@ -273,11 +274,11 @@ public class MenuScreen extends BasicGameScreen {
                 START = true;
             }
         }
-        if (Gdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+        if (Mdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             System.out.println("Good bye!");
             Gdx.app.exit();
         }
-        if (Gdx.input.isKeyJustPressed(Keys.Q) || Gdx.input.isKeyJustPressed(Keys.E)) {
+        if (Mdx.input.isKeyJustPressed(Keys.Q) || Mdx.input.isKeyJustPressed(Keys.E)) {
             PAGE = !PAGE;
         }
     }
@@ -288,17 +289,17 @@ public class MenuScreen extends BasicGameScreen {
         updateMouse();
         checkInput();
         time += delta;
-        if (leikrMouse.y >= 52 && leikrMouse.y <= 56 && leikrMouse.x >= 108 && leikrMouse.x <= 115 && cursor < filteredPrograms.size() - 1 && Gdx.input.isTouched() && time > 0.2) {
+        if (leikrMouse.y >= 52 && leikrMouse.y <= 56 && leikrMouse.x >= 108 && leikrMouse.x <= 115 && cursor < filteredPrograms.size() - 1 && Mdx.input.justTouched() && time > 0.2) {
             cursor++;
             GAME_NAME = filteredPrograms.get(cursor).getDirectory();
             time = 0;
         }
-        if (leikrMouse.y <= 36 && leikrMouse.y >= 32 && leikrMouse.x >= 108 && leikrMouse.x <= 115 && cursor > 0 && Gdx.input.isTouched() && time > 0.2) {
+        if (leikrMouse.y <= 36 && leikrMouse.y >= 32 && leikrMouse.x >= 108 && leikrMouse.x <= 115 && cursor > 0 && Mdx.input.justTouched() && time > 0.2) {
             cursor--;
             GAME_NAME = filteredPrograms.get(cursor).getDirectory();
             time = 0;
         }
-        if (leikrMouse.y >= 42 && leikrMouse.y <= 46 && leikrMouse.x >= 108 && leikrMouse.x <= 115 && Gdx.input.isTouched()) {
+        if (leikrMouse.y >= 42 && leikrMouse.y <= 46 && leikrMouse.x >= 108 && leikrMouse.x <= 115 && Mdx.input.justTouched()) {
             if (GAME_NAME.equals("Start new...")) {
                 NEW_PROGRAM = true;
                 System.out.println("initializing new game...");
@@ -321,15 +322,15 @@ public class MenuScreen extends BasicGameScreen {
         offset = cursor * 8;
 
         //Category shifting        
-        if (Gdx.input.isKeyJustPressed(Keys.A) || (leikrMouse.y <= 16 && leikrMouse.y >= 9 && leikrMouse.x > 107 && leikrMouse.x < 111 && Gdx.input.isTouched() && time > 0.2)) {
+        if (Mdx.input.isKeyJustPressed(Keys.A) || Mdx.input.isKeyJustPressed(Keys.LEFT) || (leikrMouse.y <= 16 && leikrMouse.y >= 9 && leikrMouse.x > 107 && leikrMouse.x < 111 && Mdx.input.justTouched() && time > 0.2)) {
             shiftCategoryRight();
             time = 0;
         }
-        if (Gdx.input.isKeyJustPressed(Keys.D) || (leikrMouse.y <= 16 && leikrMouse.y >= 9 && leikrMouse.x > 112 && leikrMouse.x < 116 && Gdx.input.isTouched() && time > 0.2)) {
+        if (Mdx.input.isKeyJustPressed(Keys.D) || Mdx.input.isKeyJustPressed(Keys.RIGHT) || (leikrMouse.y <= 16 && leikrMouse.y >= 9 && leikrMouse.x > 112 && leikrMouse.x < 116 && Mdx.input.justTouched() && time > 0.2)) {
             shiftCategoryLeft();
             time = 0;
         }
-        if (Gdx.input.isKeyJustPressed(Keys.P)) {
+        if (Mdx.input.isKeyJustPressed(Keys.P)) {
             System.out.println(GAME_NAME);
         }
     }
