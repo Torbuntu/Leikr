@@ -1,13 +1,13 @@
 package leikr.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
+import org.mini2Dx.core.files.FileHandle;
 import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
@@ -122,7 +122,7 @@ public class NewProgramScreen extends BasicGameScreen {
             try {
                 int index = 0;
                 String NP = newName.length() > 0 ? newName : "NewProgram";
-                for (FileHandle name : Gdx.files.local("Programs").list()) {
+                for (FileHandle name : Mdx.files.local("Programs").list()) {
                     if (name.name().contains(NP)) {
                         index++;
                     }
@@ -131,14 +131,14 @@ public class NewProgramScreen extends BasicGameScreen {
                     NP = NP + index;
                 }
                 Mdx.files.local("Programs/" + NP).mkdirs();
-                for (FileHandle file : Gdx.files.local("Data/Templates/NewProgram").list()) {
+                for (FileHandle file : Mdx.files.local("Data/Templates/NewProgram").list()) {
                     Mdx.files.local("Data/Templates/NewProgram/" + file.name()).copyTo(Mdx.files.local("Programs/" + NP));
                 }
                 Mdx.files.local("Programs/" + NP + "/Code/main.groovy").moveTo(Mdx.files.local("Programs/" + NP + "/Code/" + NP + ".groovy"));
                 newLocation += NP + "/";
                 System.out.println(NP + " template copied to Programs directory");
                 FINISH = true;
-            } catch (Exception ex) {
+            } catch (IOException ex) {
                 Logger.getLogger(NewProgramScreen.class.getName()).log(Level.SEVERE, null, ex);
                 CREATE = false;
             }

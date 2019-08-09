@@ -1,15 +1,14 @@
 package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.ControllerAdapter;
-import com.badlogic.gdx.controllers.Controllers;
-import com.badlogic.gdx.files.FileHandle;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import leikr.customProperties.ChipData;
 import leikr.GameRuntime;
-import leikr.customProperties.CustomSystemProperties;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
@@ -58,8 +57,6 @@ public class MenuScreen extends BasicGameScreen {
     Vector2 realMouse;
     Vector2 leikrMouse;
 
-    ControllerAdapter menuControllerAdapter;
-
     float time = 0;// Create a lock on the mouse click for the up/down selection of programs.
 
     public MenuScreen(AssetManager assetManager) {
@@ -73,21 +70,27 @@ public class MenuScreen extends BasicGameScreen {
         cursor = 0;
         offset = 0;
         initMenuList();
-        createControllerAdapter();
     }
 
     /**
      * Initializes the program list and sets the initial program to GAME_NAME
      */
     private void initMenuList() {
-        programs = new ArrayList<>();
-        for (FileHandle file : Gdx.files.local("Programs/").list()) {
-            programs.add(new ChipData(file.name(), assetManager));
+        try {
+            programs = new ArrayList<>();
+            programs.add(new ChipData("New Game", "System", "Template", "1.0", 0, "Initializes a new program template", assetManager, "Start new..."));
+
+            Arrays.asList(Mdx.files.local("Programs/").list())
+                    .forEach(file -> {
+                        programs.add(new ChipData(file.name(), assetManager));
+                    });
+
+            assetManager.finishLoading();
+            updateProgramCategory();
+            GAME_NAME = filteredPrograms.size() > 0 ? filteredPrograms.get(cursor).getDirectory() : programs.get(cursor).getDirectory();
+        } catch (IOException ex) {
+            Logger.getLogger(MenuScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
-        programs.add(new ChipData("New Game", "System", "Template", "1.0", 0, "Initializes a new program template", assetManager, "Start new..."));
-        assetManager.finishLoading();
-        updateProgramCategory();
-        GAME_NAME = filteredPrograms.size() > 0 ? filteredPrograms.get(cursor).getDirectory() : programs.get(cursor).getDirectory();
     }
 
     /**
@@ -159,56 +162,6 @@ public class MenuScreen extends BasicGameScreen {
     }
 
     /**
-     * Creates a reusable controller adapter object.
-     */
-    private void createControllerAdapter() {
-        menuControllerAdapter = new ControllerAdapter() {
-            @Override
-            public boolean buttonDown(Controller controller, int buttonIndex) {
-                if (buttonIndex == CustomSystemProperties.START || buttonIndex == CustomSystemProperties.A) {
-                    if (GAME_NAME.equals("Start new...")) {
-                        NEW_PROGRAM = true;
-                    } else if (GAME_NAME.length() > 2) {
-                        GameRuntime.setProgramPath("Programs/" + GAME_NAME);
-                        START = true;
-                    }
-                }
-                if (buttonIndex == CustomSystemProperties.LEFT_BUMPER) {
-                    shiftCategoryLeft();
-                    return true;
-                }
-                if (buttonIndex == CustomSystemProperties.RIGHT_BUMPER) {
-                    shiftCategoryRight();
-                    return true;
-                }
-                return false;
-            }
-
-            @Override
-            public boolean axisMoved(Controller controller, int axisCode, float value) {
-                if (axisCode == CustomSystemProperties.VERTICAL_AXIS) {
-                    if (value == 1 && cursor < filteredPrograms.size() - 1) {
-                        cursor++;
-                        GAME_NAME = filteredPrograms.get(cursor).getDirectory();
-                    } else if (value == -1 && cursor > 0) {
-                        cursor--;
-                        GAME_NAME = filteredPrograms.get(cursor).getDirectory();
-                    }
-                    return true;
-                } else {
-                    if (value == CustomSystemProperties.LEFT) {
-                        PAGE = true;
-                    }
-                    if (value == CustomSystemProperties.RIGHT) {
-                        PAGE = false;
-                    }
-                }
-                return false;
-            }
-        };
-    }
-
-    /**
      * translate the mouse coordinates to viewport
      */
     private void updateMouse() {
@@ -223,10 +176,7 @@ public class MenuScreen extends BasicGameScreen {
 
     @Override
     public void preTransitionOut(Transition transitionIn) {
-        Controllers.clearListeners();
-        if (Controllers.getControllers().size > 0) {
-            Controllers.getControllers().get(0).removeListener(menuControllerAdapter);
-        }
+
     }
 
     @Override
@@ -241,18 +191,7 @@ public class MenuScreen extends BasicGameScreen {
 
     @Override
     public void postTransitionIn(Transition transitionIn) {
-        if (GameRuntime.checkLaunchTitle()) {
-            return;
-        }
 
-        try {
-            Controllers.clearListeners();
-            if (Controllers.getControllers().size > 0) {
-                Controllers.getControllers().get(0).addListener(menuControllerAdapter);
-            }
-        } catch (Exception ex) {
-            System.out.println("No controllers active on Menu Screen. " + ex.getMessage());
-        }
     }
 
     private void checkInput() {
@@ -260,7 +199,7 @@ public class MenuScreen extends BasicGameScreen {
             cursor--;
             GAME_NAME = filteredPrograms.get(cursor).getDirectory();
         }
-        if ((Mdx.input.isKeyJustPressed(Keys.DOWN) || Mdx.input.isKeyJustPressed(Keys.S))  && cursor < filteredPrograms.size() - 1) {
+        if ((Mdx.input.isKeyJustPressed(Keys.DOWN) || Mdx.input.isKeyJustPressed(Keys.S)) && cursor < filteredPrograms.size() - 1) {
             cursor++;
             GAME_NAME = filteredPrograms.get(cursor).getDirectory();
         }

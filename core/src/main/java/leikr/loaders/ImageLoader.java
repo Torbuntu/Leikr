@@ -1,8 +1,11 @@
 package leikr.loaders;
 
-import com.badlogic.gdx.Gdx;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import leikr.GameRuntime;
+import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.assets.loader.TextureLoader;
 import org.mini2Dx.core.files.LocalFileHandleResolver;
@@ -36,12 +39,13 @@ public class ImageLoader {
 
     private void reloadImageLoader() {
         rootPath = GameRuntime.getProgramPath() + "/Art/";
-        //TODO: Replace the Gdx.files with Mdx.files when the .list() method works.
-        Arrays.asList(Gdx.files.local(rootPath).list()).stream()
-                .forEach(path -> assetManager.load(rootPath + path.name(), Texture.class));
-        assetManager.finishLoading();
-
-        assetManager.finishLoading();
+        try {
+            Arrays.asList(Mdx.files.local(rootPath).list()).stream()
+                    .forEach(path -> assetManager.load(rootPath + path.name(), Texture.class));
+            assetManager.finishLoading();
+        } catch (IOException ex) {
+            Logger.getLogger(ImageLoader.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void load() {

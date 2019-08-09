@@ -1,23 +1,27 @@
 package leikr.loaders;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.Array;
+import java.io.IOException;
+import java.util.Arrays;
 import leikr.GameRuntime;
+import org.mini2Dx.core.Mdx;
+import org.mini2Dx.core.assets.AssetManager;
+import org.mini2Dx.core.assets.loader.MusicLoader;
+import org.mini2Dx.core.assets.loader.SoundLoader;
+import org.mini2Dx.core.audio.Music;
+import org.mini2Dx.core.audio.Sound;
+import org.mini2Dx.core.files.LocalFileHandleResolver;
 
 /**
  *
  * @author tor
  */
 public class AudioLoader {
-//TODO: Migrate asset management to MDX once alpha.2 is released with fix to Mdx.files.local().list
-    
-    
+
     AssetManager soundManager;
     AssetManager musicManager;
+
+    SoundLoader soundLoader;
+    MusicLoader musicLoader;
 
     String musicRootPath;
     String soundRootPath;
@@ -28,8 +32,13 @@ public class AudioLoader {
     private static AudioLoader instance;
 
     private AudioLoader() {
-        soundManager = new AssetManager();
-        musicManager = new AssetManager();
+        soundManager = new AssetManager(new LocalFileHandleResolver());
+        soundLoader = new SoundLoader();
+        soundManager.setAssetLoader(Sound.class, soundLoader);
+
+        musicManager = new AssetManager(new LocalFileHandleResolver());
+        musicLoader = new MusicLoader();
+        musicManager.setAssetLoader(Music.class, musicLoader);
     }
 
     public static AudioLoader getAudioLoader() {
@@ -42,28 +51,35 @@ public class AudioLoader {
     }
 
     private void resetAudioLoader() {
-        soundManager.clear();
-        musicManager.clear();
+        if (soundManager != null) {
+            soundManager.clearAssetLoaders();
+        }
+
+        if (musicManager != null) {
+            musicManager.clearAssetLoaders();
+        }
+
+        soundLoader = new SoundLoader();
+        soundManager.setAssetLoader(Sound.class, soundLoader);
+
+        musicLoader = new MusicLoader();
+        musicManager.setAssetLoader(Music.class, musicLoader);
         musicRootPath = GameRuntime.getProgramPath() + "/Audio/Music/";
         soundRootPath = GameRuntime.getProgramPath() + "/Audio/Sound/";
     }
 
     private void loadAudio() {
         try {
-            for (FileHandle path : Gdx.files.local(soundRootPath).list()) {
-                soundManager.load(soundRootPath + path.name(), Sound.class);
-            }
+            Arrays.asList(Mdx.files.local(soundRootPath).list()).forEach(f -> soundManager.load(soundRootPath + f.name(), Sound.class));
             soundManager.finishLoading();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             System.out.println("Sound load err: " + ex.getMessage());
         }
 
         try {
-            for (FileHandle path : Gdx.files.local(musicRootPath).list()) {
-                musicManager.load(musicRootPath + path.name(), Music.class);
-            }
+            Arrays.asList(Mdx.files.local(musicRootPath).list()).forEach(f -> musicManager.load(musicRootPath + f.name(), Music.class));
             musicManager.finishLoading();
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             System.out.println("Music load err: " + ex.getMessage());
         }
     }
@@ -99,17 +115,11 @@ public class AudioLoader {
     }
 
     public void stopMusic() {
-        Array<Music> allMusic = new Array<>();
-        for (Music m : musicManager.getAll(Music.class, allMusic)) {
-            m.stop();
-        }
+        mPlayer.stop();
     }
 
     public void stopSound() {
-        Array<Sound> allSound = new Array<>();
-        for (Sound m : soundManager.getAll(Sound.class, allSound)) {
-            m.stop();
-        }
+        sPlayer.stop();
     }
 
     public void stopMusic(String fileName) {
@@ -142,8 +152,8 @@ public class AudioLoader {
         if (sPlayer != null) {
             sPlayer.dispose();
         }
-        musicManager.clear();
-        soundManager.clear();
+        musicManager.clearAssetLoaders();
+        soundManager.clearAssetLoaders();
     }
 
 }

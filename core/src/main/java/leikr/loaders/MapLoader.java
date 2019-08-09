@@ -10,7 +10,7 @@ import org.mini2Dx.tiled.TiledMap;
  * @author tor
  */
 public class MapLoader {
-    //TODO: Add handlers for animation tiles and object layers for collisions.  
+    //TODO: Add handlers for object layers and collisions.  
 
     TiledMap tiledMap;
 

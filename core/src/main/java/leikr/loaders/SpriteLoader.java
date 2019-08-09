@@ -1,5 +1,7 @@
 package leikr.loaders;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import leikr.GameRuntime;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.assets.loader.TextureLoader;
@@ -50,7 +52,7 @@ public class SpriteLoader {
             instance.loadSpriteSheets();
             instance.addSpritesToSpriteBank();
         } catch (Exception ex) {
-            ex.printStackTrace();
+            Logger.getLogger(SpriteLoader.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("Manual Sprite sheet not loadable.");
         }
     }
