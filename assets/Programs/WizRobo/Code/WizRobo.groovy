@@ -258,6 +258,7 @@ class WizRobo extends leikr.Engine {
         enemies = []
         enemies.addAll([enemy1, enemy2]) 
     	loadMap("lvl1")
+		getTiledLayer()
     }
     
     void initlvl2(){

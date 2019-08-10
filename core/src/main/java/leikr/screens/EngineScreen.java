@@ -130,7 +130,7 @@ public class EngineScreen extends BasicGameScreen {
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
-        if (Mdx.input.isKeyJustPressed(Keys.CONTROL_LEFT) && Mdx.input.isKeyJustPressed(Keys.R) || Mdx.input.isKeyJustPressed(Keys.F5)) {
+        if (Mdx.input.isKeyJustPressed(Keys.F5)) {
             reloadEngine(sm);
         }
         if (Mdx.input.isKeyJustPressed(Keys.ESCAPE)) {
