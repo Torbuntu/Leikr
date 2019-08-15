@@ -517,6 +517,14 @@ public class LeikrScreenManager {
     public final void clip() {
         Mdx.graphicsContext.removeClip();
     }
+    
+    public void tint(int color) {
+        Mdx.graphicsContext.setTint(getDrawColor(color));
+    }
+
+    public void tint() {
+        Mdx.graphicsContext.removeTint();
+    }
 
     //END EXPERIMENTAL
 }

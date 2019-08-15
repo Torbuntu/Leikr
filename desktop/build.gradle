@@ -21,6 +21,7 @@ task deployLeikr {
         copy {
             from "$projectDir/../assets"
             into "$projectDir/build/libs"
+            exclude '*gamecontrollerdb.txt*'
         } 
     }
 }

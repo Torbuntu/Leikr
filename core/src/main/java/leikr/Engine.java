@@ -8,12 +8,10 @@ import leikr.managers.LeikrAudioManager;
 import leikr.managers.LeikrScreenManager;
 import leikr.managers.LeikrSystemManager;
 import org.mini2Dx.core.graphics.Animation;
-import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.input.BaseGamePadListener;
-import org.mini2Dx.core.input.GamePad;
 import org.mini2Dx.gdx.InputProcessor;
 import org.mini2Dx.gdx.math.MathUtils;
 
@@ -24,7 +22,6 @@ import org.mini2Dx.gdx.math.MathUtils;
 public abstract class Engine extends BaseGamePadListener implements InputProcessor {
 
     //Mini2DX specific classes for managing the screen state and drawing.
-    Graphics g;
     FitViewport viewport;
 //    FPSLogger logger; //TODO: Use Mdx fps logger of some sort
 
@@ -36,8 +33,6 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      */
     public LeikrController controllerA;
     public LeikrController controllerB;
-    GamePad playerOneController;
-    GamePad playerTwoController;
 
     public LeikrMouse mouse;
     public LeikrKeyboard keyboard;
@@ -104,12 +99,12 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final boolean preUpdate(float delta) {
         mouse.updateMouse();
         screen.preUpdate(delta);
-        if (controllerA != null) {
-            return (controllerA.button("START"));
-        }
-        if (controllerB != null) {
-            return (controllerB.button("START"));
-        }
+//        if (controllerA != null) {
+//            return (controllerA.button("START"));
+//        }
+//        if (controllerB != null) {
+//            return (controllerB.button("START"));
+//        }
         return false;
     }
 
@@ -150,11 +145,14 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final void dispose() {
         audio.dispose();
         screen.dispose();
-        if (null != playerOneController) {
-            playerOneController.removeListener(controllerA);
+
+        if (Mdx.input.getGamePads().size > 0) {
+            Mdx.input.getGamePads().get(0).removeListener(this);
+            Mdx.input.getGamePads().get(0).removeListener(controllerA);
         }
-        if (null != playerTwoController) {
-            playerTwoController.removeListener(controllerB);
+        if (Mdx.input.getGamePads().size > 1) {
+            Mdx.input.getGamePads().get(1).removeListener(this);
+            Mdx.input.getGamePads().get(1).removeListener(controllerB);
         }
         //  Controllers.clearListeners();
     }
@@ -284,6 +282,16 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     }
     //end color methods
 
+    //Helper methods
+    public final void clip(float x, float y, float w, float h) {
+        screen.clip(x, y, w, h);
+    }
+
+    public final void clip() {
+        screen.clip();
+    }
+
+    //end helper methods
     //text methods
     public final void text(String text, float x, float y, int color) {
         screen.text(text, x, y, color);
@@ -608,19 +616,11 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     //Experimental API methods
     public void tint(int color) {
-        g.setTint(getDrawColor(color));
+       screen.tint(color);
     }
 
     public void tint() {
-        g.removeTint();
-    }
-
-    public final void clip(float x, float y, float w, float h) {
-        screen.clip(x, y, w, h);
-    }
-
-    public final void clip() {
-        screen.clip();
+        screen.tint();
     }
 
     public boolean collides(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2) {

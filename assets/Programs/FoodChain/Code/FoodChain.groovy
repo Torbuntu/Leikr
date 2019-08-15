@@ -3,7 +3,7 @@ import Supers
 import SaveUtil
 import leikr.GameRuntime;//haaaaaack
 
-import org.mini2Dx.core.input.GamePad
+import org.mini2Dx.core.input.*
 
 class FoodChain extends leikr.Engine {
 
@@ -102,67 +102,76 @@ class FoodChain extends leikr.Engine {
         cf=0
         //END play variables
     }
+    
+    @Override
+    public void onPovChanged(GamePad gamePad, int povCode, PovState povState) {
+        println("::: Debug POV :::")
+        println("Controller $gamePad , Code: $povCode , State $povState")
+    }
 	
 	
     @Override
     public void onButtonDown(GamePad cont, int buttonId){
-        println buttonId
-        switch(state){
-        case 2:
-            if(buttonId == btnCode("SELECT")){
-                state = 4
-                sfx("shift")
-            }
-            if(usingSwap){
-                moveCursor()
-                if(buttonId == btnCode("RIGHT_BUMPER")){
-                    doSwap(cx, cy)
-                }
-                return
-            }
-            if(buttonId == btnCode("RIGHT_BUMPER") && swaps > 0){
-                swapStart(cx, cy)
-                return
-            }
-            break;
-        case 3:
-            if(buttonId == btnCode("SELECT") ){
-                init()
-                sfx("shift")
-            }
-            break;
-        case 4:
-            if(buttonId == btnCode("SELECT")){
-                state = 2
-                sfx("shift")
-            }
-            break;
-        default:
-            break;
-        				
-        }
+        println("::: Debug Button :::")
+    	println("Controller: $cont , Value: $buttonId")
+//        switch(state){
+//        case 2:
+//            if(buttonId == btnCode("SELECT")){
+//                state = 4
+//                sfx("shift")
+//            }
+//            if(usingSwap){
+//                moveCursor()
+//                if(buttonId == btnCode("RIGHT_BUMPER")){
+//                    doSwap(cx, cy)
+//                }
+//                return
+//            }
+//            if(buttonId == btnCode("RIGHT_BUMPER") && swaps > 0){
+//                swapStart(cx, cy)
+//                return
+//            }
+//            break;
+//        case 3:
+//            if(buttonId == btnCode("SELECT") ){
+//                init()
+//                sfx("shift")
+//            }
+//            break;
+//        case 4:
+//            if(buttonId == btnCode("SELECT")){
+//                state = 2
+//                sfx("shift")
+//            }
+//            break;
+//        default:
+//            break;
+//        				
+//        }
     }
     @Override
     public void onAxisChanged(GamePad controller, int axisCode, float buttonId) {
-        if(state == 2){
-            if (axisCode == verticalAxis()) {
-                if(buttonId == btnCode("UP") && cy > 0){
-                    cy--
-                }
-                if(buttonId == btnCode("DOWN") && cy < 7){
-                    cy++
-                }
-            }
-            if (axisCode == horizontalAxis()) {
-                if (buttonId == btnCode("RIGHT") && cx < 7) {
-                    cx++
-                }
-                if (buttonId == btnCode("LEFT") && cx > 0) {
-                    cx--
-                }
-					
-            }
-        }
+    	println("::: Debug Axis :::")
+    	println("Controller: $controller , Axis: $axisCode , Value: $buttonId")
+//        if(state == 2){
+//            if (axisCode == verticalAxis()) {
+//                if(buttonId == btnCode("UP") && cy > 0){
+//                    cy--
+//                }
+//                if(buttonId == btnCode("DOWN") && cy < 7){
+//                    cy++
+//                }
+//            }
+//            if (axisCode == horizontalAxis()) {
+//                if (buttonId == btnCode("RIGHT") && cx < 7) {
+//                    cx++
+//                }
+//                if (buttonId == btnCode("LEFT") && cx > 0) {
+//                    cx--
+//                }
+//					
+//            }
+//        }
 				
     }
 	

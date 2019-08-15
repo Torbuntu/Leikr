@@ -144,18 +144,18 @@ public class LeikrController extends BaseGamePadListener {
         }
 
         if (axisCode == CustomSystemProperties.VERTICAL_AXIS) {
-            if (value == CustomSystemProperties.DOWN) {
+            if ((int)value == CustomSystemProperties.DOWN) {
                 buttons.replace(DOWN, true);
             }
-            if (value == CustomSystemProperties.UP) {
+            if ((int)value == CustomSystemProperties.UP) {
                 buttons.replace(UP, true);
             }
         }
         if (axisCode == CustomSystemProperties.HORIZONTAL_AXIS) {
-            if (value == CustomSystemProperties.RIGHT) {
+            if ((int)value == CustomSystemProperties.RIGHT) {
                 buttons.replace(RIGHT, true);
             }
-            if (value == CustomSystemProperties.LEFT) {
+            if ((int)value == CustomSystemProperties.LEFT) {
                 buttons.replace(LEFT, true);
             }
         }

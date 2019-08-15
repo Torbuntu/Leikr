@@ -37,7 +37,6 @@ public class EngineScreen extends BasicGameScreen {
 
 
     public EngineScreen() {
-       // createControllerAdapter();
     }
 
     private void pause() {

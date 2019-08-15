@@ -1,6 +1,3 @@
-
-import leikr.Engine
-import com.badlogic.gdx.utils.Array
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -8,9 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.mini2Dx.core.input.GamePad
+import org.mini2Dx.core.input.*
 
-class ControllerUtil extends Engine {
+class ControllerUtil extends leikr.Engine {
     
     def settings = [:]
     def saved = [:]
@@ -22,7 +19,7 @@ class ControllerUtil extends Engine {
     def controller
     def ERROR = false
     def unpress = false
-    def activeController = true
+    def activeController = false
     def finished = false
     
     int X;
@@ -90,7 +87,7 @@ class ControllerUtil extends Engine {
 	}
 	@Override
 	public void onAxisChanged(GamePad controller, int axisCode, float value) {
-
+		println("axis: $axisCode, value: $value")
         if(dpad_h){
         	HORIZONTAL_AXIS = axisCode
         }
@@ -107,7 +104,7 @@ class ControllerUtil extends Engine {
     
     void create(){
         loadImages()
-        readDataProps()
+        //readDataProps()
     }
     void update(float delta){
         if(activeController){

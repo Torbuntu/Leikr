@@ -8,7 +8,6 @@ import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
-import org.mini2Dx.core.input.BaseGamePadListener;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
@@ -18,7 +17,7 @@ import org.mini2Dx.core.screen.transition.FadeOutTransition;
 import org.mini2Dx.gdx.Input.Keys;
 import org.mini2Dx.tiled.TiledMap;
 
-import org.mini2Dx.core.input.GamePad;
+
 /**
  *
  * @author tor
@@ -33,21 +32,11 @@ public class TitleScreen extends BasicGameScreen {
 
     TiledMap logo;
     int timer = 0;
-    
-    GamePad gp;
 
     public TitleScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
         logo = new TiledMap(Mdx.files.local("./Data/Logo/Logo.tmx"));
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
-        gp = Mdx.input.getGamePads().first();
-        System.out.println("::: GamePad Debug :::");
-        System.out.println(gp.getModelInfo());
-        gp.addListener(new BaseGamePadListener(){
-            @Override public void onButtonDown(GamePad gp, int button){
-                System.out.println("::: " + button + " :::");
-            }
-        });
     }
 
     void checkInput(ScreenManager sm) {
