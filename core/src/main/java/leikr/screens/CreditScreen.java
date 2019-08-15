@@ -1,6 +1,5 @@
 package leikr.screens;
 
-import com.badlogic.gdx.Gdx;
 import leikr.GameRuntime;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
@@ -51,7 +50,7 @@ public class CreditScreen extends BasicGameScreen {
         }
         if (Mdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             System.out.println("Good bye!");
-            Gdx.app.exit();
+//            Gdx.app.exit(); //TODO: Implement with Mdx.platform.exit()
         }
     }
 

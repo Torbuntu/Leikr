@@ -1,7 +1,7 @@
 package leikr.controls;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+import org.mini2Dx.core.Mdx;
+import org.mini2Dx.gdx.Input.Keys;
 
 /**
  * The class to handle keyboard interactions within Leikr programs
@@ -27,7 +27,7 @@ public class LeikrKeyboard {
      * @return
      */
     public boolean key(String key) {
-        return Gdx.input.isKeyPressed(Input.Keys.valueOf(key));
+        return Mdx.input.isKeyJustPressed(Keys.valueOf(key));
     }
 
     /**
@@ -39,6 +39,6 @@ public class LeikrKeyboard {
      * @return
      */
     public boolean keyPress(String key) {
-        return Gdx.input.isKeyJustPressed(Input.Keys.valueOf(key));
+        return Mdx.input.isKeyJustPressed(Keys.valueOf(key));
     }
 }

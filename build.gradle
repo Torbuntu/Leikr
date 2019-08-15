@@ -15,7 +15,6 @@ allprojects {
     ext {
         appName = 'Leikr'
         mini2DxVersion = '2.0.0-alpha.2'
-        gdxVersion = '1.9.10'
     }
 
     repositories {
@@ -35,10 +34,8 @@ project(":core") {
     apply plugin: "java"
 
     dependencies {
-        implementation "org.mini2Dx:mini2Dx-libgdx:$mini2DxVersion"
         implementation "org.mini2Dx:mini2Dx-core:$mini2DxVersion"
         implementation "org.mini2Dx:mini2Dx-tiled:$mini2DxVersion"
-        
         implementation "org.lwjgl.lwjgl:lwjgl:2.9.3"
         
         implementation "org.apache.commons:commons-lang3:3.9"
@@ -53,6 +50,5 @@ project(":desktop") {
     dependencies {
         implementation project(":core")
         implementation "org.mini2Dx:mini2Dx-libgdx-desktop:$mini2DxVersion"
-        
     }
 }

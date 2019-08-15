@@ -1,6 +1,5 @@
 package leikr.screens;
 
-import com.badlogic.gdx.Gdx;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -215,7 +214,7 @@ public class MenuScreen extends BasicGameScreen {
         }
         if (Mdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             System.out.println("Good bye!");
-            Gdx.app.exit();
+//            Gdx.app.exit(); //TODO: Add Mdx.platform.exit()
         }
         if (Mdx.input.isKeyJustPressed(Keys.Q) || Mdx.input.isKeyJustPressed(Keys.E)) {
             PAGE = !PAGE;

@@ -1,7 +1,5 @@
 package leikr;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.FPSLogger;
 import leikr.controls.LeikrController;
 import leikr.controls.LeikrKeyboard;
 import leikr.controls.LeikrMouse;
@@ -28,7 +26,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     //Mini2DX specific classes for managing the screen state and drawing.
     Graphics g;
     FitViewport viewport;
-    FPSLogger logger;
+//    FPSLogger logger; //TODO: Use Mdx fps logger of some sort
 
     //used by the Engine Screen to determine if the game should be actively running.
     boolean active;
@@ -68,7 +66,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      */
     public final void preCreate(int mSprites, LeikrSystemManager sys) {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
-        logger = new FPSLogger();
+//        logger = new FPSLogger();
         audio = LeikrAudioManager.getLeikrAudioManager();
         screen = LeikrScreenManager.getLeikrScreenManager(mSprites);
         system = sys;
@@ -167,7 +165,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      * Prints the FPS to the console
      */
     public final void FPS() {
-        logger.log();
+//        logger.log();
     }
 
     /**
@@ -175,7 +173,8 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      * @return FPS as integer
      */
     public int getFPS() {
-        return Gdx.graphics.getFramesPerSecond();
+//        return Gdx.graphics.getFramesPerSecond();
+        return -1;
     }
 
     public long getFrame() {

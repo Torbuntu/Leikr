@@ -1,14 +1,9 @@
 package leikr.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.ControllerAdapter;
-import com.badlogic.gdx.controllers.Controllers;
 import leikr.GameRuntime;
-import leikr.customProperties.CustomSystemProperties;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
+import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -18,6 +13,7 @@ import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
 import org.mini2Dx.core.screen.transition.FadeInTransition;
 import org.mini2Dx.core.screen.transition.FadeOutTransition;
+import org.mini2Dx.gdx.Input.Keys;
 
 /**
  *
@@ -31,44 +27,11 @@ public class ErrorScreen extends BasicGameScreen {
     boolean MENU = false;
     boolean RELOAD = false;
     static String errorMessage;
-    ControllerAdapter errorControllerAdapter;
 
     public ErrorScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         errorMessage = "";
-        createControllerAdapter();
-    }
-
-    /**
-     * Creates a reusable controller adapter object.
-     */
-    private void createControllerAdapter() {
-        errorControllerAdapter = new ControllerAdapter() {
-            @Override
-            public boolean buttonDown(Controller controller, int buttonIndex) {
-                if (buttonIndex == CustomSystemProperties.START || buttonIndex == CustomSystemProperties.A || buttonIndex == CustomSystemProperties.SELECT || buttonIndex == CustomSystemProperties.B) {
-                    MENU = true;
-                }
-
-                if (buttonIndex == CustomSystemProperties.LEFT_BUMPER || buttonIndex == CustomSystemProperties.RIGHT_BUMPER) {
-                    RELOAD = true;
-                }
-                return true;
-            }
-        };
-    }
-
-    private void addController() {
-        if (Controllers.getControllers().size > 0) {
-            Controllers.getControllers().get(0).addListener(errorControllerAdapter);
-        }
-    }
-
-    private void removeController() {
-        if (Controllers.getControllers().size > 0) {
-            Controllers.getControllers().get(0).removeListener(errorControllerAdapter);
-        }
     }
 
     public static void setErrorMessage(String message) {
@@ -81,42 +44,28 @@ public class ErrorScreen extends BasicGameScreen {
 
     @Override
     public void preTransitionIn(Transition transitionIn) {
-        addController();
     }
 
     @Override
     public void preTransitionOut(Transition transitionOut) {
-        removeController();
     }
 
     @Override
     public void initialise(GameContainer gc) {
-        try {
-            Controllers.clearListeners();
-            if (Controllers.getControllers().size > 0) {
-                Controllers.getControllers().get(0).addListener(new ControllerAdapter() {
-                    @Override
-                    public boolean buttonDown(Controller controller, int buttonIndex) {
-                        MENU = true;
-                        return false;
-                    }
-                });
-            }
-        } catch (Exception ex) {
-            System.out.println("No controllers active on Error Screen. " + ex.getMessage());
-        }
+      
     }
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
-        if (MENU || Gdx.input.isKeyJustPressed(Keys.ESCAPE) || Gdx.input.isKeyJustPressed(Keys.ENTER) || Gdx.input.isKeyJustPressed(Keys.SPACE) || Gdx.input.isKeyJustPressed(Keys.Q)) {
+        if (MENU || Mdx.input.isKeyJustPressed(Keys.ESCAPE) || Mdx.input.isKeyJustPressed(Keys.ENTER) || Mdx.input.isKeyJustPressed(Keys.SPACE) || Mdx.input.isKeyJustPressed(Keys.Q)) {
             MENU = false;
             sm.enterGameScreen(MenuScreen.ID, new FadeOutTransition(Colors.TEAL()), new FadeInTransition(Colors.FOREST()));
         }
 
-        if (Gdx.input.isKeyPressed(Keys.CONTROL_LEFT) && Gdx.input.isKeyPressed(Keys.R) || Gdx.input.isKeyPressed(Keys.F5)) {
-            reloadEngine(sm);
-        }
+        //TODO: Implement once keyPress is available
+//        if (Mdx.input.isKeyPressed(Keys.CONTROL_LEFT) && Mdx.input.isKeyPressed(Keys.R) || Mdx.input.isKeyPressed(Keys.F5)) {
+//            reloadEngine(sm);
+//        }
     }
 
     @Override

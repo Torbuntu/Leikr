@@ -1,19 +1,19 @@
 package leikr;
 
-import com.badlogic.gdx.Gdx;
 import leikr.customProperties.CustomSystemProperties;
 import leikr.screens.EngineScreen;
 import leikr.screens.MenuScreen;
-import com.badlogic.gdx.graphics.Pixmap;
 import leikr.loaders.FontLoader;
 import leikr.screens.CreditScreen;
 import leikr.screens.ErrorScreen;
 import leikr.screens.LoadScreen;
 import leikr.screens.NewProgramScreen;
 import leikr.screens.TitleScreen;
+import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.files.LocalFileHandleResolver;
 import org.mini2Dx.core.game.ScreenBasedGame;
+import org.mini2Dx.core.graphics.Pixmap;
 
 public class GameRuntime extends ScreenBasedGame {
 
@@ -73,9 +73,11 @@ public class GameRuntime extends ScreenBasedGame {
     public void initialise() {
         assetManager = new AssetManager(new LocalFileHandleResolver());
         primaryFontLoader.initializeDefaultFont(assetManager);
-        Pixmap m = new Pixmap(Gdx.files.local("Internal/Cursor.png"));
-        Gdx.graphics.setCursor(Gdx.graphics.newCursor(m, 0, 0));
-        m.dispose();
+
+        Pixmap tmp = Mdx.graphics.newPixmap(Mdx.files.local("Internal/Cursor.png"));
+        Mdx.graphics.newCustomCursor(tmp, tmp, 0, 0);
+        tmp.dispose();
+
         this.addScreen(new MenuScreen(assetManager));//0
         this.addScreen(new EngineScreen());//1
         this.addScreen(new TitleScreen(assetManager));//2
