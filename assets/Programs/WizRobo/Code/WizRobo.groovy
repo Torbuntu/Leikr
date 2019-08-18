@@ -3,6 +3,9 @@ import Wizard
 import Bolt
 
 class WizRobo extends leikr.Engine {
+	
+	def DEBUG = false;
+	
     def wizard 
     def bolt 
     def enemies = []
@@ -258,7 +261,6 @@ class WizRobo extends leikr.Engine {
         enemies = []
         enemies.addAll([enemy1, enemy2]) 
     	loadMap("lvl1")
-		getTiledLayer()
     }
     
     void initlvl2(){
@@ -563,7 +565,7 @@ class WizRobo extends leikr.Engine {
     }
 
     void update(float delta){
-		FPS()
+    	if(keyPress("F1")) DEBUG = !DEBUG
         debuglvl()       
         if(gameOver){
         	if(keyPress("Enter") || button("SELECT")){
@@ -797,6 +799,10 @@ class WizRobo extends leikr.Engine {
             renderDefault()
             break;
         }      
+        
+        if(DEBUG){
+			FPS(0)
+        }
         
     }
     

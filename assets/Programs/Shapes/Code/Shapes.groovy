@@ -6,7 +6,7 @@ class Shapes extends leikr.Engine {
     int x, y, x2, y2, r, t, amt, rx, ry, i, j, cx, cy, cvx, cvy 
 
     void create(){
-        amt = 200             
+        amt = 50             
         //println new File("/").list() //bad guy code test
         x = 120
         y = 80
@@ -19,11 +19,10 @@ class Shapes extends leikr.Engine {
         cvx = 1
         cvy = 1
     }
-    void update(float delta){
-
+    void update(float delta){		
     }
     void render(){	
-
+		
         t+=1
         if(cx == 190) cvx = -1
         if(cx == 0) cvx = 1
@@ -33,7 +32,7 @@ class Shapes extends leikr.Engine {
         cx += cvx
         cy += cvy
         
-        clip(cx, cy, 50, 50)
+       	//clip(cx, cy, 50, 50)
         
         for(j = 0; j < 32; j++){
             pixel(j, j, 1)
@@ -46,15 +45,13 @@ class Shapes extends leikr.Engine {
             x2 = 40 + cos(x / 10 + t/40)*80
             y2 = 40 + sin(y / 10 + t/40)*40
 
-			
-
             pixel((i%32)+1, -x2+rx+5, -y2+ry+5)//top left
             pixel((i%32)+1, -x2+rx+5, y2+ry-5)//bottom left
 			
-            pixel((i%32)+1, x2+rx-5, -y2+ry+5)//top right
+           	pixel((i%32)+1, x2+rx-5, -y2+ry+5)//top right
             pixel((i%32)+1, x2+rx-5, y2+ry-5)//bottom rigt
         }
-
+		//FPS(0)
     }
         
 }	

@@ -10,7 +10,6 @@ import org.mini2Dx.core.input.GamePad;
  * @author tor
  */
 
-//TODO: This whole input system needs to be fixed. Mapping is currently broken with the libgdx backends.
 public class LeikrController extends BaseGamePadListener {
 
     HashMap<Object, Boolean> buttons = new HashMap<>();

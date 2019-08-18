@@ -61,12 +61,10 @@ public class ErrorScreen extends BasicGameScreen {
             sm.enterGameScreen(MenuScreen.ID, new FadeOutTransition(Colors.TEAL()), new FadeInTransition(Colors.FOREST()));
         }
 
-//        if (Mdx.input.isKeyPressed(Keys.CONTROL_LEFT) && Mdx.input.isKeyPressed(Keys.R) || Mdx.input.isKeyJustPressed(Keys.F5)) {
-//            reloadEngine(sm);
-//        }
-        if (Mdx.input.isKeyJustPressed(Keys.F5)) {
+        if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyJustPressed(Keys.R) || Mdx.input.isKeyJustPressed(Keys.F5)) {
             reloadEngine(sm);
         }
+
     }
 
     @Override

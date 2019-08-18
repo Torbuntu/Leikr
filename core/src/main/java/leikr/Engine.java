@@ -9,6 +9,7 @@ import leikr.managers.LeikrScreenManager;
 import leikr.managers.LeikrSystemManager;
 import org.mini2Dx.core.graphics.Animation;
 import org.mini2Dx.core.Mdx;
+import org.mini2Dx.core.PerformanceTracker;
 import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.input.BaseGamePadListener;
@@ -61,7 +62,6 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      */
     public final void preCreate(int mSprites, LeikrSystemManager sys) {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
-//        logger = new FPSLogger();
         audio = LeikrAudioManager.getLeikrAudioManager();
         screen = LeikrScreenManager.getLeikrScreenManager(mSprites);
         system = sys;
@@ -99,12 +99,6 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final boolean preUpdate(float delta) {
         mouse.updateMouse();
         screen.preUpdate(delta);
-//        if (controllerA != null) {
-//            return (controllerA.button("START"));
-//        }
-//        if (controllerB != null) {
-//            return (controllerB.button("START"));
-//        }
         return false;
     }
 
@@ -160,19 +154,29 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     //Start Helper methods
     /**
-     * Prints the FPS to the console
-     */
-    public final void FPS() {
-//        logger.log();
-    }
-
-    /**
+     * Prints the FPS to the screen given the start position. 0: top left 1: top
+     * right 2: bottom left 3: bottom right
      *
-     * @return FPS as integer
+     * @param pos
      */
-    public int getFPS() {
-//        return Gdx.graphics.getFramesPerSecond();
-        return -1;
+    public final void FPS(int pos) {
+        switch (pos) {
+            case 0:
+                PerformanceTracker.drawInTopLeft(Mdx.graphicsContext);
+                break;
+            case 1:
+                PerformanceTracker.drawInTopRight(Mdx.graphicsContext);
+                break;
+            case 2:
+                PerformanceTracker.drawInBottomLeft(Mdx.graphicsContext);
+                break;
+            case 3:
+                PerformanceTracker.drawInBottomRight(Mdx.graphicsContext);
+                break;
+            default:
+
+                break;
+        }
     }
 
     public long getFrame() {
@@ -541,6 +545,10 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         return keyboard.key(key);
     }
 
+    public final boolean keyUp(String key){
+        return keyboard.keyUp(key);
+    }
+    
     //detect single key press.
     public final boolean keyPress(String key) {
         return keyboard.keyPress(key);
@@ -616,7 +624,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     //Experimental API methods
     public void tint(int color) {
-       screen.tint(color);
+        screen.tint(color);
     }
 
     public void tint() {

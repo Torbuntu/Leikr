@@ -49,8 +49,8 @@ public class CreditScreen extends BasicGameScreen {
             }
         }
         if (Mdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-            System.out.println("Good bye!");
-//            Gdx.app.exit(); //TODO: Implement with Mdx.platform.exit()
+            System.out.println("Goodbye!");
+            Mdx.platformUtils.exit(true);
         }
     }
 

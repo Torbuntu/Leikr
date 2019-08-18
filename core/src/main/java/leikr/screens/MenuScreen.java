@@ -213,8 +213,8 @@ public class MenuScreen extends BasicGameScreen {
             }
         }
         if (Mdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-            System.out.println("Good bye!");
-//            Gdx.app.exit(); //TODO: Add Mdx.platform.exit()
+            System.out.println("Goodbye!");
+            Mdx.platformUtils.exit(true);
         }
         if (Mdx.input.isKeyJustPressed(Keys.Q) || Mdx.input.isKeyJustPressed(Keys.E)) {
             PAGE = !PAGE;

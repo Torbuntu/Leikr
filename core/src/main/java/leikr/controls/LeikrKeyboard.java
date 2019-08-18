@@ -27,7 +27,17 @@ public class LeikrKeyboard {
      * @return
      */
     public boolean key(String key) {
-        return Mdx.input.isKeyJustPressed(Keys.valueOf(key));
+        return Mdx.input.isKeyDown(Keys.valueOf(key));
+    }
+    
+    /**
+     * Returns boolean of if the value of a key is NOT pressed.
+     * 
+     * @param key
+     * @return 
+     */
+    public boolean keyUp(String key){
+        return Mdx.input.isKeyUp(Keys.valueOf(key));
     }
 
     /**
