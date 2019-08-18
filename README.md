@@ -2,8 +2,6 @@
 # Leikr Game System
 | [Wiki](https://github.com/torbuntu/leikr/wiki) | [itch.io](https://torbuntu.itch.io/leikr) | [Releases](https://github.com/torbuntu/leikr/releases) | [About](https://torbuntu.github.io/Leikr/docs/about) |
 
-# !! Broken while upgrading Core Libraries !!
-
 A Game System built in Java for writing games and programs in Groovy. (A Fantasy Console idea)
 
 Powered by [Mini2Dx](https://mini2dx.org/)
@@ -30,9 +28,7 @@ Leikr/
     Sys/    
 ```
 
-Depending on your system, you can either launch the system through the `Leikr` shell script, or the `Leikr.bat` if you're on a windows system. Or, if you'd rather launch the system manually the java way, use the command `java -jar Leikr-x.x.x.jar release`
-
-The `release` argument triggers the system to apply the sandboxing security policy.
+Depending on your system, you can either launch the system through the `Leikr` shell script, or the `Leikr.bat` if you're on a windows system. Or, if you'd rather launch the system manually the java way, use the command `java -jar Leikr-x.x.x.jar`
 
 
 ## Running from source 
@@ -131,7 +127,7 @@ class MyGame extends leikr.Engine{
 ```
 
 
-## specs: 
+## Specs: 
 
 | Spec |      |
 |----|----|
@@ -139,8 +135,8 @@ class MyGame extends leikr.Engine{
 | Sprites    | 2,048 max. Each sprite gets split into 8x8, 16x16, 32x32 and 64x64 pixel sprites. |
 | Art | Can load images to be used as backgrounds or however else you wish. |
 | Maps | .tmx maps loadabled from `Maps` directory. (currently unlimited) Animated tiles supported. |
-| Audio | .WAV files loaded from `Audio/Sound` and `Audio/Music`  (Limitations TBD) |
-| Controls | 2xUSB controllers/Full Keyboard. Tested using SNES style controllers on Linux. Note: The controllers are configurable using the Program `Controllers` which comes with the system. It maps inputs to the file `Data/system.properties` |
+| Audio | 16bit .WAV files loaded from `Audio/Sound` and `Audio/Music`  (Limitations TBD) |
+| Controls | Primary: Keyboard, Mouse. Secondary: USB Controllers (snes layout). Tested using SNES style controllers on Linux. Note: The controllers are configurable using the Program `Controllers` which comes with the system. It maps inputs to the file `Data/system.properties` |
 
 
 ## Supported Platforms
