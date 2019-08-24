@@ -9,7 +9,6 @@ import leikr.managers.LeikrScreenManager;
 import leikr.managers.LeikrSystemManager;
 import org.mini2Dx.core.graphics.Animation;
 import org.mini2Dx.core.Mdx;
-import org.mini2Dx.core.PerformanceTracker;
 import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.input.BaseGamePadListener;
@@ -24,7 +23,6 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     //Mini2DX specific classes for managing the screen state and drawing.
     FitViewport viewport;
-//    FPSLogger logger; //TODO: Use Mdx fps logger of some sort
 
     //used by the Engine Screen to determine if the game should be actively running.
     boolean active;
@@ -154,29 +152,18 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     //Start Helper methods
     /**
-     * Prints the FPS to the screen given the start position. 0: top left 1: top
-     * right 2: bottom left 3: bottom right
+     * Prints the FPS to the console
      *
-     * @param pos
      */
-    public final void FPS(int pos) {
-        switch (pos) {
-            case 0:
-                PerformanceTracker.drawInTopLeft(Mdx.graphicsContext);
-                break;
-            case 1:
-                PerformanceTracker.drawInTopRight(Mdx.graphicsContext);
-                break;
-            case 2:
-                PerformanceTracker.drawInBottomLeft(Mdx.graphicsContext);
-                break;
-            case 3:
-                PerformanceTracker.drawInBottomRight(Mdx.graphicsContext);
-                break;
-            default:
+    public final void FPS() {
+        System.out.println("FPS: " + Mdx.platformUtils.getFramesPerSecond());
+    }
 
-                break;
-        }
+    public final void HOST_INFO() {
+        System.out.println("Total Mem: " + Mdx.platformUtils.getTotalMemory());
+        System.out.println("Free Mem : " + Mdx.platformUtils.getAvailableMemory());
+        System.out.println("Used Mem : " + Mdx.platformUtils.getUsedMemory());
+        System.out.println("UPS      : " + Mdx.platformUtils.getAverageUpdateDuration());
     }
 
     public long getFrame() {
@@ -545,10 +532,10 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         return keyboard.key(key);
     }
 
-    public final boolean keyUp(String key){
+    public final boolean keyUp(String key) {
         return keyboard.keyUp(key);
     }
-    
+
     //detect single key press.
     public final boolean keyPress(String key) {
         return keyboard.keyPress(key);

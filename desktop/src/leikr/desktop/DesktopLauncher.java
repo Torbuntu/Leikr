@@ -21,8 +21,8 @@ public class DesktopLauncher {
         DesktopMini2DxConfig config = new DesktopMini2DxConfig(GameRuntime.GAME_IDENTIFIER);
         config.vSyncEnabled = true;
         config.title = "Leikr";
-//        config.width = 720;
-//        config.height = 480;
+        config.width = 720;
+        config.height = 480;
         config.fullscreen = false;
         new DesktopMini2DxGame(new GameRuntime(arg), config);
     }

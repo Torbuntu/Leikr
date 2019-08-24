@@ -55,15 +55,6 @@ public class CreditScreen extends BasicGameScreen {
     }
 
     @Override
-    public void preTransitionOut(Transition transitionOut) {
-    }
-
-    @Override
-    public void postTransitionIn(Transition transitionIn) {
-        
-    }
-
-    @Override
     public void initialise(GameContainer gc) {
 
     }

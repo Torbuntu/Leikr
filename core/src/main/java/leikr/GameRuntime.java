@@ -8,11 +8,12 @@ import leikr.screens.CreditScreen;
 import leikr.screens.ErrorScreen;
 import leikr.screens.LoadScreen;
 import leikr.screens.NewProgramScreen;
+import leikr.screens.TerminalScreen;
 import leikr.screens.TitleScreen;
 import org.mini2Dx.core.Mdx;
-import org.mini2Dx.core.PlatformUtils;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.files.LocalFileHandleResolver;
+import org.mini2Dx.core.font.MonospaceGameFont;
 import org.mini2Dx.core.game.ScreenBasedGame;
 import org.mini2Dx.core.graphics.Pixmap;
 
@@ -26,7 +27,7 @@ public class GameRuntime extends ScreenBasedGame {
 
     public static int WIDTH = 240;
     public static int HEIGHT = 160;
-
+    
     AssetManager assetManager;
     public CustomSystemProperties csp;
     
@@ -39,6 +40,7 @@ public class GameRuntime extends ScreenBasedGame {
      */
     public GameRuntime(String[] arg) {
         csp = new CustomSystemProperties();
+        
         if (csp.LAUNCH_TITLE.length() > 3) {
             LAUNCH_TITLE = csp.LAUNCH_TITLE;
             PROGRAM_PATH = "Programs/" + csp.LAUNCH_TITLE;
@@ -86,10 +88,14 @@ public class GameRuntime extends ScreenBasedGame {
         this.addScreen(new ErrorScreen(assetManager));//4
         this.addScreen(new LoadScreen());//5
         this.addScreen(new NewProgramScreen());//6
+        this.addScreen(new TerminalScreen(assetManager));//7
     }
 
     @Override
     public int getInitialScreenId() {
+        if(csp.TERMINAL_MODE){
+            return TerminalScreen.ID;
+        }
         return TitleScreen.ID;//initial screen to begin on is the title screen.
     }
 

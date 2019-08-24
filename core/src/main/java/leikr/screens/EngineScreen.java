@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.Engine;
 import leikr.GameRuntime;
+import leikr.customProperties.CustomSystemProperties;
 import leikr.loaders.EngineLoader;
 import leikr.managers.LeikrSystemManager;
 import org.mini2Dx.core.game.GameContainer;
@@ -35,7 +36,6 @@ public class EngineScreen extends BasicGameScreen {
     public static boolean PAUSE = false;
     private static boolean CONFIRM = false;
 
-
     public EngineScreen() {
     }
 
@@ -62,7 +62,9 @@ public class EngineScreen extends BasicGameScreen {
         }
         if (GameRuntime.checkLaunchTitle()) {
             sm.enterGameScreen(TitleScreen.ID, null, null);
-        } else {
+        } else if(CustomSystemProperties.TERMINAL_MODE){
+            sm.enterGameScreen(TerminalScreen.ID, null, null);
+        }else{
             sm.enterGameScreen(MenuScreen.ID, null, null);
         }
     }
