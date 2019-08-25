@@ -8,7 +8,7 @@ Powered by [Mini2Dx](https://mini2dx.org/)
 
 | Preview |
 |----|
-| ![](title_menu.gif?raw=true) |
+| ![](showcase/title_preview.gif?raw=true) |
 
 ## Running from release
 
