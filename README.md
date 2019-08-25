@@ -112,7 +112,7 @@ main.groovy contents to be runnable should be similar to the following template:
 class MyGame extends leikr.Engine{
 
   void create(){
-      //initialize classes and variables here. Run on first load
+      //Initialize classes and variables here. Run on first load
   }
   
   void update(float delta){
