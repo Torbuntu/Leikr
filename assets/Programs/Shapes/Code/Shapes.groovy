@@ -19,7 +19,8 @@ class Shapes extends leikr.Engine {
         cvx = 1
         cvy = 1
     }
-    void update(float delta){		
+    void update(float delta){	
+    	FPS()	
     }
     void render(){	
 		
