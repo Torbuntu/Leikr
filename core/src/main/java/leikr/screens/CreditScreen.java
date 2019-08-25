@@ -11,7 +11,6 @@ import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
-import org.mini2Dx.core.screen.Transition;
 import org.mini2Dx.core.screen.transition.FadeInTransition;
 import org.mini2Dx.core.screen.transition.FadeOutTransition;
 import org.mini2Dx.gdx.Input.Keys;
@@ -62,7 +61,7 @@ public class CreditScreen extends BasicGameScreen {
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
         checkInput(sm);
-        if (Mdx.input.justTouched()|| timer > 300) {
+        if (Mdx.input.justTouched() || timer > 300) {
             MENU = true;
         }
         timer++;

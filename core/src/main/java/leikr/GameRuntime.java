@@ -13,7 +13,6 @@ import leikr.screens.TitleScreen;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.files.LocalFileHandleResolver;
-import org.mini2Dx.core.font.MonospaceGameFont;
 import org.mini2Dx.core.game.ScreenBasedGame;
 import org.mini2Dx.core.graphics.Pixmap;
 
@@ -76,6 +75,8 @@ public class GameRuntime extends ScreenBasedGame {
     public void initialise() {
         assetManager = new AssetManager(new LocalFileHandleResolver());
         primaryFontLoader.initializeDefaultFont(assetManager);
+        primaryFontLoader.getDefaultFont().load(assetManager);
+        Mdx.graphicsContext.setFont(primaryFontLoader.getDefaultFont());
 
         Pixmap tmp = Mdx.graphics.newPixmap(Mdx.files.local("Internal/Cursor.png"));
         Mdx.graphics.newCustomCursor(tmp, tmp, 0, 0);
@@ -93,7 +94,7 @@ public class GameRuntime extends ScreenBasedGame {
 
     @Override
     public int getInitialScreenId() {
-        if(csp.TERMINAL_MODE){
+        if(CustomSystemProperties.TERMINAL_MODE){
             return TerminalScreen.ID;
         }
         return TitleScreen.ID;//initial screen to begin on is the title screen.

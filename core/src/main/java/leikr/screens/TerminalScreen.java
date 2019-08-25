@@ -51,8 +51,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public void initialise(GameContainer gc) {
-        GameRuntime.primaryFontLoader.getDefaultFont().load(assetManager);
-        Mdx.graphicsContext.setFont(GameRuntime.primaryFontLoader.getDefaultFont());
+        
     }
 
     @Override

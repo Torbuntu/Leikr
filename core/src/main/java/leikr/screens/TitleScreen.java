@@ -1,7 +1,6 @@
 package leikr.screens;
 
 import leikr.GameRuntime;
-import org.mini2Dx.core.font.MonospaceGameFont;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
@@ -26,7 +25,6 @@ public class TitleScreen extends BasicGameScreen {
 
     public static int ID = 2;
     AssetManager assetManager;
-    MonospaceGameFont font;
     FitViewport viewport;
     boolean CREDITS = false;
 
@@ -56,12 +54,10 @@ public class TitleScreen extends BasicGameScreen {
 
     @Override
     public void initialise(GameContainer gc) {
-        font = GameRuntime.primaryFontLoader.getDefaultFont();
     }
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
-        font.load(assetManager);
         logo.update(f);
 
         checkInput(sm);
@@ -78,7 +74,6 @@ public class TitleScreen extends BasicGameScreen {
     @Override
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
-        g.setFont(font);
         logo.draw(g, 40, 56);
         g.drawString("Leikr Game System", 8, 80, 240, 1);
     }
