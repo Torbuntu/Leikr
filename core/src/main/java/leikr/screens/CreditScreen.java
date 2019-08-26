@@ -5,14 +5,11 @@ import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
-import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.Texture;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
-import org.mini2Dx.core.screen.transition.FadeInTransition;
-import org.mini2Dx.core.screen.transition.FadeOutTransition;
 import org.mini2Dx.gdx.Input.Keys;
 
 /**
@@ -42,9 +39,9 @@ public class CreditScreen extends BasicGameScreen {
         if (Mdx.input.isKeyJustPressed(Keys.SPACE) || Mdx.input.isKeyJustPressed(Keys.ENTER) || Mdx.input.isKeyJustPressed(Keys.X) || MENU) {
             MENU = false;
             if (GameRuntime.checkLaunchTitle()) {
-                sm.enterGameScreen(LoadScreen.ID, new FadeOutTransition(Colors.TEAL()), new FadeInTransition(Colors.FOREST()));
+                sm.enterGameScreen(LoadScreen.ID, null, null);
             } else {
-                sm.enterGameScreen(MenuScreen.ID, new FadeOutTransition(Colors.TEAL()), new FadeInTransition(Colors.FOREST()));
+                sm.enterGameScreen(MenuScreen.ID, null, null);
             }
         }
         if (Mdx.input.isKeyJustPressed(Keys.ESCAPE)) {

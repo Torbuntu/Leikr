@@ -1,10 +1,11 @@
 import java.io.File //for bad guy code test
 import com.badlogic.gdx.controllers.*;
-
+import groovy.transform.CompileStatic
+@CompileStatic
 class Shapes extends leikr.Engine {
 
-    int x, y, x2, y2, r, t, amt, rx, ry, i, j, cx, cy, cvx, cvy 
-
+    int r, t, amt, rx, ry, i, j, cx, cy, cvx, cvy 
+	float x, y, x2, y2
     void create(){
         amt = 50             
         //println new File("/").list() //bad guy code test
@@ -40,19 +41,18 @@ class Shapes extends leikr.Engine {
         }
  
  		 for(i = 0; i < amt; i++){
-            x = cos(i / 10 + t/40)*80
-            y = sin(i / 10 + t/40)*40
+            x = (float)cos((float)(i / 10 + t/40))*80
+            y = (float)sin((float)(i / 10 + t/40))*40
             
-            x2 = 40 + cos(x / 10 + t/40)*80
-            y2 = 40 + sin(y / 10 + t/40)*40
+            x2 = 40 + (float)cos((float)(x / 10 + t/40))*80
+            y2 = 40 + (float)sin((float)(y / 10 + t/40))*40
 
-            pixel((i%32)+1, -x2+rx+5, -y2+ry+5)//top left
-            pixel((i%32)+1, -x2+rx+5, y2+ry-5)//bottom left
+            pixel((i%32)+1, (int) (-x2+rx+5), (int) (-y2+ry+5))//top left
+            pixel((i%32)+1, (int)(-x2+rx+5), (int) (y2+ry-5))//bottom left
 			
-           	pixel((i%32)+1, x2+rx-5, -y2+ry+5)//top right
-            pixel((i%32)+1, x2+rx-5, y2+ry-5)//bottom rigt
+           	pixel((i%32)+1, (int) (x2+rx-5),(int)( -y2+ry+5))//top right
+            pixel((i%32)+1, (int) (x2+rx-5), (int)(y2+ry-5))//bottom rigt
         }
-		//FPS(0)
     }
         
 }	

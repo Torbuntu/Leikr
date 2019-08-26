@@ -36,6 +36,8 @@ project(":core") {
     dependencies {
         implementation "org.mini2Dx:mini2Dx-core:$mini2DxVersion"
         implementation "org.mini2Dx:mini2Dx-tiled:$mini2DxVersion"
+        implementation "org.mini2Dx:mini2Dx-ui:$mini2DxVersion"
+        
         implementation "org.lwjgl.lwjgl:lwjgl:2.9.3"
         
         implementation "org.apache.commons:commons-lang3:3.9"

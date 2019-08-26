@@ -15,8 +15,7 @@ import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
-import org.mini2Dx.core.screen.transition.FadeInTransition;
-import org.mini2Dx.core.screen.transition.FadeOutTransition;
+import org.mini2Dx.core.screen.Transition;
 import org.mini2Dx.gdx.Input.Keys;
 import org.mini2Dx.gdx.InputProcessor;
 
@@ -34,7 +33,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
 
     String prompt = "";
     String historyText = "";
-    
+
     int Y_OFFSET = 0;
 
     AssetManager assetManager;
@@ -51,14 +50,20 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public void initialise(GameContainer gc) {
-        
+
+    }
+
+    @Override
+    public void preTransitionIn(Transition trns) {
+        setProcessor();
     }
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         if (RUN_PROGRAM) {
             RUN_PROGRAM = false;
-            sm.enterGameScreen(LoadScreen.ID, new FadeOutTransition(Colors.TEAL()), new FadeInTransition(Colors.FOREST()));
+            historyText = "";
+            sm.enterGameScreen(LoadScreen.ID, null, null);
         }
     }
 
@@ -70,7 +75,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
         g.setColor(Colors.BLACK());
         g.fillRect(0, 152, 240, 160);
         g.setColor(Colors.GREEN());
-        g.drawString(">" + prompt, 0, 152, 240);        
+        g.drawString(">" + prompt, 0, 152, 240);
     }
 
     @Override
@@ -142,8 +147,8 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
             case "clear":
                 return "";
             case "help":
-                if(command.length > 1) {
-                    switch(command[1]){
+                if (command.length > 1) {
+                    switch (command[1]) {
                         case "exit":
                             return ">exit \nExits the Leikr Game system.";
                         case "clear":
@@ -158,7 +163,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                             return "No help for unknown command: ( " + command[1] + " )";
                     }
                 }
-               return "Commands: exit, clear, help, ls, run";
+                return "Commands: exit, clear, help, ls, run";
             case "ls":
                 try {
                     String out = "";
@@ -184,7 +189,5 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                 return "Uknown command: ( " + prompt + " )";
         }
     }
-    
-    
 
 }

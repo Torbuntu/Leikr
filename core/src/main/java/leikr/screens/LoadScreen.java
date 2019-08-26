@@ -17,8 +17,6 @@ import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
-import org.mini2Dx.core.screen.transition.FadeInTransition;
-import org.mini2Dx.core.screen.transition.FadeOutTransition;
 
 /**
  *
@@ -56,7 +54,7 @@ public class LoadScreen extends BasicGameScreen {
             try {
                 EngineScreen scrn = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
                 scrn.setEngine((Engine) engineGetter.get());
-                sm.enterGameScreen(EngineScreen.ID, new FadeOutTransition(Colors.TEAL()), new FadeInTransition(Colors.FOREST()));
+                sm.enterGameScreen(EngineScreen.ID, null, null);
             } catch (InterruptedException | ExecutionException ex) {
                 ErrorScreen.setErrorMessage("Error loading engine: " + ex.getMessage());
                 sm.enterGameScreen(ErrorScreen.ID, null, null);

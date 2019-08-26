@@ -1,31 +1,36 @@
+import groovy.transform.CompileStatic
+@CompileStatic
 class Wizard{
-	def x = 10 
-	def y = 100 
-	def vx = 0 
-	def vy = 0 
-	def width = 8 
-	def height = 8 
-	def spid = 0 
-	def f = false 
-	def g = true 
-	def jmsid = 4
-	def jumping = false
-	def s = false 
-	def walkAnim = [1,2,3,0] 
-	def waIndex = 0 
-	def walking = false
-    def waTime = 0
-    def left = "Left"
-    def right = "Right" 
-    def up = "Space" 
-    def down ="Down" 
-    def charged = false 
-    def chargedTime = 0 
-    def cf = false
-    def scrolls = 0 
-    def health = 3
+    float x = 10 
+    float y = 100 
+    float vx = 0 
+    float vy = 0 
+    float width = 8 
+    float height = 8 
+    int spid = 0 
+    boolean f = false 
+    boolean g = true 
+    int jmsid = 4
+    boolean jumping = false
+    boolean s = false 
+    int[] walkAnim = [1,2,3,0] 
+    int waIndex = 0 
+    boolean walking = false
+    int waTime = 0
+    String left = "Left"
+    String right = "Right" 
+    String up = "Space" 
+    String down ="Down" 
+    boolean charged = false 
+    int chargedTime = 0 
+    boolean cf = false
+    int scrolls = 0 
+    int health = 3
     
-    def setWizard(x,y,vx,vy,width,height,spid,f,g,jmsid,jumping,s,walkAnim,waIndex,walking,waTime,left,right,up,down,charged,chargedTime,cf,scrolls,health){
+    def setWizard(float x, float y, float vx, float vy, float width, float height,
+    int spid, boolean f, boolean g, int jmsid, boolean jumping, boolean s, int[] walkAnim,
+    int waIndex, boolean walking, int waTime, String left, String right, String up, String down,
+    boolean charged, int chargedTime, boolean cf, int scrolls, int health){
     	this.x = x
     	this.y = y
     	this.vx = vx

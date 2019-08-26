@@ -1,35 +1,36 @@
 import Enemy
 import Wizard
 import Bolt
-
+import groovy.transform.CompileStatic
+@CompileStatic
 class WizRobo extends leikr.Engine {
 	
-	def DEBUG = false;
+    def DEBUG = false;
 	
-    def wizard 
-    def bolt 
-    def enemies = []
-    def enemy1, enemy2, enemy3, enemy4, enemy5
-    def enemyDeadSpids = [85,86,87]
+    Wizard wizard 
+    Bolt bolt 
+    List<Enemy> enemies = []
+    Enemy enemy1, enemy2, enemy3, enemy4, enemy5
+    int[] enemyDeadSpids = [85,86,87]
     
-    def healthSpids = [193,193,193]
-    def energySpids = [194,194,194]
+    int[] healthSpids = [193,193,193]
+    int[] energySpids = [194,194,194]
 	
-	def gameOver = false
-    def title = true
-    def level = 0
-    def lvl1start = false
-    def lvl2start = false
-    def lvl3start = false
-    def lvl4start = false
-    def lvl5start = false    
-    def lvlFinalstart = false
+    boolean gameOver = false
+    boolean title = true
+    int level = 0
+    boolean lvl1start = false
+    boolean lvl2start = false
+    boolean lvl3start = false
+    boolean lvl4start = false
+    boolean lvl5start = false    
+    boolean lvlFinalstart = false
 	    
-    def time = 0
+    int time = 0
 		    
-    def solid(x,y){
-        float mx = (x)/8 
-        float my = (y)/8
+    boolean solid(float x, float y){
+        float mx = ((x)/8 ) as float
+        float my = ((y)/8 )as float
         int cellid = mapGet((int)mx,(int)my)
         if(	cellid > 60 && cellid < 170){
             return true
@@ -37,9 +38,9 @@ class WizRobo extends leikr.Engine {
         return false
     }	  
 	
-    def getTile(x,y){
-        float mx = (x)/8 
-        float my = (y)/8
+    int getTile(float x, float y){
+        float mx = ((x)/8 ) as float
+        float my = ((y)/8 )as float
         return mapGet((int)mx,(int)my)
     }
     
@@ -127,7 +128,7 @@ class WizRobo extends leikr.Engine {
         }	
         
         if(bolt.charge == 30){
-            wizard.vx = wizard.vx + (wizard.vx / 2)
+            wizard.vx = (wizard.vx + (wizard.vx / 2)) as float
         }
 		
         wizard.x=wizard.x+wizard.vx
@@ -170,14 +171,14 @@ class WizRobo extends leikr.Engine {
     
     def walkingDust(){
     	def i = randInt(8)
-		def j = randInt(8)
-		if(wizard.f){			
-			pixel(14, (int)(wizard.x + 9+i), (int)(wizard.y -j+6))
-    		pixel(14, (int)(wizard.x + 9+j), (int)(wizard.y -i+6))
-		}else{
-			pixel(14, (int)(wizard.x-i-1), (int)(wizard.y -j+6))
-    		pixel(14, (int)(wizard.x-j-1), (int)(wizard.y -i+6))
-		}
+        def j = randInt(8)
+        if(wizard.f){			
+            pixel(14, (int)(wizard.x + 9+i), (int)(wizard.y -j+6))
+            pixel(14, (int)(wizard.x + 9+j), (int)(wizard.y -i+6))
+        }else{
+            pixel(14, (int)(wizard.x-i-1), (int)(wizard.y -j+6))
+            pixel(14, (int)(wizard.x-j-1), (int)(wizard.y -i+6))
+        }
 
     }
     
@@ -224,7 +225,7 @@ class WizRobo extends leikr.Engine {
     }  
     
     void checkScroll(){
-        int tile = getTile(wizard.x+2, wizard.y+2)
+        int tile = getTile((wizard.x as int)+2, (wizard.y as int)+2)
         if( tile == 29 || tile == 30 || tile == 31){
             mapSet((int)((wizard.x+2)/8), (int)((wizard.y+4)/8), 0)
             wizard.scrolls++
@@ -236,7 +237,11 @@ class WizRobo extends leikr.Engine {
     }   
     
     //assumes x,y,w,h on each object
-    boolean collide(a,b){
+    boolean collide(Bolt a, Enemy b){
+        return (a.x < b.x + b.width) && (a.x + a.width > b.x) && (a.y < b.y + b.height) && (a.y + a.height > b.y)
+    }
+    
+    boolean collide(Wizard a, Enemy b){
         return (a.x < b.x + b.width) && (a.x + a.width > b.x) && (a.y < b.y + b.height) && (a.y + a.height > b.y)
     }
     
@@ -256,8 +261,8 @@ class WizRobo extends leikr.Engine {
         wizard.x = 10
         wizard.y = 144
         
-    	def enemy1 = new Enemy(208, 64, 0.2, 208, 224, [x: 28, y: 3], [x:28, y:2])    
-        def enemy2 = new Enemy( 64, 80,   0,  64,  64, [x: 29, y: 3], [x:29, y:2])
+    	def enemy1 = new Enemy(208f, 64f, 0.2f, 208, 224, [x: 28, y: 3]as Map, [x:28, y:2]as Map)    
+        def enemy2 = new Enemy( 64f, 80f,   0f,  64,  64, [x: 29, y: 3]as Map, [x:29, y:2]as Map)
         enemies = []
         enemies.addAll([enemy1, enemy2]) 
     	loadMap("lvl1")
@@ -267,9 +272,9 @@ class WizRobo extends leikr.Engine {
         wizard.x = 0
         wizard.y = 24
         
-    	def enemy1 = new Enemy(  72, 96, 0.2,  72,   88, [x: 27, y: 17], [x:28, y:17])        
-        def enemy2 = new Enemy( 152, 72, 0.2, 152,  168, [x: 27, y: 18], [x:28, y:18])        
-        def enemy3 = new Enemy( 208, 72, 0.2, 208,  224, [x: 27, y: 19], [x:28, y:19])
+    	def enemy1 = new Enemy(  72f, 96f, 0.2f,  72,   88, [x: 27, y: 17]as Map, [x:28, y:17]as Map)        
+        def enemy2 = new Enemy( 152f, 72f, 0.2f, 152,  168, [x: 27, y: 18]as Map, [x:28, y:18]as Map)        
+        def enemy3 = new Enemy( 208f, 72f, 0.2f, 208,  224, [x: 27, y: 19]as Map, [x:28, y:19]as Map)
         enemies = []
         enemies.addAll([enemy1, enemy2, enemy3])
     	loadMap("lvl2")
@@ -279,10 +284,10 @@ class WizRobo extends leikr.Engine {
         wizard.x = 220
         wizard.y = 0
         
-    	def enemy1 = new Enemy(   8,  64, 0.2,   8,  24, [x: 26, y: 13], [x:26, y:14])      
-        def enemy2 = new Enemy(   8, 144, 0.2,   8,  56, [x: 27, y: 13], [x:27, y:14])        
-        def enemy3 = new Enemy( 184,  80, 0.2, 184, 200, [x: 28, y: 13], [x:28, y:14]) 
-        def enemy4 = new Enemy(  32,  80, 0.2,  32,  48, [x: 29, y: 13], [x:29, y:14])
+    	def enemy1 = new Enemy(   8f,  64f, 0.2f,   8,  24, [x: 26, y: 13]as Map, [x:26, y:14]as Map)      
+        def enemy2 = new Enemy(   8f, 144f, 0.2f,   8,  56, [x: 27, y: 13]as Map, [x:27, y:14]as Map)        
+        def enemy3 = new Enemy( 184f,  80f, 0.2f, 184, 200, [x: 28, y: 13]as Map, [x:28, y:14]as Map) 
+        def enemy4 = new Enemy(  32f,  80f, 0.2f,  32,  48, [x: 29, y: 13]as Map, [x:29, y:14]as Map)
         enemies = []
         enemies.addAll([enemy1, enemy2, enemy3, enemy4])
         
@@ -293,11 +298,11 @@ class WizRobo extends leikr.Engine {
         wizard.x = 10
         wizard.y = 110
         
-    	def enemy1 = new Enemy(  24,  88, 0.2,  24,  40, [x: 3, y: 17],  [x:3, y:18])       
-        def enemy2 = new Enemy(  96,  88, 0.2,  96, 104, [x: 17, y: 2],  [x:17, y:3])     
-        def enemy3 = new Enemy(  96,  24, 0.2,  56, 128, [x: 29, y: 9], [x:29, y:10])   
-        def enemy4 = new Enemy(   8, 144, 0.2,   8,  16, [x: 28, y: 10], [x:28, y:9])
-        def enemy5 = new Enemy( 168,  80, 0.2, 168, 168, [x: 27, y: 9], [x:27, y:10])
+    	def enemy1 = new Enemy(  24f,  88f, 0.2f,  24,  40, [x: 3, y: 17]as Map,  [x:3, y:18]as Map)       
+        def enemy2 = new Enemy(  96f,  88f, 0.2f,  96, 104, [x: 17, y: 2]as Map,  [x:17, y:3]as Map)     
+        def enemy3 = new Enemy(  96f,  24f, 0.2f,  56, 128, [x: 29, y: 9]as Map, [x:29, y:10]as Map)   
+        def enemy4 = new Enemy(   8f, 144f, 0.2f,   8,  16, [x: 28, y: 10]as Map, [x:28, y:9]as Map)
+        def enemy5 = new Enemy( 168f,  80f, 0.2f, 168, 168, [x: 27, y: 9]as Map, [x:27, y:10] as Map)
         enemies = []
         enemies.addAll([enemy1, enemy2, enemy3, enemy4, enemy5])
         
@@ -308,7 +313,7 @@ class WizRobo extends leikr.Engine {
     	wizard.x = 10
         wizard.y = 80
         
-    	def enemy1 = new Enemy(40, 72, 0.6, 40, 184, 32, 32, false, 60,  true, false, 0, [60,61,62,63],  0, [x: 27, y: 1], [x:28, y:1],  8)
+    	def enemy1 = new Enemy(40f, 72f, 0.6f, 40, 184, 32f, 32f, false, 60,  true, false, 0, [60,61,62,63] as int[],  0, [x: 27, y: 1] as Map, [x:28, y:1] as Map,  8)
         enemies = [] // only needed when the game loops around during development.
         enemies.add(enemy1)
 
@@ -319,9 +324,9 @@ class WizRobo extends leikr.Engine {
         wizard.x = 10
         wizard.y = 100
         
-    	def enemy1 = new Enemy(190, 120, 0.2, 8, 200, 32, 32, false, 60, true, false, 0, [60,61,62,63], 0, [x: 28, y: 3], [x:28, y:2], 8)  
+    	def enemy1 = new Enemy(190f, 120f, 0.2f, 8, 200, 32f, 32f, false, 60, true, false, 0, [60,61,62,63] as int[], 0, [x: 28, y: 3] as Map, [x:28, y:2] as Map, 8)  
     	
-    	def enemy2 = new Enemy(30, 120, 0.6, 8, 200, 32, 32, false, 60, true, false, 0, [60,61,62,63], 0, [x: 28, y: 3], [x:28, y:2],  8)
+    	def enemy2 = new Enemy(30f, 120f, 0.6f, 8, 200, 32f, 32f, false, 60, true, false, 0, [60,61,62,63] as int[], 0, [x: 28, y: 3] as Map, [x:28, y:2] as Map,  8)
         
         enemies = []
         enemies.addAll([enemy1,enemy2]) 
@@ -329,7 +334,7 @@ class WizRobo extends leikr.Engine {
     }
     
     // ENEMY methods
-    void moveEnemy(enemy, x, y){
+    void moveEnemy(Enemy enemy, float x, float y){
         if(enemy.alive){
             if(enemy.x < x || enemy.x > y){
                 enemy.vs = -enemy.vs
@@ -339,28 +344,28 @@ class WizRobo extends leikr.Engine {
         }
     }
     
-    void boltHitEnemy(enemy){
+    void boltHitEnemy(Enemy enemy){
         if(collide(bolt, enemy) && bolt.charge == 30){  
             bolt.attack = false
             bolt.charge = 0
             if(!enemy.alive){
                 enemy.remove = true
-                mapRemove((int)(enemy.x/8), (int)(enemy.y/8))
+                mapRemove((enemy.x as int)/8 as int,(enemy.y as int )/8 as int)
             }else{
                 enemy.alive = false
                 enemy.x = ceil(enemy.x)
                 enemy.x = enemy.x - enemy.x%8
-                mapRemove(enemy.keyA.x, enemy.keyA.y)
-                mapRemove(enemy.keyB.x, enemy.keyB.y)
+                mapRemove(enemy.keyA.x as int, enemy.keyA.y as int)
+                mapRemove(enemy.keyB.x as int, enemy.keyB.y as int)
                 mapSet((int)(enemy.x/8), (int)(enemy.y/8), 88)
             }                       
     	}
     }    
      
-    void enemyAnimation(enemy){
+    void enemyAnimation(Enemy enemy){
         enemy.animTime++      
         if(enemy.alive){   
-            enemy.spid = enemy.walkAnim[enemy.waIndex] 		
+            enemy.spid = enemy.walkAnim[enemy.waIndex as int] 		
             if(enemy.animTime > 4){
                 enemy.waIndex++
                 enemy.animTime = 0
@@ -469,20 +474,20 @@ class WizRobo extends leikr.Engine {
                     
                     mapSet((int)((it.x+16)/8), (int)((it.y+16)/8), 29)//Drop scroll for the victor
                     
-                    mapSet(it.keyA.x, it.keyA.y, 33)
-                    mapSet(it.keyB.x, it.keyB.y, 33)
+                    mapSet(it.keyA.x as int, (it.keyA.y as int), 33)
+                    mapSet(it.keyB.x as int, (it.keyB.y as int), 33)
                     
-                    mapSet(it.keyA.x, it.keyA.y+5, 33)
-                    mapSet(it.keyB.x, it.keyB.y+5, 33)
+                    mapSet(it.keyA.x as int, (it.keyA.y as int)+5, 33)
+                    mapSet(it.keyB.x as int, (it.keyB.y as int)+5, 33)
                     
-                    mapSet(it.keyA.x, it.keyA.y+6, 33)
-                    mapSet(it.keyB.x, it.keyB.y+6, 33)
+                    mapSet(it.keyA.x as int, (it.keyA.y as int)+6, 33)
+                    mapSet(it.keyB.x as int, (it.keyB.y as int)+6, 33)
                     
-                    mapSet(it.keyA.x, it.keyA.y+7, 33)
-                    mapSet(it.keyB.x, it.keyB.y+7, 33)
+                    mapSet(it.keyA.x as int, (it.keyA.y as int)+7, 33)
+                    mapSet(it.keyB.x as int, (it.keyB.y as int)+7, 33)
                     
-                    mapSet(it.keyA.x, it.keyA.y+8, 33)
-                    mapSet(it.keyB.x, it.keyB.y+8, 33)
+                    mapSet(it.keyA.x as int, (it.keyA.y as int)+8, 33)
+                    mapSet(it.keyB.x as int, (it.keyB.y as int)+8, 33)
                 }  
             }	
     	}
@@ -568,11 +573,11 @@ class WizRobo extends leikr.Engine {
     	if(keyPress("F1")) DEBUG = !DEBUG
         debuglvl()       
         if(gameOver){
-        	if(keyPress("Enter") || button("SELECT")){
-        		title = true
-        		gameOver = false
-        		return
-        	}
+            if(keyPress("Enter") || button("SELECT")){
+                title = true
+                gameOver = false
+                return
+            }
         }
     	if(title){
             if(keyPress("Enter") || button("SELECT")){
@@ -589,7 +594,7 @@ class WizRobo extends leikr.Engine {
     	
     	switch(level){    
         case 0:
-            if(wizard.y < 0){
+            if((wizard.y as float) < 0){
                 level++
             }
             if(enemies.isEmpty()){
@@ -599,7 +604,7 @@ class WizRobo extends leikr.Engine {
             boltHitEnemy(enemies[0])
             if(!enemies[0].alive && !enemies[0].remove){
                 mapSet((int)(enemies[0].x/8), (int)(enemies[0].y/8), 88)
-                mapSet(enemies[0].keyA.x,enemies[0].keyA.y,33)
+                mapSet(enemies[0].keyA.x as int,enemies[0].keyA.y as int,33)
             }
             break;
         case 1:
@@ -632,21 +637,22 @@ class WizRobo extends leikr.Engine {
                 if(collide(wizard, it)){
                     wizard.health--
                     if(wizard.f){
-                        wizard.x = wizard.x +8
-                        if(solid(wizard.x-4, wizard.x-4)){
-                    		wizard.x = wizard.x - 4
+                        wizard.x = (wizard.x as float) +8
+                        if(solid((wizard.x as float)-4, (wizard.x as float)-4)){
+                            wizard.x = (wizard.x as float) - 4
                     	}
                     }else{
-                        wizard.x = wizard.x -8
-                        if(solid(wizard.x-4, wizard.x-4)){
-                    		wizard.x = wizard.x + 4
+                        wizard.x = (wizard.x as float) -8
+                        if(solid((wizard.x as float)-4,(wizard.x as float)-4)){
+                            wizard.x = (wizard.x as float) + 4
                     	}
                     }
-                    wizard.y -= 8
+                    wizard.y = (wizard.y as float) - 8
                     
                 }
             }
         }
+        FPS()
     }
     
     void renderGui(){
@@ -673,54 +679,27 @@ class WizRobo extends leikr.Engine {
             sprite(enemies[0].spid, enemies[0].x, enemies[0].y)           
         }
     }
-    void renderlvl1(){
+    
+    
+    void renderlvl(){
         if(enemies.isEmpty()){
             return
         }
         enemies.each{it ->
             if(it.alive){
-                sprite(it.spid, it.x, it.y, it.f, false)
+                sprite(it.spid as int, it.x as float, it.y as float, it.f as boolean, false)
             }
-        }    	
-    }	
-    void renderlvl2(){   
-        if(enemies.isEmpty()){
-            return
-        }
-        enemies.each{it ->
-            if(it.alive){
-                sprite(it.spid, it.x, it.y, it.f, false)
-            }
-        }  
-    }	
-    void renderlvl3(){    
-        if(enemies.isEmpty()){
-            return
-        }
-        enemies.each{it ->
-            if(it.alive){            	
-                sprite(it.spid, it.x, it.y, it.f, false)
-            }
-        }  
-    }	
-    void renderlvl4(){    
-        if(enemies.isEmpty()){
-            return
-        }
-        enemies.each{it ->
-            if(it.alive){            	
-                sprite(it.spid, it.x, it.y, it.f, false)
-            }
-        }  
-    }	
+        }   
+    }
+
     void renderlvl5(){    
         if(enemies.isEmpty()){
             return
         }
         enemies.each{it ->
             if(it.alive){
-                sprite(it.spid, it.x, it.y, it.f, false, 2)
-                text("["+it.health+"]", (it.x+8).toFloat(), (it.y-8).toFloat(), 23)
+                sprite(it.spid as int, it.x as float, it.y as float, it.f as boolean, false, 2)
+                text("["+it.health+"]", (it.x as float) +8 as float, (it.y as float)-8 as float, 23)
             }
         }  
     }	
@@ -730,8 +709,8 @@ class WizRobo extends leikr.Engine {
         }
         enemies.each{it ->
             if(it.alive){
-                sprite(it.spid, it.x, it.y, it.f, false, 2)
-                text("["+it.health+"]", (it.x+8).toFloat(), (it.y-8).toFloat(), 23)
+                sprite(it.spid as int, it.x as float, it.y as float, it.f as boolean, false, 2)
+                text("["+it.health+"]", (it.x as float) +8 as float, (it.y as float) -8 as float, 23)
             }
         }  
     }	
@@ -744,50 +723,44 @@ class WizRobo extends leikr.Engine {
 	
     void render(){
         if(gameOver){
-        	renderGameOver()
-        	return
+            renderGameOver()
+            return
         }
         
 		
         if(title){
             image("stonewall", 0,0)
-	    	map()
+            map()
             text("Escape the dungeon!", 46, 32, 32)
             text("Move: arrows. Jump: Space. Charge: X. Shoot: Z. Start: Enter", 12, 110, 116, 32)
             return
         }else{
-	    	image("stonewall", 0,8)
+            image("stonewall", 0,8)
             map()	
-		}
+        }
 
-		if(key("S")){
+        if(key("S")){
             text("Scrolls: "+wizard.scrolls, 46, 32, 32)
         }
 		
         renderGui()
         if(wizard.charged){
-            sprite(9, (wizard.x).toFloat(), (wizard.y-8).toFloat(), wizard.cf, false)
+            sprite(9, (wizard.x) as float, (wizard.y as int) -8 as float, wizard.cf as boolean, false)
         }
-        sprite(wizard.spid, wizard.x.toFloat(), wizard.y.toFloat(), wizard.f, false)
-      //  if(wizard.walking) walkingDust()
+        sprite(wizard.spid as int, wizard.x as float, wizard.y as float, wizard.f as boolean, false)
+        //  if(wizard.walking) walkingDust()
         if(bolt.attack){
-            sprite(bolt.spid, bolt.x, bolt.y, bolt.f, false)
+            sprite((int)bolt.spid, (float)bolt.x, bolt.y as float, bolt.f as boolean, false)
         }
         switch(level){
         case 0:
             renderDefault()
             break;
         case 1:
-            renderlvl1()
-            break;
         case 2:
-            renderlvl2()
-            break;
         case 3:
-            renderlvl3()
-            break;
         case 4:
-            renderlvl4()
+            renderlvl()
             break;
         case 5:
             renderlvl5()
@@ -798,12 +771,7 @@ class WizRobo extends leikr.Engine {
         default:
             renderDefault()
             break;
-        }      
-        
-        if(DEBUG){
-			FPS(0)
-        }
-        
+        }              
     }
     
     

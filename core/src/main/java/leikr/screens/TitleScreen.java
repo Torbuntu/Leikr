@@ -5,14 +5,11 @@ import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
-import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
-import org.mini2Dx.core.screen.transition.FadeInTransition;
-import org.mini2Dx.core.screen.transition.FadeOutTransition;
 import org.mini2Dx.gdx.Input.Keys;
 import org.mini2Dx.tiled.TiledMap;
 
@@ -40,7 +37,7 @@ public class TitleScreen extends BasicGameScreen {
     void checkInput(ScreenManager sm) {
         if (Mdx.input.isKeyJustPressed(Keys.SPACE) || Mdx.input.isKeyJustPressed(Keys.ENTER) || CREDITS) {
             CREDITS = false;
-            sm.enterGameScreen(CreditScreen.ID, new FadeOutTransition(Colors.TEAL()), new FadeInTransition(Colors.FOREST()));
+            sm.enterGameScreen(CreditScreen.ID, null, null);
         }
         if (Mdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             System.out.println("Goodbye!");
