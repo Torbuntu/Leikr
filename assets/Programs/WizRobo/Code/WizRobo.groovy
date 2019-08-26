@@ -570,7 +570,8 @@ class WizRobo extends leikr.Engine {
     }
 
     void update(float delta){
-    	if(keyPress("F1")) DEBUG = !DEBUG
+    	HOST_INFO()
+        if(keyPress("F1")) DEBUG = !DEBUG
         debuglvl()       
         if(gameOver){
             if(keyPress("Enter") || button("SELECT")){
@@ -665,10 +666,10 @@ class WizRobo extends leikr.Engine {
         sprite(healthSpids[1], 96, 0)
         sprite(healthSpids[2], 88, 0)
         
-        text("lvl:"+level, 112, 0, 32)
+        text("lvl:"+level, 112, 0, 1)
         
         sprite(29, 160, 0)
-        text(":"+wizard.scrolls, 168, 0, 32)
+        text(":"+wizard.scrolls, 168, 0, 1)
     }
     
     void renderDefault(){
@@ -716,9 +717,9 @@ class WizRobo extends leikr.Engine {
     }	
     
     void renderGameOver(){
-    	text("Game Over!", 46, 32, 32)
-    	text("Thanks for playing this demo.", 8, 42, 32)
-    	text("Press Enter to play again.", 8, 54, 32)
+    	text("Game Over!", 46, 32, 1)
+    	text("Thanks for playing this demo.", 8, 42, 1)
+    	text("Press Enter to play again.", 8, 54, 1)
     }
 	
     void render(){
@@ -731,8 +732,8 @@ class WizRobo extends leikr.Engine {
         if(title){
             image("stonewall", 0,0)
             map()
-            text("Escape the dungeon!", 46, 32, 32)
-            text("Move: arrows. Jump: Space. Charge: X. Shoot: Z. Start: Enter", 12, 110, 116, 32)
+            text("Escape the dungeon!", 46, 32, 1)
+            text("Move: arrows. Jump: Space. Charge: X. Shoot: Z. Start: Enter", 12, 110, 116, 1)
             return
         }else{
             image("stonewall", 0,8)

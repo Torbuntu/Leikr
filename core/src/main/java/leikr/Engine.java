@@ -163,7 +163,8 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         System.out.println("Total Mem: " + Mdx.platformUtils.getTotalMemory());
         System.out.println("Free Mem : " + Mdx.platformUtils.getAvailableMemory());
         System.out.println("Used Mem : " + Mdx.platformUtils.getUsedMemory());
-        System.out.println("UPS      : " + Mdx.platformUtils.getAverageUpdateDuration());
+        System.out.println("Avg. UPD : " + Mdx.platformUtils.getAverageUpdateDuration());
+        System.out.println();
     }
 
     public long getFrame() {

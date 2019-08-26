@@ -1,6 +1,7 @@
 package leikr.screens;
 
 import leikr.GameRuntime;
+import leikr.customProperties.CustomSystemProperties;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
@@ -11,8 +12,6 @@ import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
-import org.mini2Dx.core.screen.transition.FadeInTransition;
-import org.mini2Dx.core.screen.transition.FadeOutTransition;
 import org.mini2Dx.gdx.Input.Keys;
 
 /**
@@ -58,7 +57,11 @@ public class ErrorScreen extends BasicGameScreen {
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
         if (MENU || Mdx.input.isKeyJustPressed(Keys.ESCAPE) || Mdx.input.isKeyJustPressed(Keys.ENTER) || Mdx.input.isKeyJustPressed(Keys.SPACE) || Mdx.input.isKeyJustPressed(Keys.Q)) {
             MENU = false;
-            sm.enterGameScreen(MenuScreen.ID, new FadeOutTransition(Colors.TEAL()), new FadeInTransition(Colors.FOREST()));
+            if (CustomSystemProperties.TERMINAL_MODE) {
+                sm.enterGameScreen(TerminalScreen.ID, null, null);
+            } else {
+                sm.enterGameScreen(MenuScreen.ID, null, null);
+            }
         }
 
         if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyJustPressed(Keys.R) || Mdx.input.isKeyJustPressed(Keys.F5)) {
