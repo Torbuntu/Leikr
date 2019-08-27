@@ -11,7 +11,7 @@ buildscript {
 
 allprojects {
 
-    version = '0.0.9'
+    version = '0.0.10'
     ext {
         appName = 'Leikr'
         mini2DxVersion = '2.0.0-alpha.3'
@@ -36,9 +36,6 @@ project(":core") {
     dependencies {
         implementation "org.mini2Dx:mini2Dx-core:$mini2DxVersion"
         implementation "org.mini2Dx:mini2Dx-tiled:$mini2DxVersion"
-        implementation "org.mini2Dx:mini2Dx-ui:$mini2DxVersion"
-        
-        implementation "org.lwjgl.lwjgl:lwjgl:2.9.3"
         
         implementation "org.codehaus.groovy:groovy-all:3.0.0-beta-3"
     }

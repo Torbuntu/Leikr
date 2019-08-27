@@ -1,1 +1,1 @@
-START javaw -Xmx64M -XX:+CMSClassUnloadingEnabled -jar Leikr-0.0.9.jar 
+START javaw -Xmx64M -XX:+CMSClassUnloadingEnabled -jar Leikr-0.0.10.jar 
