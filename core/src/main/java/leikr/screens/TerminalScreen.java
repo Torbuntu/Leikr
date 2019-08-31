@@ -41,7 +41,6 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
     public TerminalScreen(AssetManager assetManager) {
         this.assetManager = assetManager;
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
-        setProcessor();
     }
 
     private void setProcessor() {
