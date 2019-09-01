@@ -37,7 +37,7 @@ project(":core") {
         implementation "org.mini2Dx:mini2Dx-core:$mini2DxVersion"
         implementation "org.mini2Dx:mini2Dx-tiled:$mini2DxVersion"
         
-        implementation "org.codehaus.groovy:groovy-all:3.0.0-beta-3"
+        implementation "org.codehaus.groovy:groovy:3.0.0-beta-3"
     }
 }
 

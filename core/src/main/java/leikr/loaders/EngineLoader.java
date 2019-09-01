@@ -79,22 +79,16 @@ public class EngineLoader implements Callable<Engine> {
             return getCompiledEngine();
         }
         if (cp.JAVA_ENGINE) {
-            return getJavaSourceEngine();
+            return getSourceEngine(".java");
         }
 
-        return getSourceEngine();
+        return getSourceEngine(".groovy");
     }
 
-    private Engine getSourceEngine() throws MalformedURLException, CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    private Engine getSourceEngine(String type) throws MalformedURLException, CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         gcl.clearCache();
         gcl.addClasspath(rootPath);
-        return (Engine) gcl.parseClass(new File(Mdx.files.local(rootPath + MenuScreen.GAME_NAME + ".groovy").path())).getDeclaredConstructors()[0].newInstance();//loads the game code  
-    }
-
-    private Engine getJavaSourceEngine() throws MalformedURLException, CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        gcl.clearCache();
-        gcl.addClasspath(rootPath);
-        return (Engine) gcl.parseClass(new File(Mdx.files.local(rootPath + MenuScreen.GAME_NAME + ".java").path())).getDeclaredConstructors()[0].newInstance();//loads the game code  
+        return (Engine) gcl.parseClass(new File(Mdx.files.local(rootPath + MenuScreen.GAME_NAME + type).path())).getDeclaredConstructors()[0].newInstance();//loads the game code  
     }
 
     private Engine getCompiledEngine() throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {

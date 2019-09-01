@@ -146,7 +146,7 @@ class SpriteViewer extends leikr.Engine {
         	if(animSpeed < 30) animSpeed ++
         }
         
-        if(mouseClick(0)){
+        if(mouseClick()){
         	//exit
         	if(point(mx, my, exitX, exitY, exitS, exitS)) pause()
         	//ss
