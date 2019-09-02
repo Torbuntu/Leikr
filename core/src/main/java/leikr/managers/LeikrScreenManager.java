@@ -66,17 +66,16 @@ public class LeikrScreenManager {
         imageLoader = ImageLoader.getImageLoader();
         mapLoader = MapLoader.getMapLoader();
     }
-    
-    private void createPixmap(){
+
+    private void createPixmap() {
         Pixmap pm = Mdx.graphics.newPixmap(33, 1, PixmapFormat.RGBA8888);
-        for(int i = 0; i < 33; i++){
+        for (int i = 0; i < 33; i++) {
             pm.setColor(getDrawColor(i));
             pm.drawPixel(i, 0);
         }
         pixels = new SpriteSheet(Mdx.graphics.newTexture(pm), 1, 1);
-        pm.dispose();        
+        pm.dispose();
     }
-
 
     //Helper methods
     public int getUsedSprites() {
@@ -269,7 +268,6 @@ public class LeikrScreenManager {
     }
 
     //end color methods
-
     //text methods
     public final void text(String text, float x, float y, int color) {
         drawColor(color);
@@ -464,7 +462,7 @@ public class LeikrScreenManager {
     //END animated sprites
 
     //start shape drawing methods
-    public final void pixel(int color, int x, int y){
+    public final void pixel(int color, int x, int y) {
         Mdx.graphicsContext.drawSprite(pixels.getSprite(color), x, y);
     }
 
@@ -509,7 +507,6 @@ public class LeikrScreenManager {
     }
     //end shape drawing methods
 
-    //EXPERIMENTAL METHODS
     public final void clip(float x, float y, float w, float h) {
         Mdx.graphicsContext.setClip(x, y, w, h);
     }
@@ -517,7 +514,8 @@ public class LeikrScreenManager {
     public final void clip() {
         Mdx.graphicsContext.removeClip();
     }
-    
+
+    //EXPERIMENTAL METHODS
     public void tint(int color) {
         Mdx.graphicsContext.setTint(getDrawColor(color));
     }
@@ -526,5 +524,5 @@ public class LeikrScreenManager {
         Mdx.graphicsContext.removeTint();
     }
 
-    //END EXPERIMENTAL
+//END EXPERIMENTAL
 }

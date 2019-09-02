@@ -39,8 +39,8 @@ class Shapes extends leikr.Engine {
         for(j = 0; j < 32; j++){
             pixel(j, j, 1)
         }
- 
- 		 for(i = 0; i < amt; i++){
+         
+ 		 for(i = 0; i < amt; i++){ 		 	
             x = (float)cos((float)(i / 10 + t/40))*80
             y = (float)sin((float)(i / 10 + t/40))*40
             

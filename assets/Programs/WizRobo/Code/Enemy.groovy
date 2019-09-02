@@ -43,7 +43,7 @@ class Enemy{
 		waIndex = 0
 	}
 	
-	def Enemy(float x, float y, float vs, int l, int r, float width, float height, boolean f,
+	Enemy(float x, float y, float vs, int l, int r, float width, float height, boolean f,
 	int spid, boolean alive, boolean remove, int animTime, int[] walkAnim, int waIndex, Map keyA, Map keyB){
 		this.x = x
 		this.y = y
@@ -63,7 +63,7 @@ class Enemy{
 		this.keyB = keyB
 	}
 	
-	def Enemy(float x, float y, float vs, int l, int r, float width, float height, boolean f,
+	Enemy(float x, float y, float vs, int l, int r, float width, float height, boolean f,
 	int spid, boolean alive, boolean remove, int animTime, int[] walkAnim, int waIndex, Map keyA, Map keyB, int health){
 		this.x = x
 		this.y = y
@@ -82,5 +82,29 @@ class Enemy{
 		this.keyA = keyA
 		this.keyB = keyB
 		this.health = health
+	}
+	
+	void moveEnemy(){
+        if(alive){
+            if(x < l || x > r){
+                vs = -vs
+                f = !f
+            }
+            x = x + vs            
+        }
+    }
+    
+	void enemyAnimation(){
+		animTime++      
+		if(alive){   
+			spid = walkAnim[waIndex] 		
+			if(animTime > 4){
+				waIndex++
+				animTime = 0
+			}    	
+		}
+		if(waIndex > 3){
+			waIndex = 0
+		}
 	}
 }

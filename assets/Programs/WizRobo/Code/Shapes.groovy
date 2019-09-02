@@ -1,3 +1,0 @@
-class Shapes{
-	println "NOOOO"
-}
