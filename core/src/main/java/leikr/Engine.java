@@ -135,8 +135,13 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     //disposes the game objects on exit
     public final void dispose() {
-        audio.dispose();
-        screen.dispose();
+        if (audio != null) {
+            audio.dispose();
+        }
+
+        if (screen != null) {
+            screen.dispose();
+        }
 
         if (Mdx.input.getGamePads().size > 0) {
             Mdx.input.getGamePads().get(0).removeListener(this);

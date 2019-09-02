@@ -54,6 +54,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public void preTransitionIn(Transition trns) {
+        prompt = "";
         setProcessor();
     }
 

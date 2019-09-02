@@ -3,6 +3,7 @@ package leikr.loaders;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
+import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.assets.loader.TextureLoader;
 import org.mini2Dx.core.files.LocalFileHandleResolver;
@@ -46,26 +47,35 @@ public class SpriteLoader {
     }
 
     public void loadManualSpritesheets(String programName) {
+        resetSpriteLoader();
+        rootPath = "Programs/" + programName + "/Sprites/Sprites.png";
+        if (!Mdx.files.local(rootPath).exists()) {
+            System.out.println("No sprites found for: " + rootPath);
+            return;
+        }
         try {
-            disposeSprites();
-            rootPath = "Programs/" + programName + "/Sprites/Sprites.png";
             instance.loadSpriteSheets();
             instance.addSpritesToSpriteBank();
         } catch (Exception ex) {
             Logger.getLogger(SpriteLoader.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Manual Sprite sheet not loadable.");
+            System.out.println("Manual Sprite sheet not loadable for: " + rootPath);
         }
     }
 
     private void resetSpriteLoader() {
         disposeSprites();
         rootPath = GameRuntime.getProgramPath() + "/Sprites/Sprites.png";
+        assetLoader = new TextureLoader();
+        assetManager.setAssetLoader(Texture.class, assetLoader);
     }
 
     private void loadSpriteSheets() {
+        if (!Mdx.files.local(rootPath).exists()) {
+            System.out.println("No sprites found for: " + rootPath);
+            return;
+        }
         assetManager.load(rootPath, Texture.class);
         assetManager.finishLoading();
-
     }
 
     private void addSpritesToSpriteBank() {
@@ -90,7 +100,7 @@ public class SpriteLoader {
     }
 
     public void disposeSprites() {
-        //assetManager.clearAssetLoaders();
+        assetManager.clearAssetLoaders();
     }
 
 }
