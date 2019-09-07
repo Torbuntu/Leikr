@@ -1,3 +1,9 @@
 apply plugin: "java"
 
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+configurations {
+    /* We don't want the storm-core dependency in our shadowJar */
+    runtime.exclude module: 'opentest4j'
+    runtime.exclude module: 'testng'
+}

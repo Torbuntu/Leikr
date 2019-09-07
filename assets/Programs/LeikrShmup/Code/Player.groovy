@@ -10,6 +10,7 @@ class Player{
 	}
 	
 	def update(delta){
+	
 		if(x + speedX > 0 && x+16 + speedX < 240){
 			x += speedX
 		}

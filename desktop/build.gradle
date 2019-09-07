@@ -1,8 +1,14 @@
 apply plugin: 'java'
 apply plugin: "application"
 apply plugin: 'com.github.johnrengelman.shadow'
-
+configurations {
+    /* We don't want the storm-core dependency in our shadowJar */
+    runtime.exclude module: 'junit'
+    runtime.exclude module: 'opentest4j'
+    runtime.exclude module: 'testng'
+}
 shadowJar {
+    //minimize()
     baseName = 'Leikr'
     classifier = null
     //Exclude Asset directories from inside the jar.

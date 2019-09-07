@@ -7,11 +7,14 @@ class LeikrShmup extends leikr.Engine {
 	Player p = new Player()
 	def bullets = []
 	def enemies = []
-	
+	def offX = 0, offY = 0
     void create(){
     }
     
     void update(float delta){
+    	offX--
+    	if(offX <= -256) offX=0
+    	
     	FPS()
         if(key("Space")){
         	bullets.add(new Bullet(p.x, p.y))	
@@ -20,10 +23,22 @@ class LeikrShmup extends leikr.Engine {
         //test
         if(key("E")) enemies.add(new Enemy(1))
         
-        if(key("Left")) p.speedX = -3
-        if(key("Right")) p.speedX = 3
-        if(key("Up")) p.speedY = -3
-        if(key("Down")) p.speedY = 3
+        if(key("Left")) {
+        	p.speedX = -3
+        	offX += 1	
+        }
+        if(key("Right")) {
+        	p.speedX = 3
+        	offX -= 1	
+        }
+        if(key("Up") && offY < 0) {
+        	p.speedY = -3
+        	offY += 3	
+        }
+        if(key("Down") && offY >= -130) {
+        	p.speedY = 3
+        	offY -= 3
+        }
         p.update(delta)
         
         bullets.each{
@@ -44,6 +59,11 @@ class LeikrShmup extends leikr.Engine {
     }
     
     void render(){	
+    	image("exterior-parallaxBG1", offX-256, offY)
+    	image("exterior-parallaxBG1", offX,offY)
+    	image("exterior-parallaxBG1", offX+256, offY)
+    	
+    
 		p.draw(screen)
 		bullets.each{
 			it.draw(screen)
