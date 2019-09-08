@@ -79,7 +79,8 @@ public class MenuScreen extends BasicGameScreen {
             programs = new ArrayList<>();
             programs.add(new ChipData("New Game", "System", "Template", "1.0", 0, "Initializes a new program template", assetManager, "Start new..."));
 
-            Arrays.asList(Mdx.files.local("Programs/").list())
+            Arrays.asList(Mdx.files.local("Programs/").list()).stream()
+                    .filter(file -> !file.isDirectory())
                     .forEach(file -> {
                         programs.add(new ChipData(file.name(), assetManager));
                     });

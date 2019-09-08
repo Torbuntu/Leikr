@@ -35,8 +35,6 @@ public class ImageLoader {
 
     private void reloadImageLoader() {
         rootPath = GameRuntime.getProgramPath() + "/Art/";
-        
-
         try {
             Arrays.asList(Mdx.files.local(rootPath).list()).stream()
                     .filter(file -> !file.isDirectory())
