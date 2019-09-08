@@ -70,14 +70,18 @@ public class AudioLoader {
 
     private void loadAudio() {
         try {
-            Arrays.asList(Mdx.files.local(soundRootPath).list()).forEach(f -> soundManager.load(soundRootPath + f.name(), Sound.class));
+            Arrays.asList(Mdx.files.local(soundRootPath).list()).stream()
+                    .filter(file -> !file.isDirectory())
+                    .forEach(f -> soundManager.load(soundRootPath + f.name(), Sound.class));
             soundManager.finishLoading();
         } catch (IOException ex) {
             System.out.println("Sound load err: " + ex.getMessage());
         }
 
         try {
-            Arrays.asList(Mdx.files.local(musicRootPath).list()).forEach(f -> musicManager.load(musicRootPath + f.name(), Music.class));
+            Arrays.asList(Mdx.files.local(musicRootPath).list()).stream()
+                    .filter(file -> !file.isDirectory())
+                    .forEach(f -> musicManager.load(musicRootPath + f.name(), Music.class));
             musicManager.finishLoading();
         } catch (IOException ex) {
             System.out.println("Music load err: " + ex.getMessage());

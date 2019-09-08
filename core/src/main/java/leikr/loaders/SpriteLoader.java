@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 import leikr.GameRuntime;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
-import org.mini2Dx.core.assets.loader.TextureLoader;
 import org.mini2Dx.core.files.LocalFileHandleResolver;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.SpriteSheet;
@@ -18,7 +17,6 @@ import org.mini2Dx.core.graphics.Texture;
 public class SpriteLoader {
 
     AssetManager assetManager;
-    TextureLoader assetLoader;
 
     SpriteSheet spriteBank;
     SpriteSheet spriteBank16;
@@ -30,9 +28,7 @@ public class SpriteLoader {
     private static SpriteLoader instance;
 
     private SpriteLoader() {
-        assetLoader = new TextureLoader();
         assetManager = new AssetManager(new LocalFileHandleResolver());
-        assetManager.setAssetLoader(Texture.class, assetLoader);
     }
 
     public static SpriteLoader getSpriteLoader() {

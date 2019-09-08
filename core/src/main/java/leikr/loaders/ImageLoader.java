@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 import leikr.GameRuntime;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
-import org.mini2Dx.core.assets.loader.TextureLoader;
 import org.mini2Dx.core.files.LocalFileHandleResolver;
 import org.mini2Dx.core.graphics.Texture;
 
@@ -18,15 +17,12 @@ import org.mini2Dx.core.graphics.Texture;
 public class ImageLoader {
 
     AssetManager assetManager;
-    TextureLoader assetLoader;
     String rootPath;
 
     private static ImageLoader instance;
 
     private ImageLoader() {
-        assetLoader = new TextureLoader();
         assetManager = new AssetManager(new LocalFileHandleResolver());
-        assetManager.setAssetLoader(Texture.class, assetLoader);
     }
 
     public static ImageLoader getImageLoader() {
@@ -39,9 +35,14 @@ public class ImageLoader {
 
     private void reloadImageLoader() {
         rootPath = GameRuntime.getProgramPath() + "/Art/";
+        
+
         try {
             Arrays.asList(Mdx.files.local(rootPath).list()).stream()
-                    .forEach(path -> assetManager.load(rootPath + path.name(), Texture.class));
+                    .filter(file -> !file.isDirectory())
+                    .forEach(path -> {
+                        assetManager.load(rootPath + path.name(), Texture.class);
+                    });
             assetManager.finishLoading();
         } catch (IOException ex) {
             Logger.getLogger(ImageLoader.class.getName()).log(Level.SEVERE, null, ex);
