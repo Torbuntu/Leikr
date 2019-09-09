@@ -32,7 +32,7 @@ public class LoadScreen extends BasicGameScreen {
 
     int loadCircleCircumf = 15;
     int loadCircleDir = 1;
-    String loadPhrase = "Loading... ";
+    String loadPhrase = "Loading ";
 
     public LoadScreen() {
         service = Executors.newFixedThreadPool(1);

@@ -90,19 +90,6 @@ public class LeikrController extends BaseGamePadListener {
         return (boolean) buttons.get(button.toUpperCase());
     }
 
-    public String btnName(int id) {
-        return btnCodes.get(id).toString();
-    }
-
-    public int btnCode(String button) {
-        return (int) btnLookup.get(button.toUpperCase());
-    }
-
-    public void setController(BaseGamePadListener adap) {
-//        Mdx.input.getGamePads().clearListeners();
-//        Controllers.addListener(adap);
-    }
-
     public int horizontalAxis() {
         return CustomSystemProperties.HORIZONTAL_AXIS;
     }

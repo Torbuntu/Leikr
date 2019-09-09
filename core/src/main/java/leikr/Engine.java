@@ -493,20 +493,6 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         return false;
     }
 
-    public int btnCode(String button) {
-        return (null != controllerA) ? controllerA.btnCode(button) : -1;
-    }
-
-    public String btnName(int id) {
-        return (controllerA != null) ? controllerA.btnName(id) : "Null";
-    }
-
-    public void setController(BaseGamePadListener adap) {
-        if (controllerA != null) {
-            controllerA.setController(adap);
-        }
-    }
-
     public int horizontalAxis() {
         if (controllerA != null) {
             return CustomSystemProperties.HORIZONTAL_AXIS;
