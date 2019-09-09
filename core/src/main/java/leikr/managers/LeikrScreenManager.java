@@ -478,30 +478,6 @@ public class LeikrScreenManager {
         }
     }
 
-    public final void circle(int x, int y, int r) {
-        Mdx.graphicsContext.drawCircle(x, y, r);
-    }
-
-    public final void circle(int x, int y, int r, boolean fill) {
-        if (fill) {
-            Mdx.graphicsContext.fillCircle(x, y, r);
-        } else {
-            Mdx.graphicsContext.drawCircle(x, y, r);
-        }
-    }
-
-    public final void triangle(int x, int y, int x2, int y2, int x3, int y3) {
-        Mdx.graphicsContext.drawTriangle(x, y, x2, y2, x3, y3);
-    }
-
-    public final void triangle(int x, int y, int x2, int y2, int x3, int y3, boolean fill) {
-        if (fill) {
-            Mdx.graphicsContext.fillTriangle(x, y, x2, y2, x3, y3);
-        } else {
-            Mdx.graphicsContext.drawTriangle(x, y, x2, y2, x3, y3);
-        }
-    }
-
     public final void line(int x, int y, int x2, int y2) {
         Mdx.graphicsContext.drawLineSegment(x, y, x2, y2);
     }

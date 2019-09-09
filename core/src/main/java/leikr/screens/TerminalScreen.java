@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
+import leikr.customProperties.CustomSystemProperties;
 import leikr.loaders.EngineLoader;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
@@ -55,6 +56,11 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
     @Override
     public void preTransitionIn(Transition trns) {
         prompt = "";
+        if (GameRuntime.GAME_NAME.length() < 2) {
+            historyText = "No program loaded.";
+        } else {
+            historyText = "Loaded program: `" + GameRuntime.GAME_NAME + "`";
+        }
         setProcessor();
     }
 
@@ -71,11 +77,12 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
         g.setColor(Colors.GREEN());
+
         g.drawString(historyText, 0, 0, 240);
         g.setColor(Colors.BLACK());
         g.fillRect(0, 152, 240, 160);
         g.setColor(Colors.GREEN());
-        g.drawString(">" + prompt, 0, 152, 240);
+        g.drawString(">" + prompt + (char) 173, 0, 152, 240);
     }
 
     @Override
@@ -103,6 +110,23 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public boolean keyTyped(char c) {
+        if ((c == Keys.TAB || c == 9) && prompt.contains("run") || prompt.contains("load")) {
+            try {
+                for (FileHandle f : Mdx.files.local("Programs").list()) {
+                    if (!f.nameWithoutExtension().substring(0, 1).equals(prompt.substring(4, 5))) {
+                        continue;
+                    }
+                    if (f.nameWithoutExtension().contains(prompt.substring(4))) {
+                        prompt = prompt.substring(0, 4) + f.nameWithoutExtension();
+                        break;
+                    }
+                }
+            } catch (IOException ex) {
+                if (CustomSystemProperties.DEBUG) {
+                    System.out.println(ex.getCause().getMessage());
+                }
+            }
+        }
         if ((int) c >= 32 && (int) c <= 126) {
             prompt = prompt + c;
             return true;
@@ -155,6 +179,8 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                             return ">clear \nClears the terminal screen text.";
                         case "help":
                             return ">help [option] \nDisplays the help options to the screen or info about a command.";
+                        case "load":
+                            return ">load [option] \nLoads the program by name. Does not check if program exists.";
                         case "ls":
                             return ">ls \nDisplays the contents of the Programs directory.";
                         case "run":
@@ -163,7 +189,14 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                             return "No help for unknown command: ( " + command[1] + " )";
                     }
                 }
-                return "Commands: exit, clear, help, ls, run";
+                return "Commands: exit, clear, help, load, ls, run";
+            case "load":
+                if (command.length < 2) {
+                    return "Missing required param [program-title]";
+                }
+                GameRuntime.GAME_NAME = command[1];
+                GameRuntime.setProgramPath("Programs/" + command[1]);
+                return "Loaded program: `" + GameRuntime.GAME_NAME + "`";
             case "ls":
                 try {
                     String out = "";
@@ -176,8 +209,12 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                     return "Failed to execute command ( ls )";
                 }
             case "run":
+                if (command.length == 1 && GameRuntime.GAME_NAME.length() > 2) {
+                    RUN_PROGRAM = true;
+                    return "loading...";
+                }
                 try {
-                    MenuScreen.GAME_NAME = command[1];
+                    GameRuntime.GAME_NAME = command[1];
                     GameRuntime.setProgramPath("Programs/" + command[1]);
                     RUN_PROGRAM = true;
                     return "loading...";

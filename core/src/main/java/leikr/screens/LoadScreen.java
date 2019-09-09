@@ -61,7 +61,7 @@ public class LoadScreen extends BasicGameScreen {
                 Logger.getLogger(LoadScreen.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if (loadCircleCircumf >= 15 && loadCircleDir > 0) {
+        if (loadCircleCircumf >= 20 && loadCircleDir > 0) {
             loadCircleDir = -1;
         }
         if (loadCircleCircumf <= 1 && loadCircleDir < 0) {
@@ -69,11 +69,13 @@ public class LoadScreen extends BasicGameScreen {
         }
 
         if (loadCircleCircumf <= 5) {
-            loadPhrase = "Loading. ";
+            loadPhrase = "Loading "+GameRuntime.GAME_NAME;
         } else if (loadCircleCircumf <= 10) {
-            loadPhrase = "Loading.. ";
+            loadPhrase = "Loading "+GameRuntime.GAME_NAME + ".";
         } else if (loadCircleCircumf <= 15) {
-            loadPhrase = "Loading... ";
+            loadPhrase = "Loading "+GameRuntime.GAME_NAME + "..";
+        }else if (loadCircleCircumf <= 20){
+            loadPhrase = "Loading "+GameRuntime.GAME_NAME + "...";
         }
 
         loadCircleCircumf += loadCircleDir;
@@ -87,10 +89,9 @@ public class LoadScreen extends BasicGameScreen {
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
         if (!engineGetter.isDone()) {
-            g.setColor(Colors.FOREST());
-            g.drawCircle(120, 80, 16);
-            g.setColor(Colors.MAGENTA());
             g.fillCircle(120, 80, loadCircleCircumf);
+            
+            g.setColor(Colors.MAGENTA());
             g.drawString(loadPhrase, 0, viewport.getHeight() - 9);
         }
     }

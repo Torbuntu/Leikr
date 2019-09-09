@@ -16,7 +16,6 @@ import java.util.logging.Logger;
 import leikr.customProperties.CustomProgramProperties;
 import leikr.Engine;
 import leikr.GameRuntime;
-import leikr.screens.MenuScreen;
 import org.codehaus.groovy.control.CompilationFailedException;
 import org.codehaus.groovy.control.CompilerConfiguration;
 import org.codehaus.groovy.tools.Compiler;
@@ -70,7 +69,7 @@ public class EngineLoader implements Callable<Engine> {
      */
     public Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, ResourceException, ScriptException {
         if (GameRuntime.checkLaunchTitle()) {
-            MenuScreen.GAME_NAME = GameRuntime.LAUNCH_TITLE;
+            GameRuntime.GAME_NAME = GameRuntime.LAUNCH_TITLE;
         }
         if (cp.COMPILE_SOURCE) {
             compileEngine();
@@ -88,13 +87,13 @@ public class EngineLoader implements Callable<Engine> {
     private Engine getSourceEngine(String type) throws MalformedURLException, CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         gcl.clearCache();
         gcl.addClasspath(rootPath);
-        return (Engine) gcl.parseClass(new File(Mdx.files.local(rootPath + MenuScreen.GAME_NAME + type).path())).getDeclaredConstructors()[0].newInstance();//loads the game code  
+        return (Engine) gcl.parseClass(new File(Mdx.files.local(rootPath + GameRuntime.GAME_NAME + type).path())).getDeclaredConstructors()[0].newInstance();//loads the game code  
     }
 
     private Engine getCompiledEngine() throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
         String COMPILED = rootPath + "Compiled/";
         gcl.addClasspath(COMPILED);
-        return (Engine) gcl.loadClass(MenuScreen.GAME_NAME).getConstructors()[0].newInstance();
+        return (Engine) gcl.loadClass(GameRuntime.GAME_NAME).getConstructors()[0].newInstance();
     }
 
     private void compileEngine() throws IOException {

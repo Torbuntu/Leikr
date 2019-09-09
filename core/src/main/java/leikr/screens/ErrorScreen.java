@@ -1,7 +1,6 @@
 package leikr.screens;
 
 import leikr.GameRuntime;
-import leikr.customProperties.CustomSystemProperties;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
@@ -57,11 +56,7 @@ public class ErrorScreen extends BasicGameScreen {
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
         if (MENU || Mdx.input.isKeyJustPressed(Keys.ESCAPE) || Mdx.input.isKeyJustPressed(Keys.ENTER) || Mdx.input.isKeyJustPressed(Keys.SPACE) || Mdx.input.isKeyJustPressed(Keys.Q)) {
             MENU = false;
-            if (CustomSystemProperties.TERMINAL_MODE) {
-                sm.enterGameScreen(TerminalScreen.ID, null, null);
-            } else {
-                sm.enterGameScreen(MenuScreen.ID, null, null);
-            }
+            sm.enterGameScreen(TerminalScreen.ID, null, null);
         }
 
         if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyJustPressed(Keys.R) || Mdx.input.isKeyJustPressed(Keys.F5)) {

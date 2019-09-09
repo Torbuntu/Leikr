@@ -30,13 +30,6 @@ public class MyJavaGame extends leikr.Engine {
 		rect(10, 100, 45, 45);
 		rect(60, 100, 45, 45, true); // full rect
 
-		drawColor(13);
-		circle(45, y, 5);
-		circle(60, 20, 5, true);
-
-		drawColor(1);
-		triangle(5, 5, 5, 35, 20, 5);
-
 		drawColor(1);
 		line(5, 50, 120, 55);
 

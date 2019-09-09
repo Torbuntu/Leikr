@@ -12,8 +12,7 @@ import java.util.Properties;
  */
 public class CustomSystemProperties {
 
-    public String LAUNCH_TITLE;
-    public static boolean TERMINAL_MODE;
+    public static String LAUNCH_TITLE;
 
     public static int X;
     public static int A;
@@ -39,7 +38,6 @@ public class CustomSystemProperties {
             prop.load(stream);
             LAUNCH_TITLE = (prop.getProperty("launch_title") != null) ? prop.getProperty("launch_title") : "";
             DEBUG = (prop.getProperty("debug_mode") != null) ? Boolean.valueOf(prop.getProperty("debug_mode")) : false;
-            TERMINAL_MODE = (prop.getProperty("terminal_mode") != null) ? Boolean.valueOf(prop.getProperty("terminal_mode")) : false;
 
             X = (prop.getProperty("btn_x") != null) ? Integer.parseInt(prop.getProperty("btn_x")) : 3;
             A = (prop.getProperty("btn_a") != null) ? Integer.parseInt(prop.getProperty("btn_a")) : 1;

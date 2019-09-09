@@ -395,19 +395,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final void rect(int x, int y, int w, int h, boolean fill) {
         screen.rect(x, y, w, h, fill);
     }
-
-    public final void circle(int x, int y, int r) {
-        screen.circle(x, y, r);
-    }
-
-    public final void circle(int x, int y, int r, boolean fill) {
-        screen.circle(x, y, r, fill);
-    }
-
-    public final void triangle(int x, int y, int x2, int y2, int x3, int y3) {
-        screen.triangle(x, y, x2, y2, x3, y3);
-    }
-
+    
     public final void line(int x1, int y1, int x2, int y2) {
         screen.line(x1, y1, x2, y2);
     }

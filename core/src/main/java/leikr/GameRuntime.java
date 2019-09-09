@@ -2,7 +2,6 @@ package leikr;
 
 import leikr.customProperties.CustomSystemProperties;
 import leikr.screens.EngineScreen;
-import leikr.screens.MenuScreen;
 import leikr.loaders.FontLoader;
 import leikr.screens.CreditScreen;
 import leikr.screens.ErrorScreen;
@@ -22,6 +21,7 @@ public class GameRuntime extends ScreenBasedGame {
 
     //Start out in the Programs/ directory. Append either the Launch Title, or in MenuScreen append program titles including the directory
     public static String PROGRAM_PATH = "Programs/";
+    public static String GAME_NAME = "";
     public static String LAUNCH_TITLE;
 
     public static int WIDTH = 240;
@@ -82,7 +82,6 @@ public class GameRuntime extends ScreenBasedGame {
         Mdx.graphics.newCustomCursor(tmp, tmp, 0, 0);
         tmp.dispose();
 
-        this.addScreen(new MenuScreen(assetManager));//0
         this.addScreen(new EngineScreen());//1
         this.addScreen(new TitleScreen(assetManager));//2
         this.addScreen(new CreditScreen(assetManager));//3
@@ -94,9 +93,6 @@ public class GameRuntime extends ScreenBasedGame {
 
     @Override
     public int getInitialScreenId() {
-        if(CustomSystemProperties.TERMINAL_MODE){
-            return TerminalScreen.ID;
-        }
         return TitleScreen.ID;//initial screen to begin on is the title screen.
     }
 

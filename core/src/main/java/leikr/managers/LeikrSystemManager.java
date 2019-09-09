@@ -5,7 +5,6 @@ import leikr.loaders.EngineLoader;
 import leikr.loaders.SpriteLoader;
 import leikr.screens.EngineScreen;
 import leikr.screens.LoadScreen;
-import leikr.screens.MenuScreen;
 import org.mini2Dx.core.font.MonospaceGameFont;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
@@ -59,7 +58,7 @@ public class LeikrSystemManager {
 
     public void loadProgram(String name) {
         GameRuntime.setProgramPath("Programs/" + name);
-        MenuScreen.GAME_NAME = name;
+        GameRuntime.GAME_NAME = name;
         LOAD_PROGRAM = true;
     }
     

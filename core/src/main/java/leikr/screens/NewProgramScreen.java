@@ -116,7 +116,7 @@ public class NewProgramScreen extends BasicGameScreen {
         if (BACK) {
             BACK = false;
             FINISH = false;
-            sm.enterGameScreen(MenuScreen.ID, null, null);
+            sm.enterGameScreen(TerminalScreen.ID, null, null);
         }
         if (CREATE) {
             try {

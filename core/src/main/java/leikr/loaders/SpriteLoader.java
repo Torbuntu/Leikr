@@ -68,10 +68,6 @@ public class SpriteLoader {
     }
 
     private void loadSpriteSheets() {
-        if (!Mdx.files.local(rootPath).exists()) {
-            System.out.println("No sprites found for: " + rootPath);
-            return;
-        }
         assetManager.load(rootPath, Texture.class);
         assetManager.finishLoading();
     }

@@ -41,7 +41,7 @@ public class CreditScreen extends BasicGameScreen {
             if (GameRuntime.checkLaunchTitle()) {
                 sm.enterGameScreen(LoadScreen.ID, null, null);
             } else {
-                sm.enterGameScreen(MenuScreen.ID, null, null);
+                sm.enterGameScreen(TerminalScreen.ID, null, null);
             }
         }
         if (Mdx.input.isKeyJustPressed(Keys.ESCAPE)) {
