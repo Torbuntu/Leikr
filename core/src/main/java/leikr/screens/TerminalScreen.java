@@ -110,23 +110,6 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
 
     @Override
     public boolean keyTyped(char c) {
-        if ((c == Keys.TAB || c == 9) && prompt.contains("run") || prompt.contains("load")) {
-            try {
-                for (FileHandle f : Mdx.files.local("Programs").list()) {
-                    if (!f.nameWithoutExtension().substring(0, 1).equals(prompt.substring(4, 5))) {
-                        continue;
-                    }
-                    if (f.nameWithoutExtension().contains(prompt.substring(4))) {
-                        prompt = prompt.substring(0, 4) + f.nameWithoutExtension();
-                        break;
-                    }
-                }
-            } catch (IOException ex) {
-                if (CustomSystemProperties.DEBUG) {
-                    System.out.println(ex.getCause().getMessage());
-                }
-            }
-        }
         if ((int) c >= 32 && (int) c <= 126) {
             prompt = prompt + c;
             return true;
