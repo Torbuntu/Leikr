@@ -24,11 +24,10 @@ public class GameRuntime extends ScreenBasedGame {
     public static String GAME_NAME = "";
     public static String LAUNCH_TITLE;
 
-    public static int WIDTH = 240;
-    public static int HEIGHT = 160;
+    public static int WIDTH;
+    public static int HEIGHT;
     
     AssetManager assetManager;
-    public CustomSystemProperties csp;
     
     public static FontLoader primaryFontLoader = new FontLoader();
 
@@ -38,11 +37,12 @@ public class GameRuntime extends ScreenBasedGame {
      * @param arg
      */
     public GameRuntime(String[] arg) {
-        csp = new CustomSystemProperties();
-        
-        if (csp.LAUNCH_TITLE.length() > 3) {
-            LAUNCH_TITLE = csp.LAUNCH_TITLE;
-            PROGRAM_PATH = "Programs/" + csp.LAUNCH_TITLE;
+        CustomSystemProperties.init();
+        WIDTH = CustomSystemProperties.SCREEN_WIDTH;
+        HEIGHT = CustomSystemProperties.SCREEN_HEIGHT;
+        if (CustomSystemProperties.LAUNCH_TITLE.length() > 3) {
+            LAUNCH_TITLE = CustomSystemProperties.LAUNCH_TITLE;
+            PROGRAM_PATH = "Programs/" + CustomSystemProperties.LAUNCH_TITLE;
             System.out.println(PROGRAM_PATH);
         }
     }
@@ -88,7 +88,7 @@ public class GameRuntime extends ScreenBasedGame {
         this.addScreen(new ErrorScreen(assetManager));//4
         this.addScreen(new LoadScreen());//5
         this.addScreen(new NewProgramScreen());//6
-        this.addScreen(new TerminalScreen(assetManager));//7
+        this.addScreen(new TerminalScreen());//7
     }
 
     @Override

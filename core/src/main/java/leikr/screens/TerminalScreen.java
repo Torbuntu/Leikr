@@ -4,11 +4,9 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
-import leikr.customProperties.CustomSystemProperties;
 import leikr.loaders.EngineLoader;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
-import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.files.FileHandle;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Colors;
@@ -35,12 +33,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
     String prompt = "";
     String historyText = "";
 
-    int Y_OFFSET = 0;
-
-    AssetManager assetManager;
-
-    public TerminalScreen(AssetManager assetManager) {
-        this.assetManager = assetManager;
+    public TerminalScreen() {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
     }
 
