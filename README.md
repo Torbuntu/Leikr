@@ -11,7 +11,7 @@ Powered by [Mini2Dx](https://mini2dx.org/)
 
 | Preview |
 |----|
-| ![](showcase/demo.png?raw=true) |
+| ![](showcase/title_showcase.png?raw=true) |
 
 ## Running from release
 
