@@ -1,6 +1,7 @@
 package leikr.loaders;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import leikr.GameRuntime;
 import org.mini2Dx.core.Mdx;
@@ -94,25 +95,25 @@ public class AudioLoader {
         musicManager.finishLoading();
     }
 
-    public void sound(String fileName) {
+    public void playSound(String fileName) {
         sPlayer = soundManager.get(soundRootPath + fileName + ".wav", Sound.class);
         sPlayer.play();
     }
 
-    public void sound(String fileName, float vol, float pit, float pan) {
+    public void playSound(String fileName, BigDecimal vol, BigDecimal pit, BigDecimal pan) {
         //vol: range [0,1]
         //pit: 0.5 and 2.0
         //pan: panning in the range -1 (full left) to 1 (full right). 0 is center position.
         sPlayer = soundManager.get(soundRootPath + fileName + ".wav", Sound.class);
-        sPlayer.play(vol, pit, pan);
+        sPlayer.play(vol.floatValue(), pit.floatValue(), pan.floatValue());
     }
 
-    public void music(String fileName) {
+    public void playMusic(String fileName) {
         mPlayer = musicManager.get(musicRootPath + fileName + ".wav", Music.class);
         mPlayer.play();
     }
 
-    public void music(String fileName, boolean loop) {
+    public void playMusic(String fileName, boolean loop) {
         mPlayer = musicManager.get(musicRootPath + fileName + ".wav", Music.class);
         mPlayer.setLooping(loop);
         mPlayer.play();

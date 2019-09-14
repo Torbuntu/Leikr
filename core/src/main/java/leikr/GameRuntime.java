@@ -78,6 +78,7 @@ public class GameRuntime extends ScreenBasedGame {
         primaryFontLoader.getDefaultFont().load(assetManager);
         Mdx.graphicsContext.setFont(primaryFontLoader.getDefaultFont());
 
+        //Transparent image to hide host system cursor.
         Pixmap tmp = Mdx.graphics.newPixmap(Mdx.files.local("Internal/Cursor.png"));
         Mdx.graphics.newCustomCursor(tmp, tmp, 0, 0);
         tmp.dispose();

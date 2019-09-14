@@ -1,5 +1,6 @@
 package leikr;
 
+import java.math.BigDecimal;
 import leikr.controls.LeikrController;
 import leikr.controls.LeikrKeyboard;
 import leikr.controls.LeikrMouse;
@@ -13,7 +14,6 @@ import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.input.BaseGamePadListener;
 import org.mini2Dx.gdx.InputProcessor;
-import org.mini2Dx.gdx.math.MathUtils;
 
 /**
  *
@@ -198,16 +198,16 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         screen.loadImages();
     }
 
-    public final void image(String name, float x, float y) {
-        screen.image(name, x, y);
+    public final void drawTexture(String name, BigDecimal x, BigDecimal y) {
+        screen.drawTexture(name, x, y);
     }
 
-    public final void image(String name, float x, float y, float w, float h) {
-        screen.image(name, x, y, w, h);
+    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        screen.drawTexture(name, x, y, w, h);
     }
 
-    public final void image(String name, float x, float y, float w, float h, boolean flipv) {
-        screen.image(name, x, y, w, h, flipv);
+    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h, boolean flipv) {
+        screen.drawTexture(name, x, y, w, h, flipv);
     }
     //end Image methods
 
@@ -216,36 +216,36 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         screen.loadMap(map);
     }
 
-    public final void map() {
-        screen.map();
+    public final void drawMap() {
+        screen.drawMap();
     }
 
-    public final void map(int x, int y) {
-        screen.map(x, y);
+    public final void drawMap(BigDecimal x, BigDecimal y) {
+        screen.drawMap(x, y);
     }
 
-    public final void map(int x, int y, int layer) {
-        screen.map(x, y, layer);
+    public final void drawMap(BigDecimal x, BigDecimal y, int layer) {
+        screen.drawMap(x, y, layer);
     }
 
-    public final void map(int x, int y, int sx, int sy, int w, int h) {
-        screen.map(x, y, sx, sy, w, h);
+    public final void drawMap(BigDecimal x, BigDecimal y, BigDecimal sx, BigDecimal sy, BigDecimal w, BigDecimal h) {
+        screen.drawMap(x, y, sx, sy, w, h);
     }
 
-    public final void map(int x, int y, int sx, int sy, int w, int h, int layer) {
-        screen.map(x, y, sx, sy, w, h, layer);
+    public final void drawMap(BigDecimal x, BigDecimal y, BigDecimal sx, BigDecimal sy, BigDecimal w, BigDecimal h, int layer) {
+        screen.drawMap(x, y, sx, sy, w, h, layer);
     }
 
-    public final int mapGet(int x, int y) {
-        return screen.mapGet(x, y);
+    public final int getMapTileId(BigDecimal x, BigDecimal y) {
+        return screen.getMapTileId(x, y);
     }
 
-    public final void mapSet(int x, int y, int id) {
-        screen.mapSet(x, y, id);
+    public final void setMapTile(BigDecimal x, BigDecimal y, int id) {
+        screen.setMapTile(x, y, id);
     }
 
-    public final void mapRemove(int x, int y) {
-        screen.mapRemove(x, y);
+    public final void removeMapTile(BigDecimal x, BigDecimal y) {
+        screen.removeMapTile(x, y);
     }
 
     public final int getMapHeight() {
@@ -258,12 +258,16 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     //end Map methods
 
     //start color methods
-    public final void drawColor(int color) {
-        screen.drawColor(color);
+    public final void setColor(int color) {
+        screen.setColor(color);
     }
 
-    public final void drawColor(String c) {
-        screen.drawColor(c);
+    public final void setColor(String c) {
+        screen.setColor(c);
+    }
+
+    public final void setColor(String c, boolean a) {
+        screen.setColor(c, a);
     }
 
     public final Color getDrawColor(int color) {
@@ -280,146 +284,146 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     //end color methods
 
     //Helper methods
-    public final void clip(float x, float y, float w, float h) {
-        screen.clip(x, y, w, h);
+    public final void setClip(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        screen.setClip(x, y, w, h);
     }
 
-    public final void clip() {
-        screen.clip();
+    public final void removeClip() {
+        screen.removeClip();
     }
 
     //end helper methods
     //text methods
-    public final void text(String text, float x, float y, int color) {
-        screen.text(text, x, y, color);
+    public final void drawString(String text, BigDecimal x, BigDecimal y, int color) {
+        screen.drawString(text, x, y, color);
     }
 
-    public final void text(String text, float x, float y, String color) {
-        screen.text(text, x, y, color);
+    public final void drawString(String text, BigDecimal x, BigDecimal y, String color) {
+        screen.drawString(text, x, y, color);
     }
 
-    public final void text(String text, float x, float y, float width, int color) {
-        screen.text(text, x, y, width, color);
+    public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, int color) {
+        screen.drawString(text, x, y, width, color);
     }
 
-    public final void text(String text, float x, float y, float width, String color) {
-        screen.text(text, x, y, width, color);
+    public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, String color) {
+        screen.drawString(text, x, y, width, color);
     }
 
-    public final void text(String text, float x, float y, float width, int align, int color) {
-        screen.text(text, x, y, width, align, color);
+    public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, int align, int color) {
+        screen.drawString(text, x, y, width, align, color);
     }
 
-    public final void text(String text, float x, float y, float width, int align, String color) {
-        screen.text(text, x, y, width, align, color);
+    public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, int align, String color) {
+        screen.drawString(text, x, y, width, align, color);
     }
-    //end text methods
+    //end drawString methods
 
     //start 8x8 sprites
-    public final void sprite(int id, float x, float y) {
+    public final void sprite(int id, BigDecimal x, BigDecimal y) {
         screen.sprite(id, x, y);
     }
 
-    public final void sprite(int id, float x, float y, float degr) {
+    public final void sprite(int id, BigDecimal x, BigDecimal y, BigDecimal degr) {
         screen.sprite(id, x, y, degr);
     }
 
-    public final void sprite(int id, float x, float y, boolean flipX, boolean flipY) {
+    public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY) {
         screen.sprite(id, x, y, flipX, flipY);
     }
     //end 8x8 sprites
 
     //start sizable sprites
-    public final void sprite(int id, float x, float y, int size) {
+    public final void sprite(int id, BigDecimal x, BigDecimal y, int size) {
         screen.sprite(id, x, y, size);
     }
 
-    public final void sprite(int id, float x, float y, float degr, int size) {
+    public final void sprite(int id, BigDecimal x, BigDecimal y, BigDecimal degr, int size) {
         screen.sprite(id, x, y, degr, size);
     }
 
-    public final void sprite(int id, float x, float y, boolean flipX, boolean flipY, int size) {
+    public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, int size) {
         screen.sprite(id, x, y, flipX, flipY, size);
     }
     //end sizable sprites
 
     //start scaled sprites
-    public void spriteSc(int id, float x, float y, float scale) {
+    public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale) {
         screen.spriteSc(id, x, y, scale);
     }
 
-    public void spriteSc(int id, float x, float y, float scaleX, float scaleY) {
+    public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY) {
         screen.spriteSc(id, x, y, scaleX, scaleY);
     }
 
-    public void spriteSc(int id, float x, float y, float scaleX, float scaleY, float degr) {
+    public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, BigDecimal degr) {
         screen.spriteSc(id, x, y, scaleX, scaleY, degr);
     }
     //end scaled sprites
 
     //start animated sprites
-    public Animation makeAnimSprite(int[] ids, float[] lengths) {
+    public Animation makeAnimSprite(BigDecimal[] ids, BigDecimal[] lengths) {
         return screen.makeAnimSprite(ids, lengths);
     }
 
-    public Animation makeAnimSprite(int[] ids, float[] lengths, boolean loop) {
+    public Animation makeAnimSprite(BigDecimal[] ids, BigDecimal[] lengths, boolean loop) {
         return screen.makeAnimSprite(ids, lengths, loop);
     }
 
-    public Animation makeAnimSprite(int[] ids, float[] lengths, int size) {
+    public Animation makeAnimSprite(BigDecimal[] ids, BigDecimal[] lengths, int size) {
         return screen.makeAnimSprite(ids, lengths, size);
     }
 
-    public Animation makeAnimSprite(int[] ids, float[] lengths, int size, boolean loop) {
+    public Animation makeAnimSprite(BigDecimal[] ids, BigDecimal[] lengths, int size, boolean loop) {
         return screen.makeAnimSprite(ids, lengths, size, loop);
     }
 
-    public void spriteAnim(Animation sprite, float x, float y) {
+    public void spriteAnim(Animation sprite, BigDecimal x, BigDecimal y) {
         screen.spriteAnim(sprite, x, y);
     }
 
-    public void spriteAnim(Animation sprite, float x, float y, boolean flipH, boolean flipV) {
+    public void spriteAnim(Animation sprite, BigDecimal x, BigDecimal y, boolean flipH, boolean flipV) {
         screen.spriteAnim(sprite, x, y, flipH, flipV);
     }
     //END animated sprites
 
     //start shape drawing methods
-    public final void pixel(int color, int x, int y) {
-        screen.pixel(color, x, y);
+    public final void drawPixel(int color, BigDecimal x, BigDecimal y) {
+        screen.drawPixel(color, x, y);
     }
 
-    public final void rect(int x, int y, int w, int h) {
-        screen.rect(x, y, w, h);
+    public final void drawRect(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        screen.drawRect(x, y, w, h);
     }
 
-    public final void rect(int x, int y, int w, int h, boolean fill) {
-        screen.rect(x, y, w, h, fill);
+    public final void fillRect(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        screen.fillRect(x, y, w, h);
     }
-    
-    public final void line(int x1, int y1, int x2, int y2) {
-        screen.line(x1, y1, x2, y2);
+
+    public final void drawLineSegment(BigDecimal x1, BigDecimal y1, BigDecimal x2, BigDecimal y2) {
+        screen.drawLineSegment(x1, y1, x2, y2);
     }
     //end shape drawing methods
 
     //start Audio handling
-    public final void sfx(String name) {
-        audio.sfx(name);
+    public final void playSound(String name) {
+        audio.playSound(name);
     }
 
-    public final void sfx(String name, float vol, float pit, float pan) {
-        audio.sfx(name, vol, pit, pan);
+    public final void playSound(String name, BigDecimal vol, BigDecimal pit, BigDecimal pan) {
+        audio.playSound(name, vol, pit, pan);
     }
 
     public final void stopSfx() {
         audio.stopSfx();
     }
 
-    public final void music(String name) {
-        audio.music(name);
+    public final void playMusic(String name) {
+        audio.playMusic(name);
     }
 
-    public final void music(String name, boolean loop) {
-        audio.music(name, loop);
+    public final void playMusic(String name, boolean loop) {
+        audio.playMusic(name, loop);
     }
 
     public final void stopAllMusic() {
@@ -436,44 +440,48 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     //end audio handling
 
     //START Math utils
-    public float cos(float radians) {
-        return MathUtils.cos(radians);
+    public float cos(BigDecimal radians) {
+        return system.cos(radians);
     }
 
-    public float cosDeg(float deg) {
-        return MathUtils.cosDeg(deg);
+    public float cosDeg(BigDecimal deg) {
+        return system.cosDeg(deg);
     }
 
-    public float sin(float radians) {
-        return MathUtils.sin(radians);
+    public float sin(BigDecimal radians) {
+        return system.sin(radians);
     }
 
-    public float sinDeg(float deg) {
-        return MathUtils.sinDeg(deg);
+    public float sinDeg(BigDecimal deg) {
+        return system.sinDeg(deg);
     }
 
-    public int ceil(float value) {
-        return MathUtils.ceil(value);
+    public int ceil(BigDecimal value) {
+        return system.ceil(value);
     }
 
-    public int floor(float value) {
-        return MathUtils.floor(value);
+    public int floor(BigDecimal value) {
+        return system.floor(value);
     }
 
     public int randInt(int range) {
-        return MathUtils.random(range);
+        return system.randInt(range);
     }
 
     public int randInt(int start, int end) {
-        return MathUtils.random(start, end);
+        return system.randInt(start, end);
     }
 
-    public float randFloat(float range) {
-        return MathUtils.random(range);
+    public float randFloat(BigDecimal range) {
+        return system.randFloat(range);
     }
 
-    public float randFloat(float start, float end) {
-        return MathUtils.random(start, end);
+    public float randFloat(BigDecimal start, BigDecimal end) {
+        return system.randFloat(start, end);
+    }
+
+    public int round(BigDecimal number) {
+        return system.round(number);
     }
     //END Math utils
 
@@ -598,16 +606,16 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         screen.tint();
     }
 
-    public boolean collides(float x1, float y1, float w1, float h1, float x2, float y2, float w2, float h2) {
-        return x1 + w1 >= x2 && x2 + w2 >= x1 || y1 + h1 >= y2 && y2 + h2 >= y1;
+    public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {
+        return system.collides(x1, y1, w1, h1, x2, y2, w2, h2);
     }
 
-    public boolean collides(float[] a, float[] b) {
-        return a[0] + a[2] >= b[0] && b[0] + b[2] >= a[0] || a[1] + a[3] >= b[1] && b[1] + b[3] >= a[1];
+    public boolean collides(BigDecimal[] a, BigDecimal[] b) {
+        return system.collides(a, b);
     }
 
-    public boolean point(float x, float y, float x2, float y2, float w, float h) {
-        return x >= x2 && x <= x2 + w && y >= y2 && y <= y2 + h;
+    public boolean point(BigDecimal x, BigDecimal y, BigDecimal x2, BigDecimal y2, BigDecimal w, BigDecimal h) {
+        return system.point(x, y, x2, y2, w, h);
     }
 
     public Object compile(String path) {
@@ -618,14 +626,14 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         system.compile(path, out);
     }
 
-    public Object eval(String code, int opt) {
-        return system.eval(code, opt);
-    }
-
     public Object eval(String code) {
         return system.eval(code);
     }
 
+    public Object parse(String code){
+        return system.parse(code);
+    }
+    
     public void loadLib(String path) {
         system.loadLib(path);
     }

@@ -77,17 +77,13 @@ public class EngineLoader implements Callable<Engine> {
         if (cp.USE_COMPILED) {
             return getCompiledEngine();
         }
-        if (cp.JAVA_ENGINE) {
-            return getSourceEngine(".java");
-        }
-
-        return getSourceEngine(".groovy");
+        return getSourceEngine();
     }
 
-    private Engine getSourceEngine(String type) throws MalformedURLException, CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    private Engine getSourceEngine() throws MalformedURLException, CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         gcl.clearCache();
         gcl.addClasspath(rootPath);
-        return (Engine) gcl.parseClass(new File(Mdx.files.local(rootPath + GameRuntime.GAME_NAME + type).path())).getDeclaredConstructors()[0].newInstance();//loads the game code  
+        return (Engine) gcl.parseClass(new File(Mdx.files.local(rootPath + GameRuntime.GAME_NAME + ".groovy").path())).getDeclaredConstructors()[0].newInstance();//loads the game code  
     }
 
     private Engine getCompiledEngine() throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
@@ -218,39 +214,25 @@ public class EngineLoader implements Callable<Engine> {
     }
 
     /**
-     * Evaluates a groovy source code file or source in text, returning the
-     * result.
-     *
-     * @param code
-     * @param opt
-     * @return
-     */
-    public Object eval(String code, int opt) {
-        try {
-            switch (opt) {
-                case 0:
-                    return sh.evaluate(code);
-                case 1:
-                    return sh.evaluate(new File(Mdx.files.local(GameRuntime.getProgramPath() + "/" + code + ".groovy").path()));
-                default:
-                    return sh.evaluate(code);
-            }
-        } catch (CompilationFailedException | IllegalArgumentException | IOException ex) {
-            Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return -1;
-    }
-
-    /**
-     * Unlike @eval(String code, int opt) this method only takes source code
+     * Evaluates groovy source code
      *
      * @param code
      * @return
+     *      Object result of the evaluation
      */
     public Object eval(String code) {
         try {
             return sh.evaluate(code);
-        } catch (CompilationFailedException | IllegalArgumentException ex) {
+        } catch (Exception ex) {
+            Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return -1;
+    }
+    
+    public Object parse(String code){
+        try{
+            return sh.parse(code);
+        }catch(Exception ex){
             Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;

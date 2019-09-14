@@ -1,5 +1,6 @@
 package leikr.managers;
 
+import java.math.BigDecimal;
 import leikr.GameRuntime;
 import leikr.loaders.ImageLoader;
 import leikr.loaders.MapLoader;
@@ -91,7 +92,7 @@ public class LeikrScreenManager {
 
     public void preUpdate(float delta) {
         if (null == mapLoader.getMap()) {
-            return;//don't update the map if it is null
+            return;//don't update the drawMap if it is null
         }
         mapLoader.getMap().update(delta);
     }
@@ -108,16 +109,16 @@ public class LeikrScreenManager {
         imageLoader.load();
     }
 
-    public final void image(String name, float x, float y) {
-        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x, y);
+    public final void drawTexture(String name, BigDecimal x, BigDecimal y) {
+        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue());
     }
 
-    public final void image(String name, float x, float y, float w, float h) {
-        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x, y, w, h);
+    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue());
     }
 
-    public final void image(String name, float x, float y, float w, float h, boolean flipv) {
-        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x, y, w, h, flipv);
+    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h, boolean flipv) {
+        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue(), flipv);
     }
     //end Image methods
 
@@ -126,36 +127,36 @@ public class LeikrScreenManager {
         mapLoader.loadMap(map);
     }
 
-    public final void map() {
+    public final void drawMap() {
         mapLoader.drawMap(Mdx.graphicsContext);
     }
 
-    public final void map(int x, int y) {
-        mapLoader.drawMap(Mdx.graphicsContext, x, y);
+    public final void drawMap(BigDecimal x, BigDecimal y) {
+        mapLoader.drawMap(Mdx.graphicsContext, x.intValue(), y.intValue());
     }
 
-    public final void map(int x, int y, int layer) {
-        mapLoader.drawMap(Mdx.graphicsContext, x, y, layer);
+    public final void drawMap(BigDecimal x, BigDecimal y, int layer) {
+        mapLoader.drawMap(Mdx.graphicsContext, x.intValue(), y.intValue(), layer);
     }
 
-    public final void map(int x, int y, int sx, int sy, int w, int h) {
-        mapLoader.drawMap(Mdx.graphicsContext, x, y, sx, sy, w, h);
+    public final void drawMap(BigDecimal x, BigDecimal y, BigDecimal sx, BigDecimal sy, BigDecimal w, BigDecimal h) {
+        mapLoader.drawMap(Mdx.graphicsContext, x.intValue(), y.intValue(), sx.intValue(), sy.intValue(), w.intValue(), h.intValue());
     }
 
-    public final void map(int x, int y, int sx, int sy, int w, int h, int layer) {
-        mapLoader.drawMap(Mdx.graphicsContext, x, y, sx, sy, w, h, layer);
+    public final void drawMap(BigDecimal x, BigDecimal y, BigDecimal sx, BigDecimal sy, BigDecimal w, BigDecimal h, int layer) {
+        mapLoader.drawMap(Mdx.graphicsContext, x.intValue(), y.intValue(), sx.intValue(), sy.intValue(), w.intValue(), h.intValue(), layer);
     }
 
-    public final int mapGet(int x, int y) {
-        return mapLoader.getMapTileId(x, y);
+    public final int getMapTileId(BigDecimal x, BigDecimal y) {
+        return mapLoader.getMapTileId(x.intValue(), y.intValue());
     }
 
-    public final void mapSet(int x, int y, int id) {
-        mapLoader.setMapTile(x, y, id);
+    public final void setMapTile(BigDecimal x, BigDecimal y, int id) {
+        mapLoader.setMapTile(x.intValue(), y.intValue(), id);
     }
 
-    public final void mapRemove(int x, int y) {
-        mapLoader.removeMapTile(x, y);
+    public final void removeMapTile(BigDecimal x, BigDecimal y) {
+        mapLoader.removeMapTile(x.intValue(), y.intValue());
     }
 
     public final int getMapHeight() {
@@ -241,15 +242,15 @@ public class LeikrScreenManager {
         }
     }
 
-    public final void drawColor(int color) {
+    public final void setColor(int color) {
         Mdx.graphicsContext.setColor(getDrawColor(color));
     }
 
-    public final void drawColor(String c) {
+    public final void setColor(String c) {
         Mdx.graphicsContext.setColor(Colors.rgbToColor(c));
     }
 
-    public final void drawColor(String c, boolean alpha) {
+    public final void setColor(String c, boolean alpha) {
         if (alpha) {
             Mdx.graphicsContext.setColor(Colors.rgbaToColor(c));
         } else {
@@ -258,236 +259,232 @@ public class LeikrScreenManager {
     }
 
     public final void bgColor(int color) {
-        drawColor(color);
+        LeikrScreenManager.this.setColor(color);
         Mdx.graphicsContext.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
     }
 
     public final void bgColor(String c) {
-        drawColor(c);
+        LeikrScreenManager.this.setColor(c);
         Mdx.graphicsContext.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
     }
 
     //end color methods
     //text methods
-    public final void text(String text, float x, float y, int color) {
-        drawColor(color);
-        Mdx.graphicsContext.drawString(text, x, y);
+    public final void drawString(String text, BigDecimal x, BigDecimal y, int color) {
+        LeikrScreenManager.this.setColor(color);
+        Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue());
     }
 
-    public final void text(String text, float x, float y, String color) {
-        drawColor(color);
-        Mdx.graphicsContext.drawString(text, x, y);
+    public final void drawString(String text, BigDecimal x, BigDecimal y, String color) {
+        LeikrScreenManager.this.setColor(color);
+        Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue());
     }
 
-    public final void text(String text, float x, float y, float width, int color) {
-        drawColor(color);
-        Mdx.graphicsContext.drawString(text, x, y, width);
+    public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, int color) {
+        LeikrScreenManager.this.setColor(color);
+        Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue(), width.floatValue());
     }
 
-    public final void text(String text, float x, float y, float width, String color) {
-        drawColor(color);
-        Mdx.graphicsContext.drawString(text, x, y, width);
+    public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, String color) {
+        LeikrScreenManager.this.setColor(color);
+        Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue(), width.floatValue());
     }
 
-    public final void text(String text, float x, float y, float width, int align, int color) {
-        drawColor(color);
-        Mdx.graphicsContext.drawString(text, x, y, width, align);
+    public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, int align, int color) {
+        LeikrScreenManager.this.setColor(color);
+        Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue(), width.floatValue(), align);
     }
 
-    public final void text(String text, float x, float y, float width, int align, String color) {
-        drawColor(color);
-        Mdx.graphicsContext.drawString(text, x, y, width, align);
+    public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, int align, String color) {
+        LeikrScreenManager.this.setColor(color);
+        Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue(), width.floatValue(), align);
     }
-    //end text methods
+    //end drawString methods
 
     //sprite helper methods.
-    private void drawSpriteRotate(int id, int size, float degr, float x, float y) {
+    private void drawSpriteRotate(int id, int size, BigDecimal degr, BigDecimal x, BigDecimal y) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
         Sprite t = spriteLoader.getSprite(id, size);
-        t.rotate(degr);
-        Mdx.graphicsContext.drawSprite(t, x, y);
-        t.rotate(-degr);
+        t.rotate(degr.floatValue());
+        Mdx.graphicsContext.drawSprite(t, x.floatValue(), y.floatValue());
+        t.rotate(-degr.floatValue());
         USED_SPRITES++;
     }
 
-    private void drawSpriteFlip(int id, float x, float y, int size, boolean flipX, boolean flipY) {
+    private void drawSpriteFlip(int id, BigDecimal x, BigDecimal y, int size, boolean flipX, boolean flipY) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
         Sprite t = spriteLoader.getSprite(id, size);
         t.setFlip(flipX, flipY);
-        Mdx.graphicsContext.drawSprite(t, x, y);
+        Mdx.graphicsContext.drawSprite(t, x.floatValue(), y.floatValue());
         t.setFlip(false, false);
         USED_SPRITES++;
     }
 
     //start 8x8 sprites. Default size 0 (8x8)
-    public final void sprite(int id, float x, float y) {
+    public final void sprite(int id, BigDecimal x, BigDecimal y) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        Mdx.graphicsContext.drawSprite(spriteLoader.getSprite(id, 0), x, y);
+        Mdx.graphicsContext.drawSprite(spriteLoader.getSprite(id, 0), x.floatValue(), y.floatValue());
         USED_SPRITES++;
     }
 
-    public final void sprite(int id, float x, float y, float degr) {
+    public final void sprite(int id, BigDecimal x, BigDecimal y, BigDecimal degr) {
         drawSpriteRotate(id, 0, degr, x, y);
     }
 
-    public final void sprite(int id, float x, float y, boolean flipX, boolean flipY) {
+    public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY) {
         drawSpriteFlip(id, x, y, 0, flipX, flipY);
     }
     //end 8x8 sprites
 
     //start sizable sprites
-    public final void sprite(int id, float x, float y, int size) {
+    public final void sprite(int id, BigDecimal x, BigDecimal y, int size) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        Mdx.graphicsContext.drawSprite(spriteLoader.getSprite(id, size), x, y);
+        Mdx.graphicsContext.drawSprite(spriteLoader.getSprite(id, size), x.floatValue(), y.floatValue());
         USED_SPRITES++;
     }
 
-    public final void sprite(int id, float x, float y, float degr, int size) {
+    public final void sprite(int id, BigDecimal x, BigDecimal y, BigDecimal degr, int size) {
         drawSpriteRotate(id, size, degr, x, y);
     }
 
-    public final void sprite(int id, float x, float y, boolean flipX, boolean flipY, int size) {
+    public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, int size) {
         drawSpriteFlip(id, x, y, size, flipX, flipY);
     }
     //end sizable sprites
 
     //START special sprite mode
-    public final void spriteSc(int id, float x, float y, float scale) {
+    public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
         Sprite t = spriteLoader.getSprite(id, 0);
-        t.scale(scale);
-        Mdx.graphicsContext.drawSprite(t, x, y);
-        t.scale(-scale);
+        t.scale(scale.floatValue());
+        Mdx.graphicsContext.drawSprite(t, x.floatValue(), y.floatValue());
+        t.scale(-scale.floatValue());
         USED_SPRITES++;
     }
 
-    public final void spriteSc(int id, float x, float y, float scaleX, float scaleY) {
+    public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
         Sprite t = spriteLoader.getSprite(id, 0);
-        t.setScale(scaleX, scaleY);
-        Mdx.graphicsContext.drawSprite(t, x, y);
-        t.setScale(-scaleX, -scaleY);
+        t.setScale(scaleX.floatValue(), scaleY.floatValue());
+        Mdx.graphicsContext.drawSprite(t, x.floatValue(), y.floatValue());
+        t.setScale(-scaleX.floatValue(), -scaleY.floatValue());
         USED_SPRITES++;
     }
 
-    public final void spriteSc(int id, float x, float y, float scaleX, float scaleY, float degr) {
+    public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, BigDecimal degr) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
         Sprite t = spriteLoader.getSprite(id, 0);
-        t.setScale(scaleX, scaleY);
-        t.rotate(degr);
-        Mdx.graphicsContext.drawSprite(t, x, y);
-        t.rotate(-degr);
-        t.setScale(-scaleX, -scaleY);
+        t.setScale(scaleX.floatValue(), scaleY.floatValue());
+        t.rotate(degr.floatValue());
+        Mdx.graphicsContext.drawSprite(t, x.floatValue(), y.floatValue());
+        t.rotate(-degr.floatValue());
+        t.setScale(-scaleX.floatValue(), -scaleY.floatValue());
         USED_SPRITES++;
     }
 
-    public final void spriteSc(int id, float x, float y, float scaleX, float scaleY, boolean flipX, boolean flipY) {
+    public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
         Sprite t = spriteLoader.getSprite(id, 0);
-        t.setScale(scaleX, scaleY);
+        t.setScale(scaleX.floatValue(), scaleY.floatValue());
         t.flip(flipX, flipY);
-        Mdx.graphicsContext.drawSprite(t, x, y);
+        Mdx.graphicsContext.drawSprite(t, x.floatValue(), y.floatValue());
         t.flip(!flipX, !flipY);
-        t.setScale(-scaleX, -scaleY);
+        t.setScale(-scaleX.floatValue(), -scaleY.floatValue());
         USED_SPRITES++;
     }
     //END special sprite mode
 
     //START animated sprites
-    public Animation makeAnimSprite(int[] ids, float[] length) {
+    public Animation makeAnimSprite(BigDecimal[] ids, BigDecimal[] length) {
         Animation<Sprite> tmp = new Animation<>();
         for (int i = 0; i < ids.length; i++) {
-            tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i], 0), length[i]);
+            tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i].intValue(), 0), length[i].floatValue());
         }
         return tmp;
     }
 
-    public Animation makeAnimSprite(int[] ids, float[] length, boolean loop) {
+    public Animation makeAnimSprite(BigDecimal[] ids, BigDecimal[] length, boolean loop) {
         Animation<Sprite> tmp = new Animation<>();
         for (int i = 0; i < ids.length; i++) {
-            tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i], 0), length[i]);
-        }
-        tmp.setLooping(loop);
-        return tmp;
-    }
-
-    public Animation makeAnimSprite(int[] ids, float[] length, int size) {
-        Animation<Sprite> tmp = new Animation<>();
-        for (int i = 0; i < ids.length; i++) {
-            tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i], size), length[i]);
-        }
-        return tmp;
-    }
-
-    public Animation makeAnimSprite(int[] ids, float[] length, int size, boolean loop) {
-        Animation<Sprite> tmp = new Animation<>();
-        for (int i = 0; i < ids.length; i++) {
-            tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i], size), length[i]);
+            tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i].intValue(), 0), length[i].floatValue());
         }
         tmp.setLooping(loop);
         return tmp;
     }
 
-    public void spriteAnim(Animation sprite, float x, float y) {
+    public Animation makeAnimSprite(BigDecimal[] ids, BigDecimal[] length, int size) {
+        Animation<Sprite> tmp = new Animation<>();
+        for (int i = 0; i < ids.length; i++) {
+            tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i].intValue(), size), length[i].floatValue());
+        }
+        return tmp;
+    }
+
+    public Animation makeAnimSprite(BigDecimal[] ids, BigDecimal[] length, int size, boolean loop) {
+        Animation<Sprite> tmp = new Animation<>();
+        for (int i = 0; i < ids.length; i++) {
+            tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i].intValue(), size), length[i].floatValue());
+        }
+        tmp.setLooping(loop);
+        return tmp;
+    }
+
+    public void spriteAnim(Animation sprite, BigDecimal x, BigDecimal y) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        sprite.draw(Mdx.graphicsContext, x, y);
+        sprite.draw(Mdx.graphicsContext, x.floatValue(), y.floatValue());
     }
 
-    public void spriteAnim(Animation sprite, float x, float y, boolean flipH, boolean flipV) {
+    public void spriteAnim(Animation sprite, BigDecimal x, BigDecimal y, boolean flipH, boolean flipV) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
         sprite.flip(flipH, flipV);
-        sprite.draw(Mdx.graphicsContext, x, y);
+        sprite.draw(Mdx.graphicsContext, x.floatValue(), y.floatValue());
         sprite.flip(!flipH, !flipV);
     }
     //END animated sprites
 
     //start shape drawing methods
-    public final void pixel(int color, int x, int y) {
-        Mdx.graphicsContext.drawSprite(pixels.getSprite(color), x, y);
+    public final void drawPixel(int color, BigDecimal x, BigDecimal y) {
+        Mdx.graphicsContext.drawSprite(pixels.getSprite(color), x.intValue(), y.intValue());
     }
 
-    public final void rect(int x, int y, int w, int h) {
-        Mdx.graphicsContext.drawRect(x, y, w, h);
+    public final void drawRect(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        Mdx.graphicsContext.drawRect(x.intValue(), y.intValue(), w.intValue(), h.intValue());
     }
 
-    public final void rect(int x, int y, int w, int h, boolean fill) {
-        if (fill) {
-            Mdx.graphicsContext.fillRect(x, y, w, h);
-        } else {
-            Mdx.graphicsContext.drawRect(x, y, w, h);
-        }
+    public final void fillRect(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        Mdx.graphicsContext.fillRect(x.intValue(), y.intValue(), w.intValue(), h.intValue());
     }
 
-    public final void line(int x, int y, int x2, int y2) {
-        Mdx.graphicsContext.drawLineSegment(x, y, x2, y2);
+    public final void drawLineSegment(BigDecimal x, BigDecimal y, BigDecimal x2, BigDecimal y2) {
+        Mdx.graphicsContext.drawLineSegment(x.intValue(), y.intValue(), x2.intValue(), y2.intValue());
     }
     //end shape drawing methods
 
-    public final void clip(float x, float y, float w, float h) {
-        Mdx.graphicsContext.setClip(x, y, w, h);
+    public final void setClip(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        Mdx.graphicsContext.setClip(x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue());
     }
 
-    public final void clip() {
+    public final void removeClip() {
         Mdx.graphicsContext.removeClip();
     }
 

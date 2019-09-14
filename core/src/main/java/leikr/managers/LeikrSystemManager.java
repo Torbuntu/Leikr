@@ -1,5 +1,6 @@
 package leikr.managers;
 
+import java.math.BigDecimal;
 import leikr.GameRuntime;
 import leikr.loaders.EngineLoader;
 import leikr.loaders.SpriteLoader;
@@ -10,6 +11,7 @@ import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.files.LocalFileHandleResolver;
 import org.mini2Dx.core.screen.ScreenManager;
+import org.mini2Dx.gdx.math.MathUtils;
 
 /**
  *
@@ -21,7 +23,7 @@ public class LeikrSystemManager {
     private boolean RUNNING = true;
     AssetManager manager;
     MonospaceGameFont font;
-    
+
     private static LeikrSystemManager instance;
 
     public LeikrSystemManager() {
@@ -36,8 +38,8 @@ public class LeikrSystemManager {
         instance.reset();
         return instance;
     }
-    
-    private void reset(){
+
+    private void reset() {
         manager.clearAssetLoaders();
     }
 
@@ -61,42 +63,104 @@ public class LeikrSystemManager {
         GameRuntime.GAME_NAME = name;
         LOAD_PROGRAM = true;
     }
-    
+
+    //START Math functions
+    public float cos(BigDecimal radians) {
+        return MathUtils.cos(radians.floatValue());
+    }
+
+    public float cosDeg(BigDecimal deg) {
+        return MathUtils.cosDeg(deg.floatValue());
+    }
+
+    public float sin(BigDecimal radians) {
+        return MathUtils.sin(radians.floatValue());
+    }
+
+    public float sinDeg(BigDecimal deg) {
+        return MathUtils.sinDeg(deg.floatValue());
+    }
+
+    public int ceil(BigDecimal value) {
+        return MathUtils.ceil(value.floatValue());
+    }
+
+    public int floor(BigDecimal value) {
+        return MathUtils.floor(value.floatValue());
+    }
+
+    public int randInt(int range) {
+        return MathUtils.random(range);
+    }
+
+    public int randInt(int start, int end) {
+        return MathUtils.random(start, end);
+    }
+
+    public float randFloat(BigDecimal range) {
+        return MathUtils.random(range.floatValue());
+    }
+
+    public float randFloat(BigDecimal start, BigDecimal end) {
+        return MathUtils.random(start.floatValue(), end.floatValue());
+    }
+
+    public int round(BigDecimal number) {
+        return MathUtils.round(number.floatValue());
+    }
+
+    //END Math functions
     /**
      * A kind of hacky entry to the EngineScreen PAUSE boolean.
      */
-    public void pause(){
+    public void pause() {
         EngineScreen.PAUSE = true;
     }
-    
-    //START EngineLoader API
-    public void loadSpriteSheet(String sheetName){
-        SpriteLoader sl = SpriteLoader.getSpriteLoader();
-        sl.loadManualSpritesheets(sheetName);        
+
+    public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {
+        return x1.floatValue() + w1.floatValue() >= x2.floatValue() && x2.floatValue() + w2.floatValue() >= x1.floatValue() || y1.floatValue() + h1.floatValue() >= y2.floatValue() && y2.floatValue() + h2.floatValue() >= y1.floatValue();
     }
-    
-    public Object compile(String path){
+
+    public boolean collides(BigDecimal[] a, BigDecimal[] b) {
+        return a[0].floatValue() + a[2].floatValue() >= b[0].floatValue() && b[0].floatValue() + b[2].floatValue() >= a[0].floatValue() || a[1].floatValue() + a[3].floatValue() >= b[1].floatValue() && b[1].floatValue() + b[3].floatValue() >= a[1].floatValue();
+    }
+
+    public boolean point(BigDecimal x, BigDecimal y, BigDecimal x2, BigDecimal y2, BigDecimal w, BigDecimal h) {
+        return x.floatValue() >= x2.floatValue() && x.floatValue() <= x2.floatValue() + w.floatValue() && y.floatValue() >= y2.floatValue() && y.floatValue() <= y2.floatValue() + h.floatValue();
+    }
+
+    //START EngineLoader API
+    public void loadSpriteSheet(String sheetName) {
+        SpriteLoader sl = SpriteLoader.getSpriteLoader();
+        sl.loadManualSpritesheets(sheetName);
+    }
+
+    public Object compile(String path) {
         return EngineLoader.getEngineLoader(false).compile(path);
     }
-    public void compile(String path, String out){
+
+    public void compile(String path, String out) {
         EngineLoader.getEngineLoader(false).compile(path, out);
     }
-    public Object eval(String code, int opt){
-        return EngineLoader.getEngineLoader(false).eval(code, opt);
-    }
-    public Object eval(String code){
+
+    public Object eval(String code) {
         return EngineLoader.getEngineLoader(false).eval(code);
     }
-    public void loadLib(String path){
+    
+    public Object parse(String code){
+        return EngineLoader.getEngineLoader(false).parse(code);
+    } 
+
+    public void loadLib(String path) {
         EngineLoader.getEngineLoader(false).loadLib(path);
     }
-    public Object newInstance(String name){
+
+    public Object newInstance(String name) {
         return EngineLoader.getEngineLoader(false).newInstance(name);
     }
     //END EngineLoader API
-    
-    //END API
 
+    //END API
     //START game loop methods on EngineScreen
     public boolean update(ScreenManager sm) {
         if (LOAD_PROGRAM) {

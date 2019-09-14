@@ -1,5 +1,6 @@
 package leikr.managers;
 
+import java.math.BigDecimal;
 import leikr.loaders.AudioLoader;
 
 /**
@@ -29,24 +30,24 @@ public class LeikrAudioManager {
     }
 
     //START loaded audio methods
-    public final void sfx(String name) {
-        audioLoader.sound(name);
+    public final void playSound(String name) {
+        audioLoader.playSound(name);
     }
 
-    public final void sfx(String name, float vol, float pit, float pan) {
-        audioLoader.sound(name, vol, pit, pan);
+    public final void playSound(String name, BigDecimal vol, BigDecimal pit, BigDecimal pan) {
+        audioLoader.playSound(name, vol, pit, pan);
     }
     
     public final void stopSfx(){
         audioLoader.stopSound();
     }
 
-    public final void music(String name) {
-        audioLoader.music(name);
+    public final void playMusic(String name) {
+        audioLoader.playMusic(name);
     }
 
-    public final void music(String name, boolean loop) {
-        audioLoader.music(name, loop);
+    public final void playMusic(String name, boolean loop) {
+        audioLoader.playMusic(name, loop);
     }
 
     public final void stopAllMusic() {
