@@ -4,11 +4,14 @@
 
 A Game System built in Java for writing games and programs in Groovy. (A Fantasy Console idea)
 
+>Apache Groovy is a **powerful, optionally typed** and **dynamic** language, with **static-typing** and **static compilation** capabilities, for the Java platform aimed at improving developer productivity thanks to a concise, familiar and **easy to learn syntax**.
+-- http://groovy-lang.org/
+
 Powered by [Mini2Dx](https://mini2dx.org/)
 
 | Preview |
 |----|
-| ![](showcase/title_preview.gif?raw=true) |
+| ![](showcase/demo.png?raw=true) |
 
 ## Running from release
 
