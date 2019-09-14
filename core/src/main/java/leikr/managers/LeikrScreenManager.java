@@ -1,11 +1,12 @@
 package leikr.managers;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
 import leikr.GameRuntime;
 import leikr.loaders.ImageLoader;
 import leikr.loaders.MapLoader;
 import leikr.loaders.SpriteLoader;
-import org.mini2Dx.core.graphics.Animation;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.Colors;
@@ -34,6 +35,8 @@ public class LeikrScreenManager {
 
     SpriteSheet pixels;
 
+    List<Color> colorPalette;
+
     private static LeikrScreenManager instance;
 
     /*
@@ -50,6 +53,7 @@ public class LeikrScreenManager {
      * @param mSprites
      */
     private LeikrScreenManager() {
+        createPalette();
         createPixmap();
     }
 
@@ -68,9 +72,17 @@ public class LeikrScreenManager {
         mapLoader = MapLoader.getMapLoader();
     }
 
+    private void createPalette() {
+        colorPalette = Arrays.asList(Colors.CLEAR(), Colors.WHITE(), Colors.WHITE_M1(), Colors.LIGHT_GRAY(), Colors.GRAY(),
+                Colors.DARK_GRAY(), Colors.BLACK_P1(), Colors.BLACK(), Colors.RED(), Colors.GREEN(), Colors.BLUE(), Colors.MAROON(),
+                Colors.CORAL(), Colors.SALMON(), Colors.PINK(), Colors.LIME(), Colors.FOREST(), Colors.OLIVE(), Colors.NAVY(), Colors.ROYAL(), Colors.SKY(),
+                Colors.CYAN(), Colors.TEAL(), Colors.YELLOW(), Colors.GOLD(), Colors.GOLDENROD(), Colors.ORANGE(),
+                Colors.BROWN(), Colors.TAN(), Colors.FIREBRICK(), Colors.PURPLE(), Colors.VIOLET(), Colors.MAGENTA());
+    }
+
     private void createPixmap() {
-        Pixmap pm = Mdx.graphics.newPixmap(33, 1, PixmapFormat.RGBA8888);
-        for (int i = 0; i < 33; i++) {
+        Pixmap pm = Mdx.graphics.newPixmap(colorPalette.size(), 1, PixmapFormat.RGBA8888);
+        for (int i = 0; i < colorPalette.size(); i++) {
             pm.setColor(getDrawColor(i));
             pm.drawPixel(i, 0);
         }
@@ -170,76 +182,10 @@ public class LeikrScreenManager {
 
     //start color methods
     public final Color getDrawColor(int color) {
-        switch (color) {
-            case 0:
-                return Colors.CLEAR();
-            case 1:
-                return Colors.WHITE();
-            case 2:
-                return Colors.WHITE_M1();
-            case 3:
-                return Colors.LIGHT_GRAY();
-            case 4:
-                return Colors.GRAY();
-            case 5:
-                return Colors.DARK_GRAY();
-            case 6:
-                return Colors.BLACK_P1();
-            case 7:
-                return Colors.BLACK();
-            case 8:
-                return Colors.RED();
-            case 9:
-                return Colors.GREEN();
-            case 10:
-                return Colors.BLUE();
-            case 11:
-                return Colors.MAROON();
-            case 12:
-                return Colors.CORAL();
-            case 13:
-                return Colors.SALMON();
-            case 14:
-                return Colors.PINK();
-            case 15:
-                return Colors.LIME();
-            case 16:
-                return Colors.FOREST();
-            case 17:
-                return Colors.OLIVE();
-            case 18:
-                return Colors.NAVY();
-            case 19:
-                return Colors.ROYAL();
-            case 20:
-                return Colors.SKY();
-            case 21:
-                return Colors.CYAN();
-            case 22:
-                return Colors.TEAL();
-            case 23:
-                return Colors.YELLOW();
-            case 24:
-                return Colors.GOLD();
-            case 25:
-                return Colors.GOLDENROD();
-            case 26:
-                return Colors.ORANGE();
-            case 27:
-                return Colors.BROWN();
-            case 28:
-                return Colors.TAN();
-            case 29:
-                return Colors.FIREBRICK();
-            case 30:
-                return Colors.PURPLE();
-            case 31:
-                return Colors.VIOLET();
-            case 32:
-                return Colors.MAGENTA();
-            default:
-                return Colors.BLACK();
+        if (color > colorPalette.size() || color < 0) {
+            return Colors.BLACK();
         }
+        return colorPalette.get(color);
     }
 
     public final void setColor(int color) {
@@ -409,58 +355,6 @@ public class LeikrScreenManager {
         USED_SPRITES++;
     }
     //END special sprite mode
-
-    //START animated sprites
-    public Animation makeAnimSprite(BigDecimal[] ids, BigDecimal[] length) {
-        Animation<Sprite> tmp = new Animation<>();
-        for (int i = 0; i < ids.length; i++) {
-            tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i].intValue(), 0), length[i].floatValue());
-        }
-        return tmp;
-    }
-
-    public Animation makeAnimSprite(BigDecimal[] ids, BigDecimal[] length, boolean loop) {
-        Animation<Sprite> tmp = new Animation<>();
-        for (int i = 0; i < ids.length; i++) {
-            tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i].intValue(), 0), length[i].floatValue());
-        }
-        tmp.setLooping(loop);
-        return tmp;
-    }
-
-    public Animation makeAnimSprite(BigDecimal[] ids, BigDecimal[] length, int size) {
-        Animation<Sprite> tmp = new Animation<>();
-        for (int i = 0; i < ids.length; i++) {
-            tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i].intValue(), size), length[i].floatValue());
-        }
-        return tmp;
-    }
-
-    public Animation makeAnimSprite(BigDecimal[] ids, BigDecimal[] length, int size, boolean loop) {
-        Animation<Sprite> tmp = new Animation<>();
-        for (int i = 0; i < ids.length; i++) {
-            tmp.addFrame((Sprite) spriteLoader.getSprite(ids[i].intValue(), size), length[i].floatValue());
-        }
-        tmp.setLooping(loop);
-        return tmp;
-    }
-
-    public void spriteAnim(Animation sprite, BigDecimal x, BigDecimal y) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        sprite.draw(Mdx.graphicsContext, x.floatValue(), y.floatValue());
-    }
-
-    public void spriteAnim(Animation sprite, BigDecimal x, BigDecimal y, boolean flipH, boolean flipV) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        sprite.flip(flipH, flipV);
-        sprite.draw(Mdx.graphicsContext, x.floatValue(), y.floatValue());
-        sprite.flip(!flipH, !flipV);
-    }
-    //END animated sprites
 
     //start shape drawing methods
     public final void drawPixel(int color, BigDecimal x, BigDecimal y) {

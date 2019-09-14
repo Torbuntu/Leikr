@@ -38,7 +38,7 @@ public class LeikrAudioManager {
         audioLoader.playSound(name, vol, pit, pan);
     }
     
-    public final void stopSfx(){
+    public final void stopSound(){
         audioLoader.stopSound();
     }
 

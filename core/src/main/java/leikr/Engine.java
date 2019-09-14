@@ -8,7 +8,6 @@ import leikr.customProperties.CustomSystemProperties;
 import leikr.managers.LeikrAudioManager;
 import leikr.managers.LeikrScreenManager;
 import leikr.managers.LeikrSystemManager;
-import org.mini2Dx.core.graphics.Animation;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -359,33 +358,11 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, BigDecimal degr) {
         screen.spriteSc(id, x, y, scaleX, scaleY, degr);
     }
+    
+    public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY){
+        screen.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY);
+    }
     //end scaled sprites
-
-    //start animated sprites
-    public Animation makeAnimSprite(BigDecimal[] ids, BigDecimal[] lengths) {
-        return screen.makeAnimSprite(ids, lengths);
-    }
-
-    public Animation makeAnimSprite(BigDecimal[] ids, BigDecimal[] lengths, boolean loop) {
-        return screen.makeAnimSprite(ids, lengths, loop);
-    }
-
-    public Animation makeAnimSprite(BigDecimal[] ids, BigDecimal[] lengths, int size) {
-        return screen.makeAnimSprite(ids, lengths, size);
-    }
-
-    public Animation makeAnimSprite(BigDecimal[] ids, BigDecimal[] lengths, int size, boolean loop) {
-        return screen.makeAnimSprite(ids, lengths, size, loop);
-    }
-
-    public void spriteAnim(Animation sprite, BigDecimal x, BigDecimal y) {
-        screen.spriteAnim(sprite, x, y);
-    }
-
-    public void spriteAnim(Animation sprite, BigDecimal x, BigDecimal y, boolean flipH, boolean flipV) {
-        screen.spriteAnim(sprite, x, y, flipH, flipV);
-    }
-    //END animated sprites
 
     //start shape drawing methods
     public final void drawPixel(int color, BigDecimal x, BigDecimal y) {
@@ -414,8 +391,8 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         audio.playSound(name, vol, pit, pan);
     }
 
-    public final void stopSfx() {
-        audio.stopSfx();
+    public final void stopSound() {
+        audio.stopSound();
     }
 
     public final void playMusic(String name) {
