@@ -10,6 +10,7 @@ import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.Colors;
+import org.mini2Dx.core.graphics.TextureFilter;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
@@ -183,6 +184,7 @@ public class EngineScreen extends BasicGameScreen {
 
     @Override
     public void render(GameContainer gc, Graphics g) {
+       // Mdx.graphicsContext.setMagFilter(TextureFilter.PIXEL);
         if (null != engine && !engine.getActive() || ERROR) {
             return;
         }
@@ -201,7 +203,7 @@ public class EngineScreen extends BasicGameScreen {
             viewport.apply(g);
             g.setColor(Colors.WHITE());
             g.drawString("-- Paused --", 0, 60, 240, 1);
-            g.drawString("Exit to main menu?", 0, 74, 240, 1);
+            g.drawString("Exit running program?", 0, 74, 240, 1);
             g.drawString("Yes    No", 0, 90, 240, 1);
 
             if (CONFIRM) {
