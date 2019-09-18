@@ -23,12 +23,14 @@ public class GameRuntime extends ScreenBasedGame {
     public static String PROGRAM_PATH = "Programs/";
     public static String GAME_NAME = "";
     public static String LAUNCH_TITLE;
+    
+    private boolean DIRECT_LAUNCH;
 
     public static int WIDTH;
     public static int HEIGHT;
-    
+
     AssetManager assetManager;
-    
+
     public static FontLoader primaryFontLoader = new FontLoader();
 
     /**
@@ -37,13 +39,17 @@ public class GameRuntime extends ScreenBasedGame {
      * @param arg
      */
     public GameRuntime(String[] arg) {
+        DIRECT_LAUNCH = false;
         CustomSystemProperties.init();
         WIDTH = CustomSystemProperties.SCREEN_WIDTH;
         HEIGHT = CustomSystemProperties.SCREEN_HEIGHT;
-        if (CustomSystemProperties.LAUNCH_TITLE.length() > 3) {
+        if(arg.length > 0 && arg[0].length() > 3 && !arg[0].equalsIgnoreCase("insecure")){
+            PROGRAM_PATH = "Programs/" + arg[0];
+            GameRuntime.GAME_NAME = arg[0];
+            DIRECT_LAUNCH = true;
+        } else if (CustomSystemProperties.LAUNCH_TITLE.length() > 3) {
             LAUNCH_TITLE = CustomSystemProperties.LAUNCH_TITLE;
             PROGRAM_PATH = "Programs/" + CustomSystemProperties.LAUNCH_TITLE;
-            System.out.println(PROGRAM_PATH);
         }
     }
 
@@ -94,6 +100,9 @@ public class GameRuntime extends ScreenBasedGame {
 
     @Override
     public int getInitialScreenId() {
+        if(DIRECT_LAUNCH) {
+            return LoadScreen.ID;
+        }
         return TitleScreen.ID;//initial screen to begin on is the title screen.
     }
 

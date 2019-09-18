@@ -28,6 +28,8 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
 
     boolean RUN_PROGRAM = false;
 
+    String out;
+
     FitViewport viewport;
 
     String prompt = "";
@@ -41,6 +43,19 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
         Mdx.input.setInputProcessor(this);
     }
 
+    private String runLs() {
+        try {
+            out = "";
+            for (FileHandle f : Mdx.files.local("Programs").list()) {
+                out += f.nameWithoutExtension() + "\n";
+            }
+            return out;
+        } catch (IOException ex) {
+            Logger.getLogger(EngineLoader.class.getName()).log(Level.WARNING, null, ex);
+            return "Failed to execute command ( ls )";
+        }
+    }
+
     @Override
     public void initialise(GameContainer gc) {
 
@@ -49,6 +64,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
     @Override
     public void preTransitionIn(Transition trns) {
         prompt = "";
+        out = runLs();
         if (GameRuntime.GAME_NAME.length() < 2) {
             historyText = "No program loaded.";
         } else {
@@ -160,7 +176,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                         case "ls":
                             return ">ls \nDisplays the contents of the Programs directory.";
                         case "run":
-                            return ">run [arg] \nLoads and Runs a program given a title";
+                            return ">run [arg] \nLoads and Runs a program given a title.";
                         default:
                             return "No help for unknown command: ( " + command[1] + " )";
                     }
@@ -170,26 +186,23 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                 if (command.length < 2) {
                     return "Missing required param [program-title]";
                 }
+                if (!out.contains(command[1])) {
+                    return "Program [" + command[1] + "] does not exist in Programs directory.";
+                }
                 GameRuntime.GAME_NAME = command[1];
                 GameRuntime.setProgramPath("Programs/" + command[1]);
                 return "Loaded program: `" + GameRuntime.GAME_NAME + "`";
             case "ls":
-                try {
-                    String out = "";
-                    for (FileHandle f : Mdx.files.local("Programs").list()) {
-                        out += f.nameWithoutExtension() + "\n";
-                    }
-                    return out;
-                } catch (IOException ex) {
-                    Logger.getLogger(EngineLoader.class.getName()).log(Level.WARNING, null, ex);
-                    return "Failed to execute command ( ls )";
-                }
+                return runLs();
             case "run":
                 if (command.length == 1 && GameRuntime.GAME_NAME.length() > 2) {
                     RUN_PROGRAM = true;
                     return "loading...";
                 }
                 try {
+                    if (!out.contains(command[1])) {
+                        return "Program [" + command[1] + "] does not exist in Programs directory.";
+                    }
                     GameRuntime.GAME_NAME = command[1];
                     GameRuntime.setProgramPath("Programs/" + command[1]);
                     RUN_PROGRAM = true;
