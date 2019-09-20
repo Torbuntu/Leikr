@@ -41,8 +41,13 @@ public class GameRuntime extends ScreenBasedGame {
      */
     public GameRuntime(String[] arg) {
         DIRECT_LAUNCH = false;
-        PACKAGED_ONLY = true;
+        PACKAGED_ONLY = false;
+
         CustomSystemProperties.init();
+        if (CustomSystemProperties.PACKAGED_ONLY) {
+            PACKAGED_ONLY = true;
+
+        }
         WIDTH = CustomSystemProperties.SCREEN_WIDTH;
         HEIGHT = CustomSystemProperties.SCREEN_HEIGHT;
         if (arg.length > 0 && arg[0].length() > 3 && !arg[0].equalsIgnoreCase("insecure")) {

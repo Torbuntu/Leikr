@@ -33,12 +33,14 @@ public class CustomSystemProperties {
     public static boolean DEBUG;
     public static int SCREEN_HEIGHT;
     public static int SCREEN_WIDTH;
-    
-    public static void init(){
+    public static boolean PACKAGED_ONLY;
+
+    public static void init() {
         Properties prop = new Properties();
         try (InputStream stream = new FileInputStream(new File("Data/system.properties"))) {
             prop.load(stream);
             LAUNCH_TITLE = (prop.getProperty("launch_title") != null) ? prop.getProperty("launch_title") : "";
+            PACKAGED_ONLY = (prop.getProperty("packaged_only") != null) ? Boolean.valueOf(prop.getProperty("packaged_only")) : false;
             DEBUG = (prop.getProperty("debug_mode") != null) ? Boolean.valueOf(prop.getProperty("debug_mode")) : false;
             SCREEN_WIDTH = (prop.getProperty("screen_width") != null) ? Integer.parseInt(prop.getProperty("screen_width")) : 240;
             SCREEN_HEIGHT = (prop.getProperty("screen_height") != null) ? Integer.parseInt(prop.getProperty("screen_height")) : 160;
