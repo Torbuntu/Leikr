@@ -71,6 +71,9 @@ public class EngineLoader implements Callable<Engine> {
         if (GameRuntime.checkLaunchTitle()) {
             GameRuntime.GAME_NAME = GameRuntime.LAUNCH_TITLE;
         }
+        if(GameRuntime.PACKAGED_ONLY){
+            return getPackagedEngine();
+        }
         if (cp.COMPILE_SOURCE) {
             compileEngine();
         }
@@ -78,6 +81,11 @@ public class EngineLoader implements Callable<Engine> {
             return getCompiledEngine();
         }
         return getSourceEngine();
+    }
+
+    public Engine getPackagedEngine() throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        gcl.addClasspath(Mdx.files.local("Programs/"+GameRuntime.GAME_NAME+".lkr").path());
+        return (Engine) gcl.loadClass(GameRuntime.GAME_NAME).getDeclaredConstructors()[0].newInstance();
     }
 
     private Engine getSourceEngine() throws MalformedURLException, CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -217,22 +225,21 @@ public class EngineLoader implements Callable<Engine> {
      * Evaluates groovy source code
      *
      * @param code
-     * @return
-     *      Object result of the evaluation
+     * @return Object result of the evaluation
      */
     public Object eval(String code) {
         try {
             return sh.evaluate(code);
-        } catch (Exception ex) {
+        } catch (CompilationFailedException ex) {
             Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;
     }
-    
-    public Object parse(String code){
-        try{
+
+    public Object parse(String code) {
+        try {
             return sh.parse(code);
-        }catch(Exception ex){
+        } catch (CompilationFailedException ex) {
             Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
         return -1;

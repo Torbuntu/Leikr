@@ -3,6 +3,7 @@ package leikr.screens;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import leikr.ExportTool;
 import leikr.GameRuntime;
 import leikr.loaders.EngineLoader;
 import org.mini2Dx.core.Graphics;
@@ -160,6 +161,9 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
             case "exit":
                 Mdx.platformUtils.exit(true);
                 return "Goodbye";
+            case "export":
+                ExportTool.export(command[1]);
+                return "Process finished.";
             case "clear":
                 return "";
             case "help":
