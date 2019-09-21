@@ -2,6 +2,8 @@ package leikr.loaders;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
@@ -19,9 +21,12 @@ public class ImageLoader {
     AssetManager assetManager;
     String rootPath;
 
+    Map<String, Texture> images;
+
     private static ImageLoader instance;
 
     private ImageLoader() {
+        images = new HashMap<>();
         assetManager = new AssetManager(new LocalFileHandleResolver());
     }
 

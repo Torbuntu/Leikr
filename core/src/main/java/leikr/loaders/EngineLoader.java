@@ -71,9 +71,6 @@ public class EngineLoader implements Callable<Engine> {
         if (GameRuntime.checkLaunchTitle()) {
             GameRuntime.GAME_NAME = GameRuntime.LAUNCH_TITLE;
         }
-        if(GameRuntime.PACKAGED_ONLY){
-            return getPackagedEngine();
-        }
         if (cp.COMPILE_SOURCE) {
             compileEngine();
         }
@@ -81,11 +78,6 @@ public class EngineLoader implements Callable<Engine> {
             return getCompiledEngine();
         }
         return getSourceEngine();
-    }
-
-    public Engine getPackagedEngine() throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        gcl.addClasspath(Mdx.files.local("Programs/"+GameRuntime.GAME_NAME+".lkr").path());
-        return (Engine) gcl.loadClass(GameRuntime.GAME_NAME).getDeclaredConstructors()[0].newInstance();
     }
 
     private Engine getSourceEngine() throws MalformedURLException, CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {

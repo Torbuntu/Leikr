@@ -19,7 +19,7 @@ public class SpriteLoader {
 
     AssetManager assetManager;
     TextureLoader assetLoader;
-    
+
     SpriteSheet spriteBank;
     SpriteSheet spriteBank16;
     SpriteSheet spriteBank32;

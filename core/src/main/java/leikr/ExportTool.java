@@ -34,9 +34,9 @@ public class ExportTool {
 
     public static void export(String project) {
         try {
-            compileCode(project);
+            //compileCode(project);
             createJar(project);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(ExportTool.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

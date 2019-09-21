@@ -35,6 +35,8 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
 
     String prompt = "";
     String historyText = "";
+    
+    int blink = 0;
 
     public TerminalScreen() {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
@@ -81,6 +83,10 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
             historyText = "";
             sm.enterGameScreen(LoadScreen.ID, null, null);
         }
+        blink++;
+        if(blink > 60) {
+            blink = 0;
+        }
     }
 
     @Override
@@ -92,7 +98,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
         g.setColor(Colors.BLACK());
         g.fillRect(0, 152, 240, 160);
         g.setColor(Colors.GREEN());
-        g.drawString(">" + prompt + (char) 173, 0, 152, 240);
+        g.drawString(">" + prompt + ((blink > 30) ?(char) 173 : ""), 0, 152, 240);
     }
 
     @Override
