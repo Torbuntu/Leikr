@@ -35,7 +35,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
 
     String prompt = "";
     String historyText = "";
-    
+
     int blink = 0;
 
     public TerminalScreen() {
@@ -84,7 +84,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
             sm.enterGameScreen(LoadScreen.ID, null, null);
         }
         blink++;
-        if(blink > 60) {
+        if (blink > 60) {
             blink = 0;
         }
     }
@@ -98,7 +98,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
         g.setColor(Colors.BLACK());
         g.fillRect(0, 152, 240, 160);
         g.setColor(Colors.GREEN());
-        g.drawString(">" + prompt + ((blink > 30) ?(char) 173 : ""), 0, 152, 240);
+        g.drawString(">" + prompt + ((blink > 30) ? (char) 173 : ""), 0, 152, 240);
     }
 
     @Override
@@ -164,14 +164,25 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
     private String processCommand() {
         String[] command = prompt.split(" ");
         switch (command[0]) {
+            case "clean": {
+                try {
+                    Mdx.files.local("Packages/").deleteDirectory();
+                    return "Package directory cleaned.";
+                } catch (IOException ex) {
+                    Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
+                    return "Failed to clean package directory. Please check logs.";
+                }
+            }
+
+            case "clear":
+                return "";
             case "exit":
                 Mdx.platformUtils.exit(true);
                 return "Goodbye";
             case "export":
-                ExportTool.export(command[1]);
-                return "Process finished.";
-            case "clear":
-                return "";
+                return ExportTool.export(command[1]);
+            case "exportAll":
+                return ExportTool.exportAll();
             case "help":
                 if (command.length > 1) {
                     switch (command[1]) {
@@ -192,6 +203,8 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                     }
                 }
                 return "Commands: exit, clear, help, load, ls, run";
+            case "install":
+                return ExportTool.importProject(command[1]);
             case "load":
                 if (command.length < 2) {
                     return "Missing required param [program-title]";

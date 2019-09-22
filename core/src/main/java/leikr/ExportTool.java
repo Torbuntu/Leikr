@@ -15,16 +15,19 @@
  */
 package leikr;
 
-import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.codehaus.groovy.control.CompilerConfiguration;
-import org.codehaus.groovy.tools.Compiler;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 import org.mini2Dx.core.Mdx;
-import org.mini2Dx.core.files.FileHandle;
 
 /**
  *
@@ -32,51 +35,120 @@ import org.mini2Dx.core.files.FileHandle;
  */
 public class ExportTool {
 
-    public static void export(String project) {
+    static List<String> totalFiles = new ArrayList<String>();
+    
+    public static String exportAll(){
         try {
-            //compileCode(project);
-            createJar(project);
+            Arrays.asList(Mdx.files.local("Programs/").list()).forEach(file -> {
+                zip(file.name());
+            });
+            return "Projects exported.";
+        } catch (IOException ex) {
+            Logger.getLogger(ExportTool.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "Failed to export all projects.";
+    }
+
+    public static String export(String project) {
+        try {
+            zip(project);
+            return "Package [" + project + "] exported successfully. Check Packages directory.";
         } catch (Exception ex) {
             Logger.getLogger(ExportTool.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return "Failure to export Package. Please check logs.";
     }
 
-    private static void compileCode(String project) throws IOException {
-        CompilerConfiguration cc = new CompilerConfiguration();
-        cc.setClasspath(Mdx.files.local("Programs/" + project).path());
-
-        cc.setTargetDirectory(Mdx.files.local("Programs/" + project).path());
-        Compiler compiler = new Compiler(cc);
-
-        FileHandle[] list = Mdx.files.local("Programs/" + project + "/Code/").list(".groovy");
-        ArrayList<String> files = new ArrayList<>();
-        for (FileHandle f : list) {
-            files.add(f.path());
-        }
-        String[] out = new String[files.size()];
-        out = files.toArray(out);
-        compiler.compile(out);
-    }
-
-    private static void createJar(String program) {
+    public static String importProject(String project) {
         try {
-            String s;
-            Process p = Runtime.getRuntime().exec("jar cvf " + program + ".lkr -C Programs/" + program + "/ .");
-            BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            unzip(project);
+            return "Package [" + project + "] installed successfully. Check Programs directory.";
+        } catch (Exception ex) {
+            Logger.getLogger(ExportTool.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "Failure to install Package. Please check logs.";
+    }
 
-            BufferedReader stdError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+    // With help from: https://www.thejavaprogrammer.com/java-zip-unzip-files/
+    public static void zip(String name) {
 
-            // read the output from the command
-            System.out.println("Here is the standard output of the command:\n");
-            while ((s = stdInput.readLine()) != null) {
-                System.out.println(s);
+        try {
+            File dir = new File(Mdx.files.local("Programs/" + name).path());
+            String dirPath = dir.getAbsolutePath();
+
+            listFiles(dir);
+            File exportDir = new File(Mdx.files.local("Packages/").path());
+            if(!exportDir.exists()){
+                exportDir.mkdirs();
             }
+            File zipFile = new File(Mdx.files.local("Packages/"+name).path() + ".lkr");
 
-            // read any errors from the attempted command
-            System.out.println("Here is the standard error of the command (if any):\n");
-            while ((s = stdError.readLine()) != null) {
-                System.out.println(s);
+            try (FileOutputStream fos = new FileOutputStream(zipFile);
+                    ZipOutputStream zos = new ZipOutputStream(fos)) {
+                byte[] buffer = new byte[1024];
+                int len;
+                for (String path : totalFiles) {
+                    File ipfile = new File(path);
+                    String zippath = path.substring(dirPath.length() + 1, path.length());
+                    ZipEntry zen = new ZipEntry(zippath);
+                    zos.putNextEntry(zen);
+                    try (FileInputStream fis = new FileInputStream(ipfile)) {
+                        while ((len = fis.read(buffer)) > 0) {
+                            zos.write(buffer, 0, len);
+                        }
+                        zos.closeEntry();
+                    }
+                }
             }
+        } catch (IOException ex) {
+            Logger.getLogger(ExportTool.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        totalFiles.clear();
+    }
+
+    static void listFiles(File dir) throws IOException {
+        File[] files = dir.listFiles();
+        for (File file : files) {
+            if (file.isDirectory()) {
+                listFiles(file);
+            } else {
+                totalFiles.add(file.getAbsolutePath());
+            }
+        }
+    }
+
+    public static void unzip(String zipName) {
+        File outputDir = new File(Mdx.files.local("Programs/" + zipName).path());
+
+        if (!outputDir.exists()) {
+            outputDir.mkdirs();
+        }
+
+        byte[] buffer = new byte[1024];
+        int len;
+        File lkrPackage = new File(Mdx.files.local("Packages/"+zipName).path() + ".lkr");
+
+        try (FileInputStream fis = new FileInputStream(lkrPackage);
+                ZipInputStream zis = new ZipInputStream(fis)) {
+            ZipEntry zen = zis.getNextEntry();
+            while (zen != null) {
+                String fileName = zen.getName();
+
+                File newFile = new File(outputDir + File.separator + fileName);
+
+                new File(newFile.getParent()).mkdirs();
+
+                try (FileOutputStream fos = new FileOutputStream(newFile)) {
+                    while ((len = zis.read(buffer)) > 0) {
+                        fos.write(buffer, 0, len);
+                    }
+                }
+                zis.closeEntry();
+                zen = zis.getNextEntry();
+            }
+            zis.closeEntry();
+            fis.close();
+
         } catch (IOException ex) {
             Logger.getLogger(ExportTool.class.getName()).log(Level.SEVERE, null, ex);
         }
