@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 tor.
+ * Copyright 2019 See AUTHORS file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,8 +36,8 @@ import org.mini2Dx.core.Mdx;
 public class ExportTool {
 
     static List<String> totalFiles = new ArrayList<String>();
-    
-    public static String exportAll(){
+
+    public static String exportAll() {
         try {
             Arrays.asList(Mdx.files.local("Programs/").list()).forEach(file -> {
                 zip(file.name());
@@ -78,21 +78,19 @@ public class ExportTool {
 
             listFiles(dir);
             File exportDir = new File(Mdx.files.local("Packages/").path());
-            if(!exportDir.exists()){
+            if (!exportDir.exists()) {
                 exportDir.mkdirs();
             }
-            File zipFile = new File(Mdx.files.local("Packages/"+name).path() + ".lkr");
+            File zipFile = new File(Mdx.files.local("Packages/" + name).path() + ".lkr");
 
             try (FileOutputStream fos = new FileOutputStream(zipFile);
                     ZipOutputStream zos = new ZipOutputStream(fos)) {
                 byte[] buffer = new byte[1024];
                 int len;
                 for (String path : totalFiles) {
-                    File ipfile = new File(path);
-                    String zippath = path.substring(dirPath.length() + 1, path.length());
-                    ZipEntry zen = new ZipEntry(zippath);
+                    ZipEntry zen = new ZipEntry(path.substring(dirPath.length() + 1, path.length()));
                     zos.putNextEntry(zen);
-                    try (FileInputStream fis = new FileInputStream(ipfile)) {
+                    try (FileInputStream fis = new FileInputStream(new File(path))) {
                         while ((len = fis.read(buffer)) > 0) {
                             zos.write(buffer, 0, len);
                         }
@@ -107,8 +105,7 @@ public class ExportTool {
     }
 
     static void listFiles(File dir) throws IOException {
-        File[] files = dir.listFiles();
-        for (File file : files) {
+        for (File file : dir.listFiles()) {
             if (file.isDirectory()) {
                 listFiles(file);
             } else {
@@ -126,7 +123,7 @@ public class ExportTool {
 
         byte[] buffer = new byte[1024];
         int len;
-        File lkrPackage = new File(Mdx.files.local("Packages/"+zipName).path() + ".lkr");
+        File lkrPackage = new File(Mdx.files.local("Packages/" + zipName).path() + ".lkr");
 
         try (FileInputStream fis = new FileInputStream(lkrPackage);
                 ZipInputStream zis = new ZipInputStream(fis)) {
