@@ -161,10 +161,10 @@ public class LeikrSystemManager {
     public Object eval(String code) {
         return EngineLoader.getEngineLoader(false).eval(code);
     }
-    
-    public Object parse(String code){
+
+    public Object parse(String code) {
         return EngineLoader.getEngineLoader(false).parse(code);
-    } 
+    }
 
     public void loadLib(String path) {
         EngineLoader.getEngineLoader(false).loadLib(path);

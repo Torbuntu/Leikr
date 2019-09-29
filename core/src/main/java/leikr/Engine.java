@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 import leikr.controls.LeikrController;
 import leikr.controls.LeikrKeyboard;
 import leikr.controls.LeikrMouse;
-import leikr.customProperties.CustomSystemProperties;
 import leikr.managers.LeikrAudioManager;
 import leikr.managers.LeikrScreenManager;
 import leikr.managers.LeikrSystemManager;
@@ -451,7 +450,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public float sinDeg(BigDecimal deg) {
         return lSystem.sinDeg(deg);
     }
-
+    
     public int ceil(BigDecimal value) {
         return lSystem.ceil(value);
     }
@@ -495,20 +494,6 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         }
         //default search is false, in case there are no controllers.
         return false;
-    }
-
-    public int horizontalAxis() {
-        if (ControllerA != null) {
-            return CustomSystemProperties.HORIZONTAL_AXIS;
-        }
-        return 0;
-    }
-
-    public int verticalAxis() {
-        if (ControllerA != null) {
-            return CustomSystemProperties.VERTICAL_AXIS;
-        }
-        return 0;
     }
 
     //detect Keyboard key presses (polling continuously)
