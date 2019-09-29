@@ -56,7 +56,7 @@ public class EngineScreen extends BasicGameScreen {
 
     private void pause() {
         PAUSE = true;
-        engine.audio.pauseAllAudio();
+        engine.Audio.pauseAllAudio();
         engine.onPause();
     }
 
@@ -65,7 +65,7 @@ public class EngineScreen extends BasicGameScreen {
             BACK = true;
         } else {
             PAUSE = false;
-            engine.audio.resumeAllAudio();
+            engine.Audio.resumeAllAudio();
             engine.onResume();
         }
     }

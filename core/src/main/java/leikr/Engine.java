@@ -44,11 +44,11 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     /*
      * Controllers and listeners for handling custom controller input
      */
-    public LeikrController controllerA;
-    public LeikrController controllerB;
+    public LeikrController ControllerA;
+    public LeikrController ControllerB;
 
-    public LeikrMouse mouse;
-    public LeikrKeyboard keyboard;
+    public LeikrMouse Mouse;
+    public LeikrKeyboard Keyboard;
 
     /*
      * Loaders
@@ -56,8 +56,8 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      * The loaders are used to load the custom assets for a game at startup.
      */
     public LeikrScreenManager Screen;
-    public LeikrSystemManager system;
-    public LeikrAudioManager audio;
+    public LeikrSystemManager lSystem;
+    public LeikrAudioManager Audio;
 
     //custom prop functions
     public int getUsedSprites() {
@@ -70,31 +70,31 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      * controllers if there are any connected.
      *
      * @param mSprites maximum allowed sprites to draw at one time
-     * @param sys object used to interact with the Leikr system at runtime
+     * @param sys object used to interact with the Leikr lSystem at runtime
      */
     public final void preCreate(int mSprites, LeikrSystemManager sys) {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
-        audio = LeikrAudioManager.getLeikrAudioManager();
+        Audio = LeikrAudioManager.getLeikrAudioManager();
         Screen = LeikrScreenManager.getLeikrScreenManager(mSprites);
-        system = sys;
+        lSystem = sys;
         active = true;
         try {
             if (Mdx.input.getGamePads().size > 0) {
-                controllerA = LeikrController.getLeikrControllerListenerA();
-                Mdx.input.getGamePads().get(0).addListener(controllerA);
+                ControllerA = LeikrController.getLeikrControllerListenerA();
+                Mdx.input.getGamePads().get(0).addListener(ControllerA);
                 Mdx.input.getGamePads().get(0).addListener(this);
             }
             if (Mdx.input.getGamePads().size > 1) {
-                controllerB = LeikrController.getLeikrControllerListenerB();
-                Mdx.input.getGamePads().get(1).addListener(controllerB);
+                ControllerB = LeikrController.getLeikrControllerListenerB();
+                Mdx.input.getGamePads().get(1).addListener(ControllerB);
                 Mdx.input.getGamePads().get(1).addListener(this);
             }
         } catch (Exception ex) {
             System.out.println("Controllers not active: " + ex.getMessage());
         }
         // input processors
-        mouse = LeikrMouse.getLeikrMouse(viewport);
-        keyboard = LeikrKeyboard.getLeikrKeyboard();
+        Mouse = LeikrMouse.getLeikrMouse(viewport);
+        Keyboard = LeikrKeyboard.getLeikrKeyboard();
         Mdx.input.setInputProcessor(this);
     }
 
@@ -109,7 +109,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      * @return if should continue
      */
     public final boolean preUpdate(float delta) {
-        mouse.updateMouse();
+        Mouse.updateMouse();
         Screen.preUpdate(delta);
         return false;
     }
@@ -131,11 +131,20 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     /*
      * Override functions for game scripting. 
      */
-    public void create(){};
+    public void create() {
+    }
 
-    public void update(float delta){};
+    ;
 
-    public void render(){};
+    public void update(float delta) {
+    }
+
+    ;
+
+    public void render() {
+    }
+
+    ;
     // end override functions
 
     // Optional override methods
@@ -148,8 +157,8 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     //disposes the game objects on exit
     public final void dispose() {
-        if (audio != null) {
-            audio.dispose();
+        if (Audio != null) {
+            Audio.dispose();
         }
 
         if (Screen != null) {
@@ -158,11 +167,11 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
         if (Mdx.input.getGamePads().size > 0) {
             Mdx.input.getGamePads().get(0).removeListener(this);
-            Mdx.input.getGamePads().get(0).removeListener(controllerA);
+            Mdx.input.getGamePads().get(0).removeListener(ControllerA);
         }
         if (Mdx.input.getGamePads().size > 1) {
             Mdx.input.getGamePads().get(1).removeListener(this);
-            Mdx.input.getGamePads().get(1).removeListener(controllerB);
+            Mdx.input.getGamePads().get(1).removeListener(ControllerB);
         }
         //  Controllers.clearListeners();
     }
@@ -185,10 +194,6 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         System.out.println();
     }
 
-    public long getFrame() {
-        return Mdx.graphicsContext.getFrameId();
-    }
-
     public final boolean getActive() {
         return active;
     }
@@ -198,11 +203,11 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     }
 
     public final void pause() {
-        system.pause();
+        lSystem.pause();
     }
 
     public final void loadSpriteSheet(String progName) {
-        system.loadSpriteSheet(progName);
+        lSystem.loadSpriteSheet(progName);
     }
     //End helper methods.
 
@@ -372,8 +377,8 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, BigDecimal degr) {
         Screen.spriteSc(id, x, y, scaleX, scaleY, degr);
     }
-    
-    public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY){
+
+    public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY) {
         Screen.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY);
     }
     //end scaled sprites
@@ -398,143 +403,143 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     //start Audio handling
     public final void playSound(String name) {
-        audio.playSound(name);
+        Audio.playSound(name);
     }
 
     public final void playSound(String name, BigDecimal vol, BigDecimal pit, BigDecimal pan) {
-        audio.playSound(name, vol, pit, pan);
+        Audio.playSound(name, vol, pit, pan);
     }
 
     public final void stopSound() {
-        audio.stopSound();
+        Audio.stopSound();
     }
 
     public final void playMusic(String name) {
-        audio.playMusic(name);
+        Audio.playMusic(name);
     }
 
     public final void playMusic(String name, boolean loop) {
-        audio.playMusic(name, loop);
+        Audio.playMusic(name, loop);
     }
 
     public final void stopAllMusic() {
-        audio.stopAllMusic();
+        Audio.stopAllMusic();
     }
 
     public final void stopMusic(String fileName) {
-        audio.stopMusic(fileName);
+        Audio.stopMusic(fileName);
     }
 
     public final void pauseAudio() {
-        audio.pauseAllAudio();
+        Audio.pauseAllAudio();
     }
-    //end audio handling
+    //end Audio handling
 
     //START Math utils
     public float cos(BigDecimal radians) {
-        return system.cos(radians);
+        return lSystem.cos(radians);
     }
 
     public float cosDeg(BigDecimal deg) {
-        return system.cosDeg(deg);
+        return lSystem.cosDeg(deg);
     }
 
     public float sin(BigDecimal radians) {
-        return system.sin(radians);
+        return lSystem.sin(radians);
     }
 
     public float sinDeg(BigDecimal deg) {
-        return system.sinDeg(deg);
+        return lSystem.sinDeg(deg);
     }
 
     public int ceil(BigDecimal value) {
-        return system.ceil(value);
+        return lSystem.ceil(value);
     }
 
     public int floor(BigDecimal value) {
-        return system.floor(value);
+        return lSystem.floor(value);
     }
 
     public int randInt(int range) {
-        return system.randInt(range);
+        return lSystem.randInt(range);
     }
 
     public int randInt(int start, int end) {
-        return system.randInt(start, end);
+        return lSystem.randInt(start, end);
     }
 
     public float randFloat(BigDecimal range) {
-        return system.randFloat(range);
+        return lSystem.randFloat(range);
     }
 
     public float randFloat(BigDecimal start, BigDecimal end) {
-        return system.randFloat(start, end);
+        return lSystem.randFloat(start, end);
     }
 
     public int round(BigDecimal number) {
-        return system.round(number);
+        return lSystem.round(number);
     }
     //END Math utils
 
     //START input handling
     public final boolean button(String button) {
-        return (null != controllerA) ? controllerA.button(button) : false;
+        return (null != ControllerA) ? ControllerA.button(button) : false;
     }
 
     public final boolean button(String button, int player) {
-        if (null != controllerA && player == 0) {
-            return controllerA.button(button);
+        if (null != ControllerA && player == 0) {
+            return ControllerA.button(button);
         }
-        if (null != controllerB && player == 1) {
-            return controllerB.button(button);
+        if (null != ControllerB && player == 1) {
+            return ControllerB.button(button);
         }
         //default search is false, in case there are no controllers.
         return false;
     }
 
     public int horizontalAxis() {
-        if (controllerA != null) {
+        if (ControllerA != null) {
             return CustomSystemProperties.HORIZONTAL_AXIS;
         }
         return 0;
     }
 
     public int verticalAxis() {
-        if (controllerA != null) {
+        if (ControllerA != null) {
             return CustomSystemProperties.VERTICAL_AXIS;
         }
         return 0;
     }
 
-    //detect keyboard key presses (polling continuously)
+    //detect Keyboard key presses (polling continuously)
     public final boolean key(String key) {
-        return keyboard.key(key);
+        return Keyboard.key(key);
     }
 
     public final boolean keyUp(String key) {
-        return keyboard.keyUp(key);
+        return Keyboard.keyUp(key);
     }
 
     //detect single key press.
     public final boolean keyPress(String key) {
-        return keyboard.keyPress(key);
+        return Keyboard.keyPress(key);
     }
 
     /**
-     * Detects a mouse click event.
+     * Detects a Mouse click event.
      *
      * @return
      */
     public final boolean mouseClick() {
-        return mouse.mouseClick();
+        return Mouse.mouseClick();
     }
 
     public final float mouseX() {
-        return mouse.mouseX();
+        return Mouse.mouseX();
     }
 
     public final float mouseY() {
-        return mouse.mouseY();
+        return Mouse.mouseY();
     }
 
     @Override
@@ -580,11 +585,11 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     //end input handling
     //START System api
     public void loadProgram(String name) {
-        system.loadProgram(name);
+        lSystem.loadProgram(name);
     }
 
     public void setFont(String path, int spacing, int width, int height) {
-        system.setCustomFont(path, spacing, width, height);
+        lSystem.setCustomFont(path, spacing, width, height);
     }
     //END System API
 
@@ -598,39 +603,39 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     }
 
     public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {
-        return system.collides(x1, y1, w1, h1, x2, y2, w2, h2);
+        return lSystem.collides(x1, y1, w1, h1, x2, y2, w2, h2);
     }
 
     public boolean collides(BigDecimal[] a, BigDecimal[] b) {
-        return system.collides(a, b);
+        return lSystem.collides(a, b);
     }
 
     public boolean point(BigDecimal x, BigDecimal y, BigDecimal x2, BigDecimal y2, BigDecimal w, BigDecimal h) {
-        return system.point(x, y, x2, y2, w, h);
+        return lSystem.point(x, y, x2, y2, w, h);
     }
 
     public Object compile(String path) {
-        return system.compile(path);
+        return lSystem.compile(path);
     }
 
     public void compile(String path, String out) {
-        system.compile(path, out);
+        lSystem.compile(path, out);
     }
 
     public Object eval(String code) {
-        return system.eval(code);
+        return lSystem.eval(code);
     }
 
-    public Object parse(String code){
-        return system.parse(code);
+    public Object parse(String code) {
+        return lSystem.parse(code);
     }
-    
+
     public void loadLib(String path) {
-        system.loadLib(path);
+        lSystem.loadLib(path);
     }
 
     public Object newInstance(String name) {
-        return system.newInstance(name);
+        return lSystem.newInstance(name);
     }
     //END Experimental
 }
