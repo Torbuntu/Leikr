@@ -294,7 +294,7 @@ public class LeikrScreenManager {
         USED_SPRITES++;
     }
 
-    public final void sprite(int id, BigDecimal x, BigDecimal y, BigDecimal degr) {
+    public final void sprite(int id, BigDecimal degr, BigDecimal x, BigDecimal y) {
         drawSpriteRotate(id, 0, degr, x, y);
     }
 
