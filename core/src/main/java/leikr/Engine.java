@@ -133,19 +133,13 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public void create() {
     }
 
-    ;
-
     public void update(float delta) {
     }
-
-    ;
 
     public void render() {
     }
 
-    ;
     // end override functions
-
     // Optional override methods
     public void onPause() {
     }
@@ -450,7 +444,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public float sinDeg(BigDecimal deg) {
         return lSystem.sinDeg(deg);
     }
-    
+
     public int ceil(BigDecimal value) {
         return lSystem.ceil(value);
     }
