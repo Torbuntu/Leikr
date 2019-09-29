@@ -350,8 +350,8 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         Screen.sprite(id, x, y, size);
     }
 
-    public final void sprite(int id, BigDecimal x, BigDecimal y, BigDecimal degr, int size) {
-        Screen.sprite(id, x, y, degr, size);
+    public final void sprite(int id, BigDecimal degr, BigDecimal x, BigDecimal y, int size) {
+        Screen.sprite(id, degr, x, y, size);
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, int size) {
