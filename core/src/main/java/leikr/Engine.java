@@ -35,7 +35,7 @@ import org.mini2Dx.gdx.InputProcessor;
  */
 public abstract class Engine extends BaseGamePadListener implements InputProcessor {
 
-    //Mini2DX specific classes for managing the screen state and drawing.
+    //Mini2DX specific classes for managing the Screen state and drawing.
     FitViewport viewport;
 
     //used by the Engine Screen to determine if the game should be actively running.
@@ -55,13 +55,13 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      *
      * The loaders are used to load the custom assets for a game at startup.
      */
-    public LeikrScreenManager screen;
+    public LeikrScreenManager Screen;
     public LeikrSystemManager system;
     public LeikrAudioManager audio;
 
     //custom prop functions
     public int getUsedSprites() {
-        return screen.getUsedSprites();
+        return Screen.getUsedSprites();
     }
     //end custom prop functions
 
@@ -75,7 +75,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final void preCreate(int mSprites, LeikrSystemManager sys) {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         audio = LeikrAudioManager.getLeikrAudioManager();
-        screen = LeikrScreenManager.getLeikrScreenManager(mSprites);
+        Screen = LeikrScreenManager.getLeikrScreenManager(mSprites);
         system = sys;
         active = true;
         try {
@@ -110,7 +110,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      */
     public final boolean preUpdate(float delta) {
         mouse.updateMouse();
-        screen.preUpdate(delta);
+        Screen.preUpdate(delta);
         return false;
     }
 
@@ -125,18 +125,17 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      */
     public final void preRender() {
         viewport.apply(Mdx.graphicsContext);
-        screen.preRender();
+        Screen.preRender();
     }
 
     /*
-     * Override functions for game scripting. These are abstract and are
-     * required to be implemented in the game code.
+     * Override functions for game scripting. 
      */
-    abstract public void create();
+    public void create(){};
 
-    abstract public void update(float delta);
+    public void update(float delta){};
 
-    abstract public void render();
+    public void render(){};
     // end override functions
 
     // Optional override methods
@@ -153,8 +152,8 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
             audio.dispose();
         }
 
-        if (screen != null) {
-            screen.dispose();
+        if (Screen != null) {
+            Screen.dispose();
         }
 
         if (Mdx.input.getGamePads().size > 0) {
@@ -209,191 +208,191 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     //Image methods
     public final void loadImages() {
-        screen.loadImages();
+        Screen.loadImages();
     }
 
     public final void drawTexture(String name, BigDecimal x, BigDecimal y) {
-        screen.drawTexture(name, x, y);
+        Screen.drawTexture(name, x, y);
     }
 
     public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        screen.drawTexture(name, x, y, w, h);
+        Screen.drawTexture(name, x, y, w, h);
     }
 
     public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h, boolean flipv) {
-        screen.drawTexture(name, x, y, w, h, flipv);
+        Screen.drawTexture(name, x, y, w, h, flipv);
     }
     //end Image methods
 
     //Map methods
     public final void loadMap(String map) {
-        screen.loadMap(map);
+        Screen.loadMap(map);
     }
 
     public final void drawMap() {
-        screen.drawMap();
+        Screen.drawMap();
     }
 
     public final void drawMap(BigDecimal x, BigDecimal y) {
-        screen.drawMap(x, y);
+        Screen.drawMap(x, y);
     }
 
     public final void drawMap(BigDecimal x, BigDecimal y, int layer) {
-        screen.drawMap(x, y, layer);
+        Screen.drawMap(x, y, layer);
     }
 
     public final void drawMap(BigDecimal x, BigDecimal y, BigDecimal sx, BigDecimal sy, BigDecimal w, BigDecimal h) {
-        screen.drawMap(x, y, sx, sy, w, h);
+        Screen.drawMap(x, y, sx, sy, w, h);
     }
 
     public final void drawMap(BigDecimal x, BigDecimal y, BigDecimal sx, BigDecimal sy, BigDecimal w, BigDecimal h, int layer) {
-        screen.drawMap(x, y, sx, sy, w, h, layer);
+        Screen.drawMap(x, y, sx, sy, w, h, layer);
     }
 
     public final int getMapTileId(BigDecimal x, BigDecimal y) {
-        return screen.getMapTileId(x, y);
+        return Screen.getMapTileId(x, y);
     }
 
     public final void setMapTile(BigDecimal x, BigDecimal y, int id) {
-        screen.setMapTile(x, y, id);
+        Screen.setMapTile(x, y, id);
     }
 
     public final void removeMapTile(BigDecimal x, BigDecimal y) {
-        screen.removeMapTile(x, y);
+        Screen.removeMapTile(x, y);
     }
 
     public final int getMapHeight() {
-        return screen.getMapHeight();
+        return Screen.getMapHeight();
     }
 
     public final int getMapWidth() {
-        return screen.getMapWidth();
+        return Screen.getMapWidth();
     }
     //end Map methods
 
     //start color methods
     public final void setColor(int color) {
-        screen.setColor(color);
+        Screen.setColor(color);
     }
 
     public final void setColor(String c) {
-        screen.setColor(c);
+        Screen.setColor(c);
     }
 
     public final void setColor(String c, boolean a) {
-        screen.setColor(c, a);
+        Screen.setColor(c, a);
     }
 
     public final Color getDrawColor(int color) {
-        return screen.getDrawColor(color);
+        return Screen.getDrawColor(color);
     }
 
     public final void bgColor(int color) {
-        screen.bgColor(color);
+        Screen.bgColor(color);
     }
 
     public final void bgColor(String color) {
-        screen.bgColor(color);
+        Screen.bgColor(color);
     }
     //end color methods
 
     //Helper methods
     public final void setClip(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        screen.setClip(x, y, w, h);
+        Screen.setClip(x, y, w, h);
     }
 
     public final void removeClip() {
-        screen.removeClip();
+        Screen.removeClip();
     }
 
     //end helper methods
     //text methods
     public final void drawString(String text, BigDecimal x, BigDecimal y, int color) {
-        screen.drawString(text, x, y, color);
+        Screen.drawString(text, x, y, color);
     }
 
     public final void drawString(String text, BigDecimal x, BigDecimal y, String color) {
-        screen.drawString(text, x, y, color);
+        Screen.drawString(text, x, y, color);
     }
 
     public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, int color) {
-        screen.drawString(text, x, y, width, color);
+        Screen.drawString(text, x, y, width, color);
     }
 
     public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, String color) {
-        screen.drawString(text, x, y, width, color);
+        Screen.drawString(text, x, y, width, color);
     }
 
     public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, int align, int color) {
-        screen.drawString(text, x, y, width, align, color);
+        Screen.drawString(text, x, y, width, align, color);
     }
 
     public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, int align, String color) {
-        screen.drawString(text, x, y, width, align, color);
+        Screen.drawString(text, x, y, width, align, color);
     }
     //end drawString methods
 
     //start 8x8 sprites
     public final void sprite(int id, BigDecimal x, BigDecimal y) {
-        screen.sprite(id, x, y);
+        Screen.sprite(id, x, y);
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, BigDecimal degr) {
-        screen.sprite(id, x, y, degr);
+        Screen.sprite(id, x, y, degr);
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY) {
-        screen.sprite(id, x, y, flipX, flipY);
+        Screen.sprite(id, x, y, flipX, flipY);
     }
     //end 8x8 sprites
 
     //start sizable sprites
     public final void sprite(int id, BigDecimal x, BigDecimal y, int size) {
-        screen.sprite(id, x, y, size);
+        Screen.sprite(id, x, y, size);
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, BigDecimal degr, int size) {
-        screen.sprite(id, x, y, degr, size);
+        Screen.sprite(id, x, y, degr, size);
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, int size) {
-        screen.sprite(id, x, y, flipX, flipY, size);
+        Screen.sprite(id, x, y, flipX, flipY, size);
     }
     //end sizable sprites
 
     //start scaled sprites
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale) {
-        screen.spriteSc(id, x, y, scale);
+        Screen.spriteSc(id, x, y, scale);
     }
 
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY) {
-        screen.spriteSc(id, x, y, scaleX, scaleY);
+        Screen.spriteSc(id, x, y, scaleX, scaleY);
     }
 
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, BigDecimal degr) {
-        screen.spriteSc(id, x, y, scaleX, scaleY, degr);
+        Screen.spriteSc(id, x, y, scaleX, scaleY, degr);
     }
     
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY){
-        screen.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY);
+        Screen.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY);
     }
     //end scaled sprites
 
     //start shape drawing methods
     public final void drawPixel(int color, BigDecimal x, BigDecimal y) {
-        screen.drawPixel(color, x, y);
+        Screen.drawPixel(color, x, y);
     }
 
     public final void drawRect(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        screen.drawRect(x, y, w, h);
+        Screen.drawRect(x, y, w, h);
     }
 
     public final void fillRect(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        screen.fillRect(x, y, w, h);
+        Screen.fillRect(x, y, w, h);
     }
 
     public final void drawLineSegment(BigDecimal x1, BigDecimal y1, BigDecimal x2, BigDecimal y2) {
-        screen.drawLineSegment(x1, y1, x2, y2);
+        Screen.drawLineSegment(x1, y1, x2, y2);
     }
     //end shape drawing methods
 
@@ -591,11 +590,11 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     //Experimental API methods
     public void tint(int color) {
-        screen.tint(color);
+        Screen.tint(color);
     }
 
     public void tint() {
-        screen.tint();
+        Screen.tint();
     }
 
     public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {
