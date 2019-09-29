@@ -58,12 +58,6 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public LeikrSystemManager lSystem;
     public LeikrAudioManager Audio;
 
-    //custom prop functions
-    public int getUsedSprites() {
-        return Screen.getUsedSprites();
-    }
-    //end custom prop functions
-
     /**
      * preCreate gets the audio, screen and system singletons. sets up the
      * controllers if there are any connected.
@@ -171,6 +165,13 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     //dispose
 
     //Start Helper methods
+    
+    //custom prop functions
+    public int getUsedSprites() {
+        return Screen.getUsedSprites();
+    }
+    //end custom prop functions
+    
     /**
      * Prints the FPS to the console
      *
