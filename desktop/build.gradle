@@ -9,6 +9,7 @@ shadowJar {
     //Exclude Asset directories from inside the jar.
     exclude 'Data'
     exclude 'Programs'
+    exclude 'Packages'
     exclude 'Sys'
     exclude 'Leikr'
     exclude 'Leikr.bat'
