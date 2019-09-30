@@ -1,5 +1,5 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![GitHub tag](https://img.shields.io/github/tag/Torbuntu/Leikr)](https://GitHub.com/Naereen/StrapDown.js/tags/)
+[![GitHub tag](https://img.shields.io/github/tag/Torbuntu/Leikr)](https://GitHub.com/Torbuntu/Leikr/tags/)
 
 # Leikr Game System
 | [Wiki](https://github.com/torbuntu/leikr/wiki) | [itch.io](https://torbuntu.itch.io/leikr) | [Releases](https://github.com/torbuntu/leikr/releases) | [About](https://torbuntu.github.io/Leikr/docs/about) |
