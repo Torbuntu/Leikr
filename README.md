@@ -149,5 +149,5 @@ class MyGame extends leikr.Engine{
 | Platform | Support Level | Status | Notes |
 |----|----|----|----|
 | Desktop | Full | Up to date | Fedora and other Linux distributions officially supported first. Windows also known to work. No status on Apple computer builds available. Since this is a Java program, it *should just work* on any mainstream desktop OS. However, due to native libs this produce odd results on less common systems. |
-| Raspberry Pi 3B+ | Partial | Outdated | This requires custom builds of the native libs for LibGDX and LWJGL. Due to this, builds for this come slowly or only when tim epermits. The only currently supported OS for this is default Raspbian with OpenGL drivers activated and GPU memory boosted. This will be a full release in the future.|
-| Raspberry Pi 3A+ | Partial | Outdated | Same story as the 3B+. This board works great, and may replace the 3B+ as the primary target hardware. |
+| Raspberry Pi 3B+ | Full | Up to Date | This requires custom builds of the native libs for LibGDX and LWJGL. Due to this, builds for this come slowly or only when tim epermits. The only currently supported OS for this is default Raspbian with OpenGL drivers activated and GPU memory boosted. This will be a full release in the future.|
+| Raspberry Pi 3A+ | Full | Up to Date | Same story as the 3B+. This board works great, and may replace the 3B+ as the primary target hardware. |
