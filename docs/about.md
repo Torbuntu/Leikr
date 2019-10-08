@@ -1,4 +1,5 @@
 # About Leikr
+| [Wiki](https://github.com/torbuntu/leikr/wiki) | [itch.io](https://torbuntu.itch.io/leikr) | [Releases](https://github.com/torbuntu/leikr/releases) | [Home](https://torbuntu.github.io/Leikr/) |
 
 
 ## Origin
