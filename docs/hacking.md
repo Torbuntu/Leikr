@@ -18,7 +18,7 @@ As long as the main game file can extend the Leikr Engine API class then this sh
 # Example using Java
 
 #### Sample Code
-```Java
+```java
 import java.math.BigDecimal;
 public class Java extends leikr.Engine{
 	
@@ -81,7 +81,7 @@ Then when you run Leikr and `run Java` it should load! Super neat.
 
 # Example using Kotlin
 #### Assumes you have Kotlin installed
-```Kotlin
+```kotlin
 import java.math.BigDecimal;
 open class Kotlin : leikr.Engine() {
 
@@ -135,7 +135,7 @@ then
 
 # Example in Scala
 
-```Scala
+```scala
 import java.math.BigDecimal;
 class Scala extends leikr.Engine {
 
