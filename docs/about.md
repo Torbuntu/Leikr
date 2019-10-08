@@ -35,4 +35,4 @@ Instead, Leikr aims to promote the use of whatever tools someone is most comfort
 | Sfx | [RFXGEN](https://github.com/raysan5/rfxgen) | Leikr uses .WAV files for SFX |
 | Code | [NetBeans](https://netbeans.apache.org/), [Gedit](https://wiki.gnome.org/Apps/Gedit), [Nano](https://www.nano-editor.org/)| Any Text editor with support for Groovy highlighting will be plenty sufficient |
 
-Using simple to make assets allows for users to use any tools they wish for developing for Leikr.
+Using simple to make assets allows for users to use any tools they wish for developing on Leikr[.](https://torbuntu.github.io/Leikr/docs/hacking) 
