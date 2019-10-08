@@ -6,10 +6,19 @@
 
 A Game System built in Java for writing games and programs in Groovy. (A Fantasy Console idea)
 
+#### Why Groovy?
+
+>Groovy: If you describe something as groovy, you mean that it is **attractive, fashionable, or exciting.**  https://www.collinsdictionary.com/dictionary/english/groovy
+
 >Apache Groovy is a **powerful, optionally typed** and **dynamic** language, with **static-typing** and **static compilation** capabilities, for the Java platform aimed at improving developer productivity thanks to a concise, familiar and **easy to learn syntax**.
 -- http://groovy-lang.org/
 
-Powered by [Mini2Dx](https://mini2dx.org/)
+
+#### Technologies 
+Powered by [Mini2Dx](https://mini2dx.org/). 
+
+Once you've mastered Leikr and feel the need to expand into bigger waters, you can take your knowledge and move up to Mini2Dx itself.
+
 
 | Preview |
 |----|
