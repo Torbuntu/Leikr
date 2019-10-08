@@ -66,14 +66,16 @@ public class Java extends leikr.Engine{
 ```
 
 The command to compile: 
+
 `> javac -cp Leikr-x.x.x.jar Java.java`
 
-You have to add the Leikr jar to the classpath. In this example I have it in the Code directory with the java class.
+You have to add the Leikr jar to the classpath in order for the compiler to know what `Engine` is. In this example I have it in the Code directory with the java class.
 
 After I generate my class file:
+
 `> mv Java.class Compiled/` 
 
-this will move the class file into the compiled directory for running.
+this will move the class file into the `Compiled` directory for running.
 
 Don't forget to make sure the `program.properties` file has `use_compiled = true`
 
@@ -191,6 +193,8 @@ I used some extra params for debugging purpose ;)
 Now! For Scala you will need the `scala-library.jar` in the classpath to make this work. So to hack this bad boy into the system we need to launch Leikr a special way:
 
 `> java -cp scala-library.jar:Leikr-x.x.x.jar leikr.desktop.DesktopLauncher`
+
+this command adds `scala-library.jar` as well as `Leikr-x-x-x.jar` to the classpath, and then uses `leikr.desktop.DesktopLauncher` as the main class to target.
 
 And that should do it! Super weird. Super awesome. Super hacks.
 
