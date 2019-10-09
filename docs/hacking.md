@@ -84,7 +84,7 @@ Don't forget to make sure the `program.properties` file has `use_compiled = true
 
 Then when you run Leikr and `run Java` it should load! Super neat.
 
-# Example using Kotlin
+# [Example using Kotlin](#example-using-kotlin)
 #### Assumes you have Kotlin installed
 ```kotlin
 import java.math.BigDecimal;
@@ -138,7 +138,7 @@ then
 
 `> mv Kotlin.kt Compiled/`
 
-# Example in Scala
+# [Example in Scala](#example-using-scala)
 
 #### Assumes you already installed Scala and have it setup on your classpath/have the jar locally available.
 
@@ -204,7 +204,7 @@ this command adds `scala-library.jar` as well as `Leikr-x-x-x.jar` to the classp
 And that should do it! Super weird. Super awesome. Super hacks.
 
 
-# Example in Clojure
+# [Example using Clojure](#example-using-clojure)
 
 #### In this example my project is called MyClojure
 
