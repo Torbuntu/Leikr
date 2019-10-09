@@ -17,7 +17,8 @@ Languages tested with the method: Java, Kotlin, Scala and Clojure
 As long as the main game file can extend the Leikr Engine API class then this should work with other JVM languages as well. 
 
 #### all examples assume a project is created and a folder called `Compiled` is inside `Code`
-# Example using Java
+
+# [Example using Java](#example-using-java)
 
 #### Sample Code
 ```java
