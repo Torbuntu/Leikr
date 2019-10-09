@@ -364,4 +364,10 @@ Also, don't forget like the others to set `use_compiled = true` in `program.prop
 
 This will clear the `classes` and `Compiled` directories, and compile the source code into `classes`. Then it will move those files into `Compiled`. I am pretty sure that there must be a way to just compile directly into `Compiled` but I didn't really feel it was that big of a deal for this demo. 
 
+For running, Leikr will require clojure in the classpath, so instead of using the script run this command
+
+`> java -cp clojure.jar:Leikr-x.x.x.jar leikr.desktop.DesktopLauncher`
+
+Similar to Scala.
+
 Clojure is really bizarre, and not really straight forward to work for if you're used to Java or closer to Java looking languages. But it was kind of fun! I might come back to it in the future to do more random stuff. 
