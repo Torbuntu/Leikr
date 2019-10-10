@@ -12,7 +12,7 @@ You see where this is going, right?
 
 Using this strategy one could manually compile other JVM compatible languages and put the class files into `Compiled` to be run by Leikr. 
 
-Languages tested with the method: Java, Kotlin, Scala and Clojure
+Languages tested with the method: Java, Kotlin, Scala, Clojure and Python (Jython)
 
 As long as the main game file can extend the Leikr Engine API class then this should work with other JVM languages as well. 
 
@@ -371,3 +371,184 @@ For running, Leikr will require clojure in the classpath, so instead of using th
 Similar to Scala.
 
 Clojure is really bizarre, and not really straight forward to work for if you're used to Java or closer to Java looking languages. But it was kind of fun! I might come back to it in the future to do more random stuff. 
+
+
+# [Example using Python with Jython](#example-using-python-with-jython)
+
+
+To use Python on the JVM the easiest way that I could find is by using Jython. Jython is a Python 2 (I know...) implementation for the jvm.
+
+The best Jython [Documentation](https://www.javadoc.io/doc/org.python/jython-standalone/2.7.1) I could find.
+
+Firstly we will need to grab the latest [jython jar](https://www.jython.org/download) which I just grab from the jython website.
+
+The page says it supports up to java 8, but it works fine (so far) for me using 12. 
+
+Once we have our jar, I quick made a new directory called src `>mkdir src` and dropped the jar in there for easier management. Since like other languages, we will need this in our classpath for running and compiling.
+
+I found compiling the regular `.py` file to be a major hassle. The file would not extend properly and I could not get it to compile to the correct `.class` name I was looking for. So I went an even more hacky route and decided to write a [shim](https://en.wikipedia.org/wiki/Shim_(computing)) to handle it instead.
+
+The shim I wrote is in [Groovy](https://groovy-lang.org/), since that is the official Leikr language of choice.
+
+My project is called `Python` so I name the Groovy [shim](https://en.wikipedia.org/wiki/Shim_(computing)) `Python` so that Leikr knows which class to load.
+
+```Groovy
+import org.python.util.PythonInterpreter
+import org.python.core.*
+
+class Python extends leikr.Engine{
+	def interp = new PythonInterpreter();
+	def cre, upd, ren
+	
+	PyFloat pf
+	
+	void create(){
+		new File("Programs/Python/Code/Compiled/PythonShim.py").withInputStream { st ->
+			interp.execfile(st)
+		}
+		interp.set("engine", this)
+		
+		cre = interp.get("create")
+		upd = interp.get("update")
+		ren = interp.get("render")
+		
+		cre.__call__()
+	}
+	
+	void update(float delta){
+		pf = new PyFloat(delta)
+		upd.__call__(pf)
+	}	
+	
+	void render(){
+		ren.__call__()
+	}
+}
+	
+```
+
+Firstly we need to import our [handy dandy](https://bluesclues.fandom.com/wiki/Handy_Dandy_Notebook) Python libraries. I grab everything from core and the most important piece the `PythonInterpreter` which will be handling out Python code and translations.
+
+I create 3 variables `cre, upd, ren` which are just [proxy](https://www.merriam-webster.com/dictionary/proxy) objects for the Python versions of the `create, update, render` methods. 
+
+What this means is that on each run of those methods in Groovy, it simply calls those methods from the actual Python script we will write. Nothing too serious there. The only thing to note is that if we want the `delta` value, we need to use a `PyFloat` variable and conver the `float delta` before passing it in using the `__call__(delta)` method.
+
+Looking closer at `create()` 
+
+```Groovy
+void create(){
+	new File("Programs/Python/Code/Compiled/PythonShim.py").withInputStream { st ->
+		interp.execfile(st)
+	}
+	interp.set("engine", this)
+
+	cre = interp.get("create")
+	upd = interp.get("update")
+	ren = interp.get("render")
+
+	cre.__call__()
+}
+```
+
+First line is very important. That points to the location of the actual Python file (which I've named `PythonShim.py` to not be confused with the Groovy class `Python.groovy` and loads it into a new File object, then using the closure `withInputStream { st ->` we run the Python interpreter on the input stream object `st` 
+
+```Groovy
+interp.execfile(st)
+```
+
+This command will parse and load the Python code so it can be run! Pretty awesome right? 
+
+The very next line we run `interp.set("engine", this)` which will set the `Python` class object (which extends `leikr.Engine`) in the context to be usable by the `PythonShim`.
+
+Now we have our shim file set up to do the following:
+
+1. Extends the Leikr Engine to access API
+2. Create a PythonInterpreter and proxy objects for the 3 runtime methods
+3. Load in the PythonShim file and set the `engine` (lower case) object to the context
+4. Gets the 3 runtime methods from the PythonShim and sets them to the proxy objects
+5. Runs the proxy methods in the 3 runtime methods.
+
+On to the actual Python code
+
+```Python
+import java.math.BigDecimal as bd
+import random
+
+# engine : this variable is defined and set by the groovy shim wrapper.
+
+x = []
+y = []
+dx = []
+dy = []
+c = []
+
+for i in range(0, 10):
+    x.append(random.randint(0, 230))
+    y.append(random.randint(0, 150))
+    dy.append(1)
+    dx.append(-1)
+    c.append(random.randint(12, 30))
+
+def create():
+    print "Python Success"
+#
+
+def update(delta):
+    global x, y, dx, dy
+
+    for i in range(0, 10):
+        if(x[i] < 0):
+            dx[i] = 1
+
+        if(x[i] > 230):
+            dx[i] = -1
+
+        if(y[i] < 0):
+            dy[i] = 1
+
+        if(y[i] > 150):
+            dy[i] = -1
+
+        x[i] = x[i] + dx[i]
+        y[i] = y[i] + dy[i]
+#
+
+def render():
+    for i in range(0, 10):
+        engine.setColor(c[i])
+        engine.fillRect(bd(x[i]), bd(y[i]), bd(10), bd(10))
+#
+```
+
+The same demo as the others here, and it doesn't need too much explaining I'd imagine.
+
+The weirdest part is we don't set `engine` in the file anywhere because that is being set by the `Python.groovy` file.
+
+#### Compiling 
+
+The Groovy class, since we don't need to mess with it once it is set up correctly, we just compile into a jvm .class file
+
+(This assumes you have groovy installed)
+
+`>  groovyc -cp jython-standalone-2.7.1.jar:Leikr-0.0.12.jar Python.groovy` 
+
+Then we move the generated class files (should be 2 since there was a closure) into the `Compiled` directory. Since we were running in a `src` directory next to `Compiled` we can use this command:
+
+`> mv Python\$_create_closure1.class ../Compiled/ && mv Python.class ../Compiled/`
+
+
+
+#### Running
+
+Before running make sure inside your project's `Code/Compiled/` directory you have both the `.class` files from the compile step and the `PythonShim.py` script.
+
+Also make sure `program.properties` has `use_compiled = true` 
+
+In the root of the Leikr project run this command (make sure you have a copy of the Jython jar there for the `-cp`)
+
+`> java -cp jython-standalone-2.7.1.jar:Leikr-0.0.12.jar leikr.desktop.DesktopLauncher`
+
+
+Now whenever you make changes to the Python file itself, all you have to do is reload the program (F5). 
+
+Happy Hacking!
