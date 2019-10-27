@@ -25,7 +25,6 @@ import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.Colors;
-import org.mini2Dx.core.graphics.TextureFilter;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
@@ -76,7 +75,7 @@ public class EngineScreen extends BasicGameScreen {
             engine.setActive(false);
         }
         if (GameRuntime.checkLaunchTitle()) {
-            sm.enterGameScreen(TitleScreen.ID, null, null);
+            Mdx.platformUtils.exit(false);
         } else {
             sm.enterGameScreen(TerminalScreen.ID, null, null);
         }
@@ -144,7 +143,7 @@ public class EngineScreen extends BasicGameScreen {
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
-        if (Mdx.input.isKeyJustPressed(Keys.F5) || Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyJustPressed(Keys.R)) {
+        if (Mdx.input.isKeyJustPressed(Keys.F5) || Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyJustPressed(Keys.R) || Mdx.input.isKeyJustPressed(Keys.HOME)) {
             reloadEngine(sm);
         }
         if (Mdx.input.isKeyJustPressed(Keys.ESCAPE)) {
@@ -187,7 +186,7 @@ public class EngineScreen extends BasicGameScreen {
             if (Mdx.input.isKeyJustPressed(Keys.RIGHT)) {
                 CONFIRM = false;
             }
-            if (Mdx.input.isKeyJustPressed(Keys.ENTER)) {
+            if (Mdx.input.isKeyJustPressed(Keys.ENTER) || Mdx.input.isKeyJustPressed(Keys.K)) {
                 resume();
             }
         }
@@ -199,7 +198,6 @@ public class EngineScreen extends BasicGameScreen {
 
     @Override
     public void render(GameContainer gc, Graphics g) {
-       // Mdx.graphicsContext.setMagFilter(TextureFilter.PIXEL);
         if (null != engine && !engine.getActive() || ERROR) {
             return;
         }

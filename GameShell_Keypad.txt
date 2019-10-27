@@ -1,0 +1,15 @@
+a = k
+b = j
+y = u
+x = i
+
+LK1 = h
+LK5 = l
+
+A = l
+B = h
+Y = Y
+X = o
+
+Select = Space
+Start = Enter

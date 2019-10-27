@@ -43,6 +43,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
     public static int ID = 7;
 
     boolean RUN_PROGRAM = false;
+    boolean NEW_PROGRAM = false;
 
     String out;
 
@@ -52,6 +53,9 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
     String historyText = "";
 
     int blink = 0;
+
+    int index = -1;
+    FileHandle[] programs;
 
     public TerminalScreen() {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
@@ -64,7 +68,8 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
     private String runLs() {
         try {
             out = "";
-            for (FileHandle f : Mdx.files.local("Programs").list()) {
+            programs = Mdx.files.local("Programs").list();
+            for (FileHandle f : programs) {
                 out += f.nameWithoutExtension() + "\n";
             }
             return out;
@@ -98,6 +103,10 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
             historyText = "";
             sm.enterGameScreen(LoadScreen.ID, null, null);
         }
+        if(NEW_PROGRAM){
+            NEW_PROGRAM = false;
+            sm.enterGameScreen(NewProgramScreen.ID, null, null);
+        }
         blink++;
         if (blink > 60) {
             blink = 0;
@@ -130,6 +139,20 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
             historyText = processCommand() + "\n\n";
             prompt = "";
             return true;
+        }
+        if (keycode == Keys.UP) {
+            index++;
+            if (index > programs.length-1) {
+                index = 0;
+            }
+            prompt = "run " + programs[index].nameWithoutExtension();
+        }
+        if (keycode == Keys.DOWN) {
+            index--;
+            if (index < 0) {
+                index = programs.length-1;
+            }
+            prompt = "run " + programs[index].nameWithoutExtension();
         }
         return false;
     }
@@ -232,6 +255,9 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                 return "Loaded program: `" + GameRuntime.GAME_NAME + "`";
             case "ls":
                 return runLs();
+            case "new":
+                NEW_PROGRAM = true;
+                return "Create a new program.";
             case "run":
                 if (command.length == 1 && GameRuntime.GAME_NAME.length() > 2) {
                     RUN_PROGRAM = true;
