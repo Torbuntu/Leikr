@@ -55,7 +55,7 @@ public class EngineScreen extends BasicGameScreen {
 
     private void pause() {
         PAUSE = true;
-        engine.Audio.pauseAllAudio();
+        engine.lAudio.pauseAllAudio();
         engine.onPause();
     }
 
@@ -64,7 +64,7 @@ public class EngineScreen extends BasicGameScreen {
             BACK = true;
         } else {
             PAUSE = false;
-            engine.Audio.resumeAllAudio();
+            engine.lAudio.resumeAllAudio();
             engine.onResume();
         }
     }
@@ -132,7 +132,7 @@ public class EngineScreen extends BasicGameScreen {
         }
         try {
             system.setRunning(true);
-            engine.preCreate(EngineLoader.getEngineLoader(false).cp.MAX_SPRITES, system);
+            engine.preCreate(EngineLoader.getEngineLoader(false).cp.MAX_SPRITES, system, viewport);
             engine.create();
         } catch (Exception ex) {
             ERROR = true;
@@ -198,6 +198,7 @@ public class EngineScreen extends BasicGameScreen {
 
     @Override
     public void render(GameContainer gc, Graphics g) {
+        viewport.apply(Mdx.graphicsContext);
         if (null != engine && !engine.getActive() || ERROR) {
             return;
         }
@@ -213,7 +214,6 @@ public class EngineScreen extends BasicGameScreen {
                 Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            viewport.apply(g);
             g.setColor(Colors.WHITE());
             g.drawString("-- Paused --", 0, 60, 240, 1);
             g.drawString("Exit running program?", 0, 74, 240, 1);

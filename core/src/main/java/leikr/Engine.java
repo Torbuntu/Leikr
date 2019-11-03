@@ -43,57 +43,58 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     /*
      * Controllers and listeners for handling custom controller input
      */
-    public LeikrController ControllerA;
-    public LeikrController ControllerB;
+    public LeikrController lControllerA;
+    public LeikrController lControllerB;
 
-    public LeikrMouse Mouse;
-    public LeikrKeyboard Keyboard;
+    public LeikrMouse lMouse;
+    public LeikrKeyboard lKeyboard;
 
     /*
      * Loaders
      *
      * The loaders are used to load the custom assets for a game at startup.
      */
-    public LeikrScreenManager Screen;
+    public LeikrScreenManager lScreen;
     public LeikrSystemManager lSystem;
-    public LeikrAudioManager Audio;
+    public LeikrAudioManager lAudio;
 
     /**
-     * preCreate gets the audio, screen and system singletons. sets up the
-     * controllers if there are any connected.
+     * preCreate gets the audio, screen and system singletons.sets up the
+ controllers if there are any connected.
      *
      * @param mSprites maximum allowed sprites to draw at one time
      * @param sys object used to interact with the Leikr lSystem at runtime
+     * @param viewport
      */
-    public final void preCreate(int mSprites, LeikrSystemManager sys) {
-        viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
-        Audio = LeikrAudioManager.getLeikrAudioManager();
-        Screen = LeikrScreenManager.getLeikrScreenManager(mSprites);
+    public final void preCreate(int mSprites, LeikrSystemManager sys, FitViewport viewport) {
+        this.viewport = viewport;
+        lAudio = LeikrAudioManager.getLeikrAudioManager();
+        lScreen = LeikrScreenManager.getLeikrScreenManager(mSprites);
         lSystem = sys;
         active = true;
         try {
             if (Mdx.input.getGamePads().size > 0) {
-                ControllerA = LeikrController.getLeikrControllerListenerA();
-                Mdx.input.getGamePads().get(0).addListener(ControllerA);
+                lControllerA = LeikrController.getLeikrControllerListenerA();
+                Mdx.input.getGamePads().get(0).addListener(lControllerA);
                 Mdx.input.getGamePads().get(0).addListener(this);
             }
             if (Mdx.input.getGamePads().size > 1) {
-                ControllerB = LeikrController.getLeikrControllerListenerB();
-                Mdx.input.getGamePads().get(1).addListener(ControllerB);
+                lControllerB = LeikrController.getLeikrControllerListenerB();
+                Mdx.input.getGamePads().get(1).addListener(lControllerB);
                 Mdx.input.getGamePads().get(1).addListener(this);
             }
         } catch (Exception ex) {
             System.out.println("Controllers not active: " + ex.getMessage());
         }
         // input processors
-        Mouse = LeikrMouse.getLeikrMouse(viewport);
-        Keyboard = LeikrKeyboard.getLeikrKeyboard();
+        lMouse = LeikrMouse.getLeikrMouse(viewport);
+        lKeyboard = LeikrKeyboard.getLeikrKeyboard();
         Mdx.input.setInputProcessor(this);
     }
 
     /**
      * Run just before the Engine update method.Used to update system objects
-     * behind the scenes. mouse positions updates
+     * behind the scenes. lMouse positions updates
      *
      *
      * update screen objects
@@ -102,8 +103,8 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      * @return if should continue
      */
     public final boolean preUpdate(float delta) {
-        Mouse.updateMouse();
-        Screen.preUpdate(delta);
+        lMouse.updateMouse();
+        lScreen.preUpdate(delta);
         return false;
     }
 
@@ -117,8 +118,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      *
      */
     public final void preRender() {
-        viewport.apply(Mdx.graphicsContext);
-        Screen.preRender();
+        lScreen.preRender();
     }
 
     /*
@@ -144,21 +144,21 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     //disposes the game objects on exit
     public final void dispose() {
-        if (Audio != null) {
-            Audio.dispose();
+        if (lAudio != null) {
+            lAudio.dispose();
         }
 
-        if (Screen != null) {
-            Screen.dispose();
+        if (lScreen != null) {
+            lScreen.dispose();
         }
 
         if (Mdx.input.getGamePads().size > 0) {
             Mdx.input.getGamePads().get(0).removeListener(this);
-            Mdx.input.getGamePads().get(0).removeListener(ControllerA);
+            Mdx.input.getGamePads().get(0).removeListener(lControllerA);
         }
         if (Mdx.input.getGamePads().size > 1) {
             Mdx.input.getGamePads().get(1).removeListener(this);
-            Mdx.input.getGamePads().get(1).removeListener(ControllerB);
+            Mdx.input.getGamePads().get(1).removeListener(lControllerB);
         }
         //  Controllers.clearListeners();
     }
@@ -168,7 +168,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     
     //custom prop functions
     public int getUsedSprites() {
-        return Screen.getUsedSprites();
+        return lScreen.getUsedSprites();
     }
     //end custom prop functions
     
@@ -207,225 +207,230 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     //Image methods
     public final void loadImages() {
-        Screen.loadImages();
+        lScreen.loadImages();
     }
 
     public final void drawTexture(String name, BigDecimal x, BigDecimal y) {
-        Screen.drawTexture(name, x, y);
+        lScreen.drawTexture(name, x, y);
     }
 
     public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        Screen.drawTexture(name, x, y, w, h);
+        lScreen.drawTexture(name, x, y, w, h);
     }
 
     public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h, boolean flipv) {
-        Screen.drawTexture(name, x, y, w, h, flipv);
+        lScreen.drawTexture(name, x, y, w, h, flipv);
     }
     //end Image methods
 
     //Map methods
     public final void loadMap(String map) {
-        Screen.loadMap(map);
+        lScreen.loadMap(map);
     }
 
     public final void drawMap() {
-        Screen.drawMap();
+        lScreen.drawMap();
     }
 
     public final void drawMap(BigDecimal x, BigDecimal y) {
-        Screen.drawMap(x, y);
+        lScreen.drawMap(x, y);
     }
 
     public final void drawMap(BigDecimal x, BigDecimal y, int layer) {
-        Screen.drawMap(x, y, layer);
+        lScreen.drawMap(x, y, layer);
     }
 
     public final void drawMap(BigDecimal x, BigDecimal y, BigDecimal sx, BigDecimal sy, BigDecimal w, BigDecimal h) {
-        Screen.drawMap(x, y, sx, sy, w, h);
+        lScreen.drawMap(x, y, sx, sy, w, h);
     }
 
     public final void drawMap(BigDecimal x, BigDecimal y, BigDecimal sx, BigDecimal sy, BigDecimal w, BigDecimal h, int layer) {
-        Screen.drawMap(x, y, sx, sy, w, h, layer);
+        lScreen.drawMap(x, y, sx, sy, w, h, layer);
     }
 
     public final int getMapTileId(BigDecimal x, BigDecimal y) {
-        return Screen.getMapTileId(x, y);
+        return lScreen.getMapTileId(x, y);
     }
 
     public final void setMapTile(BigDecimal x, BigDecimal y, int id) {
-        Screen.setMapTile(x, y, id);
+        lScreen.setMapTile(x, y, id);
     }
 
     public final void removeMapTile(BigDecimal x, BigDecimal y) {
-        Screen.removeMapTile(x, y);
+        lScreen.removeMapTile(x, y);
     }
 
     public final int getMapHeight() {
-        return Screen.getMapHeight();
+        return lScreen.getMapHeight();
     }
 
     public final int getMapWidth() {
-        return Screen.getMapWidth();
+        return lScreen.getMapWidth();
     }
     //end Map methods
 
     //start color methods
     public final void setColor(int color) {
-        Screen.setColor(color);
+        lScreen.setColor(color);
     }
 
     public final void setColor(String c) {
-        Screen.setColor(c);
+        lScreen.setColor(c);
     }
 
     public final void setColor(String c, boolean a) {
-        Screen.setColor(c, a);
+        lScreen.setColor(c, a);
     }
+    
+    public final void setColor(int r, int g, int b){
+        lScreen.setColor(r, g, b);
+    }
+    
 
     public final Color getDrawColor(int color) {
-        return Screen.getDrawColor(color);
+        return lScreen.getDrawColor(color);
     }
 
     public final void bgColor(int color) {
-        Screen.bgColor(color);
+        lScreen.bgColor(color);
     }
 
     public final void bgColor(String color) {
-        Screen.bgColor(color);
+        lScreen.bgColor(color);
     }
     //end color methods
 
     //Helper methods
     public final void setClip(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        Screen.setClip(x, y, w, h);
+        lScreen.setClip(x, y, w, h);
     }
 
     public final void removeClip() {
-        Screen.removeClip();
+        lScreen.removeClip();
     }
 
     //end helper methods
     //text methods
     public final void drawString(String text, BigDecimal x, BigDecimal y, int color) {
-        Screen.drawString(text, x, y, color);
+        lScreen.drawString(text, x, y, color);
     }
 
     public final void drawString(String text, BigDecimal x, BigDecimal y, String color) {
-        Screen.drawString(text, x, y, color);
+        lScreen.drawString(text, x, y, color);
     }
 
     public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, int color) {
-        Screen.drawString(text, x, y, width, color);
+        lScreen.drawString(text, x, y, width, color);
     }
 
     public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, String color) {
-        Screen.drawString(text, x, y, width, color);
+        lScreen.drawString(text, x, y, width, color);
     }
 
     public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, int align, int color) {
-        Screen.drawString(text, x, y, width, align, color);
+        lScreen.drawString(text, x, y, width, align, color);
     }
 
     public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, int align, String color) {
-        Screen.drawString(text, x, y, width, align, color);
+        lScreen.drawString(text, x, y, width, align, color);
     }
     //end drawString methods
 
     //start 8x8 sprites
     public final void sprite(int id, BigDecimal x, BigDecimal y) {
-        Screen.sprite(id, x, y);
+        lScreen.sprite(id, x, y);
     }
 
     public final void sprite(int id, BigDecimal degr, BigDecimal x, BigDecimal y) {
-        Screen.sprite(id, degr, x, y);
+        lScreen.sprite(id, degr, x, y);
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY) {
-        Screen.sprite(id, x, y, flipX, flipY);
+        lScreen.sprite(id, x, y, flipX, flipY);
     }
     //end 8x8 sprites
 
     //start sizable sprites
     public final void sprite(int id, BigDecimal x, BigDecimal y, int size) {
-        Screen.sprite(id, x, y, size);
+        lScreen.sprite(id, x, y, size);
     }
 
     public final void sprite(int id, BigDecimal degr, BigDecimal x, BigDecimal y, int size) {
-        Screen.sprite(id, degr, x, y, size);
+        lScreen.sprite(id, degr, x, y, size);
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, int size) {
-        Screen.sprite(id, x, y, flipX, flipY, size);
+        lScreen.sprite(id, x, y, flipX, flipY, size);
     }
     //end sizable sprites
 
     //start scaled sprites
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale) {
-        Screen.spriteSc(id, x, y, scale);
+        lScreen.spriteSc(id, x, y, scale);
     }
 
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY) {
-        Screen.spriteSc(id, x, y, scaleX, scaleY);
+        lScreen.spriteSc(id, x, y, scaleX, scaleY);
     }
 
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, BigDecimal degr) {
-        Screen.spriteSc(id, x, y, scaleX, scaleY, degr);
+        lScreen.spriteSc(id, x, y, scaleX, scaleY, degr);
     }
 
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY) {
-        Screen.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY);
+        lScreen.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY);
     }
     //end scaled sprites
 
     //start shape drawing methods
     public final void drawPixel(int color, BigDecimal x, BigDecimal y) {
-        Screen.drawPixel(color, x, y);
+        lScreen.drawPixel(color, x, y);
     }
 
     public final void drawRect(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        Screen.drawRect(x, y, w, h);
+        lScreen.drawRect(x, y, w, h);
     }
 
     public final void fillRect(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        Screen.fillRect(x, y, w, h);
+        lScreen.fillRect(x, y, w, h);
     }
 
     public final void drawLineSegment(BigDecimal x1, BigDecimal y1, BigDecimal x2, BigDecimal y2) {
-        Screen.drawLineSegment(x1, y1, x2, y2);
+        lScreen.drawLineSegment(x1, y1, x2, y2);
     }
     //end shape drawing methods
 
     //start Audio handling
     public final void playSound(String name) {
-        Audio.playSound(name);
+        lAudio.playSound(name);
     }
 
     public final void playSound(String name, BigDecimal vol, BigDecimal pit, BigDecimal pan) {
-        Audio.playSound(name, vol, pit, pan);
+        lAudio.playSound(name, vol, pit, pan);
     }
 
     public final void stopSound() {
-        Audio.stopSound();
+        lAudio.stopSound();
     }
 
     public final void playMusic(String name) {
-        Audio.playMusic(name);
+        lAudio.playMusic(name);
     }
 
     public final void playMusic(String name, boolean loop) {
-        Audio.playMusic(name, loop);
+        lAudio.playMusic(name, loop);
     }
 
     public final void stopAllMusic() {
-        Audio.stopAllMusic();
+        lAudio.stopAllMusic();
     }
 
     public final void stopMusic(String fileName) {
-        Audio.stopMusic(fileName);
+        lAudio.stopMusic(fileName);
     }
 
     public final void pauseAudio() {
-        Audio.pauseAllAudio();
+        lAudio.pauseAllAudio();
     }
     //end Audio handling
 
@@ -477,15 +482,15 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     //START input handling
     public final boolean button(String button) {
-        return (null != ControllerA) ? ControllerA.button(button) : false;
+        return (null != lControllerA) ? lControllerA.button(button) : false;
     }
 
     public final boolean button(String button, int player) {
-        if (null != ControllerA && player == 0) {
-            return ControllerA.button(button);
+        if (null != lControllerA && player == 0) {
+            return lControllerA.button(button);
         }
-        if (null != ControllerB && player == 1) {
-            return ControllerB.button(button);
+        if (null != lControllerB && player == 1) {
+            return lControllerB.button(button);
         }
         //default search is false, in case there are no controllers.
         return false;
@@ -493,16 +498,16 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     //detect Keyboard key presses (polling continuously)
     public final boolean key(String key) {
-        return Keyboard.key(key);
+        return lKeyboard.key(key);
     }
 
     public final boolean keyUp(String key) {
-        return Keyboard.keyUp(key);
+        return lKeyboard.keyUp(key);
     }
 
     //detect single key press.
     public final boolean keyPress(String key) {
-        return Keyboard.keyPress(key);
+        return lKeyboard.keyPress(key);
     }
 
     /**
@@ -511,15 +516,15 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      * @return
      */
     public final boolean mouseClick() {
-        return Mouse.mouseClick();
+        return lMouse.mouseClick();
     }
 
     public final float mouseX() {
-        return Mouse.mouseX();
+        return lMouse.mouseX();
     }
 
     public final float mouseY() {
-        return Mouse.mouseY();
+        return lMouse.mouseY();
     }
 
     @Override
@@ -575,11 +580,11 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     //Experimental API methods
     public void tint(int color) {
-        Screen.tint(color);
+        lScreen.tint(color);
     }
 
     public void tint() {
-        Screen.tint();
+        lScreen.tint();
     }
 
     public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {

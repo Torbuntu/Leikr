@@ -210,6 +210,10 @@ public class LeikrScreenManager {
     public final void setColor(String c) {
         Mdx.graphicsContext.setColor(Colors.rgbToColor(c));
     }
+    
+    public final void setColor(int r, int g, int b){
+        Mdx.graphicsContext.setColor(Colors.rgbToColor(String.format("%d,%d,%d", r, g, b)));
+    }
 
     public final void setColor(String c, boolean alpha) {
         if (alpha) {
