@@ -18,6 +18,7 @@ package leikr.desktop;
 import com.badlogic.gdx.backends.lwjgl.DesktopMini2DxGame;
 import java.io.File;
 import java.security.Security;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
@@ -26,7 +27,8 @@ import org.mini2Dx.libgdx.desktop.DesktopMini2DxConfig;
 public class DesktopLauncher {
 
     public static void main(String[] arg) {
-        if (arg.length > 0 && arg[0].equalsIgnoreCase("insecure")) {
+        
+        if (Arrays.asList(arg).contains("insecure")) {
             Logger.getLogger(Security.class.getName()).log(Level.WARNING, "Leikr is running without security policy.");
         } else {
             Logger.getLogger(Security.class.getName()).log(Level.INFO, "Setting Leikr security policy.");

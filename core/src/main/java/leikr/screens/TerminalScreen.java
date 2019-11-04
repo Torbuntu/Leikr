@@ -16,6 +16,7 @@
 package leikr.screens;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.ExportTool;
@@ -69,9 +70,8 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
         try {
             out = "";
             programs = Mdx.files.local("Programs").list();
-            for (FileHandle f : programs) {
-                out += f.nameWithoutExtension() + "\n";
-            }
+            Arrays.asList(programs).stream().forEach(e -> out += e.nameWithoutExtension() + "\n");
+
             return out;
         } catch (IOException ex) {
             Logger.getLogger(EngineLoader.class.getName()).log(Level.WARNING, null, ex);

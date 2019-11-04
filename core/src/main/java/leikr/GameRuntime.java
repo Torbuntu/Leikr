@@ -34,11 +34,10 @@ public class GameRuntime extends ScreenBasedGame {
 
     public static final String GAME_IDENTIFIER = "torbuntu.leikr";
 
-    //Start out in the Programs/ directory. Append either the Launch Title, or in MenuScreen append program titles including the directory
+    //Start out in the Programs/ directory.
     public static String PROGRAM_PATH = "Programs/";
     public static String GAME_NAME = "";
     public static String LAUNCH_TITLE;
-    public static boolean PACKAGED_ONLY;
 
     private boolean DIRECT_LAUNCH;
 
@@ -56,14 +55,11 @@ public class GameRuntime extends ScreenBasedGame {
      */
     public GameRuntime(String[] arg) {
         DIRECT_LAUNCH = false;
-        PACKAGED_ONLY = false;
         
         CustomSystemProperties.init();
-        if (CustomSystemProperties.PACKAGED_ONLY) {
-            //PACKAGED_ONLY = true;
-        }
         WIDTH = CustomSystemProperties.SCREEN_WIDTH;
         HEIGHT = CustomSystemProperties.SCREEN_HEIGHT;
+        
         if (arg.length > 0 && arg[0].length() > 3 && !arg[0].equalsIgnoreCase("insecure")) {
             PROGRAM_PATH = "Programs/" + arg[0];
             GameRuntime.GAME_NAME = arg[0];
