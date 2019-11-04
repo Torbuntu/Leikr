@@ -87,7 +87,7 @@ public class AudioLoader {
     private void loadAudio() {
         try {
             Arrays.asList(Mdx.files.local(soundRootPath).list()).stream()
-                    .filter(file -> !file.isDirectory())
+                    .filter(file -> !file.isDirectory() && file.extension().equalsIgnoreCase("wav"))
                     .forEach(f -> soundManager.load(soundRootPath + f.name(), Sound.class));
             soundManager.finishLoading();
         } catch (IOException ex) {
@@ -96,7 +96,7 @@ public class AudioLoader {
 
         try {
             Arrays.asList(Mdx.files.local(musicRootPath).list()).stream()
-                    .filter(file -> !file.isDirectory())
+                    .filter(file -> !file.isDirectory() && file.extension().equalsIgnoreCase("wav"))
                     .forEach(f -> musicManager.load(musicRootPath + f.name(), Music.class));
             musicManager.finishLoading();
         } catch (IOException ex) {
