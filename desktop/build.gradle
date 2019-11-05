@@ -6,6 +6,7 @@ shadowJar {
     //minimize()
     baseName = 'Leikr'
     classifier = null
+	version = null
     //Exclude Asset directories from inside the jar.
     exclude 'Data'
     exclude 'Programs'
