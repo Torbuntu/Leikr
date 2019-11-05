@@ -129,7 +129,7 @@ public class LeikrSystemManager {
      * A kind of hacky entry to the EngineScreen PAUSE boolean.
      */
     public void pause() {
-        EngineScreen.PAUSE = true;
+        EngineScreen.pauseEngine();
     }
 
     public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {
