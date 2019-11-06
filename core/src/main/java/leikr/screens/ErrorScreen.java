@@ -34,7 +34,7 @@ import org.mini2Dx.gdx.Input.Keys;
  */
 public class ErrorScreen extends BasicGameScreen {
 
-    public static int ID = 4;
+    public static int ID = 3;
     AssetManager assetManager;
     FitViewport viewport;
     boolean MENU = false;

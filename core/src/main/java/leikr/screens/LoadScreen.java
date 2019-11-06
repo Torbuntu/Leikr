@@ -39,7 +39,7 @@ import org.mini2Dx.core.screen.Transition;
  */
 public class LoadScreen extends BasicGameScreen {
 
-    public static int ID = 5;
+    public static int ID = 4;
 
     FitViewport viewport;
     ExecutorService service;

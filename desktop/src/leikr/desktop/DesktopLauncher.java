@@ -15,6 +15,7 @@
  */
 package leikr.desktop;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.DesktopMini2DxGame;
 import java.io.File;
 import java.security.Security;
@@ -41,6 +42,8 @@ public class DesktopLauncher {
         config.width = 720;
         config.height = 480;
         config.fullscreen = false;
+        config.addIcon("Data/Logo/Logo.png", Files.FileType.Internal);
+
         new DesktopMini2DxGame(new GameRuntime(arg), config);
     }
 }

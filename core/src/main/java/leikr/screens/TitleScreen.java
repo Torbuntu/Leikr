@@ -52,7 +52,7 @@ public class TitleScreen extends BasicGameScreen {
     void checkInput(ScreenManager sm) {
         if (Mdx.input.isKeyJustPressed(Keys.SPACE) || Mdx.input.isKeyJustPressed(Keys.ENTER) || CREDITS) {
             CREDITS = false;
-            sm.enterGameScreen(CreditScreen.ID, null, null);
+            sm.enterGameScreen(TerminalScreen.ID, null, null);
         }
         if (Mdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             System.out.println("Goodbye!");

@@ -18,7 +18,6 @@ package leikr;
 import leikr.customProperties.CustomSystemProperties;
 import leikr.screens.EngineScreen;
 import leikr.loaders.FontLoader;
-import leikr.screens.CreditScreen;
 import leikr.screens.ErrorScreen;
 import leikr.screens.LoadScreen;
 import leikr.screens.NewProgramScreen;
@@ -108,11 +107,10 @@ public class GameRuntime extends ScreenBasedGame {
 
         this.addScreen(new EngineScreen());//1
         this.addScreen(new TitleScreen(assetManager));//2
-        this.addScreen(new CreditScreen(assetManager));//3
-        this.addScreen(new ErrorScreen(assetManager));//4
-        this.addScreen(new LoadScreen());//5
-        this.addScreen(new NewProgramScreen());//6
-        this.addScreen(new TerminalScreen());//7
+        this.addScreen(new ErrorScreen(assetManager));//3
+        this.addScreen(new LoadScreen());//4
+        this.addScreen(new NewProgramScreen());//5
+        this.addScreen(new TerminalScreen());//6
     }
 
     @Override

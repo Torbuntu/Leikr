@@ -41,7 +41,7 @@ import org.mini2Dx.gdx.InputProcessor;
  */
 public class TerminalScreen extends BasicGameScreen implements InputProcessor {
 
-    public static int ID = 7;
+    public static int ID = 6;
 
     boolean RUN_PROGRAM = false;
     boolean NEW_PROGRAM = false;

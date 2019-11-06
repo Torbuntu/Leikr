@@ -38,7 +38,7 @@ import org.mini2Dx.gdx.InputProcessor;
  */
 public class NewProgramScreen extends BasicGameScreen {
 
-    public static int ID = 6;
+    public static int ID = 5;
     FitViewport viewport;
 
     boolean BACK = false;
