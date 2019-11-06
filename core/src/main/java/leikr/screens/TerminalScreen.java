@@ -230,8 +230,6 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                             return ">clear \nClears the terminal screen text.";
                         case "help":
                             return ">help [option] \nDisplays the help options to the screen or info about a command.";
-                        case "load":
-                            return ">load [option] \nLoads the program by name. Does not check if program exists.";
                         case "ls":
                             return ">ls \nDisplays the contents of the Programs directory.";
                         case "run":
@@ -243,16 +241,6 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                 return "Commands: exit, clear, help, load, ls, run";
             case "install":
                 return ExportTool.importProject(command[1]);
-            case "load":
-                if (command.length < 2) {
-                    return "Missing required param [program-title]";
-                }
-                if (!out.contains(command[1])) {
-                    return "Program [" + command[1] + "] does not exist in Programs directory.";
-                }
-                GameRuntime.GAME_NAME = command[1];
-                GameRuntime.setProgramPath("Programs/" + command[1]);
-                return "Loaded program: `" + GameRuntime.GAME_NAME + "`";
             case "ls":
                 return runLs();
             case "new":
