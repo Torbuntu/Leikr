@@ -52,9 +52,13 @@ public class SpriteLoader {
         if (instance == null) {
             instance = new SpriteLoader();
         }
-        instance.resetSpriteLoader();
-        instance.loadSpriteSheets();
-        instance.addSpritesToSpriteBank();
+        if (Mdx.files.local(GameRuntime.getProgramPath() + "/Sprites/Sprites.png").exists()) {
+            instance.resetSpriteLoader();
+            instance.loadSpriteSheets();
+            instance.addSpritesToSpriteBank();
+        } else {
+            System.out.println("No sprites found for: " + GameRuntime.getProgramPath());
+        }
 
         return instance;
     }
