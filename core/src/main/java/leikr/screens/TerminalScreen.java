@@ -247,14 +247,13 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                 NEW_PROGRAM = true;
                 return "Create a new program.";
             case "run":
-                if (command.length == 1 && GameRuntime.GAME_NAME.length() > 2) {
-                    RUN_PROGRAM = true;
-                    return "loading...";
+                if (command.length == 1 ) {
+                    return "Missing - required program title.";
+                }
+                if(!Arrays.asList(out.split("\n")).contains(command[1])){
+                     return "Program [" + command[1] + "] does not exist in Programs directory.";
                 }
                 try {
-                    if (!out.contains(command[1])) {
-                        return "Program [" + command[1] + "] does not exist in Programs directory.";
-                    }
                     GameRuntime.GAME_NAME = command[1];
                     GameRuntime.setProgramPath("Programs/" + command[1]);
                     RUN_PROGRAM = true;
