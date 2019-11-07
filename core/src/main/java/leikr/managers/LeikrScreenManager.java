@@ -395,40 +395,33 @@ public class LeikrScreenManager {
 //    public final void drawLineSegment(BigDecimal x, BigDecimal y, BigDecimal x2, BigDecimal y2) {
 //        Mdx.graphicsContext.drawLineSegment(x.intValue(), y.intValue(), x2.intValue(), y2.intValue());
 //    }
-    public final void drawLineSegment(int c, int x0, int y0, int x1, int y1) {
-            int dx, dy, p, x, y;
- 			if(x0 > x1) {
- 				int t = x0;
- 				x0 = x1;
- 				x1 = t;
- 				
- 				t = y0;
- 				y0 = y1;
- 				y1 = t;
- 			}
-			dx=x1-x0;
-			dy=y1-y0;
-		 
-			x=x0;
-			y=y0;
-		 
-			p=2*dy-dx;
-		 
-			while(x<x1)
-			{
-				if(p>=0)
-				{
-					drawPixel(c, x,y);
-					y=y+1;
-					p=p+2*dy-2*dx;
-				}
-				else
-				{
-					drawPixel(c, x,y);
-					p=p+2*dy;
-				}
-				x=x+1;
-			}
+    public final void drawLineSegment(int c, BigDecimal p0, BigDecimal v0, BigDecimal p1, BigDecimal v1) {
+        int x0 = p0.intValue();
+        int x1 = p1.intValue();
+        int y0 = v0.intValue();
+        int y1 = v1.intValue();
+        int dx = Math.abs(x1 - x0);
+        int sx = x0 < x1 ? 1 : -1;
+        int dy = -Math.abs(y1 - y0);
+        int sy = y0 < y1 ? 1 : -1;
+
+        int err = dx + dy;
+        while (true) {
+            drawPixel(c, x0, y0);
+            if (x0 == x1 && y0 == y1) {
+                break;
+            }
+
+            int e2 = 2 * err;
+            if (e2 >= dy) {
+                err += dy;
+                x0 += sx;
+            }
+            if (e2 <= dx) {
+                err += dx;
+                y0 += sy;
+            }
+        }
     }
 //end shape drawing methods
 
