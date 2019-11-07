@@ -392,9 +392,6 @@ public class LeikrScreenManager {
         Mdx.graphicsContext.fillRect(x.intValue(), y.intValue(), w.intValue(), h.intValue());
     }
 
-//    public final void drawLineSegment(BigDecimal x, BigDecimal y, BigDecimal x2, BigDecimal y2) {
-//        Mdx.graphicsContext.drawLineSegment(x.intValue(), y.intValue(), x2.intValue(), y2.intValue());
-//    }
     public final void drawLineSegment(int c, BigDecimal p0, BigDecimal v0, BigDecimal p1, BigDecimal v1) {
         int x0 = p0.intValue();
         int x1 = p1.intValue();
