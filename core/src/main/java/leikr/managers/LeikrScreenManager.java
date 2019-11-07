@@ -210,8 +210,8 @@ public class LeikrScreenManager {
     public final void setColor(String c) {
         Mdx.graphicsContext.setColor(Colors.rgbToColor(c));
     }
-    
-    public final void setColor(int r, int g, int b){
+
+    public final void setColor(int r, int g, int b) {
         Mdx.graphicsContext.setColor(Colors.rgbToColor(String.format("%d,%d,%d", r, g, b)));
     }
 
@@ -380,6 +380,10 @@ public class LeikrScreenManager {
         Mdx.graphicsContext.drawSprite(pixels.getSprite(color), x.intValue(), y.intValue());
     }
 
+    public final void drawPixel(int color, int x, int y) {
+        Mdx.graphicsContext.drawSprite(pixels.getSprite(color), x, y);
+    }
+
     public final void drawRect(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
         Mdx.graphicsContext.drawRect(x.intValue(), y.intValue(), w.intValue(), h.intValue());
     }
@@ -388,10 +392,45 @@ public class LeikrScreenManager {
         Mdx.graphicsContext.fillRect(x.intValue(), y.intValue(), w.intValue(), h.intValue());
     }
 
-    public final void drawLineSegment(BigDecimal x, BigDecimal y, BigDecimal x2, BigDecimal y2) {
-        Mdx.graphicsContext.drawLineSegment(x.intValue(), y.intValue(), x2.intValue(), y2.intValue());
+//    public final void drawLineSegment(BigDecimal x, BigDecimal y, BigDecimal x2, BigDecimal y2) {
+//        Mdx.graphicsContext.drawLineSegment(x.intValue(), y.intValue(), x2.intValue(), y2.intValue());
+//    }
+    public final void drawLineSegment(int c, int x0, int y0, int x1, int y1) {
+            int dx, dy, p, x, y;
+ 			if(x0 > x1) {
+ 				int t = x0;
+ 				x0 = x1;
+ 				x1 = t;
+ 				
+ 				t = y0;
+ 				y0 = y1;
+ 				y1 = t;
+ 			}
+			dx=x1-x0;
+			dy=y1-y0;
+		 
+			x=x0;
+			y=y0;
+		 
+			p=2*dy-dx;
+		 
+			while(x<x1)
+			{
+				if(p>=0)
+				{
+					drawPixel(c, x,y);
+					y=y+1;
+					p=p+2*dy-2*dx;
+				}
+				else
+				{
+					drawPixel(c, x,y);
+					p=p+2*dy;
+				}
+				x=x+1;
+			}
     }
-    //end shape drawing methods
+//end shape drawing methods
 
     public final void setClip(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
         Mdx.graphicsContext.setClip(x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue());
