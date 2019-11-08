@@ -235,32 +235,32 @@ public class LeikrScreenManager {
 
     //end color methods
     //text methods
-    public final void drawString(String text, BigDecimal x, BigDecimal y, int color) {
+    public final void drawString(int color, String text, BigDecimal x, BigDecimal y) {
         LeikrScreenManager.this.setColor(color);
         Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue());
     }
 
-    public final void drawString(String text, BigDecimal x, BigDecimal y, String color) {
+    public final void drawString(String color, String text, BigDecimal x, BigDecimal y) {
         LeikrScreenManager.this.setColor(color);
         Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue());
     }
 
-    public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, int color) {
+    public final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
         LeikrScreenManager.this.setColor(color);
         Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue(), width.floatValue());
     }
 
-    public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, String color) {
+    public final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
         LeikrScreenManager.this.setColor(color);
         Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue(), width.floatValue());
     }
 
-    public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, int align, int color) {
+    public final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
         LeikrScreenManager.this.setColor(color);
         Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue(), width.floatValue(), align);
     }
 
-    public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, int align, String color) {
+    public final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
         LeikrScreenManager.this.setColor(color);
         Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue(), width.floatValue(), align);
     }
@@ -395,7 +395,7 @@ public class LeikrScreenManager {
         }
     }
 
-    public final void fillRect(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+    public final void fillRect(int color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
         Mdx.graphicsContext.fillRect(x.intValue(), y.intValue(), w.intValue(), h.intValue());
     }
 

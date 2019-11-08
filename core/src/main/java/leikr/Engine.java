@@ -311,28 +311,28 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     //end helper methods
     //text methods
-    public final void drawString(String text, BigDecimal x, BigDecimal y, int color) {
-        lScreen.drawString(text, x, y, color);
+    public final void drawString(int color, String text, BigDecimal x, BigDecimal y) {
+        lScreen.drawString(color, text, x, y);
     }
 
-    public final void drawString(String text, BigDecimal x, BigDecimal y, String color) {
-        lScreen.drawString(text, x, y, color);
+    public final void drawString(String color, String text, BigDecimal x, BigDecimal y) {
+        lScreen.drawString(color, text, x, y);
     }
 
-    public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, int color) {
-        lScreen.drawString(text, x, y, width, color);
+    public final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
+        lScreen.drawString(color, text, x, y, width);
     }
 
-    public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, String color) {
-        lScreen.drawString(text, x, y, width, color);
+    public final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
+        lScreen.drawString(color, text, x, y, width);
     }
 
-    public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, int align, int color) {
-        lScreen.drawString(text, x, y, width, align, color);
+    public final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
+        lScreen.drawString(color, text, x, y, width, align);
     }
 
-    public final void drawString(String text, BigDecimal x, BigDecimal y, BigDecimal width, int align, String color) {
-        lScreen.drawString(text, x, y, width, align, color);
+    public final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
+        lScreen.drawString(color, text, x, y, width, align);
     }
     //end drawString methods
 
@@ -391,8 +391,8 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         lScreen.drawRect(c, x, y, w, h);
     }
 
-    public final void fillRect(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        lScreen.fillRect(x, y, w, h);
+    public final void fillRect(int c, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        lScreen.fillRect(c, x, y, w, h);
     }
 
     public final void drawLineSegment(int c, BigDecimal x1, BigDecimal y1, BigDecimal x2, BigDecimal y2) {
