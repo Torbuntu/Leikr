@@ -387,8 +387,8 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         lScreen.drawPixel(color, x, y);
     }
 
-    public final void drawRect(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        lScreen.drawRect(x, y, w, h);
+    public final void drawRect(int c, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        lScreen.drawRect(c, x, y, w, h);
     }
 
     public final void fillRect(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {

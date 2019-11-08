@@ -384,8 +384,15 @@ public class LeikrScreenManager {
         Mdx.graphicsContext.drawSprite(pixels.getSprite(color), x, y);
     }
 
-    public final void drawRect(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        Mdx.graphicsContext.drawRect(x.intValue(), y.intValue(), w.intValue(), h.intValue());
+    public final void drawRect(int c, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        for (int i = x.intValue(); i < x.intValue()+w.intValue()+1; i++) {
+            drawPixel(c, i, y.intValue());
+            drawPixel(c, i, y.intValue()+h.intValue());
+        }
+        for (int i = y.intValue(); i < y.intValue()+h.intValue()+1; i++) {
+            drawPixel(c, x.intValue(), i);
+            drawPixel(c, x.intValue()+w.intValue(), i);
+        }
     }
 
     public final void fillRect(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
