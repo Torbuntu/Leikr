@@ -15,6 +15,8 @@
  */
 package leikr.screens;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -58,8 +60,11 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
     int index = -1;
     FileHandle[] programs;
 
+    Desktop desktop;
+
     public TerminalScreen() {
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
+        desktop = Desktop.getDesktop();
     }
 
     private void setProcessor() {
@@ -103,7 +108,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
             historyText = "";
             sm.enterGameScreen(LoadScreen.ID, null, null);
         }
-        if(NEW_PROGRAM){
+        if (NEW_PROGRAM) {
             NEW_PROGRAM = false;
             sm.enterGameScreen(NewProgramScreen.ID, null, null);
         }
@@ -142,7 +147,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
         }
         if (keycode == Keys.UP) {
             index++;
-            if (index > programs.length-1) {
+            if (index > programs.length - 1) {
                 index = 0;
             }
             prompt = "run " + programs[index].nameWithoutExtension();
@@ -150,7 +155,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
         if (keycode == Keys.DOWN) {
             index--;
             if (index < 0) {
-                index = programs.length-1;
+                index = programs.length - 1;
             }
             prompt = "run " + programs[index].nameWithoutExtension();
         }
@@ -221,6 +226,21 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                 return ExportTool.export(command[1]);
             case "exportAll":
                 return ExportTool.exportAll();
+            case "find":
+                if (command.length <= 1) {
+                    return "Missing - required program name.";
+                }
+                if (!Arrays.asList(out.split("\n")).contains(command[1])) {
+                    return "Program [" + command[1] + "] does not exist in Programs directory.";
+                }
+                try {
+                    File f = new File("Programs/" + command[1]);
+                    desktop.open(f);
+                    return f.getAbsolutePath();
+                } catch (IOException ex) {
+                    Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
+                    return "Could not find program directory for [" + command[1] + "].";
+                }
             case "help":
                 if (command.length > 1) {
                     switch (command[1]) {
@@ -246,12 +266,21 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
             case "new":
                 NEW_PROGRAM = true;
                 return "Create a new program.";
+            case "pwd":
+                try {
+                    File f = new File("Programs");
+                    desktop.open(f);
+                    return f.getAbsolutePath();
+                } catch (IOException ex) {
+                    Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
+                    return "Could not find workspace directory.";
+                }
             case "run":
-                if (command.length == 1 ) {
+                if (command.length == 1) {
                     return "Missing - required program title.";
                 }
-                if(!Arrays.asList(out.split("\n")).contains(command[1])){
-                     return "Program [" + command[1] + "] does not exist in Programs directory.";
+                if (!Arrays.asList(out.split("\n")).contains(command[1])) {
+                    return "Program [" + command[1] + "] does not exist in Programs directory.";
                 }
                 try {
                     GameRuntime.GAME_NAME = command[1];
