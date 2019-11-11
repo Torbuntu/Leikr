@@ -28,7 +28,7 @@ import org.mini2Dx.libgdx.desktop.DesktopMini2DxConfig;
 public class DesktopLauncher {
 
     public static void main(String[] arg) {
-        
+
         if (Arrays.asList(arg).contains("insecure")) {
             Logger.getLogger(Security.class.getName()).log(Level.WARNING, "Leikr is running without security policy.");
         } else {

@@ -385,13 +385,13 @@ public class LeikrScreenManager {
     }
 
     public final void drawRect(int c, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        for (int i = x.intValue(); i < x.intValue()+w.intValue()+1; i++) {
+        for (int i = x.intValue(); i < x.intValue() + w.intValue(); i++) {
             drawPixel(c, i, y.intValue());
-            drawPixel(c, i, y.intValue()+h.intValue());
+            drawPixel(c, i, y.intValue() + h.intValue()-1);
         }
-        for (int i = y.intValue(); i < y.intValue()+h.intValue()+1; i++) {
+        for (int i = y.intValue(); i < y.intValue() + h.intValue(); i++) {
             drawPixel(c, x.intValue(), i);
-            drawPixel(c, x.intValue()+w.intValue(), i);
+            drawPixel(c, x.intValue() + w.intValue()-1, i);
         }
     }
 
@@ -399,11 +399,41 @@ public class LeikrScreenManager {
         Mdx.graphicsContext.fillRect(x.intValue(), y.intValue(), w.intValue(), h.intValue());
     }
 
+    private void drawHLine(int c, int x0, int x1, int y) {
+        for (int i = x0; i < x1; i++) {
+            drawPixel(c, i, y);
+        }
+    }
+    
+    private void drawVLine(int c, int x, int y0, int y1){
+        for (int i = y0; i < y1; i++) {
+            drawPixel(c, x, i);
+        }
+    }
+
     public final void drawLineSegment(int c, BigDecimal p0, BigDecimal v0, BigDecimal p1, BigDecimal v1) {
         int x0 = p0.intValue();
         int x1 = p1.intValue();
         int y0 = v0.intValue();
         int y1 = v1.intValue();
+
+        if (y0 == y1) {
+            if (x0 < x1) {
+                drawHLine(c, x0, x1, y0);
+            } else {
+                drawHLine(c, x1, x0, y0);
+            }
+            return;
+        }
+        if (x0 == x1) {
+            if (y0 < y1) {
+                drawVLine(c, x0, y0, y1);
+            } else {
+                drawVLine(c, x0, y1, y0);
+            }
+            return;
+        }
+
         int dx = Math.abs(x1 - x0);
         int sx = x0 < x1 ? 1 : -1;
         int dy = -Math.abs(y1 - y0);
