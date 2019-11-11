@@ -396,6 +396,7 @@ public class LeikrScreenManager {
     }
 
     public final void fillRect(int color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        setColor(color);
         Mdx.graphicsContext.fillRect(x.intValue(), y.intValue(), w.intValue(), h.intValue());
     }
 
