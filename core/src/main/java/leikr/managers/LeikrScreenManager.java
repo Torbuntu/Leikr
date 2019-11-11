@@ -139,14 +139,14 @@ public class LeikrScreenManager {
     public final void drawTexture(String name, BigDecimal x, BigDecimal y) {
         Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue());
     }
-
-    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue());
-    }
-
-    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h, boolean flipv) {
-        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue(), flipv);
-    }
+//
+//    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+//        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue());
+//    }
+//
+//    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h, boolean flipv) {
+//        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue(), flipv);
+//    }
     //end Image methods
 
     //Map methods

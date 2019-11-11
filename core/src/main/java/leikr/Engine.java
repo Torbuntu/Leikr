@@ -214,13 +214,13 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         lScreen.drawTexture(name, x, y);
     }
 
-    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        lScreen.drawTexture(name, x, y, w, h);
-    }
-
-    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h, boolean flipv) {
-        lScreen.drawTexture(name, x, y, w, h, flipv);
-    }
+//    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+//        lScreen.drawTexture(name, x, y, w, h);
+//    }
+//
+//    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h, boolean flipv) {
+//        lScreen.drawTexture(name, x, y, w, h, flipv);
+//    }
     //end Image methods
 
     //Map methods
