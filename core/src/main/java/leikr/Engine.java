@@ -60,7 +60,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     /**
      * preCreate gets the audio, screen and system singletons.sets up the
- controllers if there are any connected.
+     * controllers if there are any connected.
      *
      * @param mSprites maximum allowed sprites to draw at one time
      * @param sys object used to interact with the Leikr lSystem at runtime
@@ -100,12 +100,10 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      * update screen objects
      *
      * @param delta
-     * @return if should continue
      */
-    public final boolean preUpdate(float delta) {
+    public final void preUpdate(float delta) {
         lMouse.updateMouse();
         lScreen.preUpdate(delta);
-        return false;
     }
 
     /**
@@ -120,7 +118,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final void preRender() {
         lScreen.preRender();
     }
-
+    
     /*
      * Override functions for game scripting. 
      */
@@ -165,13 +163,12 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     //dispose
 
     //Start Helper methods
-    
     //custom prop functions
     public int getUsedSprites() {
         return lScreen.getUsedSprites();
     }
     //end custom prop functions
-    
+
     /**
      * Prints the FPS to the console
      *
@@ -214,15 +211,14 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         lScreen.drawTexture(name, x, y);
     }
 
-//    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-//        lScreen.drawTexture(name, x, y, w, h);
-//    }
-//
-//    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h, boolean flipv) {
-//        lScreen.drawTexture(name, x, y, w, h, flipv);
-//    }
-    //end Image methods
+    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        lScreen.drawTexture(name, x, y, w, h);
+    }
 
+    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h, boolean flipv) {
+        lScreen.drawTexture(name, x, y, w, h, flipv);
+    }
+    //end Image methods
     //Map methods
     public final void loadMap(String map) {
         lScreen.loadMap(map);
@@ -281,11 +277,10 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final void setColor(String c, boolean a) {
         lScreen.setColor(c, a);
     }
-    
-    public final void setColor(int r, int g, int b){
+
+    public final void setColor(int r, int g, int b) {
         lScreen.setColor(r, g, b);
     }
-    
 
     public final Color getDrawColor(int color) {
         return lScreen.getDrawColor(color);

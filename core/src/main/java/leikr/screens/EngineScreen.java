@@ -25,6 +25,7 @@ import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.Colors;
+import org.mini2Dx.core.graphics.FrameBuffer;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
@@ -44,6 +45,7 @@ public class EngineScreen extends BasicGameScreen {
     LeikrSystemManager system;
     String errorMessage;
     FitViewport viewport;
+    FrameBuffer frameBuffer;
 
     private static boolean CONFIRM = false;
 
@@ -58,8 +60,8 @@ public class EngineScreen extends BasicGameScreen {
 
     public EngineScreen() {
     }
-    
-    public static void pauseEngine(){
+
+    public static void pauseEngine() {
         engineState = EngineState.PAUSE;
     }
 
@@ -121,7 +123,8 @@ public class EngineScreen extends BasicGameScreen {
         if (null != engine) {
             engine.setActive(false);
             engine.dispose();
-            engine = null; // release all objects for gc
+            engine = null; // release all Engine objects for gc
+            frameBuffer.dispose();
         }
         System.out.println("Engine classes disposed.");
     }
@@ -129,6 +132,7 @@ public class EngineScreen extends BasicGameScreen {
     @Override
     public void preTransitionIn(Transition trans) {
         engineState = EngineState.RUNNING;
+        frameBuffer = Mdx.graphics.newFrameBuffer(240, 160);
     }
 
     @Override
@@ -170,9 +174,7 @@ public class EngineScreen extends BasicGameScreen {
                 break;
             case RUNNING:
                 try {
-                    if (engine.preUpdate(delta)) {
-                        pause();
-                    }
+                    engine.preUpdate(delta);
                     engine.update(delta);
                 } catch (Exception ex) {
                     engineState = EngineState.ERROR;
@@ -199,29 +201,48 @@ public class EngineScreen extends BasicGameScreen {
         }
     }
 
-    @Override
-    public void interpolate(GameContainer gc, float alpha) {
-    }
-
+    /*
+    postRender() and preRender() are not recommended to be used, but for the FrameBuffer object to work
+    inside of the viewport it was necessary to cut off two separate rendering sessions.
+     */
     @Override
     public void render(GameContainer gc, Graphics g) {
-        viewport.apply(Mdx.graphicsContext);
+        viewport.apply(g);
+
         if (null != engine && !engine.getActive()) {
             return;
         }
         switch (engineState) {
             case RUNNING:
                 try {
+                    g.drawTexture(frameBuffer.getTexture(), 0, 0, false);
+                    g.postRender();
+
+                    frameBuffer.begin();
+                    g.preRender(240, 160);
+
                     system.render();
                     engine.preRender();
                     engine.render();
+
+                    g.postRender();
+                    g.flush();
+                    frameBuffer.end();
+
                 } catch (Exception ex) {
                     engineState = EngineState.ERROR;
                     errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();
                     Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                break;
+            break;
             case PAUSE:
+
+                g.drawTexture(frameBuffer.getTexture(), 0, 0, false);
+                g.postRender();
+
+                frameBuffer.begin();
+                g.preRender(240, 160);
+
                 g.setColor(Colors.WHITE());
                 g.drawString("-- Paused --", 0, 60, 240, 1);
                 g.drawString("Exit running program?", 0, 74, 240, 1);
@@ -234,13 +255,16 @@ public class EngineScreen extends BasicGameScreen {
                     g.setColor(Colors.RED());
                     g.drawRect(130, 86, 36, 16);
                 }
+
+                g.postRender();
+                g.flush();
+                frameBuffer.end();
                 break;
             case ERROR:
             default:
         }
-
     }
-
+    
     @Override
     public int getId() {
         return ID;

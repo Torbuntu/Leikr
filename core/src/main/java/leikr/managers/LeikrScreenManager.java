@@ -18,7 +18,6 @@ package leikr.managers;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-import leikr.GameRuntime;
 import leikr.loaders.ImageLoader;
 import leikr.loaders.MapLoader;
 import leikr.loaders.SpriteLoader;
@@ -40,17 +39,24 @@ import org.mini2Dx.core.graphics.SpriteSheet;
 public class LeikrScreenManager {
 
     /*
-     * Loaders
-     *
-     * The loaders are used to load the custom assets for a game at startup.
+     Loaders
+     
+     The loaders are used to load the custom assets for a game at startup.
      */
     SpriteLoader spriteLoader;
     ImageLoader imageLoader;
     MapLoader mapLoader;
 
+    /*
+    Color objects.
+    pixels are the indexed Color pixels which are used for the drawing functions.
+    colorPalette is List of all the available colors to use.
+    bgColor is what preRender uses to clear the backrgound.
+    
+     */
     SpriteSheet pixels;
-
     List<Color> colorPalette;
+    Color bgColor;
 
     private static LeikrScreenManager instance;
 
@@ -85,6 +91,7 @@ public class LeikrScreenManager {
         spriteLoader = SpriteLoader.getSpriteLoader();
         imageLoader = ImageLoader.getImageLoader();
         mapLoader = MapLoader.getMapLoader();
+        bgColor = Colors.BLACK();
     }
 
     private void createPalette() {
@@ -115,6 +122,7 @@ public class LeikrScreenManager {
     public void preRender() {
         //set to 0 before drawing anything
         USED_SPRITES = 0;
+        Mdx.graphicsContext.clearContext(bgColor);
     }
 
     public void preUpdate(float delta) {
@@ -139,14 +147,14 @@ public class LeikrScreenManager {
     public final void drawTexture(String name, BigDecimal x, BigDecimal y) {
         Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue());
     }
-//
-//    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-//        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue());
-//    }
-//
-//    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h, boolean flipv) {
-//        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue(), flipv);
-//    }
+
+    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue());
+    }
+
+    public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h, boolean flipv) {
+        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue(), flipv);
+    }
     //end Image methods
 
     //Map methods
@@ -224,13 +232,11 @@ public class LeikrScreenManager {
     }
 
     public final void bgColor(int color) {
-        LeikrScreenManager.this.setColor(color);
-        Mdx.graphicsContext.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
+        bgColor = getDrawColor(color);
     }
 
     public final void bgColor(String c) {
-        LeikrScreenManager.this.setColor(c);
-        Mdx.graphicsContext.fillRect(-1, -1, GameRuntime.WIDTH + 1, GameRuntime.HEIGHT + 1);
+        bgColor = Colors.rgbToColor(c);
     }
 
     //end color methods
@@ -387,11 +393,11 @@ public class LeikrScreenManager {
     public final void drawRect(int c, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
         for (int i = x.intValue(); i < x.intValue() + w.intValue(); i++) {
             drawPixel(c, i, y.intValue());
-            drawPixel(c, i, y.intValue() + h.intValue()-1);
+            drawPixel(c, i, y.intValue() + h.intValue() - 1);
         }
         for (int i = y.intValue(); i < y.intValue() + h.intValue(); i++) {
             drawPixel(c, x.intValue(), i);
-            drawPixel(c, x.intValue() + w.intValue()-1, i);
+            drawPixel(c, x.intValue() + w.intValue() - 1, i);
         }
     }
 
@@ -405,8 +411,8 @@ public class LeikrScreenManager {
             drawPixel(c, i, y);
         }
     }
-    
-    private void drawVLine(int c, int x, int y0, int y1){
+
+    private void drawVLine(int c, int x, int y0, int y1) {
         for (int i = y0; i < y1; i++) {
             drawPixel(c, x, i);
         }
