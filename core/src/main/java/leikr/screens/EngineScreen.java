@@ -225,15 +225,14 @@ public class EngineScreen extends BasicGameScreen {
                     engine.preRender();
                     engine.render();
 
-                    g.postRender();
-                    g.flush();
-                    frameBuffer.end();
-
                 } catch (Exception ex) {
                     engineState = EngineState.ERROR;
                     errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();
                     Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                g.postRender();
+                g.flush();
+                frameBuffer.end();
             break;
             case PAUSE:
 
