@@ -4,9 +4,9 @@ apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
     //minimize()
-    baseName = 'Leikr'
+    archiveBaseName = 'Leikr'
     classifier = null
-	version = null
+	archiveVersion = null
     //Exclude Asset directories from inside the jar.
     exclude 'Data'
     exclude 'Programs'
