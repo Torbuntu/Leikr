@@ -246,19 +246,25 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                     switch (command[1]) {
                         case "exit":
                             return ">exit \nExits the Leikr Game system.";
+                        case "find":
+                            return ">find [option] \nPrints the location of the given program name. Attempts to open the directory in the host file manager.";
                         case "clear":
                             return ">clear \nClears the terminal screen text.";
                         case "help":
                             return ">help [option] \nDisplays the help options to the screen or info about a command.";
                         case "ls":
                             return ">ls \nDisplays the contents of the Programs directory.";
+                        case "new":
+                            return ">new \nOpens a new project builder";
+                        case "pwd":
+                            return ">pwd \nPrints the location fo the Programs directory. Attempts to open the directory in the host file manager.";
                         case "run":
                             return ">run [arg] \nLoads and Runs a program given a title.";
                         default:
                             return "No help for unknown command: ( " + command[1] + " )";
                     }
                 }
-                return "Commands: exit, clear, help, load, ls, run";
+                return "Commands: exit, find, clear, help, load, ls, new, pwd, run \nRun help with the name of a command for more details on that command.";
             case "install":
                 return ExportTool.importProject(command[1]);
             case "ls":
