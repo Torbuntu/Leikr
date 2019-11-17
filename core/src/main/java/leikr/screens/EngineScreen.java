@@ -174,14 +174,14 @@ public class EngineScreen extends BasicGameScreen {
                 break;
             case RUNNING:
                 try {
-                engine.preUpdate(delta);
-                engine.update(delta);
-            } catch (Exception ex) {
-                engineState = EngineState.ERROR;
-                errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
-                Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            break;
+                    engine.preUpdate(delta);
+                    engine.update(delta);
+                } catch (Exception ex) {
+                    engineState = EngineState.ERROR;
+                    errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
+                    Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
             case PAUSE:
                 if (Mdx.input.isKeyJustPressed(Keys.LEFT)) {
                     CONFIRM = true;
@@ -204,6 +204,9 @@ public class EngineScreen extends BasicGameScreen {
     /*
     postRender() and preRender() are not recommended to be used, but for the FrameBuffer object to work
     inside of the viewport it was necessary to cut off two separate rendering sessions.
+    
+    preRender(240,160) sets the game windowWidth and windowHeight to the required size for proper 
+    rendering. Couldn't find any other way to make this happen.
      */
     @Override
     public void render(GameContainer gc, Graphics g) {
@@ -218,32 +221,13 @@ public class EngineScreen extends BasicGameScreen {
 
         frameBuffer.begin();
         g.preRender(240, 160);
+        
         switch (engineState) {
             case RUNNING:
-                try {
-                    system.render();
-                    engine.preRender();
-                    engine.render();
-                } catch (Exception ex) {
-                    engineState = EngineState.ERROR;
-                    errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();
-                    Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                renderRunning();
                 break;
             case PAUSE:
-                g.setColor(Colors.WHITE());
-                g.drawString("-- Paused --", 0, 60, 240, 1);
-                g.drawString("Exit running program?", 0, 74, 240, 1);
-                g.drawString("Yes    No", 0, 90, 240, 1);
-
-                if (CONFIRM) {
-                    g.setColor(Colors.GREEN());
-                    g.drawRect(78, 86, 36, 16);
-                } else {
-                    g.setColor(Colors.RED());
-                    g.drawRect(130, 86, 36, 16);
-                }
-
+                renderPause(g);
                 break;
             case ERROR:
             default:
@@ -252,6 +236,33 @@ public class EngineScreen extends BasicGameScreen {
         g.postRender();
         g.flush();
         frameBuffer.end();
+    }
+
+    void renderRunning() {
+        try {
+            system.render();
+            engine.preRender();
+            engine.render();
+        } catch (Exception ex) {
+            engineState = EngineState.ERROR;
+            errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();
+            Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    void renderPause(Graphics g) {
+        g.setColor(Colors.WHITE());
+        g.drawString("-- Paused --", 0, 60, 240, 1);
+        g.drawString("Exit running program?", 0, 74, 240, 1);
+        g.drawString("Yes    No", 0, 90, 240, 1);
+
+        if (CONFIRM) {
+            g.setColor(Colors.GREEN());
+            g.drawRect(78, 86, 36, 16);
+        } else {
+            g.setColor(Colors.RED());
+            g.drawRect(130, 86, 36, 16);
+        }
     }
 
     @Override
