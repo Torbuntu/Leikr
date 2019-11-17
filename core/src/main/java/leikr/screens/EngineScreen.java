@@ -174,14 +174,14 @@ public class EngineScreen extends BasicGameScreen {
                 break;
             case RUNNING:
                 try {
-                    engine.preUpdate(delta);
-                    engine.update(delta);
-                } catch (Exception ex) {
-                    engineState = EngineState.ERROR;
-                    errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
-                    Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                break;
+                engine.preUpdate(delta);
+                engine.update(delta);
+            } catch (Exception ex) {
+                engineState = EngineState.ERROR;
+                errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
+                Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
             case PAUSE:
                 if (Mdx.input.isKeyJustPressed(Keys.LEFT)) {
                     CONFIRM = true;
@@ -217,14 +217,14 @@ public class EngineScreen extends BasicGameScreen {
                 try {
                     g.drawTexture(frameBuffer.getTexture(), 0, 0, false);
                     g.postRender();
-
+                    
                     frameBuffer.begin();
                     g.preRender(240, 160);
 
                     system.render();
                     engine.preRender();
                     engine.render();
-
+                    
                 } catch (Exception ex) {
                     engineState = EngineState.ERROR;
                     errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();
@@ -233,7 +233,7 @@ public class EngineScreen extends BasicGameScreen {
                 g.postRender();
                 g.flush();
                 frameBuffer.end();
-            break;
+                break;
             case PAUSE:
 
                 g.drawTexture(frameBuffer.getTexture(), 0, 0, false);
@@ -263,7 +263,7 @@ public class EngineScreen extends BasicGameScreen {
             default:
         }
     }
-    
+
     @Override
     public int getId() {
         return ID;

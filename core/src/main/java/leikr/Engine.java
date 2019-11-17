@@ -23,7 +23,6 @@ import leikr.managers.LeikrAudioManager;
 import leikr.managers.LeikrScreenManager;
 import leikr.managers.LeikrSystemManager;
 import org.mini2Dx.core.Mdx;
-import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.input.BaseGamePadListener;
 import org.mini2Dx.gdx.InputProcessor;
@@ -118,7 +117,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final void preRender() {
         lScreen.preRender();
     }
-    
+
     /*
      * Override functions for game scripting. 
      */
@@ -218,6 +217,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h, boolean flipv) {
         lScreen.drawTexture(name, x, y, w, h, flipv);
     }
+
     //end Image methods
     //Map methods
     public final void loadMap(String map) {
@@ -266,26 +266,6 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     //end Map methods
 
     //start color methods
-    public final void setColor(int color) {
-        lScreen.setColor(color);
-    }
-
-    public final void setColor(String c) {
-        lScreen.setColor(c);
-    }
-
-    public final void setColor(String c, boolean a) {
-        lScreen.setColor(c, a);
-    }
-
-    public final void setColor(int r, int g, int b) {
-        lScreen.setColor(r, g, b);
-    }
-
-    public final Color getDrawColor(int color) {
-        return lScreen.getDrawColor(color);
-    }
-
     public final void bgColor(int color) {
         lScreen.bgColor(color);
     }
@@ -310,23 +290,11 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         lScreen.drawString(color, text, x, y);
     }
 
-    public final void drawString(String color, String text, BigDecimal x, BigDecimal y) {
-        lScreen.drawString(color, text, x, y);
-    }
-
     public final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
         lScreen.drawString(color, text, x, y, width);
     }
 
-    public final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
-        lScreen.drawString(color, text, x, y, width);
-    }
-
     public final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
-        lScreen.drawString(color, text, x, y, width, align);
-    }
-
-    public final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
         lScreen.drawString(color, text, x, y, width, align);
     }
     //end drawString methods

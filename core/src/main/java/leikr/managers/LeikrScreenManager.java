@@ -204,31 +204,15 @@ public class LeikrScreenManager {
     //end Map methods
 
     //start color methods
-    public final Color getDrawColor(int color) {
+    private Color getDrawColor(int color) {
         if (color > colorPalette.size() || color < 0) {
             return Colors.BLACK();
         }
         return colorPalette.get(color);
     }
 
-    public final void setColor(int color) {
+    private void setDrawColor(int color) {
         Mdx.graphicsContext.setColor(getDrawColor(color));
-    }
-
-    public final void setColor(String c) {
-        Mdx.graphicsContext.setColor(Colors.rgbToColor(c));
-    }
-
-    public final void setColor(int r, int g, int b) {
-        Mdx.graphicsContext.setColor(Colors.rgbToColor(String.format("%d,%d,%d", r, g, b)));
-    }
-
-    public final void setColor(String c, boolean alpha) {
-        if (alpha) {
-            Mdx.graphicsContext.setColor(Colors.rgbaToColor(c));
-        } else {
-            Mdx.graphicsContext.setColor(Colors.rgbToColor(c));
-        }
     }
 
     public final void bgColor(int color) {
@@ -242,36 +226,21 @@ public class LeikrScreenManager {
     //end color methods
     //text methods
     public final void drawString(int color, String text, BigDecimal x, BigDecimal y) {
-        LeikrScreenManager.this.setColor(color);
-        Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue());
-    }
-
-    public final void drawString(String color, String text, BigDecimal x, BigDecimal y) {
-        LeikrScreenManager.this.setColor(color);
+        setDrawColor(color);
         Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue());
     }
 
     public final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
-        LeikrScreenManager.this.setColor(color);
-        Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue(), width.floatValue());
-    }
-
-    public final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
-        LeikrScreenManager.this.setColor(color);
+        setDrawColor(color);
         Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue(), width.floatValue());
     }
 
     public final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
-        LeikrScreenManager.this.setColor(color);
+        setDrawColor(color);
         Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue(), width.floatValue(), align);
     }
 
-    public final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
-        LeikrScreenManager.this.setColor(color);
-        Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue(), width.floatValue(), align);
-    }
     //end drawString methods
-
     //sprite helper methods.
     private void drawSpriteRotate(int id, int size, BigDecimal degr, BigDecimal x, BigDecimal y) {
         if (USED_SPRITES >= MAX_SPRITES) {
@@ -402,7 +371,7 @@ public class LeikrScreenManager {
     }
 
     public final void fillRect(int color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        setColor(color);
+        setDrawColor(color);
         Mdx.graphicsContext.fillRect(x.intValue(), y.intValue(), w.intValue(), h.intValue());
     }
 
