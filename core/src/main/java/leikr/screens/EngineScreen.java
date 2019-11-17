@@ -216,28 +216,21 @@ public class EngineScreen extends BasicGameScreen {
         g.drawTexture(frameBuffer.getTexture(), 0, 0, false);
         g.postRender();
 
+        frameBuffer.begin();
+        g.preRender(240, 160);
         switch (engineState) {
             case RUNNING:
                 try {
-
-                frameBuffer.begin();
-                g.preRender(240, 160);
-
-                system.render();
-                engine.preRender();
-                engine.render();
-
-            } catch (Exception ex) {
-                engineState = EngineState.ERROR;
-                errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();
-                Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            break;
+                    system.render();
+                    engine.preRender();
+                    engine.render();
+                } catch (Exception ex) {
+                    engineState = EngineState.ERROR;
+                    errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();
+                    Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
             case PAUSE:
-                frameBuffer.begin();
-                g.preRender(240, 160);
-
                 g.setColor(Colors.WHITE());
                 g.drawString("-- Paused --", 0, 60, 240, 1);
                 g.drawString("Exit running program?", 0, 74, 240, 1);
