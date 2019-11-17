@@ -209,7 +209,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
-
+    
     private String processCommand() {
         String[] command = prompt.split(" ");
         switch (command[0]) {
@@ -222,7 +222,6 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                     return "Failed to clean package directory. Please check logs.";
                 }
             }
-
             case "clear":
                 return "";
             case "exit":
@@ -270,7 +269,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                             return "No help for unknown command: ( " + command[1] + " )";
                     }
                 }
-                return "Commands: exit, find, clear, help, load, ls, new, pwd, run \nRun help with the name of a command for more details on that command.";
+                return "Commands: exit, find, clear, help, ls, new, pwd, run \nRun help with the name of a command for more details on that command.";
             case "install":
                 return ExportTool.importProject(command[1]);
             case "ls":
