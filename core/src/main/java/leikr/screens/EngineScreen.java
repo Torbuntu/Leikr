@@ -174,14 +174,14 @@ public class EngineScreen extends BasicGameScreen {
                 break;
             case RUNNING:
                 try {
-                    engine.preUpdate(delta);
-                    engine.update(delta);
-                } catch (Exception ex) {
-                    engineState = EngineState.ERROR;
-                    errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
-                    Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                break;
+                engine.preUpdate(delta);
+                engine.update(delta);
+            } catch (Exception ex) {
+                engineState = EngineState.ERROR;
+                errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
+                Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
             case PAUSE:
                 if (Mdx.input.isKeyJustPressed(Keys.LEFT)) {
                     CONFIRM = true;
@@ -221,10 +221,10 @@ public class EngineScreen extends BasicGameScreen {
 
         frameBuffer.begin();
         g.preRender(240, 160);
-        
+
         switch (engineState) {
             case RUNNING:
-                renderRunning();
+                renderRunning(g);
                 break;
             case PAUSE:
                 renderPause(g);
@@ -238,10 +238,10 @@ public class EngineScreen extends BasicGameScreen {
         frameBuffer.end();
     }
 
-    void renderRunning() {
+    void renderRunning(Graphics g) {
         try {
-            system.render();
-            engine.preRender();
+            system.render(g);
+            engine.preRender(g);
             engine.render();
         } catch (Exception ex) {
             engineState = EngineState.ERROR;

@@ -21,6 +21,7 @@ import java.util.List;
 import leikr.loaders.ImageLoader;
 import leikr.loaders.MapLoader;
 import leikr.loaders.SpriteLoader;
+import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.Colors;
@@ -67,6 +68,7 @@ public class LeikrScreenManager {
      */
     private int MAX_SPRITES;
     private int USED_SPRITES;
+    private Graphics g;
 
     /**
      * LeikrScreenManager constructor
@@ -119,9 +121,10 @@ public class LeikrScreenManager {
     //End helper methods
 
     //Engine methods
-    public void preRender() {
+    public void preRender(Graphics g) {
         //set to 0 before drawing anything
         USED_SPRITES = 0;
+        this.g = g;
         Mdx.graphicsContext.clearContext(bgColor);
     }
 
@@ -145,15 +148,15 @@ public class LeikrScreenManager {
     }
 
     public final void drawTexture(String name, BigDecimal x, BigDecimal y) {
-        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue());
+        g.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue());
     }
 
     public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue());
+        g.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue());
     }
 
     public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h, boolean flipv) {
-        Mdx.graphicsContext.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue(), flipv);
+        g.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue(), flipv);
     }
     //end Image methods
 
@@ -163,23 +166,23 @@ public class LeikrScreenManager {
     }
 
     public final void drawMap() {
-        mapLoader.drawMap(Mdx.graphicsContext);
+        mapLoader.drawMap(g);
     }
 
     public final void drawMap(BigDecimal x, BigDecimal y) {
-        mapLoader.drawMap(Mdx.graphicsContext, x.intValue(), y.intValue());
+        mapLoader.drawMap(g, x.intValue(), y.intValue());
     }
 
     public final void drawMap(BigDecimal x, BigDecimal y, int layer) {
-        mapLoader.drawMap(Mdx.graphicsContext, x.intValue(), y.intValue(), layer);
+        mapLoader.drawMap(g, x.intValue(), y.intValue(), layer);
     }
 
     public final void drawMap(BigDecimal x, BigDecimal y, BigDecimal sx, BigDecimal sy, BigDecimal w, BigDecimal h) {
-        mapLoader.drawMap(Mdx.graphicsContext, x.intValue(), y.intValue(), sx.intValue(), sy.intValue(), w.intValue(), h.intValue());
+        mapLoader.drawMap(g, x.intValue(), y.intValue(), sx.intValue(), sy.intValue(), w.intValue(), h.intValue());
     }
 
     public final void drawMap(BigDecimal x, BigDecimal y, BigDecimal sx, BigDecimal sy, BigDecimal w, BigDecimal h, int layer) {
-        mapLoader.drawMap(Mdx.graphicsContext, x.intValue(), y.intValue(), sx.intValue(), sy.intValue(), w.intValue(), h.intValue(), layer);
+        mapLoader.drawMap(g, x.intValue(), y.intValue(), sx.intValue(), sy.intValue(), w.intValue(), h.intValue(), layer);
     }
 
     public final int getMapTileId(BigDecimal x, BigDecimal y) {
@@ -212,7 +215,7 @@ public class LeikrScreenManager {
     }
 
     private void setDrawColor(int color) {
-        Mdx.graphicsContext.setColor(getDrawColor(color));
+        g.setColor(getDrawColor(color));
     }
 
     public final void bgColor(int color) {
@@ -227,17 +230,17 @@ public class LeikrScreenManager {
     //text methods
     public final void drawString(int color, String text, BigDecimal x, BigDecimal y) {
         setDrawColor(color);
-        Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue());
+        g.drawString(text, x.floatValue(), y.floatValue());
     }
 
     public final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
         setDrawColor(color);
-        Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue(), width.floatValue());
+        g.drawString(text, x.floatValue(), y.floatValue(), width.floatValue());
     }
 
     public final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
         setDrawColor(color);
-        Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue(), width.floatValue(), align);
+        g.drawString(text, x.floatValue(), y.floatValue(), width.floatValue(), align);
     }
 
     //end drawString methods
@@ -248,7 +251,7 @@ public class LeikrScreenManager {
         }
         Sprite t = spriteLoader.getSprite(id, size);
         t.rotate(degr.floatValue());
-        Mdx.graphicsContext.drawSprite(t, x.floatValue(), y.floatValue());
+        g.drawSprite(t, x.floatValue(), y.floatValue());
         t.rotate(-degr.floatValue());
         USED_SPRITES++;
     }
@@ -259,7 +262,7 @@ public class LeikrScreenManager {
         }
         Sprite t = spriteLoader.getSprite(id, size);
         t.setFlip(flipX, flipY);
-        Mdx.graphicsContext.drawSprite(t, x.floatValue(), y.floatValue());
+        g.drawSprite(t, x.floatValue(), y.floatValue());
         t.setFlip(false, false);
         USED_SPRITES++;
     }
@@ -269,7 +272,7 @@ public class LeikrScreenManager {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        Mdx.graphicsContext.drawSprite(spriteLoader.getSprite(id, 0), x.floatValue(), y.floatValue());
+        g.drawSprite(spriteLoader.getSprite(id, 0), x.floatValue(), y.floatValue());
         USED_SPRITES++;
     }
 
@@ -287,7 +290,7 @@ public class LeikrScreenManager {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
-        Mdx.graphicsContext.drawSprite(spriteLoader.getSprite(id, size), x.floatValue(), y.floatValue());
+        g.drawSprite(spriteLoader.getSprite(id, size), x.floatValue(), y.floatValue());
         USED_SPRITES++;
     }
 
@@ -307,7 +310,7 @@ public class LeikrScreenManager {
         }
         Sprite t = spriteLoader.getSprite(id, 0);
         t.scale(scale.floatValue());
-        Mdx.graphicsContext.drawSprite(t, x.floatValue(), y.floatValue());
+        g.drawSprite(t, x.floatValue(), y.floatValue());
         t.scale(-scale.floatValue());
         USED_SPRITES++;
     }
@@ -318,7 +321,7 @@ public class LeikrScreenManager {
         }
         Sprite t = spriteLoader.getSprite(id, 0);
         t.setScale(scaleX.floatValue(), scaleY.floatValue());
-        Mdx.graphicsContext.drawSprite(t, x.floatValue(), y.floatValue());
+        g.drawSprite(t, x.floatValue(), y.floatValue());
         t.setScale(-scaleX.floatValue(), -scaleY.floatValue());
         USED_SPRITES++;
     }
@@ -330,7 +333,7 @@ public class LeikrScreenManager {
         Sprite t = spriteLoader.getSprite(id, 0);
         t.setScale(scaleX.floatValue(), scaleY.floatValue());
         t.rotate(degr.floatValue());
-        Mdx.graphicsContext.drawSprite(t, x.floatValue(), y.floatValue());
+        g.drawSprite(t, x.floatValue(), y.floatValue());
         t.rotate(-degr.floatValue());
         t.setScale(-scaleX.floatValue(), -scaleY.floatValue());
         USED_SPRITES++;
@@ -343,7 +346,7 @@ public class LeikrScreenManager {
         Sprite t = spriteLoader.getSprite(id, 0);
         t.setScale(scaleX.floatValue(), scaleY.floatValue());
         t.flip(flipX, flipY);
-        Mdx.graphicsContext.drawSprite(t, x.floatValue(), y.floatValue());
+        g.drawSprite(t, x.floatValue(), y.floatValue());
         t.flip(!flipX, !flipY);
         t.setScale(-scaleX.floatValue(), -scaleY.floatValue());
         USED_SPRITES++;
@@ -352,11 +355,11 @@ public class LeikrScreenManager {
 
     //start shape drawing methods
     public final void drawPixel(int color, BigDecimal x, BigDecimal y) {
-        Mdx.graphicsContext.drawSprite(pixels.getSprite(color), x.intValue(), y.intValue());
+        g.drawSprite(pixels.getSprite(color), x.intValue(), y.intValue());
     }
 
     public final void drawPixel(int color, int x, int y) {
-        Mdx.graphicsContext.drawSprite(pixels.getSprite(color), x, y);
+        g.drawSprite(pixels.getSprite(color), x, y);
     }
 
     public final void drawRect(int c, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
@@ -372,7 +375,7 @@ public class LeikrScreenManager {
 
     public final void fillRect(int color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
         setDrawColor(color);
-        Mdx.graphicsContext.fillRect(x.intValue(), y.intValue(), w.intValue(), h.intValue());
+        g.fillRect(x.intValue(), y.intValue(), w.intValue(), h.intValue());
     }
 
     private void drawHLine(int c, int x0, int x1, int y) {
@@ -436,20 +439,20 @@ public class LeikrScreenManager {
 //end shape drawing methods
 
     public final void setClip(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        Mdx.graphicsContext.setClip(x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue());
+        g.setClip(x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue());
     }
 
     public final void removeClip() {
-        Mdx.graphicsContext.removeClip();
+        g.removeClip();
     }
 
     //EXPERIMENTAL METHODS
     public void tint(int color) {
-        Mdx.graphicsContext.setTint(getDrawColor(color));
+        g.setTint(getDrawColor(color));
     }
 
     public void tint() {
-        Mdx.graphicsContext.removeTint();
+        g.removeTint();
     }
 
 //END EXPERIMENTAL

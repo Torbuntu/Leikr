@@ -22,6 +22,7 @@ import leikr.controls.LeikrMouse;
 import leikr.managers.LeikrAudioManager;
 import leikr.managers.LeikrScreenManager;
 import leikr.managers.LeikrSystemManager;
+import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.input.BaseGamePadListener;
@@ -108,14 +109,13 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     /**
      * preRender
      *
-     * run just before the Engine render method. Used to set up system objects
-     * before doing any Engine rendering.
+     * run just before the Engine render method.Used to set up system objects
+ before doing any Engine rendering. Applies viewport and preRenders the screen.
      *
-     * Applies viewport and preRenders the screen.
-     *
+     * @param g
      */
-    public final void preRender() {
-        lScreen.preRender();
+    public final void preRender(Graphics g) {
+        lScreen.preRender(g);
     }
 
     /*
