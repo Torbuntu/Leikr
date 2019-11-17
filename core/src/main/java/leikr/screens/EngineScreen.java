@@ -212,33 +212,29 @@ public class EngineScreen extends BasicGameScreen {
         if (null != engine && !engine.getActive()) {
             return;
         }
+
+        g.drawTexture(frameBuffer.getTexture(), 0, 0, false);
+        g.postRender();
+
         switch (engineState) {
             case RUNNING:
                 try {
-                    g.drawTexture(frameBuffer.getTexture(), 0, 0, false);
-                    g.postRender();
-                    
-                    frameBuffer.begin();
-                    g.preRender(240, 160);
 
-                    system.render();
-                    engine.preRender();
-                    engine.render();
-                    
-                } catch (Exception ex) {
-                    engineState = EngineState.ERROR;
-                    errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();
-                    Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                g.postRender();
-                g.flush();
-                frameBuffer.end();
-                break;
+                frameBuffer.begin();
+                g.preRender(240, 160);
+
+                system.render();
+                engine.preRender();
+                engine.render();
+
+            } catch (Exception ex) {
+                engineState = EngineState.ERROR;
+                errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();
+                Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            break;
             case PAUSE:
-
-                g.drawTexture(frameBuffer.getTexture(), 0, 0, false);
-                g.postRender();
-
                 frameBuffer.begin();
                 g.preRender(240, 160);
 
@@ -255,13 +251,14 @@ public class EngineScreen extends BasicGameScreen {
                     g.drawRect(130, 86, 36, 16);
                 }
 
-                g.postRender();
-                g.flush();
-                frameBuffer.end();
                 break;
             case ERROR:
             default:
         }
+
+        g.postRender();
+        g.flush();
+        frameBuffer.end();
     }
 
     @Override

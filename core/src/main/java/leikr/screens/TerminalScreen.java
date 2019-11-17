@@ -146,6 +146,9 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
             return true;
         }
         if (keycode == Keys.UP) {
+            if (programs.length <= 0) {
+                return false;
+            }
             index++;
             if (index > programs.length - 1) {
                 index = 0;
@@ -153,6 +156,9 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
             prompt = "run " + programs[index].nameWithoutExtension();
         }
         if (keycode == Keys.DOWN) {
+            if (programs.length <= 0) {
+                return false;
+            }
             index--;
             if (index < 0) {
                 index = programs.length - 1;
@@ -274,13 +280,13 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                 return "Create a new program.";
             case "pwd":
                 try {
-                    File f = new File("Programs");
-                    desktop.open(f);
-                    return f.getAbsolutePath();
-                } catch (IOException ex) {
-                    Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
-                    return "Could not find workspace directory.";
-                }
+                File f = new File("Programs");
+                desktop.open(f);
+                return f.getAbsolutePath();
+            } catch (IOException ex) {
+                Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
+                return "Could not find workspace directory.";
+            }
             case "run":
                 if (command.length == 1) {
                     return "Missing - required program title.";
