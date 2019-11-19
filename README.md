@@ -38,11 +38,11 @@ Leikr/
     Programs/
     Leikr
     Leikr.bat
-    Leikr-x.x.x.jar
+    Leikr.jar
     Sys/    
 ```
 
-Depending on your system, you can either launch the system through the `Leikr` shell script or `Leikr.bat`. If you'd rather, You can even launch the system manually the java way using the command `java -jar Leikr-x.x.x.jar`
+Depending on your system, you can either launch the system through the `Leikr` shell script or `Leikr.bat`. If you'd rather, You can even launch the system manually the java way using the command `java -jar Leikr.jar`
 
 
 ## Running from source 
