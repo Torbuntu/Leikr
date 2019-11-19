@@ -299,6 +299,18 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
         lScreen.drawString(color, text, x, y, width, align);
     }
+    
+    public final void drawString(String color, String text, BigDecimal x, BigDecimal y) {
+        lScreen.drawString(color, text, x, y);
+    }
+
+    public final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
+        lScreen.drawString(color, text, x, y, width);
+    }
+
+    public final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
+        lScreen.drawString(color, text, x, y, width, align);
+    }
     //end drawString methods
 
     //start 8x8 sprites
@@ -554,6 +566,18 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     
     public int getPixel(BigDecimal x, BigDecimal y){
         return lScreen.getPixel(x, y);
+    }
+    
+    public void drawPixel(String color, BigDecimal x, BigDecimal y){
+        lScreen.drawPixel(color, x, y);
+    }
+    
+    public void drawRect(String color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h){
+        lScreen.drawRect(color, x, y, w, h);
+    }
+    
+    public void drawLineSegment(String color, BigDecimal x0, BigDecimal y0, BigDecimal x1, BigDecimal y1){
+        lScreen.drawLineSegment(color, x0, y0, x1, y1);
     }
 
     public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {

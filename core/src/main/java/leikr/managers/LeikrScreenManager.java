@@ -251,6 +251,21 @@ public class LeikrScreenManager {
         g.drawString(text, x.floatValue(), y.floatValue(), width.floatValue(), align);
     }
 
+    public final void drawString(String color, String text, BigDecimal x, BigDecimal y) {
+        g.setColor(Colors.rgbToColor(color));
+        g.drawString(text, x.floatValue(), y.floatValue());
+    }
+
+    public final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
+        g.setColor(Colors.rgbToColor(color));
+        g.drawString(text, x.floatValue(), y.floatValue(), width.floatValue());
+    }
+
+    public final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
+        g.setColor(Colors.rgbToColor(color));
+        g.drawString(text, x.floatValue(), y.floatValue(), width.floatValue(), align);
+    }
+
     //end drawString methods
     //sprite helper methods.
     private void drawSpriteRotate(int id, int size, BigDecimal degr, BigDecimal x, BigDecimal y) {
@@ -312,6 +327,17 @@ public class LeikrScreenManager {
     //end sizable sprites
 
     //START special sprite mode
+    /**
+     * Draws a sprite with given ID value at the given coordinates with a given
+     * Scale.
+     *
+     * The 'sc' portion of the method name refers to 'scale'
+     *
+     * @param id
+     * @param x
+     * @param y
+     * @param scale
+     */
     public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
@@ -362,15 +388,66 @@ public class LeikrScreenManager {
     //END special sprite mode
 
     //start shape drawing methods
+    /**
+     * Basic drawPixel taking Integer colord ID and a BigDecimal x,y coordinate
+     * value.
+     *
+     * @param color
+     * @param x
+     * @param y
+     */
     public final void drawPixel(int color, BigDecimal x, BigDecimal y) {
         g.drawSprite(pixels.getSprite(color), x.intValue(), y.intValue());
     }
 
-    public final void drawPixel(int color, int x, int y) {
+    /**
+     * Internal drawPixel with Integer color ID .
+     *
+     * @param color
+     * @param x
+     * @param y
+     */
+    private void drawPixel(int color, int x, int y) {
         g.drawSprite(pixels.getSprite(color), x, y);
     }
 
+    /**
+     * Internal drawPixel with String color .
+     *
+     * @param color
+     * @param x
+     * @param y
+     */
+    private void drawPixel(String color, int x, int y) {
+        g.setTint(Colors.rgbToColor(color));
+        g.drawSprite(pixels.getSprite(1), x, y);
+        g.removeTint();
+    }
+
+    /**
+     * Uses the white pixel with a colored tint to produce a pixel of any
+     * desired RGB color String, ex: "255,255,255"
+     *
+     * @param color
+     * @param x
+     * @param y
+     */
+    public final void drawPixel(String color, BigDecimal x, BigDecimal y) {
+        drawPixel(color, x.intValue(), y.intValue());
+    }
+
     public final void drawRect(int c, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        for (int i = x.intValue(); i < x.intValue() + w.intValue(); i++) {
+            drawPixel(c, i, y.intValue());
+            drawPixel(c, i, y.intValue() + h.intValue() - 1);
+        }
+        for (int i = y.intValue(); i < y.intValue() + h.intValue(); i++) {
+            drawPixel(c, x.intValue(), i);
+            drawPixel(c, x.intValue() + w.intValue() - 1, i);
+        }
+    }
+
+    public final void drawRect(String c, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
         for (int i = x.intValue(); i < x.intValue() + w.intValue(); i++) {
             drawPixel(c, i, y.intValue());
             drawPixel(c, i, y.intValue() + h.intValue() - 1);
@@ -398,7 +475,66 @@ public class LeikrScreenManager {
         }
     }
 
+    private void drawHLine(String c, int x0, int x1, int y) {
+        for (int i = x0; i < x1; i++) {
+            drawPixel(c, i, y);
+        }
+    }
+
+    private void drawVLine(String c, int x, int y0, int y1) {
+        for (int i = y0; i < y1; i++) {
+            drawPixel(c, x, i);
+        }
+    }
+
     public final void drawLineSegment(int c, BigDecimal p0, BigDecimal v0, BigDecimal p1, BigDecimal v1) {
+        int x0 = p0.intValue();
+        int x1 = p1.intValue();
+        int y0 = v0.intValue();
+        int y1 = v1.intValue();
+
+        if (y0 == y1) {
+            if (x0 < x1) {
+                drawHLine(c, x0, x1, y0);
+            } else {
+                drawHLine(c, x1, x0, y0);
+            }
+            return;
+        }
+        if (x0 == x1) {
+            if (y0 < y1) {
+                drawVLine(c, x0, y0, y1);
+            } else {
+                drawVLine(c, x0, y1, y0);
+            }
+            return;
+        }
+
+        int dx = Math.abs(x1 - x0);
+        int sx = x0 < x1 ? 1 : -1;
+        int dy = -Math.abs(y1 - y0);
+        int sy = y0 < y1 ? 1 : -1;
+
+        int err = dx + dy;
+        while (true) {
+            drawPixel(c, x0, y0);
+            if (x0 == x1 && y0 == y1) {
+                break;
+            }
+
+            int e2 = 2 * err;
+            if (e2 >= dy) {
+                err += dy;
+                x0 += sx;
+            }
+            if (e2 <= dx) {
+                err += dx;
+                y0 += sy;
+            }
+        }
+    }
+
+    public final void drawLineSegment(String c, BigDecimal p0, BigDecimal v0, BigDecimal p1, BigDecimal v1) {
         int x0 = p0.intValue();
         int x1 = p1.intValue();
         int y0 = v0.intValue();
