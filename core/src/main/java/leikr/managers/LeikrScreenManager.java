@@ -15,6 +15,8 @@
  */
 package leikr.managers;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.ScreenUtils;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -25,10 +27,13 @@ import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.Colors;
+import org.mini2Dx.core.graphics.FrameBuffer;
 import org.mini2Dx.core.graphics.Pixmap;
 import org.mini2Dx.core.graphics.PixmapFormat;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.SpriteSheet;
+import org.mini2Dx.core.graphics.viewport.Viewport;
+import org.mini2Dx.gdx.math.MathUtils;
 
 /**
  * This class is used to manage the drawing API for the Engine. It also provides
@@ -69,6 +74,8 @@ public class LeikrScreenManager {
     private int MAX_SPRITES;
     private int USED_SPRITES;
     private Graphics g;
+    private Viewport v;
+    private FrameBuffer frameBuffer;
 
     /**
      * LeikrScreenManager constructor
@@ -121,10 +128,11 @@ public class LeikrScreenManager {
     //End helper methods
 
     //Engine methods
-    public void preRender(Graphics g) {
+    public void preRender(Graphics g, Viewport v) {
         //set to 0 before drawing anything
         USED_SPRITES = 0;
         this.g = g;
+        this.v = v;
         Mdx.graphicsContext.clearContext(bgColor);
     }
 
@@ -453,6 +461,34 @@ public class LeikrScreenManager {
 
     public void tint() {
         g.removeTint();
+    }
+
+    public int getPixel(BigDecimal x, BigDecimal y) {
+        int gx = MathUtils.ceil((v.getX() * v.getScaleX()) + (x.floatValue() * v.getScaleX()));
+        int gy = MathUtils.ceil((v.getY() * v.getScaleY()) + (y.floatValue() * v.getScaleY()));
+        gy = Gdx.graphics.getHeight() - gy;
+        frameBuffer.end();
+
+        byte[] b = ScreenUtils.getFrameBufferPixels(gx, gy, 1, 1, false);
+        frameBuffer.begin();
+
+        int color = color(0xFF & b[0], 0xFF & b[1], 0xFF & b[2]);
+        Color c = Mdx.graphics.newColor(color);
+        int output = 0;
+        for (int i = 0; i < colorPalette.size(); i++) {
+            if (c.equals(colorPalette.get(i))) {
+                output = i;
+            }
+        }
+        return output;
+    }
+
+    int color(int r, int g, int b) {
+        return (r << 24) | (g << 16) | (b << 8) | 255;
+    }
+
+    public void setFramebuffer(FrameBuffer fb) {
+        frameBuffer = fb;
     }
 
 //END EXPERIMENTAL

@@ -25,6 +25,7 @@ import leikr.managers.LeikrSystemManager;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
+import org.mini2Dx.core.graphics.viewport.Viewport;
 import org.mini2Dx.core.input.BaseGamePadListener;
 import org.mini2Dx.gdx.InputProcessor;
 
@@ -110,12 +111,13 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      * preRender
      *
      * run just before the Engine render method.Used to set up system objects
- before doing any Engine rendering. Applies viewport and preRenders the screen.
+ before doing any Engine rendering.Applies viewport and preRenders the screen.
      *
      * @param g
+     * @param v
      */
-    public final void preRender(Graphics g) {
-        lScreen.preRender(g);
+    public final void preRender(Graphics g, Viewport v) {
+        lScreen.preRender(g, v);
     }
 
     /*
@@ -548,6 +550,10 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     public void tint() {
         lScreen.tint();
+    }
+    
+    public int getPixel(BigDecimal x, BigDecimal y){
+        return lScreen.getPixel(x, y);
     }
 
     public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {

@@ -15,6 +15,8 @@
  */
 package leikr.screens;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import io.anuke.gif.GifRecorder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.Engine;
@@ -47,6 +49,9 @@ public class EngineScreen extends BasicGameScreen {
     FitViewport viewport;
     FrameBuffer frameBuffer;
 
+    SpriteBatch gifBatch;
+    GifRecorder recorder;
+
     private static boolean CONFIRM = false;
 
     public static EngineState engineState;
@@ -59,6 +64,14 @@ public class EngineScreen extends BasicGameScreen {
     }
 
     public EngineScreen() {
+        initGifRecorder();
+    }
+
+    private void initGifRecorder() {
+        gifBatch = new SpriteBatch();
+        recorder = new GifRecorder(gifBatch);
+        recorder.setOpenKey(Keys.F2);
+        recorder.setRecordKey(Keys.F3);
     }
 
     public static void pauseEngine() {
@@ -124,8 +137,9 @@ public class EngineScreen extends BasicGameScreen {
             engine.setActive(false);
             engine.dispose();
             engine = null; // release all Engine objects for gc
-            frameBuffer.dispose();
         }
+        frameBuffer.dispose();
+        gifBatch.dispose();
         System.out.println("Engine classes disposed.");
     }
 
@@ -133,6 +147,7 @@ public class EngineScreen extends BasicGameScreen {
     public void preTransitionIn(Transition trans) {
         engineState = EngineState.RUNNING;
         frameBuffer = Mdx.graphics.newFrameBuffer(240, 160);
+        initGifRecorder();
     }
 
     @Override
@@ -232,16 +247,17 @@ public class EngineScreen extends BasicGameScreen {
             case ERROR:
             default:
         }
-
-        g.postRender();
         g.flush();
+        g.postRender();
         frameBuffer.end();
+        recorder.update();
     }
 
     void renderRunning(Graphics g) {
         try {
+            engine.lScreen.setFramebuffer(frameBuffer);
             system.render(g);
-            engine.preRender(g);
+            engine.preRender(g, viewport);
             engine.render();
         } catch (Exception ex) {
             engineState = EngineState.ERROR;
