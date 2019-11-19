@@ -462,6 +462,11 @@ public class LeikrScreenManager {
         setDrawColor(color);
         g.fillRect(x.intValue(), y.intValue(), w.intValue(), h.intValue());
     }
+    
+    public final void fillRect(String color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h){
+        g.setColor(Colors.rgbToColor(color));
+        g.fillRect(x.intValue(), y.intValue(), w.intValue(), h.intValue());
+    }
 
     private void drawHLine(int c, int x0, int x1, int y) {
         for (int i = x0; i < x1; i++) {
