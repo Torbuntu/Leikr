@@ -13,7 +13,7 @@ allprojects {
 
     ext {
         appName = 'Leikr'
-        mini2DxVersion = '2.0.0-alpha.11'
+        mini2DxVersion = '2.0.0-alpha.12'
     }
 
     repositories {
@@ -35,6 +35,8 @@ project(":core") {
     dependencies {
         implementation "org.mini2Dx:mini2Dx-core:$mini2DxVersion"
         implementation "org.mini2Dx:mini2Dx-tiled:$mini2DxVersion"
+        implementation "org.mini2Dx:mini2Dx-libgdx:$mini2DxVersion"
+        implementation "com.github.Anuken:GdxGifRecorder:1.4"
         implementation "org.codehaus.groovy:groovy:3.0.0-beta-3"
     }
 }
