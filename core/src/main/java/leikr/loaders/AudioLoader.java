@@ -166,12 +166,6 @@ public class AudioLoader {
     }
 
     public void disposeAudioLoader() {
-        if (mPlayer != null) {
-            mPlayer.dispose();
-        }
-        if (sPlayer != null) {
-            sPlayer.dispose();
-        }
         musicManager.clearAssetLoaders();
         soundManager.clearAssetLoaders();
     }
