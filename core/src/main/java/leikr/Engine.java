@@ -111,7 +111,8 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      * preRender
      *
      * run just before the Engine render method.Used to set up system objects
- before doing any Engine rendering.Applies viewport and preRenders the screen.
+     * before doing any Engine rendering.Applies viewport and preRenders the
+     * screen.
      *
      * @param g
      * @param v
@@ -299,7 +300,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
         lScreen.drawString(color, text, x, y, width, align);
     }
-    
+
     public final void drawString(String color, String text, BigDecimal x, BigDecimal y) {
         lScreen.drawString(color, text, x, y);
     }
@@ -374,6 +375,34 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     public final void drawLineSegment(int color, BigDecimal x1, BigDecimal y1, BigDecimal x2, BigDecimal y2) {
         lScreen.drawLineSegment(color, x1, y1, x2, y2);
+    }
+
+    public void drawPixel(String color, BigDecimal x, BigDecimal y) {
+        lScreen.drawPixel(color, x, y);
+    }
+
+    public void drawRect(String color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        lScreen.drawRect(color, x, y, w, h);
+    }
+
+    public void fillRect(String color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        lScreen.fillRect(color, x, y, w, h);
+    }
+
+    public void drawLineSegment(String color, BigDecimal x0, BigDecimal y0, BigDecimal x1, BigDecimal y1) {
+        lScreen.drawLineSegment(color, x0, y0, x1, y1);
+    }
+
+    public void tint(int color) {
+        lScreen.tint(color);
+    }
+
+    public void tint() {
+        lScreen.tint();
+    }
+
+    public int getPixel(BigDecimal x, BigDecimal y) {
+        return lScreen.getPixel(x, y);
     }
     //end shape drawing methods
 
@@ -556,34 +585,6 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     //END System API
 
     //Experimental API methods
-    public void tint(int color) {
-        lScreen.tint(color);
-    }
-
-    public void tint() {
-        lScreen.tint();
-    }
-    
-    public int getPixel(BigDecimal x, BigDecimal y){
-        return lScreen.getPixel(x, y);
-    }
-    
-    public void drawPixel(String color, BigDecimal x, BigDecimal y){
-        lScreen.drawPixel(color, x, y);
-    }
-    
-    public void drawRect(String color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h){
-        lScreen.drawRect(color, x, y, w, h);
-    }
-    
-    public void drawLineSegment(String color, BigDecimal x0, BigDecimal y0, BigDecimal x1, BigDecimal y1){
-        lScreen.drawLineSegment(color, x0, y0, x1, y1);
-    }
-    
-    public void fillRect(String color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h){
-        lScreen.fillRect(color, x, y, w, h);
-    }
-
     public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {
         return lSystem.collides(x1, y1, w1, h1, x2, y2, w2, h2);
     }

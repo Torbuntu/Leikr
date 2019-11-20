@@ -41,19 +41,20 @@ public class ImageLoader {
     private static ImageLoader instance;
 
     private ImageLoader() {
-        images = new HashMap<>();
-        assetManager = new AssetManager(new LocalFileHandleResolver());
     }
 
     public static ImageLoader getImageLoader() {
         if (instance == null) {
             instance = new ImageLoader();
         }
+        instance.disposeImages();
         instance.reloadImageLoader();
         return instance;
     }
 
     private void reloadImageLoader() {
+        images = new HashMap<>();
+        assetManager = new AssetManager(new LocalFileHandleResolver());
         rootPath = GameRuntime.getProgramPath() + "/Art/";
         try {
             Arrays.asList(Mdx.files.local(rootPath).list()).stream()
@@ -76,7 +77,10 @@ public class ImageLoader {
     }
 
     public void disposeImages() {
-//        assetManager.clear();
+        if (null != assetManager) {
+            assetManager.clearAssetLoaders();
+            assetManager.dispose();
+        }
     }
 
 }

@@ -48,37 +48,25 @@ public class AudioLoader {
     private static AudioLoader instance;
 
     private AudioLoader() {
-        soundManager = new AssetManager(new LocalFileHandleResolver());
-        soundLoader = new SoundLoader();
-        soundManager.setAssetLoader(Sound.class, soundLoader);
-
-        musicManager = new AssetManager(new LocalFileHandleResolver());
-        musicLoader = new MusicLoader();
-        musicManager.setAssetLoader(Music.class, musicLoader);
     }
 
     public static AudioLoader getAudioLoader() {
         if (instance == null) {
             instance = new AudioLoader();
         }
+        instance.disposeAudioLoader();
         instance.resetAudioLoader();
         instance.loadAudio();
         return instance;
     }
 
     private void resetAudioLoader() {
-        if (soundManager != null) {
-            soundManager.clearAssetLoaders();
-        }
-
-        if (musicManager != null) {
-            musicManager.clearAssetLoaders();
-        }
-
         soundLoader = new SoundLoader();
+        soundManager = new AssetManager(new LocalFileHandleResolver());
         soundManager.setAssetLoader(Sound.class, soundLoader);
 
         musicLoader = new MusicLoader();
+        musicManager = new AssetManager(new LocalFileHandleResolver());
         musicManager.setAssetLoader(Music.class, musicLoader);
         musicRootPath = GameRuntime.getProgramPath() + "/Audio/Music/";
         soundRootPath = GameRuntime.getProgramPath() + "/Audio/Sound/";
@@ -160,14 +148,17 @@ public class AudioLoader {
         if (mPlayer != null) {
             mPlayer.play();
         }
-        if (sPlayer != null) {
-            sPlayer.play();
-        }
     }
 
     public void disposeAudioLoader() {
-        musicManager.clearAssetLoaders();
-        soundManager.clearAssetLoaders();
+        if (null != soundManager) {
+            soundManager.clearAssetLoaders();
+            soundManager.dispose();
+        }
+        if (null != musicManager) {
+            musicManager.clearAssetLoaders();
+            musicManager.dispose();
+        }
     }
 
 }

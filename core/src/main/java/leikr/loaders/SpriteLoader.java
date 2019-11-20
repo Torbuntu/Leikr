@@ -45,7 +45,7 @@ public class SpriteLoader {
     private static SpriteLoader instance;
 
     private SpriteLoader() {
-        assetManager = new AssetManager(new LocalFileHandleResolver());
+
     }
 
     public static SpriteLoader getSpriteLoader() {
@@ -53,6 +53,8 @@ public class SpriteLoader {
             instance = new SpriteLoader();
         }
         if (Mdx.files.local(GameRuntime.getProgramPath() + "/Sprites/Sprites.png").exists()) {
+            instance.disposeSprites();
+
             instance.resetSpriteLoader();
             instance.loadSpriteSheets();
             instance.addSpritesToSpriteBank();
@@ -63,26 +65,10 @@ public class SpriteLoader {
         return instance;
     }
 
-    public void loadManualSpritesheets(String programName) {
-        resetSpriteLoader();
-        rootPath = "Programs/" + programName + "/Sprites/Sprites.png";
-        if (!Mdx.files.local(rootPath).exists()) {
-            System.out.println("No sprites found for: " + rootPath);
-            return;
-        }
-        try {
-            instance.loadSpriteSheets();
-            instance.addSpritesToSpriteBank();
-        } catch (Exception ex) {
-            Logger.getLogger(SpriteLoader.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Manual Sprite sheet not loadable for: " + rootPath);
-        }
-    }
-
     private void resetSpriteLoader() {
-        disposeSprites();
         rootPath = GameRuntime.getProgramPath() + "/Sprites/Sprites.png";
         assetLoader = new TextureLoader();
+        assetManager = new AssetManager(new LocalFileHandleResolver());
         assetManager.setAssetLoader(Texture.class, assetLoader);
     }
 
@@ -112,8 +98,27 @@ public class SpriteLoader {
         }
     }
 
+    public void loadManualSpritesheets(String programName) {
+        resetSpriteLoader();
+        rootPath = "Programs/" + programName + "/Sprites/Sprites.png";
+        if (!Mdx.files.local(rootPath).exists()) {
+            System.out.println("No sprites found for: " + rootPath);
+            return;
+        }
+        try {
+            instance.loadSpriteSheets();
+            instance.addSpritesToSpriteBank();
+        } catch (Exception ex) {
+            Logger.getLogger(SpriteLoader.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Manual Sprite sheet not loadable for: " + rootPath);
+        }
+    }
+
     public void disposeSprites() {
-        assetManager.clearAssetLoaders();
+        if (null != assetManager) {
+            assetManager.clearAssetLoaders();
+            assetManager.dispose();
+        }
     }
 
 }
