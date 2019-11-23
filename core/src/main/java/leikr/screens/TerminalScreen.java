@@ -18,6 +18,8 @@ package leikr.screens;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -209,7 +211,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
     public boolean scrolled(int amount) {
         return false;
     }
-    
+
     private String processCommand() {
         String[] command = prompt.split(" ");
         switch (command[0]) {
@@ -265,11 +267,13 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                             return ">pwd \nPrints the location fo the Programs directory. Attempts to open the directory in the host file manager.";
                         case "run":
                             return ">run [arg] \nLoads and Runs a program given a title.";
+                        case "wiki":
+                            return ">wiki [option] \nOpens the Leikr wiki. Use an Option to open a specific wiki page.";
                         default:
                             return "No help for unknown command: ( " + command[1] + " )";
                     }
                 }
-                return "Commands: exit, find, clear, help, ls, new, pwd, run \nRun help with the name of a command for more details on that command.";
+                return "Commands: exit, find, clear, help, ls, new, pwd, run, wiki \n\nRun help with the name of a command for more details on that command.";
             case "install":
                 return ExportTool.importProject(command[1]);
             case "ls":
@@ -279,13 +283,13 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                 return "Create a new program.";
             case "pwd":
                 try {
-                File f = new File("Programs");
-                desktop.open(f);
-                return f.getAbsolutePath();
-            } catch (IOException ex) {
-                Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
-                return "Could not find workspace directory.";
-            }
+                    File f = new File("Programs");
+                    desktop.open(f);
+                    return f.getAbsolutePath();
+                } catch (IOException ex) {
+                    Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
+                    return "Could not find workspace directory.";
+                }
             case "run":
                 if (command.length == 1) {
                     return "Missing - required program title.";
@@ -302,6 +306,18 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                     Logger.getLogger(EngineLoader.class.getName()).log(Level.WARNING, null, ex);
                     return "Failed to run program with name ( " + command[1] + " )";
                 }
+
+            case "wiki":
+                String wiki = "https://github.com/Torbuntu/Leikr/wiki";
+                if(command.length == 2){
+                    wiki += "/"+command[1];
+                }
+                try {
+                    Desktop.getDesktop().browse(new URI(wiki));
+                } catch (IOException | URISyntaxException ex) {
+                    return "Host browser unaccessible.";
+                }
+                return "Opening ["+ wiki +"] in host browser.";
             default:
                 return "Uknown command: ( " + prompt + " )";
         }
