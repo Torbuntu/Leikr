@@ -89,7 +89,7 @@ Data/
 Programs/
 Leikr
 Leikr.bat
-Leikr-x.x.x.jar
+Leikr.jar
 Sys/
 ```
 
