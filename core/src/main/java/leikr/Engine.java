@@ -590,6 +590,14 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final void fillCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r) {
         lScreen.fillCircle(color, x, y, r);
     }
+    
+    public final void drawCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r) {
+        lScreen.drawCircle(color, x, y, r);
+    }
+
+    public final void fillCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r) {
+        lScreen.fillCircle(color, x, y, r);
+    }
 
     public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {
         return lSystem.collides(x1, y1, w1, h1, x2, y2, w2, h2);

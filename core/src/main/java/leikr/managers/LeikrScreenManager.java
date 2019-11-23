@@ -599,6 +599,16 @@ public class LeikrScreenManager {
         g.setColor(getDrawColor(color));
         g.fillCircle(x.intValue(), y.intValue(), r.intValue());
     }
+    
+    public final void drawCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r){
+        g.setColor(Colors.rgbToColor(color));
+        g.drawCircle(x.intValue(), y.intValue(), r.intValue());
+    }
+    
+    public final void fillCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r){
+        g.setColor(Colors.rgbToColor(color));
+        g.fillCircle(x.intValue(), y.intValue(), r.intValue());
+    }
 //end shape drawing methods
 
     public final void setClip(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
