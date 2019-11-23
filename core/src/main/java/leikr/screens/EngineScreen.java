@@ -154,6 +154,7 @@ public class EngineScreen extends BasicGameScreen {
             engine.preCreate(EngineLoader.getEngineLoader(false).cp.MAX_SPRITES, system, viewport, frameBuffer);
             engine.create();
         } catch (Exception ex) {
+            engine.lAudio.pauseAllAudio();
             engineState = EngineState.ERROR;
             errorMessage = "Error in program `create` method. " + ex.getLocalizedMessage();
             Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
@@ -186,6 +187,7 @@ public class EngineScreen extends BasicGameScreen {
                     engine.preUpdate(delta);
                     engine.update(delta);
                 } catch (Exception ex) {
+                    engine.lAudio.pauseAllAudio();
                     engineState = EngineState.ERROR;
                     errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
                     Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
@@ -249,6 +251,7 @@ public class EngineScreen extends BasicGameScreen {
             engine.preRender(g);
             engine.render();
         } catch (Exception ex) {
+            engine.lAudio.pauseAllAudio();
             engineState = EngineState.ERROR;
             errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();
             Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
