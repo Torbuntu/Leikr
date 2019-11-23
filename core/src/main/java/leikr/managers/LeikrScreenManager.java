@@ -32,6 +32,7 @@ import org.mini2Dx.core.graphics.Pixmap;
 import org.mini2Dx.core.graphics.PixmapFormat;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.SpriteSheet;
+import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.graphics.viewport.Viewport;
 import org.mini2Dx.gdx.math.MathUtils;
 
@@ -121,26 +122,23 @@ public class LeikrScreenManager {
         pm.dispose();
     }
 
-    //Helper methods
-    public int getUsedSprites() {
-        return USED_SPRITES;
-    }
-    //End helper methods
-
     //Engine methods
-    public void preRender(Graphics g, Viewport v) {
+    public void preCreate(FrameBuffer f, FitViewport v) {
+        this.frameBuffer = f;
+        this.v = v;
+    }
+
+    public void preRender(Graphics g) {
         //set to 0 before drawing anything
         USED_SPRITES = 0;
         this.g = g;
-        this.v = v;
-        Mdx.graphicsContext.clearContext(bgColor);
+        this.g.clearContext(bgColor);
     }
 
     public void preUpdate(float delta) {
-        if (null == mapLoader.getMap()) {
-            return;//don't update the drawMap if it is null
+        if (null != mapLoader.getMap()) {
+            mapLoader.getMap().update(delta);
         }
-        mapLoader.getMap().update(delta);
     }
 
     public void dispose() {
@@ -149,6 +147,12 @@ public class LeikrScreenManager {
         mapLoader.disposeMap();
     }
     //End Engine methods
+
+    //Helper methods
+    public int getUsedSprites() {
+        return USED_SPRITES;
+    }
+    //End helper methods
 
     //Image methods
     public final void loadImages() {
@@ -462,8 +466,8 @@ public class LeikrScreenManager {
         setDrawColor(color);
         g.fillRect(x.intValue(), y.intValue(), w.intValue(), h.intValue());
     }
-    
-    public final void fillRect(String color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h){
+
+    public final void fillRect(String color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
         g.setColor(Colors.rgbToColor(color));
         g.fillRect(x.intValue(), y.intValue(), w.intValue(), h.intValue());
     }
@@ -585,6 +589,16 @@ public class LeikrScreenManager {
             }
         }
     }
+    
+    public final void drawCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r){
+        g.setColor(getDrawColor(color));
+        g.drawCircle(x.intValue(), y.intValue(), r.intValue());
+    }
+    
+    public final void fillCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r){
+        g.setColor(getDrawColor(color));
+        g.fillCircle(x.intValue(), y.intValue(), r.intValue());
+    }
 //end shape drawing methods
 
     public final void setClip(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
@@ -626,10 +640,6 @@ public class LeikrScreenManager {
 
     int color(int r, int g, int b) {
         return (r << 24) | (g << 16) | (b << 8) | 255;
-    }
-
-    public void setFramebuffer(FrameBuffer fb) {
-        frameBuffer = fb;
     }
 
 //END EXPERIMENTAL

@@ -24,8 +24,8 @@ import leikr.managers.LeikrScreenManager;
 import leikr.managers.LeikrSystemManager;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
+import org.mini2Dx.core.graphics.FrameBuffer;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
-import org.mini2Dx.core.graphics.viewport.Viewport;
 import org.mini2Dx.core.input.BaseGamePadListener;
 import org.mini2Dx.gdx.InputProcessor;
 
@@ -34,9 +34,6 @@ import org.mini2Dx.gdx.InputProcessor;
  * @author tor
  */
 public abstract class Engine extends BaseGamePadListener implements InputProcessor {
-
-    //Mini2DX specific classes for managing the Screen state and drawing.
-    FitViewport viewport;
 
     //used by the Engine Screen to determine if the game should be actively running.
     boolean active;
@@ -66,11 +63,12 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      * @param mSprites maximum allowed sprites to draw at one time
      * @param sys object used to interact with the Leikr lSystem at runtime
      * @param viewport
+     * @param f
      */
-    public final void preCreate(int mSprites, LeikrSystemManager sys, FitViewport viewport) {
-        this.viewport = viewport;
+    public final void preCreate(int mSprites, LeikrSystemManager sys, FitViewport viewport, FrameBuffer f) {
         lAudio = LeikrAudioManager.getLeikrAudioManager();
         lScreen = LeikrScreenManager.getLeikrScreenManager(mSprites);
+        lScreen.preCreate(f, viewport);
         lSystem = sys;
         active = true;
         try {
@@ -115,10 +113,10 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      * screen.
      *
      * @param g
-     * @param v
      */
-    public final void preRender(Graphics g, Viewport v) {
-        lScreen.preRender(g, v);
+    public final void preRender(Graphics g) {
+        lSystem.render(g);
+        lScreen.preRender(g);
     }
 
     /*
@@ -584,7 +582,15 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     }
     //END System API
 
-    //Experimental API methods
+//Experimental API methods
+    public final void drawCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r) {
+        lScreen.drawCircle(color, x, y, r);
+    }
+
+    public final void fillCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r) {
+        lScreen.fillCircle(color, x, y, r);
+    }
+
     public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {
         return lSystem.collides(x1, y1, w1, h1, x2, y2, w2, h2);
     }
