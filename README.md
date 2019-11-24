@@ -51,8 +51,7 @@ Depending on your system, you can either launch the system through the `Leikr` s
 
 ###### `>` is the terminal icon, don't type this.
 
-###### Java is required to run this program. Best used with AdoptOpenJDK. Version 0.0.14 uses 12, 0.0.15 will use 13.
-
+###### Java is required to run this program. Best used with AdoptOpenJDK. Version 0.0.15 uses JDK 12
 
 
 1. git clone the project. Then enter the `leikr` directory.
@@ -64,23 +63,24 @@ Depending on your system, you can either launch the system through the `Leikr` s
 
 2. Run the gradlew command: 
 
-`>./gradlew desktop:launchDesktop` 
+depending on your OS.
+
+`>./gradlew launchDesktop` 
 
 or 
 
-`>gradlew desktop:launchDesktop` 
+`>gradlew launchDesktop` 
 
-depending on your OS.
 
 ## Building a release 
 
 to build a release on your platform run: 
 
-`>./gradlew clean build desktop:deployLeikr` 
+`>./gradlew clean build deployLeikr` 
 
 or 
 
-`>gradlew clean build desktop:deployLeikr`
+`>gradlew clean build deployLeikr`
 
 the release will show up in the `./leikr/desktop/build/libs` directory. You should end up with the following:
 
@@ -120,8 +120,9 @@ Programs/
      program.properties
 ```
 
-Add `main.groovy` in the `Code/` directory. 
-main.groovy contents to be runnable should be similar to the following template:
+Add `YourGameName.groovy` in the `Code/` directory. 
+
+In order for your game to be runnable it should be similar to the following template:
 
 ```java
 //extend the engine to get the API 
@@ -142,6 +143,8 @@ class MyGame extends leikr.Engine{
 
 ```
 
+note however that all three of the main methods (create, update and render) are optional. You can make smaller graphic demos just using the `render` method.
+
 
 ## Specs: 
 
@@ -157,7 +160,7 @@ class MyGame extends leikr.Engine{
 
 ## Supported Platforms
 
-| Platform | Support Level | Status | Notes |
+| Platform | Support Level | Version | Notes |
 |----|----|----|----|
 | Desktop | Full | 0.0.15 | Fedora and other Linux distributions officially supported first. Windows also known to work. No status on Apple computer builds available. Since this is a Java program, it *should just work* on any mainstream desktop OS. However, due to native libs this produce odd results on less common systems. |
 | Raspberry Pi 3B/B+ | Full | 0.0.15 | This requires custom builds of the native libs for LibGDX and LWJGL. Due to this, builds for this come slowly or only when tim epermits. The only currently supported OS for this is default Raspbian with OpenGL drivers activated and GPU memory boosted. This will be a full release in the future.|
