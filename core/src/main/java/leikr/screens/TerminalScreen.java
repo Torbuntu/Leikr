@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.ExportTool;
 import leikr.GameRuntime;
+import leikr.NewProgramGenerator;
 import leikr.loaders.EngineLoader;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
@@ -268,7 +269,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                         case "ls":
                             return ">ls \nDisplays the contents of the Programs directory.";
                         case "new":
-                            return ">new \nOpens a new project builder";
+                            return ">new [option]\nOpens a new project builder.\nIf run with option, will attempt to generate a project with the given name.";
                         case "pwd":
                             return ">pwd \nPrints the location fo the Programs directory. Attempts to open the directory in the host file manager.";
                         case "run":
@@ -285,6 +286,14 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
             case "ls":
                 return runLs();
             case "new":
+                if(command.length == 2){
+                    try{
+                        return NewProgramGenerator.setNewProgramFileName(command[1]);
+                    }catch(Exception ex){
+                        ex.printStackTrace();
+                        return "New program with name ["+ command[1]+"] failed to generate.";
+                    }
+                }
                 NEW_PROGRAM = true;
                 return "Create a new program.";
             case "pwd":

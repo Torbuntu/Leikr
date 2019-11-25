@@ -15,16 +15,13 @@
  */
 package leikr.screens;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import leikr.NewProgramGenerator;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
-import org.mini2Dx.core.files.FileHandle;
 import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
@@ -48,7 +45,7 @@ public class NewProgramScreen extends BasicGameScreen {
     boolean FINISH = false;
     String newName = "";
 
-    String newLocation = "New Program template generated at: /Programs/";
+    String newLocation;
 
     public NewProgramScreen(FitViewport vp) {
         viewport = vp;
@@ -65,7 +62,6 @@ public class NewProgramScreen extends BasicGameScreen {
 
     @Override
     public void preTransitionIn(Transition trns) {
-        newLocation = "New Program template generated at: /Programs/";
         newName = "";
         Mdx.input.setInputProcessor(new InputProcessor() {
             @Override
@@ -137,19 +133,7 @@ public class NewProgramScreen extends BasicGameScreen {
         }
         if (CREATE) {
             try {
-
-                String NP = setNewProgramFileName();
-
-                Mdx.files.local("Programs/" + NP).mkdirs();
-                for (FileHandle file : Mdx.files.local("Data/Templates/NewProgram").list()) {
-                    Mdx.files.local("Data/Templates/NewProgram/" + file.name()).copyTo(Mdx.files.local("Programs/" + NP));
-                }
-                Mdx.files.local("Programs/" + NP + "/Code/main.groovy").moveTo(Mdx.files.local("Programs/" + NP + "/Code/" + NP + ".groovy"));
-                newLocation += NP + "/";
-
-                setNewProgramClassName(NP);
-
-                System.out.println(NP + " template copied to Programs directory");
+                newLocation = NewProgramGenerator.setNewProgramFileName(newName);
                 FINISH = true;
             } catch (IOException ex) {
                 Logger.getLogger(NewProgramScreen.class.getName()).log(Level.SEVERE, null, ex);
@@ -157,27 +141,6 @@ public class NewProgramScreen extends BasicGameScreen {
             }
             CREATE = false;
         }
-    }
-
-    String setNewProgramFileName() throws IOException {
-        int index = 0;
-        String NP = newName.length() > 0 ? newName : "NewProgram";
-        for (FileHandle name : Mdx.files.local("Programs").list()) {
-            if (name.name().contains(NP)) {
-                index++;
-            }
-        }
-        if (index > 0) {
-            NP = NP + index;
-        }
-        return NP;
-    }
-
-    void setNewProgramClassName(String NP) throws IOException {
-        Path nfPath = new File(Mdx.files.local("Programs/" + NP + "/Code/" + NP + ".groovy").path()).toPath();
-        String newFile = Files.readString(nfPath);
-        String replace = newFile.replace("NewProgram", NP);
-        Files.writeString(nfPath, replace);
     }
 
     @Override
