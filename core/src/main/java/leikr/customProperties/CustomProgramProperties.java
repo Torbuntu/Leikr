@@ -27,17 +27,15 @@ import java.util.Properties;
  */
 public class CustomProgramProperties {
 
-    public int MAX_SPRITES;
-    public boolean USE_COMPILED;
-    public boolean COMPILE_SOURCE;
-    public String TITLE;
-    public String TYPE;
-    public String AUTHOR;
-    public String VERSION;
-    public int PLAYERS;
-    public String ABOUT;
-    public boolean JAVA_ENGINE;
-    public String directory;
+    public int MAX_SPRITES = 2048;
+    public boolean USE_COMPILED = false;
+    public boolean COMPILE_SOURCE = false;
+    public String TITLE = "unknown";
+    public String TYPE = "Program";
+    public String AUTHOR = "unknown";
+    public String VERSION = "0";
+    public int PLAYERS = 1;
+    public String ABOUT = "A Leikr Program.";
 
     public CustomProgramProperties(String gamePath) {
 
@@ -51,7 +49,6 @@ public class CustomProgramProperties {
             }
             USE_COMPILED = (prop.getProperty("use_compiled") != null) ? Boolean.valueOf(prop.getProperty("use_compiled")) : false;
             COMPILE_SOURCE = (prop.getProperty("compile_source") != null) ? Boolean.valueOf(prop.getProperty("compile_source")) : false;
-            JAVA_ENGINE = (prop.getProperty("java_engine") != null) ? Boolean.valueOf(prop.getProperty("java_engine")) : false;
 
             TITLE = ((prop.getProperty("title") != null) ? prop.getProperty("title") : "unknown");
             TYPE = ((prop.getProperty("type") != null) ? prop.getProperty("type") : "Program");

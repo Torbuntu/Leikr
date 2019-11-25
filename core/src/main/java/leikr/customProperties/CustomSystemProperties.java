@@ -46,8 +46,6 @@ public class CustomSystemProperties {
     public static int VERTICAL_AXIS;
 
     public static boolean DEBUG;
-    public static int SCREEN_HEIGHT;
-    public static int SCREEN_WIDTH;
 
     public static void init() {
         Properties prop = new Properties();
@@ -55,8 +53,6 @@ public class CustomSystemProperties {
             prop.load(stream);
             LAUNCH_TITLE = (prop.getProperty("launch_title") != null) ? prop.getProperty("launch_title") : "";
             DEBUG = (prop.getProperty("debug_mode") != null) ? Boolean.valueOf(prop.getProperty("debug_mode")) : false;
-            SCREEN_WIDTH = (prop.getProperty("screen_width") != null) ? Integer.parseInt(prop.getProperty("screen_width")) : 240;
-            SCREEN_HEIGHT = (prop.getProperty("screen_height") != null) ? Integer.parseInt(prop.getProperty("screen_height")) : 160;
 
             X = (prop.getProperty("btn_x") != null) ? Integer.parseInt(prop.getProperty("btn_x")) : 3;
             A = (prop.getProperty("btn_a") != null) ? Integer.parseInt(prop.getProperty("btn_a")) : 1;
