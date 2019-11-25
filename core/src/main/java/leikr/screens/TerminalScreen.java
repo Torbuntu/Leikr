@@ -63,9 +63,15 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
     FileHandle[] programs;
 
     Desktop desktop;
+    
+    /**
+     * The list of available commands.
+     * displayed when "help" with no params is run.
+     */
+    private final String commands = "exit, find, clear, help, ls, new, pwd, run, wiki";
 
-    public TerminalScreen() {
-        viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
+    public TerminalScreen(FitViewport vp) {
+        viewport = vp;
         desktop = Desktop.getDesktop();
     }
 
@@ -127,9 +133,9 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
 
         g.drawString(historyText, 0, 0, 240);
         g.setColor(Colors.BLACK());
-        g.fillRect(0, 152, 240, 160);
+        g.fillRect(0, 152, GameRuntime.WIDTH, GameRuntime.HEIGHT);
         g.setColor(Colors.GREEN());
-        g.drawString(">" + prompt + ((blink > 30) ? (char) 173 : ""), 0, 152, 240);
+        g.drawString(">" + prompt + ((blink > 30) ? (char) 173 : ""), 0, 152, GameRuntime.WIDTH);
     }
 
     @Override
@@ -273,7 +279,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                             return "No help for unknown command: ( " + command[1] + " )";
                     }
                 }
-                return "Commands: exit, find, clear, help, ls, new, pwd, run, wiki \n\nRun help with the name of a command for more details on that command.";
+                return "Commands: "+commands+" \n \nRun help with the name of a command for more details on that command.";
             case "install":
                 return ExportTool.importProject(command[1]);
             case "ls":

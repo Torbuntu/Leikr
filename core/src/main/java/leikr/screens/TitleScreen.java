@@ -43,8 +43,9 @@ public class TitleScreen extends BasicGameScreen {
     TiledMap logo;
     int timer = 0;
 
-    public TitleScreen(AssetManager assetManager) {
+    public TitleScreen(AssetManager assetManager, FitViewport vp) {
         this.assetManager = assetManager;
+        viewport = vp;
         logo = new TiledMap(Mdx.files.local("./Data/Logo/Logo.tmx"));
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
     }
@@ -87,7 +88,7 @@ public class TitleScreen extends BasicGameScreen {
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
         logo.draw(g, 40, 56);
-        g.drawString("Leikr Game System", 8, 80, 240, 1);
+        g.drawString("Leikr Game System", 8, 80, GameRuntime.WIDTH, 1);
     }
 
     @Override

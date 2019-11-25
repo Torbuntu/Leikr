@@ -63,7 +63,8 @@ public class EngineScreen extends BasicGameScreen {
         PAUSE
     }
 
-    public EngineScreen() {
+    public EngineScreen(FitViewport vp) {
+        viewport = vp;
         gifBatch = new SpriteBatch();
         recorder = new GifRecorder(gifBatch);
         recorder.setOpenKey(Keys.F2);
@@ -124,7 +125,6 @@ public class EngineScreen extends BasicGameScreen {
     @Override
     public void initialise(GameContainer gc) {
         system = LeikrSystemManager.getLeikrSystemManager();
-        viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
     }
 
     @Override
@@ -141,7 +141,7 @@ public class EngineScreen extends BasicGameScreen {
     @Override
     public void preTransitionIn(Transition trans) {
         engineState = EngineState.RUNNING;
-        frameBuffer = Mdx.graphics.newFrameBuffer(240, 160);
+        frameBuffer = Mdx.graphics.newFrameBuffer(GameRuntime.WIDTH, GameRuntime.HEIGHT);
     }
 
     @Override
@@ -229,7 +229,7 @@ public class EngineScreen extends BasicGameScreen {
         g.postRender();
 
         frameBuffer.begin();
-        g.preRender(240, 160);
+        g.preRender(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         switch (engineState) {
             case RUNNING:
                 renderRunning(g);
@@ -260,9 +260,9 @@ public class EngineScreen extends BasicGameScreen {
 
     void renderPause(Graphics g) {
         g.setColor(Colors.WHITE());
-        g.drawString("-- Paused --", 0, 60, 240, 1);
-        g.drawString("Exit running program?", 0, 74, 240, 1);
-        g.drawString("Yes    No", 0, 90, 240, 1);
+        g.drawString("-- Paused --", 0, 60, GameRuntime.WIDTH, 1);
+        g.drawString("Exit running program?", 0, 74, GameRuntime.WIDTH, 1);
+        g.drawString("Yes    No", 0, 90, GameRuntime.WIDTH, 1);
 
         if (CONFIRM) {
             g.setColor(Colors.GREEN());

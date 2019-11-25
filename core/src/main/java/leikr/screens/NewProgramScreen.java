@@ -21,7 +21,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import leikr.GameRuntime;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
@@ -51,8 +50,8 @@ public class NewProgramScreen extends BasicGameScreen {
 
     String newLocation = "New Program template generated at: /Programs/";
 
-    public NewProgramScreen() {
-        viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
+    public NewProgramScreen(FitViewport vp) {
+        viewport = vp;
     }
 
     @Override

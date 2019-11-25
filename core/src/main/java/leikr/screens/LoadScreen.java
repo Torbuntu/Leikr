@@ -49,9 +49,9 @@ public class LoadScreen extends BasicGameScreen {
     int loadCircleDir = 1;
     String loadPhrase = "Loading ";
 
-    public LoadScreen() {
+    public LoadScreen(FitViewport vp) {
         service = Executors.newFixedThreadPool(1);
-        viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
+        viewport = vp;
     }
 
     @Override

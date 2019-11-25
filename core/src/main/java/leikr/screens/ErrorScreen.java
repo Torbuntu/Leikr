@@ -41,8 +41,9 @@ public class ErrorScreen extends BasicGameScreen {
     boolean RELOAD = false;
     static String errorMessage;
 
-    public ErrorScreen(AssetManager assetManager) {
+    public ErrorScreen(AssetManager assetManager, FitViewport vp) {
         this.assetManager = assetManager;
+        viewport = vp;
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         errorMessage = "";
     }
@@ -90,7 +91,7 @@ public class ErrorScreen extends BasicGameScreen {
         g.setColor(Colors.RED());
         g.drawString("Message:  " + errorMessage, 0, 0, 232);
         g.setColor(Colors.BLACK());
-        g.drawRect(0, 152, 240, 8);
+        g.drawRect(0, 152, GameRuntime.WIDTH, 8);
         g.setColor(Colors.GREEN());
         g.drawString(":q to quit", 0, 152);
     }
