@@ -89,7 +89,7 @@ public class NewProgramScreen extends BasicGameScreen {
 
             @Override
             public boolean keyTyped(char c) {
-                if ((int) c > 64 && (int) c < 127) {
+                if ((int) c > 32 && (int) c < 127) {
                     newName = newName + c;
                 }
                 return true;
