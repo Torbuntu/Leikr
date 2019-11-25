@@ -28,6 +28,7 @@ import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.files.LocalFileHandleResolver;
 import org.mini2Dx.core.game.ScreenBasedGame;
 import org.mini2Dx.core.graphics.Pixmap;
+import org.mini2Dx.core.graphics.viewport.FitViewport;
 
 public class GameRuntime extends ScreenBasedGame {
 
@@ -40,8 +41,9 @@ public class GameRuntime extends ScreenBasedGame {
 
     private boolean DIRECT_LAUNCH;
 
-    public static int WIDTH;
-    public static int HEIGHT;
+    public static int WIDTH = 240;
+    public static int HEIGHT = 160;
+    FitViewport viewport;
 
     AssetManager assetManager;
 
@@ -54,10 +56,8 @@ public class GameRuntime extends ScreenBasedGame {
      */
     public GameRuntime(String[] arg) {
         DIRECT_LAUNCH = false;
-        
+        viewport = new FitViewport(WIDTH, HEIGHT);
         CustomSystemProperties.init();
-        WIDTH = CustomSystemProperties.SCREEN_WIDTH;
-        HEIGHT = CustomSystemProperties.SCREEN_HEIGHT;
         
         if (arg.length > 0 && arg[0].length() > 3 && !arg[0].equalsIgnoreCase("insecure")) {
             PROGRAM_PATH = "Programs/" + arg[0];
@@ -102,15 +102,15 @@ public class GameRuntime extends ScreenBasedGame {
 
         //Transparent image to hide host system cursor.
         Pixmap tmp = Mdx.graphics.newPixmap(Mdx.files.local("Internal/Cursor.png"));
-        Mdx.graphics.newCustomCursor(tmp, tmp, 0, 0);
+        Mdx.graphics.newCustomCursor(tmp, tmp, 0, 0).setVisible(false);
         tmp.dispose();
 
-        this.addScreen(new EngineScreen());//1
-        this.addScreen(new TitleScreen(assetManager));//2
-        this.addScreen(new ErrorScreen(assetManager));//3
-        this.addScreen(new LoadScreen());//4
-        this.addScreen(new NewProgramScreen());//5
-        this.addScreen(new TerminalScreen());//6
+        this.addScreen(new EngineScreen(viewport));//1
+        this.addScreen(new TitleScreen(assetManager, viewport));//2
+        this.addScreen(new ErrorScreen(assetManager, viewport));//3
+        this.addScreen(new LoadScreen(viewport));//4
+        this.addScreen(new NewProgramScreen(viewport));//5
+        this.addScreen(new TerminalScreen(viewport));//6
     }
 
     @Override
