@@ -399,7 +399,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         lScreen.tint();
     }
 
-    public int getPixel(BigDecimal x, BigDecimal y) {
+    public String getPixel(BigDecimal x, BigDecimal y) {
         return lScreen.getPixel(x, y);
     }
     //end shape drawing methods
