@@ -273,7 +273,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                         case "pwd":
                             return ">pwd \nPrints the location fo the Programs directory. Attempts to open the directory in the host file manager.";
                         case "run":
-                            return ">run [arg] \nLoads and Runs a program given a title.";
+                            return ">run [option] [args...] \nLoads and Runs a program given a title. Optional args can be passed.";
                         case "wiki":
                             return ">wiki [option] \nOpens the Leikr wiki. Use an Option to open a specific wiki page.";
                         default:
@@ -289,8 +289,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                 if(command.length == 2){
                     try{
                         return NewProgramGenerator.setNewProgramFileName(command[1]);
-                    }catch(Exception ex){
-                        ex.printStackTrace();
+                    }catch(IOException ex){
                         return "New program with name ["+ command[1]+"] failed to generate.";
                     }
                 }
@@ -315,6 +314,10 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                 try {
                     GameRuntime.GAME_NAME = command[1];
                     GameRuntime.setProgramPath("Programs/" + command[1]);
+                    if(command.length > 2){
+                        String[] args = Arrays.copyOfRange(command, 2, command.length);
+                        EngineScreen.setEngineArgs(args);
+                    }
                     RUN_PROGRAM = true;
                     return "loading...";
                 } catch (Exception ex) {
