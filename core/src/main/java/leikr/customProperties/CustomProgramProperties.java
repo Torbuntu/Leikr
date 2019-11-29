@@ -61,13 +61,4 @@ public class CustomProgramProperties {
         }
 
     }
-
-    public CustomProgramProperties(String title, String type, String author, String version, int players, String about) {
-        TITLE = title;
-        TYPE = type;
-        AUTHOR = author;
-        VERSION = version;
-        PLAYERS = players;
-        ABOUT = about;
-    }
 }

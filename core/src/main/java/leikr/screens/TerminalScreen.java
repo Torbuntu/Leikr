@@ -288,7 +288,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
             case "new":
                 if(command.length == 2){
                     try{
-                        return NewProgramGenerator.setNewProgramFileName(command[1]);
+                        return NewProgramGenerator.setNewProgramFileName(command[1], "Default");
                     }catch(Exception ex){
                         ex.printStackTrace();
                         return "New program with name ["+ command[1]+"] failed to generate.";
