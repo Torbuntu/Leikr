@@ -64,10 +64,10 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
     FileHandle[] programs;
 
     Desktop desktop;
-    
+
     /**
-     * The list of available commands.
-     * displayed when "help" with no params is run.
+     * The list of available commands. displayed when "help" with no params is
+     * run.
      */
     private final String commands = "exit, find, clear, help, ls, new, pwd, run, wiki";
 
@@ -273,38 +273,38 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                         case "pwd":
                             return ">pwd \nPrints the location fo the Programs directory. Attempts to open the directory in the host file manager.";
                         case "run":
-                            return ">run [arg] \nLoads and Runs a program given a title.";
+                            return ">run [option] [args...] \nLoads and Runs a program given a title. Optional args can be passed.";
                         case "wiki":
                             return ">wiki [option] \nOpens the Leikr wiki. Use an Option to open a specific wiki page.";
                         default:
                             return "No help for unknown command: ( " + command[1] + " )";
                     }
                 }
-                return "Commands: "+commands+" \n \nRun help with the name of a command for more details on that command.";
+                return "Commands: " + commands + " \n \nRun help with the name of a command for more details on that command.";
             case "install":
                 return ExportTool.importProject(command[1]);
             case "ls":
                 return runLs();
             case "new":
-                if(command.length == 2){
-                    try{
+                if (command.length == 2) {
+                    try {
                         return NewProgramGenerator.setNewProgramFileName(command[1], "Default");
-                    }catch(Exception ex){
-                        ex.printStackTrace();
-                        return "New program with name ["+ command[1]+"] failed to generate.";
+                    } catch (IOException ex) {
+                        Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
+                        return "New program with name [" + command[1] + "] failed to generate.";
                     }
                 }
                 NEW_PROGRAM = true;
                 return "Create a new program.";
             case "pwd":
                 try {
-                    File f = new File("Programs");
-                    desktop.open(f);
-                    return f.getAbsolutePath();
-                } catch (IOException ex) {
-                    Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
-                    return "Could not find workspace directory.";
-                }
+                File f = new File("Programs");
+                desktop.open(f);
+                return f.getAbsolutePath();
+            } catch (IOException ex) {
+                Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
+                return "Could not find workspace directory.";
+            }
             case "run":
                 if (command.length == 1) {
                     return "Missing - required program title.";
@@ -315,6 +315,10 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                 try {
                     GameRuntime.GAME_NAME = command[1];
                     GameRuntime.setProgramPath("Programs/" + command[1]);
+                    if (command.length > 2) {
+                        String[] args = Arrays.copyOfRange(command, 2, command.length);
+                        EngineScreen.setEngineArgs(args);
+                    }
                     RUN_PROGRAM = true;
                     return "loading...";
                 } catch (Exception ex) {
@@ -324,15 +328,15 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
 
             case "wiki":
                 String wiki = "https://github.com/Torbuntu/Leikr/wiki";
-                if(command.length == 2){
-                    wiki += "/"+command[1];
+                if (command.length == 2) {
+                    wiki += "/" + command[1];
                 }
                 try {
                     Desktop.getDesktop().browse(new URI(wiki));
                 } catch (IOException | URISyntaxException ex) {
                     return "Host browser unaccessible.";
                 }
-                return "Opening ["+ wiki +"] in host browser.";
+                return "Opening [" + wiki + "] in host browser.";
             default:
                 return "Uknown command: ( " + prompt + " )";
         }

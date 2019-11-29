@@ -52,6 +52,8 @@ public class EngineScreen extends BasicGameScreen {
     SpriteBatch gifBatch;
     GifRecorder recorder;
 
+    private static String[] engineArgs;
+
     private static boolean CONFIRM = false;
 
     public static EngineState engineState;
@@ -73,6 +75,10 @@ public class EngineScreen extends BasicGameScreen {
 
     public static void pauseEngine() {
         engineState = EngineState.PAUSE;
+    }
+
+    public static void setEngineArgs(String[] args) {
+        engineArgs = args;
     }
 
     private void pause() {
@@ -135,6 +141,7 @@ public class EngineScreen extends BasicGameScreen {
             engine = null; // release all Engine objects for gc
         }
         frameBuffer.dispose();
+        engineArgs = new String[0];//set args to an empty array.
         System.out.println("Engine classes disposed.");
     }
 
@@ -153,6 +160,7 @@ public class EngineScreen extends BasicGameScreen {
             system.setRunning(true);
             engine.preCreate(EngineLoader.getEngineLoader(false).cp.MAX_SPRITES, system, viewport, frameBuffer);
             engine.create();
+            engine.create(engineArgs);
         } catch (Exception ex) {
             engine.lAudio.pauseAllAudio();
             engineState = EngineState.ERROR;
@@ -184,15 +192,15 @@ public class EngineScreen extends BasicGameScreen {
                 break;
             case RUNNING:
                 try {
-                    engine.preUpdate(delta);
-                    engine.update(delta);
-                } catch (Exception ex) {
-                    engine.lAudio.pauseAllAudio();
-                    engineState = EngineState.ERROR;
-                    errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
-                    Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                break;
+                engine.preUpdate(delta);
+                engine.update(delta);
+            } catch (Exception ex) {
+                engine.lAudio.pauseAllAudio();
+                engineState = EngineState.ERROR;
+                errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
+                Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
             case PAUSE:
                 if (Mdx.input.isKeyJustPressed(Keys.LEFT)) {
                     CONFIRM = true;

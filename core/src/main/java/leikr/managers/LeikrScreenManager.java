@@ -628,7 +628,7 @@ public class LeikrScreenManager {
         g.removeTint();
     }
 
-    public int getPixel(BigDecimal x, BigDecimal y) {
+    public String getPixel(BigDecimal x, BigDecimal y) {
         int gx = MathUtils.ceil((v.getX() * v.getScaleX()) + (x.floatValue() * v.getScaleX()));
         int gy = MathUtils.ceil((v.getY() * v.getScaleY()) + (y.floatValue() * v.getScaleY()));
         gy = Gdx.graphics.getHeight() - gy;
@@ -637,19 +637,10 @@ public class LeikrScreenManager {
         byte[] b = ScreenUtils.getFrameBufferPixels(gx, gy, 1, 1, false);
         frameBuffer.begin();
 
-        int color = color(0xFF & b[0], 0xFF & b[1], 0xFF & b[2]);
-        Color c = Mdx.graphics.newColor(color);
-        int output = 0;
-        for (int i = 0; i < colorPalette.size(); i++) {
-            if (c.equals(colorPalette.get(i))) {
-                output = i;
-            }
-        }
-        return output;
-    }
-
-    int color(int r, int g, int b) {
-        return (r << 24) | (g << 16) | (b << 8) | 255;
+        int re = 0xFF & b[0];
+        int gr = 0xFF & b[1];
+        int bl = 0xFF & b[2];
+        return (re + "," + gr + "," + bl);
     }
 
 //END EXPERIMENTAL
