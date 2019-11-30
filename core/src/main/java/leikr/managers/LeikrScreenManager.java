@@ -18,20 +18,14 @@ package leikr.managers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ScreenUtils;
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
 import leikr.loaders.ImageLoader;
 import leikr.loaders.MapLoader;
 import leikr.loaders.SpriteLoader;
 import org.mini2Dx.core.Graphics;
-import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.FrameBuffer;
-import org.mini2Dx.core.graphics.Pixmap;
-import org.mini2Dx.core.graphics.PixmapFormat;
 import org.mini2Dx.core.graphics.Sprite;
-import org.mini2Dx.core.graphics.SpriteSheet;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.graphics.viewport.Viewport;
 import org.mini2Dx.gdx.math.MathUtils;
@@ -61,9 +55,8 @@ public class LeikrScreenManager {
     bgColor is what preRender uses to clear the backrgound.
     
      */
-    SpriteSheet pixels;
-    List<Color> colorPalette;
     Color bgColor;
+    PixelManager pixelManager;
 
     private static LeikrScreenManager instance;
 
@@ -84,8 +77,6 @@ public class LeikrScreenManager {
      * @param mSprites
      */
     private LeikrScreenManager() {
-        createPalette();
-        createPixmap();
     }
 
     public static LeikrScreenManager getLeikrScreenManager(int mSprites) {
@@ -101,25 +92,8 @@ public class LeikrScreenManager {
         spriteLoader = SpriteLoader.getSpriteLoader();
         imageLoader = ImageLoader.getImageLoader();
         mapLoader = MapLoader.getMapLoader();
+        pixelManager = PixelManager.getPixelManager();
         bgColor = Colors.BLACK();
-    }
-
-    private void createPalette() {
-        colorPalette = Arrays.asList(Colors.CLEAR(), Colors.WHITE(), Colors.WHITE_M1(), Colors.LIGHT_GRAY(), Colors.GRAY(),
-                Colors.DARK_GRAY(), Colors.BLACK_P1(), Colors.BLACK(), Colors.RED(), Colors.GREEN(), Colors.BLUE(), Colors.MAROON(),
-                Colors.CORAL(), Colors.SALMON(), Colors.PINK(), Colors.LIME(), Colors.FOREST(), Colors.OLIVE(), Colors.NAVY(), Colors.ROYAL(), Colors.SKY(),
-                Colors.CYAN(), Colors.TEAL(), Colors.YELLOW(), Colors.GOLD(), Colors.GOLDENROD(), Colors.ORANGE(),
-                Colors.BROWN(), Colors.TAN(), Colors.FIREBRICK(), Colors.PURPLE(), Colors.VIOLET(), Colors.MAGENTA());
-    }
-
-    private void createPixmap() {
-        Pixmap pm = Mdx.graphics.newPixmap(colorPalette.size(), 1, PixmapFormat.RGBA8888);
-        for (int i = 0; i < colorPalette.size(); i++) {
-            pm.setColor(getDrawColor(i));
-            pm.drawPixel(i, 0);
-        }
-        pixels = new SpriteSheet(Mdx.graphics.newTexture(pm), 1, 1);
-        pm.dispose();
     }
 
     //Engine methods
@@ -219,19 +193,12 @@ public class LeikrScreenManager {
     //end Map methods
 
     //start color methods
-    private Color getDrawColor(int color) {
-        if (color > colorPalette.size() || color < 0) {
-            return Colors.BLACK();
-        }
-        return colorPalette.get(color);
-    }
-
     private void setDrawColor(int color) {
-        g.setColor(getDrawColor(color));
+        g.setColor(pixelManager.getDrawColor(color));
     }
 
     public final void bgColor(int color) {
-        bgColor = getDrawColor(color);
+        bgColor = pixelManager.getDrawColor(color);
     }
 
     public final void bgColor(String c) {
@@ -401,7 +368,7 @@ public class LeikrScreenManager {
      * @param y
      */
     public final void drawPixel(int color, BigDecimal x, BigDecimal y) {
-        g.drawSprite(pixels.getSprite(color), x.intValue(), y.intValue());
+        g.drawSprite(pixelManager.getSprite(color), x.intValue(), y.intValue());
     }
 
     /**
@@ -412,7 +379,7 @@ public class LeikrScreenManager {
      * @param y
      */
     private void drawPixel(int color, int x, int y) {
-        g.drawSprite(pixels.getSprite(color), x, y);
+        g.drawSprite(pixelManager.getSprite(color), x, y);
     }
 
     /**
@@ -424,7 +391,7 @@ public class LeikrScreenManager {
      */
     private void drawPixel(String color, int x, int y) {
         g.setTint(Colors.rgbToColor(color));
-        g.drawSprite(pixels.getSprite(1), x, y);
+        g.drawSprite(pixelManager.getSprite(1), x, y);
         g.removeTint();
     }
 
@@ -591,12 +558,12 @@ public class LeikrScreenManager {
     }
     
     public final void drawCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r){
-        g.setColor(getDrawColor(color));
+        g.setColor(pixelManager.getDrawColor(color));
         g.drawCircle(x.intValue(), y.intValue(), r.intValue());
     }
     
     public final void fillCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r){
-        g.setColor(getDrawColor(color));
+        g.setColor(pixelManager.getDrawColor(color));
         g.fillCircle(x.intValue(), y.intValue(), r.intValue());
     }
     
@@ -621,7 +588,7 @@ public class LeikrScreenManager {
 
     //EXPERIMENTAL METHODS
     public void tint(int color) {
-        g.setTint(getDrawColor(color));
+        g.setTint(pixelManager.getDrawColor(color));
     }
 
     public void tint() {
