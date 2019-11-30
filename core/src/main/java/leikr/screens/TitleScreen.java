@@ -53,7 +53,7 @@ public class TitleScreen extends BasicGameScreen {
 
     public LeikrScreenManager lScreen;
 
-    public TitleScreen(AssetManager assetManager) {
+    public TitleScreen(AssetManager assetManager, FitViewport vp) {
         this.assetManager = assetManager;
         assetManager.load("./Data/Images/leikr-logo.png", Texture.class);
         assetManager.finishLoading();
