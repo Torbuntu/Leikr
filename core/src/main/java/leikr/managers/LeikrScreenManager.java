@@ -251,6 +251,11 @@ public class LeikrScreenManager {
         Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue());
     }
 
+    public final void drawString(String color, String text, int x, int y) {
+        LeikrScreenManager.this.setColor(color);
+        Mdx.graphicsContext.drawString(text, x, y);
+    }
+
     public final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
         LeikrScreenManager.this.setColor(color);
         Mdx.graphicsContext.drawString(text, x.floatValue(), y.floatValue(), width.floatValue());
