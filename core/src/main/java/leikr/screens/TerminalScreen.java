@@ -271,7 +271,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                         case "help":
                             return ">help [option] \nDisplays the help options to the screen or info about a command.";
                         case "ls":
-                            return ">ls \nDisplays the contents of the Programs directory.";
+                            return ">ls [option] \nDisplays the contents of a given directory or the default directory Programs.";
                         case "new":
                             return ">new [option]\nOpens a new project builder.\nIf run with option, will attempt to generate a project with the given name.";
                         case "pwd":
