@@ -47,6 +47,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
 
     boolean RUN_PROGRAM = false;
     boolean NEW_PROGRAM = false;
+    boolean RUN_UTILITY = false;
 
     String out;
 
@@ -62,8 +63,14 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
 
     Desktop desktop;
 
-    public TerminalScreen() {
-        viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
+    /**
+     * The list of available commands. displayed when "help" with no params is
+     * run.
+     */
+    private final String commands = "exit, find, clear, help, ls, new, pwd, run, tool, tools, wiki";
+
+    public TerminalScreen(FitViewport vp) {
+        viewport = vp;
         desktop = Desktop.getDesktop();
     }
 
@@ -71,16 +78,15 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
         Mdx.input.setInputProcessor(this);
     }
 
-    private String runLs() {
+    private String runLs(String dir) {
         try {
             out = "";
-            programs = Mdx.files.local("Programs").list();
+            programs = Mdx.files.local(dir).list();
             Arrays.asList(programs).stream().forEach(e -> out += e.nameWithoutExtension() + "\n");
-
             return out;
         } catch (IOException ex) {
             Logger.getLogger(EngineLoader.class.getName()).log(Level.WARNING, null, ex);
-            return "Failed to execute command ( ls )";
+            return "Failed to execute command [ ls ]";
         }
     }
 
@@ -92,11 +98,11 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
     @Override
     public void preTransitionIn(Transition trns) {
         prompt = "";
-        out = runLs();
+        out = runLs("Programs");
         if (GameRuntime.GAME_NAME.length() < 2) {
             historyText = "No program loaded.";
         } else {
-            historyText = "Loaded program: `" + GameRuntime.GAME_NAME + "`";
+            historyText = "Closed program: [" + GameRuntime.GAME_NAME + "]";
         }
         setProcessor();
     }
@@ -111,6 +117,10 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
         if (NEW_PROGRAM) {
             NEW_PROGRAM = false;
             sm.enterGameScreen(NewProgramScreen.ID, null, null);
+        }
+        if (RUN_UTILITY) {
+            RUN_UTILITY = false;
+            sm.enterGameScreen(LoadScreen.ID, null, null);
         }
         blink++;
         if (blink > 60) {
@@ -206,7 +216,7 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
 
     private String processCommand() {
         String[] command = prompt.split(" ");
-        switch (command[0]) {
+        switch (command[0].toLowerCase()) {
             case "clean": {
                 try {
                     Mdx.files.local("Packages/").deleteDirectory();
@@ -251,30 +261,46 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                         case "help":
                             return ">help [option] \nDisplays the help options to the screen or info about a command.";
                         case "ls":
-                            return ">ls \nDisplays the contents of the Programs directory.";
+                            return ">ls [option] \nDisplays the contents of a given directory or the default directory Programs.";
+                        case "new":
+                            return ">new [option]\nOpens a new project builder.\nIf run with option, will attempt to generate a project with the given name.";
+                        case "pwd":
+                            return ">pwd \nPrints the location fo the Programs directory. Attempts to open the directory in the host file manager.";
                         case "run":
-                            return ">run [arg] \nLoads and Runs a program given a title.";
+                            return ">run [option] [args...] \nLoads and Runs a program given a title. Optional args can be passed.";
+                        case "tool":
+                            return ">tool [option] \nLoads and Runs a tool given a title.";
+                        case "tools":
+                            return ">tools \nDisplays the contents of the Data/Tools directory.";
+                        case "wiki":
+                            return ">wiki [option] \nOpens the Leikr wiki. Use an Option to open a specific wiki page.";
                         default:
-                            return "No help for unknown command: ( " + command[1] + " )";
+                            return "No help for unknown command: [ " + command[1] + " ]";
                     }
                 }
                 return "Commands: exit, clear, help, load, ls, run";
             case "install":
                 return ExportTool.importProject(command[1]);
             case "ls":
-                return runLs();
+                if (command.length > 1) {
+                    return runLs(command[1]);
+                } else {
+                    return runLs("Programs");
+
+                }
             case "new":
                 NEW_PROGRAM = true;
                 return "Create a new program.";
             case "pwd":
                 try {
-                    File f = new File("Programs");
-                    desktop.open(f);
-                    return f.getAbsolutePath();
-                } catch (IOException ex) {
-                    Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
-                    return "Could not find workspace directory.";
-                }
+                File f = new File("Programs");
+                desktop.open(f);
+                return f.getAbsolutePath();
+            } catch (IOException ex) {
+                Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
+                return "Could not find workspace directory.";
+            }
+            case "rn":
             case "run":
                 if (command.length == 1) {
                     return "Missing - required program title.";
@@ -289,8 +315,41 @@ public class TerminalScreen extends BasicGameScreen implements InputProcessor {
                     return "loading...";
                 } catch (Exception ex) {
                     Logger.getLogger(EngineLoader.class.getName()).log(Level.WARNING, null, ex);
-                    return "Failed to run program with name ( " + command[1] + " )";
+                    return "Failed to run program with name [ " + command[1] + " ]";
                 }
+            case "tool":
+                if (command.length == 1) {
+                    return "Missing - required tool title.";
+                }
+                try {
+                    runLs("Data/Tools");
+                    if (!Arrays.asList(out.split("\n")).contains(command[1])) {
+                        return "Tool [" + command[1] + "] does not exist in Data/Tools/ directory.";
+                    }
+                    GameRuntime.GAME_NAME = command[1];
+                    GameRuntime.setProgramPath("Data/Tools/" + command[1]);
+                    RUN_UTILITY = true;
+                } catch (Exception ex) {
+                    Logger.getLogger(EngineLoader.class.getName()).log(Level.WARNING, null, ex);
+                    return "Failed to run tool with name [ " + command[1] + " ]";
+                }
+
+                return "Running [" + command[1] + "] tool.";
+
+            case "tools":
+                return runLs("Data/Tools");
+            case "wiki":
+                String wiki = "https://github.com/Torbuntu/Leikr/wiki";
+                if (command.length == 2) {
+                    wiki += "/" + command[1];
+                }
+                try {
+                    Desktop.getDesktop().browse(new URI(wiki));
+                } catch (IOException | URISyntaxException ex) {
+                    Logger.getLogger(EngineLoader.class.getName()).log(Level.WARNING, null, ex);
+                    return "Host browser unaccessible.";
+                }
+                return "Opening [" + wiki + "] in host browser.";
             default:
                 return "Uknown command: ( " + prompt + " )";
         }
