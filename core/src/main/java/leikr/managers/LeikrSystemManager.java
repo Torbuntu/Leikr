@@ -133,11 +133,11 @@ public class LeikrSystemManager {
     }
 
     public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {
-        return x1.floatValue() + w1.floatValue() >= x2.floatValue() && x2.floatValue() + w2.floatValue() >= x1.floatValue() || y1.floatValue() + h1.floatValue() >= y2.floatValue() && y2.floatValue() + h2.floatValue() >= y1.floatValue();
+        return x1.floatValue() + w1.floatValue() >= x2.floatValue() && x2.floatValue() + w2.floatValue() >= x1.floatValue() && y1.floatValue() + h1.floatValue() >= y2.floatValue() && y2.floatValue() + h2.floatValue() >= y1.floatValue();
     }
 
     public boolean collides(BigDecimal[] a, BigDecimal[] b) {
-        return a[0].floatValue() + a[2].floatValue() >= b[0].floatValue() && b[0].floatValue() + b[2].floatValue() >= a[0].floatValue() || a[1].floatValue() + a[3].floatValue() >= b[1].floatValue() && b[1].floatValue() + b[3].floatValue() >= a[1].floatValue();
+        return a[0].floatValue() + a[2].floatValue() >= b[0].floatValue() && b[0].floatValue() + b[2].floatValue() >= a[0].floatValue() && a[1].floatValue() + a[3].floatValue() >= b[1].floatValue() && b[1].floatValue() + b[3].floatValue() >= a[1].floatValue();
     }
 
     public boolean point(BigDecimal x, BigDecimal y, BigDecimal x2, BigDecimal y2, BigDecimal w, BigDecimal h) {
