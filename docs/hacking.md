@@ -12,7 +12,7 @@ You see where this is going, right?
 
 Using this strategy one could manually compile other JVM compatible languages and put the class files into `Compiled` to be run by Leikr. 
 
-Languages tested with the method: Java, Kotlin, Scala, Clojure and Python (Jython)
+Languages tested with the method: Java, Kotlin, Scala, Clojure, Python (Jython), Lua (LuaJ)
 
 As long as the main game file can extend the Leikr Engine API class then this should work with other JVM languages as well. 
 
@@ -550,5 +550,286 @@ In the root of the Leikr project run this command (make sure you have a copy of 
 
 
 Now whenever you make changes to the Python file itself, all you have to do is reload the program (F5). 
+
+
+
+# [Example using Lua](#example-using-lua)
+
+#### Leikr version 0.0.15+
+
+I don't know why it took me so long to get Lua working. But once I did, it was pretty standard compared to the others on this list.
+
+Firstly, download the [LuaJ jar from maven](https://search.maven.org/artifact/org.luaj/luaj-jse/3.0.1/jar). We will use the Luaj-jse jar (the download button should be in the top right).
+
+
+I set up my project to have only the `Code` directory for this project. Something like this:
+```
+Lua/
+../Code/
+../../luaj-jse-3.0.1.jar
+../../Leikr.jar
+../../Lua.groovy
+../../Compiled/Code.lua
+
+```
+
+The two files are a shim written in Groovy, which actually calls the `Code.lua` file and runs the methods we want from it, as well as set up environment settings (functions, variables etc...)
+
+Let's first write up the shim file `Lua.groovy`
+
+We need to make sure we import the luaj packages we need in order to make this work along with the usual boilerplate. 
+
+```Groovy
+import org.luaj.vm2.*
+import org.luaj.vm2.lib.*
+import org.luaj.vm2.lib.jse.*
+
+class Lua extends leikr.Engine {
+    void create(){}
+    void update(float delta){}
+    void render(){}
+}
+```
+
+Since we want to use a create, update, render combo we need to set those up to translate between Lua and Groovy. We also need a `Globals` object to manage all of this.
+
+```Groovy
+        Globals globals = JsePlatform.standardGlobals();
+	
+	LuaValue c
+	LuaValue u
+	LuaValue r
+	
+	LuaFunction cr
+	LuaFunction up
+	LuaFunction re
+	
+	void create(){
+		globals.load(new FileInputStream("Programs/Lua/Code/Compiled/Code.lua"), "@main.lua", "t", globals).call();
+		
+		c = globals.get("create")
+		u = globals.get("update")
+		r = globals.get("render")
+		
+		cr = c.checkfunction()
+		up = u.checkfunction()
+		re = r.checkfunction()
+		
+		cr.call()
+	}
+```
+
+This is now assuming we have the following set up in our `Code.lua` file:
+
+```Lua
+function create()
+end
+
+function update()
+end
+
+function render()
+end
+```
+
+Now our Groovy shim will parse in the `Code.lua` file, read the methods into Values which then get checked as Lua functions.
+
+Finally we call the `cr.call()` method to actually run the Lua file's create method. 
+
+update and render are pretty simple now
+
+```Groovy
+    void update(float delta){
+	up.call()
+    }
+	
+	
+    void render(){	
+    	re.call()
+    }
+```
+
+That just calls the Lua file's update and render methods in the correct places.
+
+That is all well and good, but we still need the Leikr API to be available to the lua code. This is where the bulk of the busy work shows up. It isn't difficult, just time consuming. 
+
+Simply starting with the `drawRect` method.
+
+```Groovy
+    private class DrawRect extends VarArgFunction{
+    	public Varargs invoke(Varargs args){
+    		int c = args.arg(1).checkint()
+    		int x = args.arg(2).checkint()
+    		int y = args.arg(3).checkint()
+    		int w = args.arg(4).checkint()
+    		int h = args.arg(5).checkint()
+    		Lua.this.drawRect(c,x,y,w,h)
+    		
+    		return NIL
+    	}
+    }
+```
+
+I put this subclass inside of the Groovy shim's class. A few things to note.
+1. Lua is 1 indexed (instead of the arguably more sensable 0 index) so when we look for args we have to start from 1. 
+2. To get the java value we use the check methods, in this case `checkint()` to get the int (if it is an int) from the arg.
+3. To get the API method from the Leikr Engine, we have to call the method from the outer class, in this case `Lua` so we call it like so `Lua.this.drawRect(c,x,y,w,h)` 
+4. We must return NIL, otherwise a NPE will occur. 
+
+Now that we have that set up, we need to make sure it is inside our `globals` object so Lua knows about it.
+
+For that, we go back into our create method and add a line.
+```Groovy
+void create(){
+	globals.set("drawRect", new DrawRect())
+	...
+}
+```
+
+Now in our Lua file's render method we can call `drawRect`! 
+
+```Lua
+function render()
+    drawPixel(32, 25, 25)
+end
+```
+
+#### Full Groovy shim
+
+```Groovy
+import org.luaj.vm2.*
+import org.luaj.vm2.lib.*
+import org.luaj.vm2.lib.jse.*
+
+class Lua extends leikr.Engine {
+
+	Globals globals = JsePlatform.standardGlobals();
+	
+	LuaValue c
+	LuaValue u
+	LuaValue r
+	
+	LuaFunction cr
+	LuaFunction up
+	LuaFunction re
+	
+	void create(){
+		globals.set("key", new KeyDown())
+		
+		globals.set("drawPixel", new DrawPix())
+		globals.set("randInt", new Rand())
+		
+		globals.set("drawRect", new DrawRect())
+		globals.set("sprite", new DrawSprite())
+	
+		globals.load(new FileInputStream("Programs/Lua/Code/Compiled/Code.lua"), "@main.lua", "t", globals).call();
+		
+		c = globals.get("create")
+		u = globals.get("update")
+		r = globals.get("render")
+		
+		cr = c.checkfunction()
+		up = u.checkfunction()
+		re = r.checkfunction()
+		
+		cr.call()
+	}
+	
+	void update(float delta){
+		up.call()
+	}
+	
+	
+    void render(){	
+    	re.call()
+    }
+        
+    private class Rand extends TwoArgFunction {
+    	public LuaValue call(LuaValue min, LuaValue max){
+    		return valueOf(Lua.this.randInt(min.checkint(), max.checkint()))
+    	}
+    }
+    
+    private class DrawRect extends VarArgFunction{
+    	public Varargs invoke(Varargs args){
+    		int c = args.arg(1).checkint()
+    		int x = args.arg(2).checkint()
+    		int y = args.arg(3).checkint()
+    		int w = args.arg(4).checkint()
+    		int h = args.arg(5).checkint()
+    		Lua.this.drawRect(c,x,y,w,h)
+    		
+    		return NIL
+    	}
+    }
+}
+
+```
+
+#### Full Code.lua file
+
+```Lua
+local x, y, dx, dy, c
+
+function create()
+	x = {}
+	y = {}
+	dx = {}
+	dy = {}
+	c = {}
+	for i = 0, 10 do
+		c[i] = randInt(12, 30)
+		x[i] = randInt(0, 230)
+		y[i] = randInt(0, 150)
+		dx[i] = randInt(0,2)
+		dy[i] = randInt(0,2)
+		if(dx[i] == 0) then dx[i] = -1 end
+		if(dy[i] == 0) then dy[i] = -1 end
+	end
+end
+
+function update()
+	
+	for i = 0, 10 do
+		x[i] = x[i] + dx[i]
+		if(x[i] <= 0 or x[i] >= 230) then dx[i] = -dx[i] end
+		
+		y[i] = y[i] + dy[i]
+		if(y[i] <= 0 or y[i] >= 150) then dy[i] = -dy[i] end
+	end
+	
+	
+end
+
+function render()
+	for i = 0, 10 do
+		drawRect(c[i], x[i], y[i], 10, 10)
+	end
+end
+
+```
+
+Same rectangle drawing as the other demos. 
+
+#### Compiling
+Like the other examples, we can simply compile the Groovy shim into JVM class files. We can execute the following from inside the `Code` directory (make sure the jars are in there too)
+```
+> groovyc -cp Leikr.jar:luaj-jse-3.0.1.jar Lua.groovy
+```
+Then move all the generated class files into the Compiled directory (where `Code.lua` should be)
+```
+>mv *.class Compiled/
+```
+
+#### Running
+To run the Lua project, make sure the `program.properties` file has `use_compiled=true` and `compile_source=false`. This way Leikr knows to run from the `class` files instead of compiling sources again.
+
+Then, we need to make sure the luaj jar is on the classpath, so when starting up Leikr we now run the following:
+```
+> java -cp Leikr.jar:luaj-jse-3.0.1.jar leikr.desktop.DesktopLauncher
+```
+
+then select and run Lua from the project list. 
+
 
 Happy Hacking!
