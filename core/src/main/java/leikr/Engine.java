@@ -124,8 +124,8 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      */
     public void create() {
     }
-    
-    public void create(String[] args){
+
+    public void create(String[] args) {
     }
 
     public void update(float delta) {
@@ -173,19 +173,12 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     //end custom prop functions
 
     /**
-     * Prints the FPS to the console
+     * Returns the FPS as an int
      *
+     * @return the FPS as an int
      */
-    public final void FPS() {
-        System.out.println("FPS: " + Mdx.platformUtils.getFramesPerSecond());
-    }
-
-    public final void HOST_INFO() {
-        System.out.println("Total Mem: " + Mdx.platformUtils.getTotalMemory());
-        System.out.println("Free Mem : " + Mdx.platformUtils.getAvailableMemory());
-        System.out.println("Used Mem : " + Mdx.platformUtils.getUsedMemory());
-        System.out.println("Avg. UPD : " + Mdx.platformUtils.getAverageUpdateDuration());
-        System.out.println();
+    public final int FPS() {
+        return Mdx.platformUtils.getFramesPerSecond();
     }
 
     public final boolean getActive() {
@@ -394,6 +387,22 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         lScreen.drawLineSegment(color, x0, y0, x1, y1);
     }
 
+    public final void drawCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r) {
+        lScreen.drawCircle(color, x, y, r);
+    }
+
+    public final void fillCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r) {
+        lScreen.fillCircle(color, x, y, r);
+    }
+
+    public final void drawCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r) {
+        lScreen.drawCircle(color, x, y, r);
+    }
+
+    public final void fillCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r) {
+        lScreen.fillCircle(color, x, y, r);
+    }
+
     public void tint(int color) {
         lScreen.tint(color);
     }
@@ -586,22 +595,6 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     //END System API
 
 //Experimental API methods
-    public final void drawCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r) {
-        lScreen.drawCircle(color, x, y, r);
-    }
-
-    public final void fillCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r) {
-        lScreen.fillCircle(color, x, y, r);
-    }
-    
-    public final void drawCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r) {
-        lScreen.drawCircle(color, x, y, r);
-    }
-
-    public final void fillCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r) {
-        lScreen.fillCircle(color, x, y, r);
-    }
-
     public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {
         return lSystem.collides(x1, y1, w1, h1, x2, y2, w2, h2);
     }
