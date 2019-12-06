@@ -174,6 +174,10 @@ public class LeikrScreenManager {
     public final int getMapTileId(BigDecimal x, BigDecimal y) {
         return mapLoader.getMapTileId(x.intValue(), y.intValue());
     }
+    
+    public final int getMapTileId(BigDecimal x, BigDecimal y, int layer) {
+        return mapLoader.getMapTileId(x.intValue(), y.intValue(), layer);
+    }
 
     public final void setMapTile(BigDecimal x, BigDecimal y, int id) {
         mapLoader.setMapTile(x.intValue(), y.intValue(), id);

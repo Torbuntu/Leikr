@@ -88,6 +88,16 @@ public class MapLoader {
             return -1;
         }
     }
+    
+    public int getMapTileId(int x, int y, int layer) {
+        try {
+            return tiledMap.getTile(x, y, layer).getTileId(1);
+        } catch (Exception ex) {
+            //System.out.println(ex);
+            return -1;
+        }
+    }
+    
 
     public void setMapTile(int x, int y, int id) {
         tiledMap.getTileLayer(0).setTileId(x, y, id);

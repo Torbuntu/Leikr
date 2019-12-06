@@ -244,6 +244,10 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final int getMapTileId(BigDecimal x, BigDecimal y) {
         return lScreen.getMapTileId(x, y);
     }
+    
+    public final int getMapTileId(BigDecimal x, BigDecimal y, int layer) {
+        return lScreen.getMapTileId(x, y, layer);
+    }
 
     public final void setMapTile(BigDecimal x, BigDecimal y, int id) {
         lScreen.setMapTile(x, y, id);
