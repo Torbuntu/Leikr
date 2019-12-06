@@ -151,7 +151,7 @@ note however that all three of the main methods (create, update and render) are 
 | Spec |      |
 |----|----|
 | Resolution | 240x160 |
-| Sprites    | 2,048 max. Each sprite gets split into 8x8, 16x16, 32x32 and 64x64 pixel sprites. |
+| Sprites    | 128 max. Sprites.png gets split into 8x8, 16x16, 32x32 and 64x64 pixel sprites. |
 | Art | Can load images to be used as backgrounds or however else you wish. |
 | Maps | .tmx maps loadabled from `Maps` directory. (currently unlimited) Animated tiles supported. |
 | Audio | 16bit .WAV files loaded from `Audio/Sound` and `Audio/Music`  (Limitations TBD) |
