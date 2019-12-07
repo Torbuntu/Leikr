@@ -594,6 +594,9 @@ public class LeikrScreenManager {
     public void tint(int color) {
         g.setTint(pixelManager.getDrawColor(color));
     }
+    public void tint(String color) {
+        g.setTint(Colors.rgbToColor(color));
+    }
 
     public void tint() {
         g.removeTint();
