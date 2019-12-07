@@ -132,7 +132,6 @@ public class TitleScreen extends BasicGameScreen {
     private void drawLogoSteam(PixelManager screen, Graphics g) {
         for (int p=0; p<pixCount; p++) {
             TitleScreenPixel pix = pixels.get(p);
-            System.out.println(pix.x);
             switch (timer - pix.delay) {
                 case 0:
                     screen.drawPixel(g, pix.color, pix.x, pix.y);
@@ -152,7 +151,7 @@ public class TitleScreen extends BasicGameScreen {
                     screen.drawPixel(g, pix.color, pix.x, pix.y-pix.height);
                     break;
                 default:
-                    return;
+                    break;
             }
         }
     }
