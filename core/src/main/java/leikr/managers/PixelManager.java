@@ -54,8 +54,8 @@ public class PixelManager {
         }
         return colorPalette.get(color);
     }
-    
-    public Sprite getSprite(int id){
+
+    public Sprite getSprite(int id) {
         return pixels.getSprite(id);
     }
 
@@ -76,8 +76,8 @@ public class PixelManager {
         pixels = new SpriteSheet(Mdx.graphics.newTexture(pm), 1, 1);
         pm.dispose();
     }
-    
-    public void drawPixel(Graphics g, int id, int x, int y){
+
+    public void drawPixel(Graphics g, int id, int x, int y) {
         g.drawSprite(getSprite(id), x, y);
     }
 }

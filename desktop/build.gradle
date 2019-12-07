@@ -6,7 +6,7 @@ shadowJar {
     //minimize()
     archiveBaseName = 'Leikr'
     classifier = null
-	archiveVersion = null
+    archiveVersion = null
     //Exclude Asset directories from inside the jar.
     exclude 'Data'
     exclude 'Programs'
@@ -24,7 +24,7 @@ task deployLeikr {
         copy {
             from "$projectDir/../assets"
             into "$projectDir/build/libs"
-            exclude '*gamecontrollerdb.txt*'
+            exclude "*gamecontrollerdb.txt*"
             exclude "*Internal"
         } 
     }
