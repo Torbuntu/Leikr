@@ -31,13 +31,13 @@ public class FontLoader {
     MonospaceGameFont defaultFont;
 
     public void initializeDefaultFont(AssetManager manager) {
-        manager.load("./Data/Images/Fonts/zx_evolution_8x8.png", Texture.class);
+        manager.load("./Data/Images/Fonts/ultra_compact_6x4.png", Texture.class);
         manager.finishLoading();
         FontParameters params = new FontParameters();
-        params.texturePath = "./Data/Images/Fonts/zx_evolution_8x8.png";
+        params.texturePath = "./Data/Images/Fonts/ultra_compact_6x4.png";
         params.spacing = 0;
-        params.frameWidth = 8;
-        params.frameHeight = 8;
+        params.frameWidth = 4;
+        params.frameHeight = 6;
         defaultFont = new MonospaceGameFont(params);
     }
 
