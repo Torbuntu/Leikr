@@ -22,7 +22,7 @@ Once you've mastered Leikr and feel the need to expand into bigger waters, you c
 
 | Preview |
 |----|
-| ![](showcase/title_showcase.png?raw=true) |
+| ![](showcase/startup.gif?raw=true) |
 
 ## Running from release
 
