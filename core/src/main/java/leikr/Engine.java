@@ -411,6 +411,10 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         lScreen.tint(color);
     }
 
+    public void tint(String color) {
+        lScreen.tint(color);
+    }
+
     public void tint() {
         lScreen.tint();
     }
