@@ -21,6 +21,9 @@ import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
+import org.mini2Dx.core.graphics.Color;
+import org.mini2Dx.core.graphics.Colors;
+import org.mini2Dx.core.graphics.Texture;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
@@ -28,6 +31,9 @@ import org.mini2Dx.core.screen.Transition;
 import org.mini2Dx.gdx.Input.Keys;
 import org.mini2Dx.tiled.TiledMap;
 
+import leikr.managers.PixelManager;
+import java.util.ArrayList;
+import java.math.BigDecimal;
 
 /**
  *
@@ -40,14 +46,20 @@ public class TitleScreen extends BasicGameScreen {
     FitViewport viewport;
     boolean CREDITS = false;
 
-    TiledMap logo;
     int timer = 0;
+    ArrayList<TitleScreenPixel> pixels;
+    int pixCount = 75;
+    int cycleLength = 25;
+
+    public PixelManager pixelScreen;
 
     public TitleScreen(AssetManager assetManager, FitViewport vp) {
         this.assetManager = assetManager;
-        viewport = vp;
-        logo = new TiledMap(Mdx.files.local("./Data/Logo/Logo.tmx"));
+        assetManager.load("./Data/Images/leikr-logo.png", Texture.class);
+        assetManager.finishLoading();
+
         viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
+        pixelScreen = PixelManager.getPixelManager();
     }
 
     void checkInput(ScreenManager sm) {
@@ -67,12 +79,17 @@ public class TitleScreen extends BasicGameScreen {
 
     @Override
     public void initialise(GameContainer gc) {
+        pixels = new ArrayList<>();
+
+        for (int i=0; i<pixCount; i++) {
+            int x = (int)Math.floor(Math.random() * 8) + 91;
+            int height = (int)Math.floor(Math.random() * 7) + 4;
+            pixels.add(new TitleScreenPixel(x, 64, (i%3)+8, height, i*5));
+        }
     }
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
-        logo.update(f);
-
         checkInput(sm);
         if (Mdx.input.justTouched() || timer > 300) {
             CREDITS = true;
@@ -87,8 +104,56 @@ public class TitleScreen extends BasicGameScreen {
     @Override
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
-        logo.draw(g, 40, 56);
-        g.drawString("Leikr Game System", 8, 80, GameRuntime.WIDTH, 1);
+        renderExtraText(pixelScreen, g, "Game System", 106, 73, (int)(timer / 2));
+        g.drawTexture(assetManager.get("./Data/Images/leikr-logo.png", Texture.class), 90, 64, 48, 16);
+        drawLogoSteam(pixelScreen, g);
+    }
+
+    private void renderExtraText(PixelManager g, Graphics graphics, String text, int x, int y, int step) {
+        for (int i = 0; i < text.length(); i++){
+            double red   = 255*(0.5+0.5*Math.sin((step/3)+0-i));
+            double green = 255*(0.5+0.5*Math.sin((step/3)+2-i));
+            double blue  = 255*(0.5+0.5*Math.sin((step/3)+4-i));
+
+            char c = text.charAt(i);
+            int yPos = (int)(Math.sin(i+1+step) * (3.0/((step/2)+1)) * 3);
+
+            if (step > cycleLength) {
+                if ((step - cycleLength)/2 > i) {
+                    red = 255; blue = 255; green = 255;
+                }
+            }
+            
+            graphics.setColor(Colors.rgbToColor(red+","+blue+","+green));
+            graphics.drawString(Character.toString(c), i*4+x, yPos+y);
+        }
+    }
+
+    private void drawLogoSteam(PixelManager screen, Graphics g) {
+        for (int p=0; p<pixCount; p++) {
+            TitleScreenPixel pix = pixels.get(p);
+            switch (timer - pix.delay) {
+                case 0:
+                    screen.drawPixel(g, pix.color, pix.x, pix.y);
+                    break;
+                case 1:
+                    screen.drawPixel(g, pix.color, pix.x, pix.y-1);
+                    break;
+                case 2:
+                    for (int i=2; i<pix.height-1; i++) {
+                        screen.drawPixel(g, pix.color, pix.x, pix.y-i);
+                    }
+                    break;
+                case 3:
+                    screen.drawPixel(g, pix.color, pix.x, pix.y-pix.height+1);
+                    break;
+                case 4:
+                    screen.drawPixel(g, pix.color, pix.x, pix.y-pix.height);
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     @Override
