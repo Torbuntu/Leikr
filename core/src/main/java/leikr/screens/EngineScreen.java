@@ -270,7 +270,7 @@ public class EngineScreen extends BasicGameScreen {
         g.setColor(Colors.WHITE());
         g.drawString("-- Paused --", 0, 60, GameRuntime.WIDTH, 1);
         g.drawString("Exit running program?", 0, 74, GameRuntime.WIDTH, 1);
-        g.drawString("Yes    No", 0, 90, GameRuntime.WIDTH, 1);
+        g.drawString("Yes           No", 0, 90, GameRuntime.WIDTH, 1);
 
         if (CONFIRM) {
             g.setColor(Colors.GREEN());
