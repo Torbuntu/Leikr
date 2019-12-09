@@ -17,18 +17,16 @@ package leikr.managers;
 
 import java.awt.Desktop;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
-import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.ExportTool;
 import leikr.GameRuntime;
 import leikr.NewProgramGenerator;
+import leikr.customProperties.CustomProgramProperties;
 import leikr.loaders.EngineLoader;
 import leikr.screens.EngineScreen;
 import leikr.screens.TerminalScreen;
@@ -103,10 +101,10 @@ public class TerminalManager implements InputProcessor {
                     if (!Arrays.asList(out.split("\n")).contains(command[1])) {
                         return "Program [" + command[1] + "] does not exist in Programs directory.";
                     }
-                    try (InputStream stream = new FileInputStream(new File("Programs/" + command[1] + "/program.properties"))) {
-                        Properties prop = new Properties();
-                        prop.load(stream);
-                        return ((prop.getProperty("about") != null) ? prop.getProperty("about") : "A Leikr Program.");
+                    try {
+                        CustomProgramProperties cpp = new CustomProgramProperties("Programs/" + command[1]);
+
+                        return "Title: " + cpp.TITLE + "\nType: " + cpp.TYPE + "\nPlayers: " + cpp.PLAYERS + "\nAuthor: " + cpp.AUTHOR + "\nAbout: " + cpp.ABOUT;
                     } catch (Exception ex) {
                         Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
                         return "Failed to clean package directory. Please check logs.";
