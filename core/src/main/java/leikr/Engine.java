@@ -126,6 +126,9 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     public void create(String[] args) {
     }
+    
+    public void update(){
+    }
 
     public void update(float delta) {
     }
