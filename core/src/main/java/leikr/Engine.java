@@ -43,14 +43,13 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
      */
     public LeikrController lControllerA;
     public LeikrController lControllerB;
-
     public LeikrMouse lMouse;
     public LeikrKeyboard lKeyboard;
 
     /*
-     * Loaders
+     * Managers
      *
-     * The loaders are used to load the custom assets for a game at startup.
+     * The managers are used to load the custom assets for a game at startup.
      */
     public LeikrScreenManager lScreen;
     public LeikrSystemManager lSystem;
