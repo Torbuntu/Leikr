@@ -159,8 +159,8 @@ public class EngineScreen extends BasicGameScreen {
         try {
             system.setRunning(true);
             engine.preCreate(EngineLoader.getEngineLoader(false).cp.MAX_SPRITES, system, viewport, frameBuffer);
-            engine.create();
             engine.create(engineArgs);
+            engine.create();
         } catch (Exception ex) {
             engine.lAudio.pauseAllAudio();
             engineState = EngineState.ERROR;
@@ -194,6 +194,7 @@ public class EngineScreen extends BasicGameScreen {
                 try {
                 engine.preUpdate(delta);
                 engine.update(delta);
+                engine.update();
             } catch (Exception ex) {
                 engine.lAudio.pauseAllAudio();
                 engineState = EngineState.ERROR;
