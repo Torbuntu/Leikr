@@ -24,7 +24,6 @@ import org.mini2Dx.core.input.GamePad;
  *
  * @author tor
  */
-
 public class LeikrController extends BaseGamePadListener {
 
     HashMap<Object, Boolean> buttons = new HashMap<>();
@@ -116,7 +115,7 @@ public class LeikrController extends BaseGamePadListener {
     @Override
     public void onButtonDown(GamePad controller, int buttonCode) {
         if (CustomSystemProperties.DEBUG) {
-            System.out.println(controller.getGamePadType().toFriendlyString() + " : " + buttonCode);
+            System.out.println("Button Down : " + buttonCode);
         }
         buttons.replace(btnCodes.get(buttonCode), true);
     }
@@ -124,7 +123,7 @@ public class LeikrController extends BaseGamePadListener {
     @Override
     public void onButtonUp(GamePad controller, int buttonCode) {
         if (CustomSystemProperties.DEBUG) {
-            System.out.println(controller.getGamePadType().toFriendlyString() + " : " + buttonCode);
+            System.out.println("Button Up : " + buttonCode);
         }
         buttons.replace(btnCodes.get(buttonCode), false);
     }
@@ -145,19 +144,25 @@ public class LeikrController extends BaseGamePadListener {
         }
 
         if (axisCode == CustomSystemProperties.VERTICAL_AXIS) {
-            if ((int)value == CustomSystemProperties.DOWN) {
+            if ((int) value == CustomSystemProperties.DOWN) {
                 buttons.replace(DOWN, true);
             }
-            if ((int)value == CustomSystemProperties.UP) {
+            if ((int) value == CustomSystemProperties.UP) {
                 buttons.replace(UP, true);
+            }
+            if (CustomSystemProperties.DEBUG) {
+                System.out.println("Vertical Axis : " + value);
             }
         }
         if (axisCode == CustomSystemProperties.HORIZONTAL_AXIS) {
-            if ((int)value == CustomSystemProperties.RIGHT) {
+            if ((int) value == CustomSystemProperties.RIGHT) {
                 buttons.replace(RIGHT, true);
             }
-            if ((int)value == CustomSystemProperties.LEFT) {
+            if ((int) value == CustomSystemProperties.LEFT) {
                 buttons.replace(LEFT, true);
+            }
+            if (CustomSystemProperties.DEBUG) {
+                System.out.println("Horizontal Axis : " + value);
             }
         }
     }
