@@ -360,6 +360,54 @@ public class LeikrScreenManager {
         t.setScale(-scaleX.floatValue(), -scaleY.floatValue());
         USED_SPRITES++;
     }
+    
+    public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale, int size) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        Sprite t = spriteLoader.getSprite(id, size);
+        t.scale(scale.floatValue());
+        g.drawSprite(t, x.floatValue(), y.floatValue());
+        t.scale(-scale.floatValue());
+        USED_SPRITES++;
+    }
+
+    public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        Sprite t = spriteLoader.getSprite(id, size);
+        t.setScale(scaleX.floatValue(), scaleY.floatValue());
+        g.drawSprite(t, x.floatValue(), y.floatValue());
+        t.setScale(-scaleX.floatValue(), -scaleY.floatValue());
+        USED_SPRITES++;
+    }
+
+    public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, BigDecimal degr, int size) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        Sprite t = spriteLoader.getSprite(id, size);
+        t.setScale(scaleX.floatValue(), scaleY.floatValue());
+        t.rotate(degr.floatValue());
+        g.drawSprite(t, x.floatValue(), y.floatValue());
+        t.rotate(-degr.floatValue());
+        t.setScale(-scaleX.floatValue(), -scaleY.floatValue());
+        USED_SPRITES++;
+    }
+
+    public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, int size) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        Sprite t = spriteLoader.getSprite(id, size);
+        t.setScale(scaleX.floatValue(), scaleY.floatValue());
+        t.flip(flipX, flipY);
+        g.drawSprite(t, x.floatValue(), y.floatValue());
+        t.flip(!flipX, !flipY);
+        t.setScale(-scaleX.floatValue(), -scaleY.floatValue());
+        USED_SPRITES++;
+    }
     //END special sprite mode
 
     //start shape drawing methods

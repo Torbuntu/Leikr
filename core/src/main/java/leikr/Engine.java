@@ -358,6 +358,21 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY) {
         lScreen.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY);
     }
+    public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale, int size) {
+        lScreen.spriteSc(id, x, y, scale, size);
+    }
+
+    public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size) {
+        lScreen.spriteSc(id, x, y, scaleX, scaleY, size);
+    }
+
+    public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, BigDecimal degr, int size) {
+        lScreen.spriteSc(id, x, y, scaleX, scaleY, degr, size);
+    }
+
+    public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, int size) {
+        lScreen.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, size);
+    }
     //end scaled sprites
 
     //start shape drawing methods
