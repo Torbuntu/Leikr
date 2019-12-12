@@ -346,6 +346,13 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph) {
         lScreen.sprite(ids, px, py, pw, ph);
     }
+    
+    public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, int size) {
+        lScreen.sprite(ids, px, py, pw, ph, size);
+    }
+    public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, boolean flipX, boolean flipY) {
+        lScreen.sprite(ids, px, py, pw, ph, flipX, flipY);
+    }
 
     //start scaled sprites
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale) {

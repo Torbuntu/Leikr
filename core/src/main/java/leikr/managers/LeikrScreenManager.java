@@ -304,20 +304,113 @@ public class LeikrScreenManager {
 
     //START special sprite mode
     public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph) {
+        sprite(ids, px, py, pw, ph, 0);
+    }
+
+    public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, int size) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
         int x = px.intValue();
         int y = py.intValue();
+        int inc = (size + 1) * 8;
 
         int i = 0;
         for (int h = 0; h < ph.intValue(); h++) {
             for (int w = 0; w < pw.intValue(); w++) {
                 if (i < ids.size()) {
-                    g.drawSprite(spriteLoader.getSprite(ids.get(i), 0), x, y);
+                    g.drawSprite(spriteLoader.getSprite(ids.get(i), size), x, y);
+                    USED_SPRITES++;
+                }
+                i++;
+                x += inc;
+            }
+            x = px.intValue();
+            y += inc;
+        }
+    }
+
+    public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, boolean flipX, boolean flipY) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        if (!flipX && !flipY) {
+            sprite(ids, px, py, pw, ph, 0);
+        } else {
+            if (flipX && !flipY) {
+                spriteArrayFlipX(ids, px, py, pw, ph);
+            } else if (!flipX && flipY) {
+                spriteArrayFlipY(ids, px, py, pw, ph);
+            } else {
+                spriteArrayFlipBoth(ids, px, py, pw, ph);
+            }
+        }
+    }
+    
+    private void spriteArrayFlipBoth(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph){
+        int startX = px.intValue() + (pw.intValue() * 8) - 8;
+        int y = py.intValue() + (ph.intValue() * 8) - 8;
+        int x = startX;
+        
+        int i = 0;
+        for (int h = ph.intValue(); h > 0; h--) {
+            for (int w = pw.intValue(); w > 0; w--) {
+                if (i < ids.size()) {
+                    Sprite t = spriteLoader.getSprite(ids.get(i), 0);
+                    t.setFlip(true, true);
+                    g.drawSprite(t, x, y);
+                    t.setFlip(false, false);
+                    USED_SPRITES++;
+                }
+                i++;
+                x -= 8;
+            }
+            x = startX;
+            y -= 8;
+        }
+    }
+
+    private void spriteArrayFlipY(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph) {
+        int y = py.intValue() + (ph.intValue() * 8) - 8;
+        int x = px.intValue();
+
+        int i = 0;
+        for (int h = ph.intValue(); h > 0; h--) {
+            for (int w = 0; w < pw.intValue(); w++) {
+                if (i < ids.size()) {
+                    Sprite t = spriteLoader.getSprite(ids.get(i), 0);
+                    t.setFlip(false, true);
+                    g.drawSprite(t, x, y);
+                    t.setFlip(false, false);
                     USED_SPRITES++;
                 }
                 i++;
                 x += 8;
             }
             x = px.intValue();
+            y -= 8;
+        }
+    }
+
+    private void spriteArrayFlipX(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph) {
+        int start = px.intValue() + (pw.intValue() * (8)) - 8;
+        int y = py.intValue();
+        int x = start;
+
+        int i = 0;
+        for (int h = 0; h < ph.intValue(); h++) {
+            for (int w = pw.intValue(); w > 0; w--) {
+                if (i < ids.size()) {
+                    Sprite t = spriteLoader.getSprite(ids.get(i), 0);
+                    t.setFlip(true, false);
+                    g.drawSprite(t, x, y);
+                    t.setFlip(false, false);
+                    USED_SPRITES++;
+                }
+                i++;
+                x -= 8;
+            }
+            x = start;
             y += 8;
         }
     }
