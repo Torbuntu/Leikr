@@ -16,6 +16,7 @@
 package leikr;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import leikr.controls.LeikrController;
 import leikr.controls.LeikrKeyboard;
 import leikr.controls.LeikrMouse;
@@ -341,6 +342,10 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         lScreen.sprite(id, x, y, flipX, flipY, size);
     }
     //end sizable sprites
+    
+    public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph) {
+        lScreen.sprite(ids, px, py, pw, ph);
+    }
 
     //start scaled sprites
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale) {

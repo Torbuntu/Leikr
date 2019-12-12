@@ -18,6 +18,7 @@ package leikr.managers;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ScreenUtils;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import leikr.loaders.ImageLoader;
 import leikr.loaders.MapLoader;
 import leikr.loaders.SpriteLoader;
@@ -174,7 +175,7 @@ public class LeikrScreenManager {
     public final int getMapTileId(BigDecimal x, BigDecimal y) {
         return mapLoader.getMapTileId(x.intValue(), y.intValue());
     }
-    
+
     public final int getMapTileId(BigDecimal x, BigDecimal y, int layer) {
         return mapLoader.getMapTileId(x.intValue(), y.intValue(), layer);
     }
@@ -302,6 +303,25 @@ public class LeikrScreenManager {
     //end sizable sprites
 
     //START special sprite mode
+    public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph) {
+        int x = px.intValue();
+        int y = py.intValue();
+
+        int i = 0;
+        for (int h = 0; h < ph.intValue(); h++) {
+            for (int w = 0; w < pw.intValue(); w++) {
+                if (i < ids.size()) {
+                    g.drawSprite(spriteLoader.getSprite(ids.get(i), 0), x, y);
+                    USED_SPRITES++;
+                }
+                i++;
+                x += 8;
+            }
+            x = px.intValue();
+            y += 8;
+        }
+    }
+
     /**
      * Draws a sprite with given ID value at the given coordinates with a given
      * Scale.
@@ -360,7 +380,7 @@ public class LeikrScreenManager {
         t.setScale(-scaleX.floatValue(), -scaleY.floatValue());
         USED_SPRITES++;
     }
-    
+
     public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale, int size) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
@@ -608,23 +628,23 @@ public class LeikrScreenManager {
             }
         }
     }
-    
-    public final void drawCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r){
+
+    public final void drawCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r) {
         g.setColor(pixelManager.getDrawColor(color));
         g.drawCircle(x.intValue(), y.intValue(), r.intValue());
     }
-    
-    public final void fillCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r){
+
+    public final void fillCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r) {
         g.setColor(pixelManager.getDrawColor(color));
         g.fillCircle(x.intValue(), y.intValue(), r.intValue());
     }
-    
-    public final void drawCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r){
+
+    public final void drawCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r) {
         g.setColor(Colors.rgbToColor(color));
         g.drawCircle(x.intValue(), y.intValue(), r.intValue());
     }
-    
-    public final void fillCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r){
+
+    public final void fillCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r) {
         g.setColor(Colors.rgbToColor(color));
         g.fillCircle(x.intValue(), y.intValue(), r.intValue());
     }
@@ -642,6 +662,7 @@ public class LeikrScreenManager {
     public void tint(int color) {
         g.setTint(pixelManager.getDrawColor(color));
     }
+
     public void tint(String color) {
         g.setTint(Colors.rgbToColor(color));
     }
