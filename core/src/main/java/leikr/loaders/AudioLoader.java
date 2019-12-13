@@ -135,7 +135,7 @@ public class AudioLoader {
         mPlayer.stop();
     }
 
-    public void pauseAllAudio() {
+    public void pauseAudio() {
         if (mPlayer != null) {
             mPlayer.pause();
         }
@@ -144,7 +144,7 @@ public class AudioLoader {
         }
     }
 
-    public void resumeAllAudio() {
+    public void resumeAudio() {
         if (mPlayer != null) {
             mPlayer.play();
         }

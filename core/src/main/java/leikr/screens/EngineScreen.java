@@ -83,7 +83,7 @@ public class EngineScreen extends BasicGameScreen {
 
     private void pause() {
         engineState = EngineState.PAUSE;
-        engine.lAudio.pauseAllAudio();
+        engine.lAudio.pauseAudio();
         engine.onPause();
     }
 
@@ -195,7 +195,6 @@ public class EngineScreen extends BasicGameScreen {
                 engine.update(delta);
                 engine.update();
             } catch (Exception ex) {
-                engine.lAudio.pauseAllAudio();
                 engineState = EngineState.ERROR;
                 errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
                 Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
@@ -259,7 +258,6 @@ public class EngineScreen extends BasicGameScreen {
             engine.preRender(g);
             engine.render();
         } catch (Exception ex) {
-            engine.lAudio.pauseAllAudio();
             engineState = EngineState.ERROR;
             errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();
             Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);

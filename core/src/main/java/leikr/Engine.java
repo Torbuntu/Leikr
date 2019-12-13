@@ -506,7 +506,11 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     }
 
     public final void pauseAudio() {
-        lAudio.pauseAllAudio();
+        lAudio.pauseAudio();
+    }
+    
+    public final void resumeAudio(){
+        lAudio.resumeAudio();
     }
     //end Audio handling
 

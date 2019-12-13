@@ -73,12 +73,12 @@ public class LeikrAudioManager {
         audioLoader.stopMusic(fileName);
     }
     
-    public void pauseAllAudio(){
-        audioLoader.pauseAllAudio();
+    public void pauseAudio(){
+        audioLoader.pauseAudio();
     }
     
-    public void resumeAllAudio(){
-        audioLoader.resumeAllAudio();
+    public void resumeAudio(){
+        audioLoader.resumeAudio();
     }
     //END loaded audio methods
 
