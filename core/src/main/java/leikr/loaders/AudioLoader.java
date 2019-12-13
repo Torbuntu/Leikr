@@ -146,18 +146,22 @@ public class AudioLoader {
 
     public void resumeAllAudio() {
         if (mPlayer != null) {
-            mPlayer.play();
+            //mPlayer.play();
         }
     }
 
     public void disposeAudioLoader() {
         if (null != soundManager) {
-            sPlayer.stop();
+            if (sPlayer != null) {
+                sPlayer.stop();
+            }
             soundManager.clearAssetLoaders();
             soundManager.dispose();
         }
         if (null != musicManager) {
-            mPlayer.stop();
+            if (mPlayer != null) {
+                mPlayer.stop();
+            }
             musicManager.clearAssetLoaders();
             musicManager.dispose();
         }

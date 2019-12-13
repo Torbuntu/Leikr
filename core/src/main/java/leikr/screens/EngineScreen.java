@@ -162,7 +162,6 @@ public class EngineScreen extends BasicGameScreen {
             engine.create(engineArgs);
             engine.create();
         } catch (Exception ex) {
-            engine.lAudio.pauseAllAudio();
             engineState = EngineState.ERROR;
             errorMessage = "Error in program `create` method. " + ex.getLocalizedMessage();
             Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
