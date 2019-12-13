@@ -146,7 +146,7 @@ public class AudioLoader {
 
     public void resumeAllAudio() {
         if (mPlayer != null) {
-            //mPlayer.play();
+            mPlayer.play();
         }
     }
 

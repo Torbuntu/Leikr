@@ -92,7 +92,7 @@ public class EngineScreen extends BasicGameScreen {
             engineState = EngineState.BACK;
         } else {
             engineState = EngineState.RUNNING;
-            engine.lAudio.resumeAllAudio();
+            //engine.lAudio.resumeAllAudio();
             engine.onResume();
         }
     }
