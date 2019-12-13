@@ -152,10 +152,12 @@ public class AudioLoader {
 
     public void disposeAudioLoader() {
         if (null != soundManager) {
+            sPlayer.stop();
             soundManager.clearAssetLoaders();
             soundManager.dispose();
         }
         if (null != musicManager) {
+            mPlayer.stop();
             musicManager.clearAssetLoaders();
             musicManager.dispose();
         }
