@@ -244,7 +244,7 @@ public class LeikrScreenManager {
 
     //end drawString methods
     //sprite helper methods.
-    private void drawSpriteRotate(int id, int size, BigDecimal x, BigDecimal y, BigDecimal degr) {
+    private void drawSpriteRotate(int id, BigDecimal x, BigDecimal y, BigDecimal degr, int size) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -255,7 +255,7 @@ public class LeikrScreenManager {
         USED_SPRITES++;
     }
 
-    private void drawSpriteFlip(int id, BigDecimal x, BigDecimal y, int size, boolean flipX, boolean flipY) {
+    private void drawSpriteFlip(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, int size) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -276,11 +276,11 @@ public class LeikrScreenManager {
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, BigDecimal degr) {
-        drawSpriteRotate(id, 0, x, y, degr);
+        sprite(id, x, y, degr, 0);
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY) {
-        drawSpriteFlip(id, x, y, 0, flipX, flipY);
+        sprite(id, x, y, flipX, flipY, 0);
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, BigDecimal degr) {
@@ -297,12 +297,12 @@ public class LeikrScreenManager {
         USED_SPRITES++;
     }
 
-    public final void sprite(int id, BigDecimal degr, BigDecimal x, BigDecimal y, int size) {
-        drawSpriteRotate(id, size, degr, x, y);
+    public final void sprite(int id, BigDecimal x, BigDecimal y, BigDecimal degr, int size) {
+        drawSpriteRotate(id, x, y, degr, size);
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, int size) {
-        drawSpriteFlip(id, x, y, size, flipX, flipY);
+        drawSpriteFlip(id, x, y, flipX, flipY, size);
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, BigDecimal degr, int size) {
@@ -348,21 +348,9 @@ public class LeikrScreenManager {
     }
 
     public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, boolean flipX, boolean flipY) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        if (!flipX && !flipY) {
-            sprite(ids, px, py, pw, ph, 0);
-        } else {
-            if (flipX && !flipY) {
-                spriteArrayFlipX(ids, px, py, pw, ph, 0);
-            } else if (!flipX && flipY) {
-                spriteArrayFlipY(ids, px, py, pw, ph, 0);
-            } else {
-                spriteArrayFlipBoth(ids, px, py, pw, ph, 0);
-            }
-        }
+        sprite(ids, px, py, pw, ph, flipX, flipY, 0);
     }
+    
     public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, boolean flipX, boolean flipY, int size) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
