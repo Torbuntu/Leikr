@@ -244,7 +244,7 @@ public class LeikrScreenManager {
 
     //end drawString methods
     //sprite helper methods.
-    private void drawSpriteRotate(int id, int size, BigDecimal degr, BigDecimal x, BigDecimal y) {
+    private void drawSpriteRotate(int id, int size, BigDecimal x, BigDecimal y, BigDecimal degr) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;
         }
@@ -275,12 +275,16 @@ public class LeikrScreenManager {
         USED_SPRITES++;
     }
 
-    public final void sprite(int id, BigDecimal degr, BigDecimal x, BigDecimal y) {
-        drawSpriteRotate(id, 0, degr, x, y);
+    public final void sprite(int id, BigDecimal x, BigDecimal y, BigDecimal degr) {
+        drawSpriteRotate(id, 0, x, y, degr);
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY) {
         drawSpriteFlip(id, x, y, 0, flipX, flipY);
+    }
+
+    public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, BigDecimal degr) {
+        sprite(id, x, y, flipX, flipY, degr, 0);
     }
     //end 8x8 sprites
 
@@ -299,6 +303,19 @@ public class LeikrScreenManager {
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, int size) {
         drawSpriteFlip(id, x, y, size, flipX, flipY);
+    }
+
+    public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, BigDecimal degr, int size) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        Sprite t = spriteLoader.getSprite(id, size);
+        t.rotate(degr.floatValue());
+        t.setFlip(flipX, flipY);
+        g.drawSprite(t, x.floatValue(), y.floatValue());
+        t.setFlip(false, false);
+        t.rotate(-degr.floatValue());
+        USED_SPRITES++;
     }
     //end sizable sprites
 
@@ -338,62 +355,81 @@ public class LeikrScreenManager {
             sprite(ids, px, py, pw, ph, 0);
         } else {
             if (flipX && !flipY) {
-                spriteArrayFlipX(ids, px, py, pw, ph);
+                spriteArrayFlipX(ids, px, py, pw, ph, 0);
             } else if (!flipX && flipY) {
-                spriteArrayFlipY(ids, px, py, pw, ph);
+                spriteArrayFlipY(ids, px, py, pw, ph, 0);
             } else {
-                spriteArrayFlipBoth(ids, px, py, pw, ph);
+                spriteArrayFlipBoth(ids, px, py, pw, ph, 0);
             }
         }
     }
-    
-    private void spriteArrayFlipBoth(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph){
-        int startX = px.intValue() + (pw.intValue() * 8) - 8;
-        int y = py.intValue() + (ph.intValue() * 8) - 8;
+    public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, boolean flipX, boolean flipY, int size) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        if (!flipX && !flipY) {
+            sprite(ids, px, py, pw, ph, size);
+        } else {
+            if (flipX && !flipY) {
+                spriteArrayFlipX(ids, px, py, pw, ph, size);
+            } else if (!flipX && flipY) {
+                spriteArrayFlipY(ids, px, py, pw, ph, size);
+            } else {
+                spriteArrayFlipBoth(ids, px, py, pw, ph, size);
+            }
+        }
+    }
+
+    private void spriteArrayFlipBoth(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, int size) {
+        int inc = (size + 1) * 8;
+        int startX = px.intValue() + (pw.intValue() * inc) - inc;
+        int y = py.intValue() + (ph.intValue() * inc) - inc;
         int x = startX;
-        
+
         int i = 0;
         for (int h = ph.intValue(); h > 0; h--) {
             for (int w = pw.intValue(); w > 0; w--) {
                 if (i < ids.size()) {
-                    Sprite t = spriteLoader.getSprite(ids.get(i), 0);
+                    Sprite t = spriteLoader.getSprite(ids.get(i), size);
                     t.setFlip(true, true);
                     g.drawSprite(t, x, y);
                     t.setFlip(false, false);
                     USED_SPRITES++;
                 }
                 i++;
-                x -= 8;
+                x -= inc;
             }
             x = startX;
-            y -= 8;
+            y -= inc;
         }
     }
 
-    private void spriteArrayFlipY(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph) {
-        int y = py.intValue() + (ph.intValue() * 8) - 8;
+    private void spriteArrayFlipY(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, int size) {
+        int inc = (size + 1) * 8;
+        int y = py.intValue() + (ph.intValue() * inc) - inc;
         int x = px.intValue();
 
         int i = 0;
         for (int h = ph.intValue(); h > 0; h--) {
             for (int w = 0; w < pw.intValue(); w++) {
                 if (i < ids.size()) {
-                    Sprite t = spriteLoader.getSprite(ids.get(i), 0);
+                    Sprite t = spriteLoader.getSprite(ids.get(i), size);
                     t.setFlip(false, true);
                     g.drawSprite(t, x, y);
                     t.setFlip(false, false);
                     USED_SPRITES++;
                 }
                 i++;
-                x += 8;
+                x += inc;
             }
             x = px.intValue();
-            y -= 8;
+            y -= inc;
         }
     }
 
-    private void spriteArrayFlipX(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph) {
-        int start = px.intValue() + (pw.intValue() * (8)) - 8;
+    private void spriteArrayFlipX(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, int size) {
+        int inc = (size + 1) * 8;
+        int start = px.intValue() + (pw.intValue() * inc) - inc;
         int y = py.intValue();
         int x = start;
 
@@ -401,17 +437,17 @@ public class LeikrScreenManager {
         for (int h = 0; h < ph.intValue(); h++) {
             for (int w = pw.intValue(); w > 0; w--) {
                 if (i < ids.size()) {
-                    Sprite t = spriteLoader.getSprite(ids.get(i), 0);
+                    Sprite t = spriteLoader.getSprite(ids.get(i), size);
                     t.setFlip(true, false);
                     g.drawSprite(t, x, y);
                     t.setFlip(false, false);
                     USED_SPRITES++;
                 }
                 i++;
-                x -= 8;
+                x -= inc;
             }
             x = start;
-            y += 8;
+            y += inc;
         }
     }
 
@@ -427,51 +463,23 @@ public class LeikrScreenManager {
      * @param scale
      */
     public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, 0);
-        t.scale(scale.floatValue());
-        g.drawSprite(t, x.floatValue(), y.floatValue());
-        t.scale(-scale.floatValue());
-        USED_SPRITES++;
+        spriteSc(id, x, y, scale, 0);
     }
 
     public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, 0);
-        t.setScale(scaleX.floatValue(), scaleY.floatValue());
-        g.drawSprite(t, x.floatValue(), y.floatValue());
-        t.setScale(-scaleX.floatValue(), -scaleY.floatValue());
-        USED_SPRITES++;
+        spriteSc(id, x, y, scaleX, scaleY, 0);
     }
 
     public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, BigDecimal degr) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, 0);
-        t.setScale(scaleX.floatValue(), scaleY.floatValue());
-        t.rotate(degr.floatValue());
-        g.drawSprite(t, x.floatValue(), y.floatValue());
-        t.rotate(-degr.floatValue());
-        t.setScale(-scaleX.floatValue(), -scaleY.floatValue());
-        USED_SPRITES++;
+        spriteSc(id, x, y, scaleX, scaleY, degr, 0);
     }
 
     public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, 0);
-        t.setScale(scaleX.floatValue(), scaleY.floatValue());
-        t.flip(flipX, flipY);
-        g.drawSprite(t, x.floatValue(), y.floatValue());
-        t.flip(!flipX, !flipY);
-        t.setScale(-scaleX.floatValue(), -scaleY.floatValue());
-        USED_SPRITES++;
+        spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, 0);
+    }
+
+    public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, BigDecimal degr) {
+        spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, 0);
     }
 
     public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale, int size) {
@@ -481,7 +489,7 @@ public class LeikrScreenManager {
         Sprite t = spriteLoader.getSprite(id, size);
         t.scale(scale.floatValue());
         g.drawSprite(t, x.floatValue(), y.floatValue());
-        t.scale(-scale.floatValue());
+        t.setScale(1);
         USED_SPRITES++;
     }
 
@@ -492,7 +500,7 @@ public class LeikrScreenManager {
         Sprite t = spriteLoader.getSprite(id, size);
         t.setScale(scaleX.floatValue(), scaleY.floatValue());
         g.drawSprite(t, x.floatValue(), y.floatValue());
-        t.setScale(-scaleX.floatValue(), -scaleY.floatValue());
+        t.setScale(1);
         USED_SPRITES++;
     }
 
@@ -505,7 +513,7 @@ public class LeikrScreenManager {
         t.rotate(degr.floatValue());
         g.drawSprite(t, x.floatValue(), y.floatValue());
         t.rotate(-degr.floatValue());
-        t.setScale(-scaleX.floatValue(), -scaleY.floatValue());
+        t.setScale(1);
         USED_SPRITES++;
     }
 
@@ -518,7 +526,22 @@ public class LeikrScreenManager {
         t.flip(flipX, flipY);
         g.drawSprite(t, x.floatValue(), y.floatValue());
         t.flip(!flipX, !flipY);
-        t.setScale(-scaleX.floatValue(), -scaleY.floatValue());
+        t.setScale(1);
+        USED_SPRITES++;
+    }
+
+    public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, BigDecimal degr, int size) {
+        if (USED_SPRITES >= MAX_SPRITES) {
+            return;
+        }
+        Sprite t = spriteLoader.getSprite(id, size);
+        t.setScale(scaleX.floatValue(), scaleY.floatValue());
+        t.rotate(degr.floatValue());
+        t.flip(flipX, flipY);
+        g.drawSprite(t, x.floatValue(), y.floatValue());
+        t.flip(!flipX, !flipY);
+        t.rotate(-degr.floatValue());
+        t.setScale(1);
         USED_SPRITES++;
     }
     //END special sprite mode

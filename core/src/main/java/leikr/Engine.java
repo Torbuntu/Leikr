@@ -127,8 +127,8 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     public void create(String[] args) {
     }
-    
-    public void update(){
+
+    public void update() {
     }
 
     public void update(float delta) {
@@ -247,7 +247,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final int getMapTileId(BigDecimal x, BigDecimal y) {
         return lScreen.getMapTileId(x, y);
     }
-    
+
     public final int getMapTileId(BigDecimal x, BigDecimal y, int layer) {
         return lScreen.getMapTileId(x, y, layer);
     }
@@ -320,12 +320,16 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         lScreen.sprite(id, x, y);
     }
 
-    public final void sprite(int id, BigDecimal degr, BigDecimal x, BigDecimal y) {
-        lScreen.sprite(id, degr, x, y);
+    public final void sprite(int id, BigDecimal x, BigDecimal y, BigDecimal degr) {
+        lScreen.sprite(id, x, y, degr);
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY) {
         lScreen.sprite(id, x, y, flipX, flipY);
+    }
+
+    public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, BigDecimal degr) {
+        lScreen.sprite(id, x, y, flipX, flipY, degr);
     }
     //end 8x8 sprites
 
@@ -341,17 +345,26 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, int size) {
         lScreen.sprite(id, x, y, flipX, flipY, size);
     }
+
+    public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, BigDecimal degr, int size) {
+        lScreen.sprite(id, x, y, flipX, flipY, degr, size);
+    }
     //end sizable sprites
-    
+
     public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph) {
         lScreen.sprite(ids, px, py, pw, ph);
     }
-    
+
     public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, int size) {
         lScreen.sprite(ids, px, py, pw, ph, size);
     }
+
     public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, boolean flipX, boolean flipY) {
         lScreen.sprite(ids, px, py, pw, ph, flipX, flipY);
+    }
+    
+    public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, boolean flipX, boolean flipY, int size) {
+        lScreen.sprite(ids, px, py, pw, ph, flipX, flipY, size);
     }
 
     //start scaled sprites
@@ -370,6 +383,12 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY) {
         lScreen.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY);
     }
+
+    public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, BigDecimal degr) {
+        lScreen.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, degr);
+    }
+
+    //Scaled sprites with size
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale, int size) {
         lScreen.spriteSc(id, x, y, scale, size);
     }
@@ -384,6 +403,10 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, int size) {
         lScreen.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, size);
+    }
+
+    public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, BigDecimal degr, int size) {
+        lScreen.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, degr, size);
     }
     //end scaled sprites
 
