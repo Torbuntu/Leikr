@@ -244,20 +244,28 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         lScreen.drawMap(x, y, sx, sy, w, h, layer);
     }
 
-    public final int getMapTileId(BigDecimal x, BigDecimal y) {
-        return lScreen.getMapTileId(x, y);
+    public final int getMapTile(BigDecimal x, BigDecimal y) {
+        return lScreen.getMapTile(x, y);
     }
 
-    public final int getMapTileId(BigDecimal x, BigDecimal y, int layer) {
-        return lScreen.getMapTileId(x, y, layer);
+    public final int getMapTile(BigDecimal x, BigDecimal y, int layer) {
+        return lScreen.getMapTile(x, y, layer);
     }
 
-    public final void setMapTile(BigDecimal x, BigDecimal y, int id) {
-        lScreen.setMapTile(x, y, id);
+    public final void setMapTile(int id, BigDecimal x, BigDecimal y) {
+        lScreen.setMapTile(id, x, y);
+    }
+
+    public final void setMapTile(int id, BigDecimal x, BigDecimal y, int layer) {
+        lScreen.setMapTile(id, x, y, layer);
     }
 
     public final void removeMapTile(BigDecimal x, BigDecimal y) {
         lScreen.removeMapTile(x, y);
+    }
+    
+    public final void removeMapTile(BigDecimal x, BigDecimal y, int layer){
+        lScreen.removeMapTile(x, y, layer);
     }
 
     public final int getMapHeight() {
@@ -362,7 +370,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, boolean flipX, boolean flipY) {
         lScreen.sprite(ids, px, py, pw, ph, flipX, flipY);
     }
-    
+
     public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, boolean flipX, boolean flipY, int size) {
         lScreen.sprite(ids, px, py, pw, ph, flipX, flipY, size);
     }
@@ -508,8 +516,8 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final void pauseAudio() {
         lAudio.pauseAudio();
     }
-    
-    public final void resumeAudio(){
+
+    public final void resumeAudio() {
         lAudio.resumeAudio();
     }
     //end Audio handling

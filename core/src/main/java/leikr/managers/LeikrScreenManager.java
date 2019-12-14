@@ -172,20 +172,28 @@ public class LeikrScreenManager {
         mapLoader.drawMap(g, x.intValue(), y.intValue(), sx.intValue(), sy.intValue(), w.intValue(), h.intValue(), layer);
     }
 
-    public final int getMapTileId(BigDecimal x, BigDecimal y) {
-        return mapLoader.getMapTileId(x.intValue(), y.intValue());
+    public final int getMapTile(BigDecimal x, BigDecimal y) {
+        return mapLoader.getMapTile(x.intValue(), y.intValue());
     }
 
-    public final int getMapTileId(BigDecimal x, BigDecimal y, int layer) {
-        return mapLoader.getMapTileId(x.intValue(), y.intValue(), layer);
+    public final int getMapTile(BigDecimal x, BigDecimal y, int layer) {
+        return mapLoader.getMapTile(x.intValue(), y.intValue(), layer);
     }
 
-    public final void setMapTile(BigDecimal x, BigDecimal y, int id) {
-        mapLoader.setMapTile(x.intValue(), y.intValue(), id);
+    public final void setMapTile(int id, BigDecimal x, BigDecimal y) {
+        mapLoader.setMapTile(id, x.intValue(), y.intValue());
+    }
+
+    public final void setMapTile(int id, BigDecimal x, BigDecimal y, int layer) {
+        mapLoader.setMapTile(id, x.intValue(), y.intValue(), layer);
     }
 
     public final void removeMapTile(BigDecimal x, BigDecimal y) {
         mapLoader.removeMapTile(x.intValue(), y.intValue());
+    }
+    
+    public final void removeMapTile(BigDecimal x, BigDecimal y, int layer) {
+        mapLoader.removeMapTile(x.intValue(), y.intValue(), layer);
     }
 
     public final int getMapHeight() {
@@ -350,7 +358,7 @@ public class LeikrScreenManager {
     public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, boolean flipX, boolean flipY) {
         sprite(ids, px, py, pw, ph, flipX, flipY, 0);
     }
-    
+
     public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, boolean flipX, boolean flipY, int size) {
         if (USED_SPRITES >= MAX_SPRITES) {
             return;

@@ -15,7 +15,10 @@
  */
 package leikr.loaders;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import leikr.GameRuntime;
+import leikr.customProperties.CustomSystemProperties;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.tiled.TiledMap;
@@ -80,31 +83,47 @@ public class MapLoader {
     }
 
     // Gets the tileId of the cell located at x and y. 
-    public int getMapTileId(int x, int y) {
-        try {
-            return tiledMap.getTile(x, y, 0).getTileId(1);
-        } catch (Exception ex) {
-            //System.out.println(ex);
-            return -1;
-        }
+    public int getMapTile(int x, int y) {
+        return getMapTile(x, y, 0);
     }
-    
-    public int getMapTileId(int x, int y, int layer) {
+
+    public int getMapTile(int x, int y, int layer) {
         try {
             return tiledMap.getTile(x, y, layer).getTileId(1);
         } catch (Exception ex) {
-            //System.out.println(ex);
+            if (CustomSystemProperties.DEBUG) {
+                Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex);
+            }
             return -1;
         }
     }
-    
 
-    public void setMapTile(int x, int y, int id) {
-        tiledMap.getTileLayer(0).setTileId(x, y, id);
+    public void setMapTile(int id, int x, int y) {
+        setMapTile(id, x, y, 0);
+    }
+
+    public void setMapTile(int id, int x, int y, int layer) {
+        try {
+            tiledMap.getTileLayer(layer).setTileId(x, y, id);
+        } catch (Exception ex) {
+            if (CustomSystemProperties.DEBUG) {
+                Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex);
+            }
+        }
     }
 
     public void removeMapTile(int x, int y) {
-        tiledMap.getTileLayer(0).setTileId(x, y, -1);
+        removeMapTile(x, y, 0);
+    }
+
+    public void removeMapTile(int x, int y, int layer) {
+        try {
+            tiledMap.getTileLayer(layer).setTileId(x, y, -1);
+        } catch (Exception ex) {
+            if (CustomSystemProperties.DEBUG) {
+                Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex);
+            }
+        }
     }
 
     public void disposeMap() {
