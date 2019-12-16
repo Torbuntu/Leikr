@@ -279,10 +279,10 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     //end Map methods
 
     //start color methods
-    public final void bgColor(Color color){
+    public final void bgColor(Color color) {
         lScreen.bgColor(color);
     }
-    
+
     public final void bgColor(int color) {
         lScreen.bgColor(color);
     }
@@ -290,12 +290,12 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final void bgColor(String color) {
         lScreen.bgColor(color);
     }
-    
-    public final Color getColor(int color){
+
+    public final Color getColor(int color) {
         return lScreen.getColor(color);
     }
-    
-    public final Color getColor(String color){
+
+    public final Color getColor(String color) {
         return lScreen.getColor(color);
     }
     //end color methods
@@ -311,6 +311,18 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     //end helper methods
     //text methods
+    public final void drawString(Color color, String text, BigDecimal x, BigDecimal y) {
+        lScreen.drawString(color, text, x, y);
+    }
+
+    public final void drawString(Color color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
+        lScreen.drawString(color, text, x, y, width);
+    }
+
+    public final void drawString(Color color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
+        lScreen.drawString(color, text, x, y, width, align);
+    }
+
     public final void drawString(int color, String text, BigDecimal x, BigDecimal y) {
         lScreen.drawString(color, text, x, y);
     }

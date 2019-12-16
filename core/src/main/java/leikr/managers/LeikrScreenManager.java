@@ -209,8 +209,8 @@ public class LeikrScreenManager {
     private void setDrawColor(int color) {
         g.setColor(pixelManager.getDrawColor(color));
     }
-    
-    public final void bgColor(Color color){
+
+    public final void bgColor(Color color) {
         bgColor = color;
     }
 
@@ -221,45 +221,54 @@ public class LeikrScreenManager {
     public final void bgColor(String c) {
         bgColor = Colors.rgbToColor(c);
     }
-    
-    public final Color getColor(int color){
+
+    public final Color getColor(int color) {
         return pixelManager.getDrawColor(color);
     }
-    
-    public final Color getColor(String color){
+
+    public final Color getColor(String color) {
         return Colors.rgbToColor(color);
     }
 
     //end color methods
     //text methods
-    public final void drawString(int color, String text, BigDecimal x, BigDecimal y) {
-        setDrawColor(color);
+    public final void drawString(Color color, String text, BigDecimal x, BigDecimal y) {
+        g.setColor(color);
         g.drawString(text, x.floatValue(), y.floatValue());
+    }
+
+    public final void drawString(Color color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
+        g.setColor(color);
+        g.drawString(text, x.floatValue(), y.floatValue(), width.floatValue());
+    }
+
+    public final void drawString(Color color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
+        g.setColor(color);
+        g.drawString(text, x.floatValue(), y.floatValue(), width.floatValue(), align);
+    }
+
+    public final void drawString(int color, String text, BigDecimal x, BigDecimal y) {
+        drawString(pixelManager.getDrawColor(color), text, x, y);
     }
 
     public final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
-        setDrawColor(color);
-        g.drawString(text, x.floatValue(), y.floatValue(), width.floatValue());
+        drawString(pixelManager.getDrawColor(color), text, x, y, width);
     }
 
     public final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
-        setDrawColor(color);
-        g.drawString(text, x.floatValue(), y.floatValue(), width.floatValue(), align);
+        drawString(pixelManager.getDrawColor(color), text, x, y, width, align);
     }
 
     public final void drawString(String color, String text, BigDecimal x, BigDecimal y) {
-        g.setColor(Colors.rgbToColor(color));
-        g.drawString(text, x.floatValue(), y.floatValue());
+        drawString(Colors.rgbToColor(color), text, x, y);
     }
 
     public final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
-        g.setColor(Colors.rgbToColor(color));
-        g.drawString(text, x.floatValue(), y.floatValue(), width.floatValue());
+        drawString(Colors.rgbToColor(color), text, x, y, width);
     }
 
     public final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
-        g.setColor(Colors.rgbToColor(color));
-        g.drawString(text, x.floatValue(), y.floatValue(), width.floatValue(), align);
+        drawString(Colors.rgbToColor(color), text, x, y, width, align);
     }
 
     //end drawString methods
@@ -491,14 +500,7 @@ public class LeikrScreenManager {
     }
 
     public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale, int size) {
-        if (USED_SPRITES >= MAX_SPRITES) {
-            return;
-        }
-        Sprite t = spriteLoader.getSprite(id, size);
-        t.scale(scale.floatValue());
-        g.drawSprite(t, x.floatValue(), y.floatValue());
-        t.setScale(1);
-        USED_SPRITES++;
+        spriteSc(id, x, y, scale, scale, size);
     }
 
     public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size) {
@@ -567,6 +569,7 @@ public class LeikrScreenManager {
         g.drawSprite(pixelManager.getSprite(1), x, y);
         g.removeTint();
     }
+
     /**
      * Basic drawPixel taking Integer colord ID and a BigDecimal x,y coordinate
      * value.
@@ -579,7 +582,6 @@ public class LeikrScreenManager {
         g.drawSprite(pixelManager.getSprite(color), x.intValue(), y.intValue());
     }
 
-    
     /**
      * Uses the white pixel with a colored tint to produce a pixel of any
      * desired RGB color String, ex: "255,255,255"
@@ -592,7 +594,6 @@ public class LeikrScreenManager {
         drawPixel(Colors.rgbToColor(color), x.intValue(), y.intValue());
     }
 
-    
     /**
      * Uses the white pixel with a colored tint to produce a pixel of any
      * desired RGB color String, ex: "255,255,255"
