@@ -27,7 +27,6 @@ import leikr.ExportTool;
 import leikr.GameRuntime;
 import leikr.NewProgramGenerator;
 import leikr.customProperties.CustomProgramProperties;
-import leikr.loaders.EngineLoader;
 import leikr.screens.EngineScreen;
 import leikr.screens.TerminalScreen;
 import org.mini2Dx.core.Mdx;
@@ -98,6 +97,11 @@ public class TerminalManager implements InputProcessor {
                     if (command.length <= 1) {
                         return "Pass a program name to get the program's about info.";
                     }
+                    try {
+                        refreshProgramList("Programs");
+                    } catch (IOException ex) {
+                        Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
+                    }
                     if (!Arrays.asList(out.split("\n")).contains(command[1])) {
                         return "Program [" + command[1] + "] does not exist in Programs directory.";
                     }
@@ -130,6 +134,11 @@ public class TerminalManager implements InputProcessor {
                 case "find":
                     if (command.length <= 1) {
                         return "Missing - required program name.";
+                    }
+                    try {
+                        refreshProgramList("Programs");
+                    } catch (IOException ex) {
+                        Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
                     }
                     if (!Arrays.asList(out.split("\n")).contains(command[1])) {
                         return "Program [" + command[1] + "] does not exist in Programs directory.";
@@ -195,18 +204,23 @@ public class TerminalManager implements InputProcessor {
                     setState(TerminalState.NEW_PROGRAM);
                     return "Create a new program.";
                 case "pwd":
-                try {
-                    File f = new File("Programs");
-                    desktop.open(f);
-                    return f.getAbsolutePath();
-                } catch (IOException ex) {
-                    Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
-                    return "Could not find workspace directory.";
-                }
+                    try {
+                        File f = new File("Programs");
+                        desktop.open(f);
+                        return f.getAbsolutePath();
+                    } catch (IOException ex) {
+                        Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
+                        return "Could not find workspace directory.";
+                    }
                 case "rn":
                 case "run":
                     if (command.length == 1) {
                         return "Missing - required program title.";
+                    }
+                    try {
+                        refreshProgramList("Programs");
+                    } catch (IOException ex) {
+                        Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
                     }
                     if (!Arrays.asList(out.split("\n")).contains(command[1])) {
                         return "Program [" + command[1] + "] does not exist in Programs directory.";
@@ -219,9 +233,9 @@ public class TerminalManager implements InputProcessor {
                             EngineScreen.setEngineArgs(args);
                         }
                         setState(TerminalState.RUN_PROGRAM);
-                        return "loading...";
+                        return "Loading...";
                     } catch (Exception ex) {
-                        Logger.getLogger(EngineLoader.class.getName()).log(Level.WARNING, null, ex);
+                        Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
                         return "Failed to run program with name [ " + command[1] + " ]";
                     }
                 case "tool":
@@ -229,19 +243,20 @@ public class TerminalManager implements InputProcessor {
                         return "Missing - required tool title.";
                     }
                     try {
-                        runLs("Data/Tools");
+                        refreshProgramList("Data/Tools");
                         if (!Arrays.asList(out.split("\n")).contains(command[1])) {
                             return "Tool [" + command[1] + "] does not exist in Data/Tools/ directory.";
                         }
                         GameRuntime.GAME_NAME = command[1];
                         GameRuntime.setProgramPath("Data/Tools/" + command[1]);
                         setState(TerminalState.RUN_UTILITY);
-                    } catch (Exception ex) {
-                        Logger.getLogger(EngineLoader.class.getName()).log(Level.WARNING, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
                         return "Failed to run tool with name [ " + command[1] + " ]";
                     }
 
                     return "Running [" + command[1] + "] tool.";
+
 
                 case "tools":
                     return runLs("Data/Tools");
@@ -253,7 +268,7 @@ public class TerminalManager implements InputProcessor {
                     try {
                         Desktop.getDesktop().browse(new URI(wiki));
                     } catch (IOException | URISyntaxException ex) {
-                        Logger.getLogger(EngineLoader.class.getName()).log(Level.WARNING, null, ex);
+                        Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
                         return "Host browser unaccessible.";
                     }
                     return "Opening [" + wiki + "] in host browser.";
@@ -265,14 +280,18 @@ public class TerminalManager implements InputProcessor {
         }
     }
 
+    private void refreshProgramList(String dir) throws IOException {
+        out = "";
+        programs = Mdx.files.local(dir).list();
+        Arrays.asList(programs).stream().forEach(e -> out += e.nameWithoutExtension() + "\n");
+    }
+
     public String runLs(String dir) {
         try {
-            out = "";
-            programs = Mdx.files.local(dir).list();
-            Arrays.asList(programs).stream().forEach(e -> out += e.nameWithoutExtension() + "\n");
+            refreshProgramList(dir);
             return out;
         } catch (IOException ex) {
-            Logger.getLogger(EngineLoader.class.getName()).log(Level.WARNING, null, ex);
+            Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
             return "Failed to execute command [ ls ]";
         }
     }
