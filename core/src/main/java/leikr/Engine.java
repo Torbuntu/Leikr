@@ -25,6 +25,7 @@ import leikr.managers.LeikrScreenManager;
 import leikr.managers.LeikrSystemManager;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
+import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.FrameBuffer;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.input.BaseGamePadListener;
@@ -263,8 +264,8 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final void removeMapTile(BigDecimal x, BigDecimal y) {
         lScreen.removeMapTile(x, y);
     }
-    
-    public final void removeMapTile(BigDecimal x, BigDecimal y, int layer){
+
+    public final void removeMapTile(BigDecimal x, BigDecimal y, int layer) {
         lScreen.removeMapTile(x, y, layer);
     }
 
@@ -278,12 +279,24 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     //end Map methods
 
     //start color methods
+    public final void bgColor(Color color){
+        lScreen.bgColor(color);
+    }
+    
     public final void bgColor(int color) {
         lScreen.bgColor(color);
     }
 
     public final void bgColor(String color) {
         lScreen.bgColor(color);
+    }
+    
+    public final Color getColor(int color){
+        return lScreen.getColor(color);
+    }
+    
+    public final Color getColor(String color){
+        return lScreen.getColor(color);
     }
     //end color methods
 
@@ -419,67 +432,95 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     //end scaled sprites
 
     //start shape drawing methods
+    public final void drawPixel(Color color, BigDecimal x, BigDecimal y) {
+        lScreen.drawPixel(color, x, y);
+    }
+
     public final void drawPixel(int color, BigDecimal x, BigDecimal y) {
         lScreen.drawPixel(color, x, y);
+    }
+
+    public final void drawPixel(String color, BigDecimal x, BigDecimal y) {
+        lScreen.drawPixel(color, x, y);
+    }
+
+    public final void drawRect(Color color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        lScreen.drawRect(color, x, y, w, h);
     }
 
     public final void drawRect(int color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
         lScreen.drawRect(color, x, y, w, h);
     }
 
+    public final void drawRect(String color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        lScreen.drawRect(color, x, y, w, h);
+    }
+
+    public final void fillRect(Color color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        lScreen.fillRect(color, x, y, w, h);
+    }
+
     public final void fillRect(int color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
         lScreen.fillRect(color, x, y, w, h);
+    }
+
+    public final void fillRect(String color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+        lScreen.fillRect(color, x, y, w, h);
+    }
+
+    public final void drawLineSegment(Color color, BigDecimal x0, BigDecimal y0, BigDecimal x1, BigDecimal y1) {
+        lScreen.drawLineSegment(color, x0, y0, x1, y1);
     }
 
     public final void drawLineSegment(int color, BigDecimal x1, BigDecimal y1, BigDecimal x2, BigDecimal y2) {
         lScreen.drawLineSegment(color, x1, y1, x2, y2);
     }
 
-    public void drawPixel(String color, BigDecimal x, BigDecimal y) {
-        lScreen.drawPixel(color, x, y);
-    }
-
-    public void drawRect(String color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        lScreen.drawRect(color, x, y, w, h);
-    }
-
-    public void fillRect(String color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        lScreen.fillRect(color, x, y, w, h);
-    }
-
-    public void drawLineSegment(String color, BigDecimal x0, BigDecimal y0, BigDecimal x1, BigDecimal y1) {
+    public final void drawLineSegment(String color, BigDecimal x0, BigDecimal y0, BigDecimal x1, BigDecimal y1) {
         lScreen.drawLineSegment(color, x0, y0, x1, y1);
+    }
+
+    public final void drawCircle(Color color, BigDecimal x, BigDecimal y, BigDecimal r) {
+        lScreen.drawCircle(color, x, y, r);
     }
 
     public final void drawCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r) {
         lScreen.drawCircle(color, x, y, r);
     }
 
-    public final void fillCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r) {
+    public final void drawCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r) {
+        lScreen.drawCircle(color, x, y, r);
+    }
+
+    public final void fillCircle(Color color, BigDecimal x, BigDecimal y, BigDecimal r) {
         lScreen.fillCircle(color, x, y, r);
     }
 
-    public final void drawCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r) {
-        lScreen.drawCircle(color, x, y, r);
+    public final void fillCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r) {
+        lScreen.fillCircle(color, x, y, r);
     }
 
     public final void fillCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r) {
         lScreen.fillCircle(color, x, y, r);
     }
 
-    public void tint(int color) {
+    public final void tint(Color color) {
         lScreen.tint(color);
     }
 
-    public void tint(String color) {
+    public final void tint(int color) {
         lScreen.tint(color);
     }
 
-    public void tint() {
+    public final void tint(String color) {
+        lScreen.tint(color);
+    }
+
+    public final void tint() {
         lScreen.tint();
     }
 
-    public String getPixel(BigDecimal x, BigDecimal y) {
+    public Color getPixel(BigDecimal x, BigDecimal y) {
         return lScreen.getPixel(x, y);
     }
     //end shape drawing methods
