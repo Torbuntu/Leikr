@@ -101,11 +101,17 @@ class ControllerUtil extends leikr.Engine {
         	unpress = false
         }
 	}
+	
+	@Override
+    public boolean keyTyped(char c) {
+    	println("Char: $c, Code: ${(int)c}")
+        return false;
+    }
     
     void create(){
         loadImages()
         //readDataProps()
-        if(lControllerA != null) activeController = true
+        //if(lControllerA != null) activeController = true
     }
     void update(float delta){
         if(activeController){

@@ -578,7 +578,7 @@ public class LeikrScreenManager {
         g.drawSprite(pixelManager.getSprite(1), x, y);
         g.removeTint();
     }
-
+    
     /**
      * Uses the white pixel with a colored tint to produce a pixel of any
      * desired RGB color String, ex: "255,255,255"
