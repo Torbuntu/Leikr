@@ -15,6 +15,7 @@
  */
 package leikr.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import io.anuke.gif.GifRecorder;
 import java.util.logging.Level;
@@ -179,6 +180,9 @@ public class EngineScreen extends BasicGameScreen {
             } else {
                 pause();
             }
+        }
+        if (recorder.isOpen() && (Mdx.input.isKeyJustPressed(Keys.F11) || Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyJustPressed(Keys.F))) {
+            recorder.setBounds(-Gdx.graphics.getWidth()/2, -Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
         switch (engineState) {
             case BACK:
