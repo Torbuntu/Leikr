@@ -63,3 +63,8 @@ build/
 ## OS Specific
 .DS_Store
 /.nb-gradle/
+
+## Leikr
+assets/Programs/*
+assets/gifexport/
+assets/Packages/
