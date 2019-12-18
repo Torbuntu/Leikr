@@ -16,7 +16,6 @@
 package leikr.managers;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -98,7 +97,7 @@ public class TerminalManager implements InputProcessor {
     public void init() {
         terminalState = TerminalState.PROCESSING;
         prompt = "";
-        index = 0;
+        index = history.size() - 1;
         if (GameRuntime.GAME_NAME.length() < 2) {
             historyText = "No program loaded.";
         } else {
@@ -172,7 +171,7 @@ public class TerminalManager implements InputProcessor {
                 if (index < history.size() - 1) {
                     index++;
                     prompt = history.get(index);
-                }else{
+                } else {
                     prompt = "";
                 }
             }
