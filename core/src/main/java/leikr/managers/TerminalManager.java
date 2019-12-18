@@ -15,30 +15,29 @@
  */
 package leikr.managers;
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import leikr.Commands.AboutCommand;
+import leikr.Commands.CleanCommand;
 import leikr.Commands.Command;
 import leikr.Commands.ExitCommand;
+import leikr.Commands.ExportCommand;
+import leikr.Commands.FindCommand;
+import leikr.Commands.InstallCommand;
 import leikr.Commands.NewProgramCommand;
-import leikr.Commands.PrintDirectory;
+import leikr.Commands.PrintDirectoryCommand;
+import leikr.Commands.PrintWorkspaceCommand;
+import leikr.Commands.RemoveCommand;
 import leikr.Commands.RunCommand;
-import leikr.ExportTool;
+import leikr.Commands.ToolCommand;
+import leikr.Commands.WikiCommand;
 import leikr.GameRuntime;
-import leikr.screens.EngineScreen;
 import leikr.screens.TerminalScreen;
 import org.mini2Dx.core.Mdx;
-import org.mini2Dx.core.files.FileHandle;
 import org.mini2Dx.gdx.Input;
 import org.mini2Dx.gdx.InputProcessor;
 
@@ -48,14 +47,8 @@ import org.mini2Dx.gdx.InputProcessor;
  */
 public class TerminalManager implements InputProcessor {
 
-    FileHandle[] programs;
-    int index = -1;
-
-    Desktop desktop;
-
     public String prompt = "";
     public String historyText = "";
-    String out;
 
     Map<String, Command> commandList;
 
@@ -72,17 +65,23 @@ public class TerminalManager implements InputProcessor {
      * The list of available commands. displayed when "help" with no params is
      * run.
      */
-    private final String commands = "about, clear, exit, find, help, ls, new, pwd, run, tool, tools, wiki";
-
     public TerminalManager() {
         terminalState = TerminalState.PROCESSING;
-        desktop = Desktop.getDesktop();
         commandList = new HashMap<>();
         commandList.put("about", new AboutCommand());
-        commandList.put("ls", new PrintDirectory());
+        commandList.put("ls", new PrintDirectoryCommand());
         commandList.put("new", new NewProgramCommand());
         commandList.put("exit", new ExitCommand());
         commandList.put("run", new RunCommand());
+        commandList.put("find", new FindCommand());
+        commandList.put("clean", new CleanCommand());
+        commandList.put("pwd", new PrintWorkspaceCommand());
+        commandList.put("wiki", new WikiCommand());
+        commandList.put("export", new ExportCommand());
+        commandList.put("install", new InstallCommand());
+        commandList.put("tool", new ToolCommand());
+        commandList.put("uninstall", new RemoveCommand());
+
     }
 
     public static void setState(TerminalState state) {
@@ -114,7 +113,7 @@ public class TerminalManager implements InputProcessor {
 
     String getSpecificHelp(String name) {
         if (!commandList.containsKey(name)) {
-            return "Command [" + name + "] not found.";
+            return "No help for unknown command: [ " + name + " ]";
         }
         return commandList.get(name).help();
     }
@@ -128,172 +127,16 @@ public class TerminalManager implements InputProcessor {
                 return getAllHelp();
             }
         }
+        if (!commandList.containsKey(command[0])) {
+            return "Unknown command [" + command[0] + "]";
+        }
         try {
             Command c = commandList.get(command[0]);
             return c.execute(command);
         } catch (Exception ex) {
             Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        return "Unknown command [" + command[0] + "]";
-        if (command.length > 0) {
-
-            switch (command[0].toLowerCase()) {
-                case "clean": {
-                    try {
-                        Mdx.files.local("Packages/").deleteDirectory();
-                        return "Package directory cleaned.";
-                    } catch (IOException ex) {
-                        Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
-                        return "Failed to clean package directory. Please check logs.";
-                    }
-                }
-                case "export":
-                    return ExportTool.export(command[1]);
-                case "exportAll":
-                    return ExportTool.exportAll();
-                case "find":
-                    if (command.length <= 1) {
-                        return "Missing - required program name.";
-                    }
-                    try {
-                        refreshProgramList("Programs");
-                    } catch (Exception ex) {
-                        Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
-                    }
-                    if (!Arrays.asList(out.split("\n")).contains(command[1])) {
-                        return "Program [" + command[1] + "] does not exist in Programs directory.";
-                    }
-                    try {
-                        File f = new File("Programs/" + command[1]);
-                        desktop.open(f);
-                        return f.getAbsolutePath();
-                    } catch (IOException ex) {
-                        Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
-                        return "Could not find program directory for [" + command[1] + "].";
-                    }
-                case "help":
-                    if (command.length > 1) {
-                        switch (command[1]) {
-                            case "about":
-                                return ">about [option]\nReads the about property of the given program name.";
-                            case "exit":
-                                return ">exit \nExits the Leikr Game system.";
-                            case "find":
-                                return ">find [option] \nPrints the location of the given program name. Attempts to open the directory in the host file manager.";
-                            case "clear":
-                                return ">clear \nClears the terminal screen text.";
-                            case "help":
-                                return ">help [option] \nDisplays the help options to the screen or info about a command.";
-                            case "ls":
-                                return ">ls [option] \nDisplays the contents of a given directory or the default directory Programs.";
-                            case "new":
-                                return ">new [option]\nOpens a new project builder.\nIf run with option, will attempt to generate a project with the given name.";
-                            case "pwd":
-                                return ">pwd \nPrints the location fo the Programs directory. Attempts to open the directory in the host file manager.";
-                            case "run":
-                                return ">run [option] [args...] \nLoads and Runs a program given a title. Optional args can be passed.";
-                            case "tool":
-                                return ">tool [option] \nLoads and Runs a tool given a title.";
-                            case "tools":
-                                return ">tools \nDisplays the contents of the Data/Tools directory.";
-                            case "wiki":
-                                return ">wiki [option] \nOpens the Leikr wiki. Use an Option to open a specific wiki page.";
-                            default:
-                                return "No help for unknown command: [ " + command[1] + " ]";
-                        }
-                    }
-                    return "Commands: " + commands + " \n \nRun help with the name of a command for more details on that command.";
-                case "install":
-                    return ExportTool.importProject(command[1]);
-                case "pwd":
-                    try {
-                    File f = new File("Programs");
-                    desktop.open(f);
-                    return f.getAbsolutePath();
-                } catch (IOException ex) {
-                    Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
-                    return "Could not find workspace directory.";
-                }
-                case "rn":
-                case "run":
-                    if (command.length == 1) {
-                        return "Missing - required program title.";
-                    }
-                    try {
-                        refreshProgramList("Programs");
-                    } catch (Exception ex) {
-                        Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
-                    }
-                    if (!Arrays.asList(out.split("\n")).contains(command[1])) {
-                        return "Program [" + command[1] + "] does not exist in Programs directory.";
-                    }
-                    try {
-                        GameRuntime.GAME_NAME = command[1];
-                        GameRuntime.setProgramPath("Programs/" + command[1]);
-                        if (command.length > 2) {
-                            String[] args = Arrays.copyOfRange(command, 2, command.length);
-                            EngineScreen.setEngineArgs(args);
-                        }
-                        setState(TerminalState.RUN_PROGRAM);
-                        return "Loading...";
-                    } catch (Exception ex) {
-                        Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
-                        return "Failed to run program with name [ " + command[1] + " ]";
-                    }
-                case "tool":
-                    if (command.length == 1) {
-                        return "Missing - required tool title.";
-                    }
-                    try {
-                        refreshProgramList("Data/Tools");
-                        if (!Arrays.asList(out.split("\n")).contains(command[1])) {
-                            return "Tool [" + command[1] + "] does not exist in Data/Tools/ directory.";
-                        }
-                        GameRuntime.GAME_NAME = command[1];
-                        GameRuntime.setProgramPath("Data/Tools/" + command[1]);
-                        setState(TerminalState.RUN_UTILITY);
-                    } catch (Exception ex) {
-                        Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
-                        return "Failed to run tool with name [ " + command[1] + " ]";
-                    }
-
-                    return "Running [" + command[1] + "] tool.";
-
-                case "tools":
-                    return runLs("Data/Tools");
-                case "wiki":
-                    String wiki = "https://github.com/Torbuntu/Leikr/wiki";
-                    if (command.length == 2) {
-                        wiki += "/" + command[1];
-                    }
-                    try {
-                        Desktop.getDesktop().browse(new URI(wiki));
-                    } catch (IOException | URISyntaxException ex) {
-                        Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
-                        return "Host browser unaccessible.";
-                    }
-                    return "Opening [" + wiki + "] in host browser.";
-                default:
-                    return "Uknown command: ( " + prompt + " )";
-            }
-        } else {
-            return "";
-        }
-    }
-
-    private void refreshProgramList(String dir) {
-        try {
-            out = "";
-            programs = Mdx.files.local(dir).list();
-            Arrays.asList(programs).stream().forEach(e -> out += e.nameWithoutExtension() + "\n");
-        } catch (IOException ex) {
-            Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
-        }
-    }
-
-    public String runLs(String dir) {
-        refreshProgramList(dir);
-        return out;
+        return "Unknown command [" + command[0] + "]";
     }
 
     @Override
@@ -307,26 +150,10 @@ public class TerminalManager implements InputProcessor {
             return true;
         }
         if (keycode == Input.Keys.UP) {
-            refreshProgramList("Programs");
-            if (programs.length <= 0) {
-                return false;
-            }
-            index++;
-            if (index > programs.length - 1) {
-                index = 0;
-            }
-            prompt = "run " + programs[index].nameWithoutExtension();
+            //TODO - Command history
         }
         if (keycode == Input.Keys.DOWN) {
-            refreshProgramList("Programs");
-            if (programs.length <= 0) {
-                return false;
-            }
-            index--;
-            if (index < 0) {
-                index = programs.length - 1;
-            }
-            prompt = "run " + programs[index].nameWithoutExtension();
+            //TODO - Command history
         }
         return false;
     }

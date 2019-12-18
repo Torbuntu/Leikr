@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 See AUTHORS.
+ * Copyright 2019 See AUTHORS file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,34 +20,34 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import leikr.customProperties.CustomProgramProperties;
 import org.mini2Dx.core.Mdx;
 
 /**
  *
- * @author tor
+ * @author Torbuntu
  */
-public class AboutCommand extends Command {
+public class RemoveCommand extends Command {
 
-    public AboutCommand() {
-        super.name = "about";
+    public RemoveCommand() {
+        super.name = "uninstall";
     }
 
     @Override
     public String execute(String[] command) {
         if (command.length <= 1) {
-            return "Pass a program name to get the program's about info.";
+            return "Missing - required program name.";
         }
         if (!containsName(command[1])) {
             return "Program [" + command[1] + "] does not exist in Programs directory.";
         }
         try {
-            CustomProgramProperties cpp = new CustomProgramProperties("Programs/" + command[1]);
-            return "Title: " + cpp.TITLE + "\nType: " + cpp.TYPE + "\nPlayers: " + cpp.PLAYERS + "\nAuthor: " + cpp.AUTHOR + "\nAbout: " + cpp.ABOUT;
-        } catch (Exception ex) {
-            Logger.getLogger(AboutCommand.class.getName()).log(Level.SEVERE, null, ex);
-            return "Failed to load property file for ["+ command[1] +"].";
+            Mdx.files.local("Programs/" + command[1]).deleteDirectory();
+            return "Program [" + command[1] + "] has been uninstalled.";
+        } catch (IOException ex) {
+            Logger.getLogger(RemoveCommand.class.getName()).log(Level.SEVERE, null, ex);
+            return "Could not uninstall [" + command[1] + "]";
         }
+
     }
 
     boolean containsName(String name) {
@@ -56,14 +56,13 @@ public class AboutCommand extends Command {
             Arrays.asList(Mdx.files.local("Programs").list()).stream().forEach(e -> names.add(e.nameWithoutExtension()));
             return names.contains(name);
         } catch (IOException ex) {
-            Logger.getLogger(AboutCommand.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(RemoveCommand.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
     }
 
     @Override
     public String help() {
-        return ">about [name]\nReads the property file of the given program name.";
+        return ">uninstall [name] \nUninstalls a program in the Programs directory given the name.";
     }
-
 }
