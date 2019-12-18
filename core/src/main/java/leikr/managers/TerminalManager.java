@@ -20,12 +20,21 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import leikr.Commands.AboutCommand;
+import leikr.Commands.Command;
+import leikr.Commands.ExitCommand;
+import leikr.Commands.NewProgramCommand;
+import leikr.Commands.PrintDirectory;
+import leikr.Commands.RunCommand;
 import leikr.ExportTool;
 import leikr.GameRuntime;
-import leikr.NewProgramGenerator;
 import leikr.customProperties.CustomProgramProperties;
 import leikr.screens.EngineScreen;
 import leikr.screens.TerminalScreen;
@@ -49,14 +58,16 @@ public class TerminalManager implements InputProcessor {
     public String historyText = "";
     String out;
 
-    public enum TerminalState {
+    Map<String, Command> commandList;
+
+    public static enum TerminalState {
         PROCESSING,
         RUN_PROGRAM,
         NEW_PROGRAM,
         RUN_UTILITY
     }
 
-    TerminalState terminalState;
+    public static TerminalState terminalState;
 
     /**
      * The list of available commands. displayed when "help" with no params is
@@ -67,9 +78,15 @@ public class TerminalManager implements InputProcessor {
     public TerminalManager() {
         terminalState = TerminalState.PROCESSING;
         desktop = Desktop.getDesktop();
+        commandList = new HashMap<>();
+        commandList.put("about", new AboutCommand());
+        commandList.put("ls", new PrintDirectory());
+        commandList.put("new", new NewProgramCommand());
+        commandList.put("exit", new ExitCommand());
+        commandList.put("run", new RunCommand());
     }
 
-    public void setState(TerminalState state) {
+    public static void setState(TerminalState state) {
         terminalState = state;
     }
 
@@ -80,7 +97,6 @@ public class TerminalManager implements InputProcessor {
     public void init() {
         terminalState = TerminalState.PROCESSING;
         prompt = "";
-        out = runLs("Programs");
         if (GameRuntime.GAME_NAME.length() < 2) {
             historyText = "No program loaded.";
         } else {
@@ -88,31 +104,41 @@ public class TerminalManager implements InputProcessor {
         }
     }
 
+    String getAllHelp() {
+        ArrayList<String> output = new ArrayList<>();
+        commandList.keySet().forEach((h) -> {
+            output.add(commandList.get(h).name);
+        });
+        output.sort(String::compareToIgnoreCase);
+        return output.stream().collect(Collectors.joining(", "));
+    }
+
+    String getSpecificHelp(String name) {
+        if (!commandList.containsKey(name)) {
+            return "Command [" + name + "] not found.";
+        }
+        return commandList.get(name).help();
+    }
+
     public String processCommand() {
         String[] command = prompt.split(" ");
+        if (command[0].equalsIgnoreCase("help")) {
+            if (command.length > 1) {
+                return getSpecificHelp(command[1]);
+            } else {
+                return getAllHelp();
+            }
+        }
+        try {
+            Command c = commandList.get(command[0]);
+            return c.execute(command);
+        } catch (Exception ex) {
+            Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+//        return "Unknown command [" + command[0] + "]";
         if (command.length > 0) {
 
             switch (command[0].toLowerCase()) {
-                case "about":
-                    if (command.length <= 1) {
-                        return "Pass a program name to get the program's about info.";
-                    }
-                    try {
-                        refreshProgramList("Programs");
-                    } catch (IOException ex) {
-                        Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
-                    }
-                    if (!Arrays.asList(out.split("\n")).contains(command[1])) {
-                        return "Program [" + command[1] + "] does not exist in Programs directory.";
-                    }
-                    try {
-                        CustomProgramProperties cpp = new CustomProgramProperties("Programs/" + command[1]);
-
-                        return "Title: " + cpp.TITLE + "\nType: " + cpp.TYPE + "\nPlayers: " + cpp.PLAYERS + "\nAuthor: " + cpp.AUTHOR + "\nAbout: " + cpp.ABOUT;
-                    } catch (Exception ex) {
-                        Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
-                        return "Failed to clean package directory. Please check logs.";
-                    }
                 case "clean": {
                     try {
                         Mdx.files.local("Packages/").deleteDirectory();
@@ -122,11 +148,6 @@ public class TerminalManager implements InputProcessor {
                         return "Failed to clean package directory. Please check logs.";
                     }
                 }
-                case "clear":
-                    return "";
-                case "exit":
-                    Mdx.platformUtils.exit(true);
-                    return "Goodbye";
                 case "export":
                     return ExportTool.export(command[1]);
                 case "exportAll":
@@ -185,33 +206,15 @@ public class TerminalManager implements InputProcessor {
                     return "Commands: " + commands + " \n \nRun help with the name of a command for more details on that command.";
                 case "install":
                     return ExportTool.importProject(command[1]);
-                case "ls":
-                    if (command.length > 1) {
-                        return runLs(command[1]);
-                    } else {
-                        return runLs("Programs");
-
-                    }
-                case "new":
-                    if (command.length == 2) {
-                        try {
-                            return NewProgramGenerator.setNewProgramFileName(command[1], "Default");
-                        } catch (IOException ex) {
-                            Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
-                            return "New program with name [" + command[1] + "] failed to generate.";
-                        }
-                    }
-                    setState(TerminalState.NEW_PROGRAM);
-                    return "Create a new program.";
                 case "pwd":
                     try {
-                        File f = new File("Programs");
-                        desktop.open(f);
-                        return f.getAbsolutePath();
-                    } catch (IOException ex) {
-                        Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
-                        return "Could not find workspace directory.";
-                    }
+                    File f = new File("Programs");
+                    desktop.open(f);
+                    return f.getAbsolutePath();
+                } catch (IOException ex) {
+                    Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
+                    return "Could not find workspace directory.";
+                }
                 case "rn":
                 case "run":
                     if (command.length == 1) {
@@ -256,7 +259,6 @@ public class TerminalManager implements InputProcessor {
                     }
 
                     return "Running [" + command[1] + "] tool.";
-
 
                 case "tools":
                     return runLs("Data/Tools");
