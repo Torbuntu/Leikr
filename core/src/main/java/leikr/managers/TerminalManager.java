@@ -35,7 +35,6 @@ import leikr.Commands.PrintDirectory;
 import leikr.Commands.RunCommand;
 import leikr.ExportTool;
 import leikr.GameRuntime;
-import leikr.customProperties.CustomProgramProperties;
 import leikr.screens.EngineScreen;
 import leikr.screens.TerminalScreen;
 import org.mini2Dx.core.Mdx;
@@ -158,7 +157,7 @@ public class TerminalManager implements InputProcessor {
                     }
                     try {
                         refreshProgramList("Programs");
-                    } catch (IOException ex) {
+                    } catch (Exception ex) {
                         Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
                     }
                     if (!Arrays.asList(out.split("\n")).contains(command[1])) {
@@ -222,7 +221,7 @@ public class TerminalManager implements InputProcessor {
                     }
                     try {
                         refreshProgramList("Programs");
-                    } catch (IOException ex) {
+                    } catch (Exception ex) {
                         Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
                     }
                     if (!Arrays.asList(out.split("\n")).contains(command[1])) {
@@ -253,7 +252,7 @@ public class TerminalManager implements InputProcessor {
                         GameRuntime.GAME_NAME = command[1];
                         GameRuntime.setProgramPath("Data/Tools/" + command[1]);
                         setState(TerminalState.RUN_UTILITY);
-                    } catch (IOException ex) {
+                    } catch (Exception ex) {
                         Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
                         return "Failed to run tool with name [ " + command[1] + " ]";
                     }
@@ -282,20 +281,19 @@ public class TerminalManager implements InputProcessor {
         }
     }
 
-    private void refreshProgramList(String dir) throws IOException {
-        out = "";
-        programs = Mdx.files.local(dir).list();
-        Arrays.asList(programs).stream().forEach(e -> out += e.nameWithoutExtension() + "\n");
+    private void refreshProgramList(String dir) {
+        try {
+            out = "";
+            programs = Mdx.files.local(dir).list();
+            Arrays.asList(programs).stream().forEach(e -> out += e.nameWithoutExtension() + "\n");
+        } catch (IOException ex) {
+            Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
+        }
     }
 
     public String runLs(String dir) {
-        try {
-            refreshProgramList(dir);
-            return out;
-        } catch (IOException ex) {
-            Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
-            return "Failed to execute command [ ls ]";
-        }
+        refreshProgramList(dir);
+        return out;
     }
 
     @Override
@@ -309,6 +307,7 @@ public class TerminalManager implements InputProcessor {
             return true;
         }
         if (keycode == Input.Keys.UP) {
+            refreshProgramList("Programs");
             if (programs.length <= 0) {
                 return false;
             }
@@ -319,6 +318,7 @@ public class TerminalManager implements InputProcessor {
             prompt = "run " + programs[index].nameWithoutExtension();
         }
         if (keycode == Input.Keys.DOWN) {
+            refreshProgramList("Programs");
             if (programs.length <= 0) {
                 return false;
             }
