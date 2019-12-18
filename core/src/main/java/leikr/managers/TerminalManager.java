@@ -16,6 +16,7 @@
 package leikr.managers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -36,7 +37,6 @@ import leikr.Commands.RunCommand;
 import leikr.Commands.ToolCommand;
 import leikr.Commands.WikiCommand;
 import leikr.GameRuntime;
-import leikr.screens.TerminalScreen;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.gdx.Input;
 import org.mini2Dx.gdx.InputProcessor;
@@ -49,6 +49,8 @@ public class TerminalManager implements InputProcessor {
 
     public String prompt = "";
     public String historyText = "";
+    public ArrayList<String> history;
+    int index;
 
     Map<String, Command> commandList;
 
@@ -66,6 +68,7 @@ public class TerminalManager implements InputProcessor {
      * run.
      */
     public TerminalManager() {
+        history = new ArrayList<>();
         terminalState = TerminalState.PROCESSING;
         commandList = new HashMap<>();
         commandList.put("about", new AboutCommand());
@@ -95,6 +98,7 @@ public class TerminalManager implements InputProcessor {
     public void init() {
         terminalState = TerminalState.PROCESSING;
         prompt = "";
+        index = 0;
         if (GameRuntime.GAME_NAME.length() < 2) {
             historyText = "No program loaded.";
         } else {
@@ -119,6 +123,12 @@ public class TerminalManager implements InputProcessor {
     }
 
     public String processCommand() {
+        history.add(prompt);
+        if (history.size() > 20) {
+            history.remove(0);
+        } else {
+            index = history.size() - 1;
+        }
         String[] command = prompt.split(" ");
         if (command[0].equalsIgnoreCase("help")) {
             if (command.length > 1) {
@@ -134,7 +144,7 @@ public class TerminalManager implements InputProcessor {
             Command c = commandList.get(command[0]);
             return c.execute(command);
         } catch (Exception ex) {
-            Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TerminalManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "Unknown command [" + command[0] + "]";
     }
@@ -150,10 +160,22 @@ public class TerminalManager implements InputProcessor {
             return true;
         }
         if (keycode == Input.Keys.UP) {
-            //TODO - Command history
+            if (history.size() > 0) {
+                prompt = history.get(index);
+                if (index > 0) {
+                    index--;
+                }
+            }
         }
         if (keycode == Input.Keys.DOWN) {
-            //TODO - Command history
+            if (history.size() > 0) {
+                if (index < history.size() - 1) {
+                    index++;
+                    prompt = history.get(index);
+                }else{
+                    prompt = "";
+                }
+            }
         }
         return false;
     }
