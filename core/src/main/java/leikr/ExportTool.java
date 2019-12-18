@@ -59,10 +59,10 @@ public class ExportTool {
         return "Failure to export Package. Please check logs.";
     }
 
-    public static String importProject(String project) {
+    public static String importProject(String project, String location) {
         try {
-            unzip(project);
-            return "Package [" + project + "] installed successfully. Check Programs directory.";
+            unzip(project, location);
+            return "Package [" + project + "] installed successfully. Check ["+ location +"].";
         } catch (Exception ex) {
             Logger.getLogger(ExportTool.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -114,8 +114,8 @@ public class ExportTool {
         }
     }
 
-    public static void unzip(String zipName) {
-        File outputDir = new File(Mdx.files.local("Programs/" + zipName).path());
+    public static void unzip(String zipName, String location) {
+        File outputDir = new File(Mdx.files.local(location + "/" + zipName).path());
 
         if (!outputDir.exists()) {
             outputDir.mkdirs();

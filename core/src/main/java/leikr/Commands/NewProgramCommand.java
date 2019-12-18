@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.managers.TerminalManager;
-import leikr.screens.TerminalScreen;
 
 /**
  *
@@ -36,7 +35,7 @@ public class NewProgramCommand extends Command {
             try {
                 return leikr.NewProgramGenerator.setNewProgramFileName(command[1], "Default");
             } catch (IOException ex) {
-                Logger.getLogger(TerminalScreen.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(NewProgramCommand.class.getName()).log(Level.SEVERE, null, ex);
                 return "New program with name [" + command[1] + "] failed to generate.";
             }
         }

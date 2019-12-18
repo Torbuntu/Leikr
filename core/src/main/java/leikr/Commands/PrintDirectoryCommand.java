@@ -19,19 +19,17 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import leikr.managers.TerminalManager;
 import org.mini2Dx.core.Mdx;
-import org.mini2Dx.core.files.FileHandle;
 
 /**
  *
  * @author tor
  */
-public class PrintDirectory extends Command {
+public class PrintDirectoryCommand extends Command {
+
     public String out;
-    public FileHandle[] programs;
-    
-    public PrintDirectory(){
+
+    public PrintDirectoryCommand() {
         super.name = "ls";
     }
 
@@ -49,18 +47,13 @@ public class PrintDirectory extends Command {
         return ">ls [option] \nDisplays the contents of a given directory or the default directory Programs.";
     }
 
-    private void refreshProgramList(String dir) throws IOException {
-        out = "";
-        programs = Mdx.files.local(dir).list();
-        Arrays.asList(programs).stream().forEach(e -> out += e.nameWithoutExtension() + "\n");
-    }
-
     public String runLs(String dir) {
         try {
-            refreshProgramList(dir);
+            out = "";
+            Arrays.asList(Mdx.files.local(dir).list()).stream().forEach(e -> out += e.nameWithoutExtension() + "\n");
             return out;
         } catch (IOException ex) {
-            Logger.getLogger(TerminalManager.class.getName()).log(Level.WARNING, null, ex);
+            Logger.getLogger(PrintDirectoryCommand.class.getName()).log(Level.WARNING, null, ex);
             return "Failed to execute command [ ls ]";
         }
     }

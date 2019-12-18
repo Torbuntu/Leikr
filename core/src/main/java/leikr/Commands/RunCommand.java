@@ -15,6 +15,7 @@
  */
 package leikr.Commands;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -54,7 +55,7 @@ public class RunCommand extends Command {
             }
             TerminalManager.setState(TerminalState.RUN_PROGRAM);
             return "Loading...";
-        } catch (Exception ex) {
+        } catch (IOException ex) {
             Logger.getLogger(RunCommand.class.getName()).log(Level.WARNING, null, ex);
             return "Failed to run program with name [ " + command[1] + " ]";
         }
