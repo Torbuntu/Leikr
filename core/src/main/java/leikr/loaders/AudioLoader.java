@@ -75,7 +75,10 @@ public class AudioLoader {
     private void loadAudio() {
         try {
             Arrays.asList(Mdx.files.local(soundRootPath).list()).stream()
-                    .filter(file -> !file.isDirectory() && file.extension().equalsIgnoreCase("wav"))
+                    .filter(file -> !file.isDirectory()
+                    && (file.extension().equalsIgnoreCase("wav")
+                    || file.extension().equalsIgnoreCase("mp3")
+                    || file.extension().equalsIgnoreCase("ogg")))
                     .forEach(f -> soundManager.load(soundRootPath + f.name(), Sound.class));
             soundManager.finishLoading();
         } catch (IOException ex) {
@@ -84,7 +87,10 @@ public class AudioLoader {
 
         try {
             Arrays.asList(Mdx.files.local(musicRootPath).list()).stream()
-                    .filter(file -> !file.isDirectory() && file.extension().equalsIgnoreCase("wav"))
+                    .filter(file -> !file.isDirectory()
+                    && (file.extension().equalsIgnoreCase("wav")
+                    || file.extension().equalsIgnoreCase("mp3")
+                    || file.extension().equalsIgnoreCase("ogg")))
                     .forEach(f -> musicManager.load(musicRootPath + f.name(), Music.class));
             musicManager.finishLoading();
         } catch (IOException ex) {
@@ -99,7 +105,7 @@ public class AudioLoader {
     }
 
     public void playSound(String fileName) {
-        sPlayer = soundManager.get(soundRootPath + fileName + ".wav", Sound.class);
+        sPlayer = soundManager.get(soundRootPath + fileName, Sound.class);
         sPlayer.play();
     }
 
@@ -107,17 +113,17 @@ public class AudioLoader {
         //vol: range [0,1]
         //pit: 0.5 and 2.0
         //pan: panning in the range -1 (full left) to 1 (full right). 0 is center position.
-        sPlayer = soundManager.get(soundRootPath + fileName + ".wav", Sound.class);
+        sPlayer = soundManager.get(soundRootPath + fileName, Sound.class);
         sPlayer.play(vol.floatValue(), pit.floatValue(), pan.floatValue());
     }
 
     public void playMusic(String fileName) {
-        mPlayer = musicManager.get(musicRootPath + fileName + ".wav", Music.class);
+        mPlayer = musicManager.get(musicRootPath + fileName, Music.class);
         mPlayer.play();
     }
 
     public void playMusic(String fileName, boolean loop) {
-        mPlayer = musicManager.get(musicRootPath + fileName + ".wav", Music.class);
+        mPlayer = musicManager.get(musicRootPath + fileName, Music.class);
         mPlayer.setLooping(loop);
         mPlayer.play();
     }
@@ -131,7 +137,7 @@ public class AudioLoader {
     }
 
     public void stopMusic(String fileName) {
-        mPlayer = musicManager.get(musicRootPath + fileName + ".wav", Music.class);
+        mPlayer = musicManager.get(musicRootPath + fileName, Music.class);
         mPlayer.stop();
     }
 

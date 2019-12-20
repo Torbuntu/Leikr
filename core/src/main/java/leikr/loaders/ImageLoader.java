@@ -17,8 +17,6 @@ package leikr.loaders;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
@@ -36,8 +34,6 @@ public class ImageLoader {
     AssetManager assetManager;
     String rootPath;
 
-    Map<String, Texture> images;
-
     private static ImageLoader instance;
 
     private ImageLoader() {
@@ -53,12 +49,14 @@ public class ImageLoader {
     }
 
     private void reloadImageLoader() {
-        images = new HashMap<>();
         assetManager = new AssetManager(new LocalFileHandleResolver());
         rootPath = GameRuntime.getProgramPath() + "/Art/";
         try {
             Arrays.asList(Mdx.files.local(rootPath).list()).stream()
-                    .filter(file -> !file.isDirectory() && file.extension().equalsIgnoreCase("png"))
+                    .filter(file -> !file.isDirectory()
+                    && (file.extension().equalsIgnoreCase("png")
+                    || file.extension().equalsIgnoreCase("jpg")
+                    || file.extension().equalsIgnoreCase("bmp")))
                     .forEach(path -> {
                         assetManager.load(rootPath + path.name(), Texture.class);
                     });
@@ -73,7 +71,8 @@ public class ImageLoader {
     }
 
     public Texture getImage(String fileName) {
-        return assetManager.get(rootPath + fileName + ".png", Texture.class);
+        return assetManager.get(rootPath + fileName, Texture.class);
+
     }
 
     public void disposeImages() {
