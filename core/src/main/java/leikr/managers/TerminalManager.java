@@ -15,6 +15,7 @@
  */
 package leikr.managers;
 
+import com.badlogic.gdx.Gdx;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +38,7 @@ import leikr.Commands.ToolCommand;
 import leikr.Commands.WikiCommand;
 import leikr.GameRuntime;
 import org.mini2Dx.core.Mdx;
-import org.mini2Dx.gdx.Input;
+import org.mini2Dx.gdx.Input.Keys;
 import org.mini2Dx.gdx.InputProcessor;
 
 /**
@@ -150,15 +151,27 @@ public class TerminalManager implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.ESCAPE) {
+        if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT)) {
+            if (keycode == Keys.NUM_1) {
+                Gdx.graphics.setWindowedMode(240 * 3, 160 * 3);
+            }
+            if (keycode == Keys.NUM_2) {
+                Gdx.graphics.setWindowedMode(240 * 4, 160 * 4);
+            }
+            if (keycode == Keys.NUM_3) {
+                Gdx.graphics.setWindowedMode(240 * 5, 160 * 5);
+            }
+            return true;
+        }
+        if (keycode == Keys.ESCAPE) {
             Mdx.platformUtils.exit(true);
         }
-        if (keycode == Input.Keys.ENTER) {
+        if (keycode == Keys.ENTER) {
             historyText = processCommand() + "\n\n";
             prompt = "";
             return true;
         }
-        if (keycode == Input.Keys.UP) {
+        if (keycode == Keys.UP) {
             if (history.size() > 0) {
                 prompt = history.get(index);
                 if (index > 0) {
@@ -166,7 +179,7 @@ public class TerminalManager implements InputProcessor {
                 }
             }
         }
-        if (keycode == Input.Keys.DOWN) {
+        if (keycode == Keys.DOWN) {
             if (history.size() > 0) {
                 if (index < history.size() - 1) {
                     index++;
@@ -186,6 +199,9 @@ public class TerminalManager implements InputProcessor {
 
     @Override
     public boolean keyTyped(char c) {
+        if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT)) {
+            return true;
+        }
         if ((int) c >= 32 && (int) c <= 126) {
             prompt = prompt + c;
             return true;

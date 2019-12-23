@@ -182,7 +182,7 @@ public class EngineScreen extends BasicGameScreen {
             }
         }
         if (recorder.isOpen() && (Mdx.input.isKeyJustPressed(Keys.F11) || Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyJustPressed(Keys.F))) {
-            recorder.setBounds(-Gdx.graphics.getWidth()/2, -Gdx.graphics.getHeight()/2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+            recorder.setBounds(-Gdx.graphics.getWidth() / 2, -Gdx.graphics.getHeight() / 2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
         switch (engineState) {
             case BACK:
@@ -195,16 +195,28 @@ public class EngineScreen extends BasicGameScreen {
                 break;
             case RUNNING:
                 try {
-                engine.preUpdate(delta);
-                engine.update(delta);
-                engine.update();
-            } catch (Exception ex) {
-                engineState = EngineState.ERROR;
-                errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
-                Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            break;
+                    engine.preUpdate(delta);
+                    engine.update(delta);
+                    engine.update();
+                } catch (Exception ex) {
+                    engineState = EngineState.ERROR;
+                    errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
+                    Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                break;
             case PAUSE:
+                if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT)) {
+                    if (Mdx.input.isKeyJustPressed(Keys.NUM_1)) {
+                        Gdx.graphics.setWindowedMode(240 * 3, 160 * 3);
+                    }
+                    if (Mdx.input.isKeyJustPressed(Keys.NUM_2)) {
+                        Gdx.graphics.setWindowedMode(240 * 4, 160 * 4);
+                    }
+                    if (Mdx.input.isKeyJustPressed(Keys.NUM_3)) {
+                        Gdx.graphics.setWindowedMode(240 * 5, 160 * 5);
+                    }
+                    break;
+                }
                 if (Mdx.input.isKeyJustPressed(Keys.LEFT)) {
                     CONFIRM = true;
                 }

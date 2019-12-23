@@ -26,6 +26,8 @@ import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
+import org.mini2Dx.gdx.Input;
+import org.mini2Dx.gdx.Input.Keys;
 
 /**
  *
@@ -88,6 +90,11 @@ public class TerminalScreen extends BasicGameScreen {
         g.fillRect(0, 152, GameRuntime.WIDTH, GameRuntime.HEIGHT);
         g.setColor(Colors.GREEN());
         g.drawString(">" + terminalManager.prompt + ((blink > 30) ? (char) 131 : ""), 0, 152, GameRuntime.WIDTH);
+        
+        if(Mdx.input.isKeyDown(Keys.CONTROL_LEFT)){
+            g.setColor(Colors.RED());
+            g.drawString("Ctrl", 0, 146, GameRuntime.WIDTH, 1);
+        }
     }
 
     @Override
