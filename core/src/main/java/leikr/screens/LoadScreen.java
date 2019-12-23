@@ -19,15 +19,18 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.Engine;
 import leikr.GameRuntime;
 import leikr.loaders.EngineLoader;
+import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
+import org.mini2Dx.core.graphics.Texture;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
@@ -35,7 +38,7 @@ import org.mini2Dx.core.screen.Transition;
 
 /**
  *
- * @author tor
+ * @author tor, pixelbath
  */
 public class LoadScreen extends BasicGameScreen {
 
@@ -45,13 +48,23 @@ public class LoadScreen extends BasicGameScreen {
     ExecutorService service;
     Future engineGetter;
 
-    int loadCircleCircumf = 15;
-    int loadCircleDir = 1;
+    AssetManager assetManager;
     String loadPhrase = "Loading ";
+    int frame = 0;
+    ArrayList<Integer> barItems;
 
-    public LoadScreen(FitViewport vp) {
+    public LoadScreen(AssetManager assetManager, FitViewport vp) {
+        this.assetManager = assetManager;
+        assetManager.load("./Data/Images/leikr-logo.png", Texture.class);
+        assetManager.finishLoading();
+        
         service = Executors.newFixedThreadPool(1);
         viewport = vp;
+
+        barItems = new ArrayList<Integer>();
+        barItems.add(12);
+        barItems.add(-56);
+        barItems.add(60);
     }
 
     @Override
@@ -76,24 +89,18 @@ public class LoadScreen extends BasicGameScreen {
                 Logger.getLogger(LoadScreen.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        if (loadCircleCircumf >= 20 && loadCircleDir > 0) {
-            loadCircleDir = -1;
-        }
-        if (loadCircleCircumf <= 1 && loadCircleDir < 0) {
-            loadCircleDir = 1;
-        }
 
-        if (loadCircleCircumf <= 5) {
-            loadPhrase = "Loading " + GameRuntime.GAME_NAME;
-        } else if (loadCircleCircumf <= 10) {
-            loadPhrase = "Loading " + GameRuntime.GAME_NAME + ".";
-        } else if (loadCircleCircumf <= 15) {
-            loadPhrase = "Loading " + GameRuntime.GAME_NAME + "..";
-        } else if (loadCircleCircumf <= 20) {
-            loadPhrase = "Loading " + GameRuntime.GAME_NAME + "...";
+        if (frame % 25 <= 5) {
+            loadPhrase = "";
+        } else if (frame % 25 <= 10) {
+            loadPhrase = ".";
+        } else if (frame % 25 <= 15) {
+            loadPhrase = "..";
+        } else if (frame % 25 <= 20) {
+            loadPhrase = "...";
         }
-
-        loadCircleCircumf += loadCircleDir;
+        translateArrayPositions();
+        ++frame;
     }
 
     @Override
@@ -104,15 +111,50 @@ public class LoadScreen extends BasicGameScreen {
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
         if (!engineGetter.isDone()) {
+            // logo and loading
+            g.drawTexture(assetManager.get("./Data/Images/leikr-logo.png", Texture.class), 80, 64, 48, 16);
+            g.setColor(Colors.WHITE());
+            g.drawString("Loading", 96, 73);
+
+            // draw game name
+            g.setColor(Colors.rgbToColor(0 + "," + (155 + (frame * 2) % 100) + "," + 0));
+            g.drawString(GameRuntime.GAME_NAME + loadPhrase, 128, 73);
+            
+            // loading bar
+            g.setColor(Colors.RED());
+            g.fillRect(82+Math.abs(barItems.get(0)), 80, 6, 4);
             g.setColor(Colors.GREEN());
-            g.fillCircle(120, 80, loadCircleCircumf);
-            g.drawString(loadPhrase, 0, viewport.getHeight() - 9);
+            g.fillRect(82+Math.abs(barItems.get(1)), 80, 6, 4);
+            g.setColor(Colors.BLUE());
+            g.fillRect(82+Math.abs(barItems.get(2)), 80, 6, 4);
+
+            g.setColor(Colors.WHITE());
+            g.drawRect(82, 80, 80, 4);
         }
     }
 
     @Override
     public int getId() {
         return ID;
+    }
+
+    private void translateArrayPositions() {
+        for (int i=0; i<barItems.size(); i++) {
+            Integer num = barItems.get(i);
+            // separate the sign
+            int sign = (num != 0) ? num / Math.abs(num) : 1;
+            num = Math.abs(num);
+
+            if (sign == 1) {
+                num++;
+            } else {
+                num--;
+            }
+            if (num <= 0 || num >= 74) {
+                sign = -sign;
+            }
+            barItems.set(i, num * sign);
+        }
     }
 
 }

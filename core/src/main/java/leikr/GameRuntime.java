@@ -109,7 +109,7 @@ public class GameRuntime extends ScreenBasedGame {
         this.addScreen(new EngineScreen(viewport));//1
         this.addScreen(new TitleScreen(assetManager, viewport));//2
         this.addScreen(new ErrorScreen(assetManager, viewport));//3
-        this.addScreen(new LoadScreen(viewport));//4
+        this.addScreen(new LoadScreen(assetManager, viewport));//4
         this.addScreen(new NewProgramScreen(viewport));//5
         this.addScreen(new TerminalScreen(viewport));//6
     }
