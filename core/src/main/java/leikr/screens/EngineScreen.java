@@ -170,6 +170,11 @@ public class EngineScreen extends BasicGameScreen {
     }
 
     @Override
+    public void preTransitionOut(Transition transition) {
+        Gdx.input.setCursorCatched(false);
+    }
+
+    @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         if (Mdx.input.isKeyJustPressed(Keys.F5) || Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyJustPressed(Keys.R) || Mdx.input.isKeyJustPressed(Keys.HOME)) {
             reloadEngine(sm);
@@ -255,9 +260,11 @@ public class EngineScreen extends BasicGameScreen {
         g.preRender(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         switch (engineState) {
             case RUNNING:
+                Gdx.input.setCursorCatched(true);
                 renderRunning(g);
                 break;
             case PAUSE:
+                Gdx.input.setCursorCatched(false);
                 renderPause(g);
                 break;
             case ERROR:

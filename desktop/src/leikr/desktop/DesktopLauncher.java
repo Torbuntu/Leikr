@@ -42,7 +42,8 @@ public class DesktopLauncher {
         config.width = 720;
         config.height = 480;
         config.fullscreen = false;
-        config.addIcon("Data/Logo/Logo.png", Files.FileType.Internal);
+        config.addIcon("Data/Logo/logo-16x16.png", Files.FileType.Internal);
+        config.addIcon("Data/Logo/logo-32x32.png", Files.FileType.Internal);
 
         new DesktopMini2DxGame(new GameRuntime(arg), config);
     }
