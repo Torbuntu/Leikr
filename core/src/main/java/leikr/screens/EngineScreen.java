@@ -243,9 +243,11 @@ public class EngineScreen extends BasicGameScreen {
         g.preRender(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         switch (engineState) {
             case RUNNING:
+                Gdx.input.setCursorCatched(true);
                 renderRunning(g);
                 break;
             case PAUSE:
+                Gdx.input.setCursorCatched(false);
                 renderPause(g);
                 break;
             case ERROR:
