@@ -61,7 +61,7 @@ public class LoadScreen extends BasicGameScreen {
         service = Executors.newFixedThreadPool(1);
         viewport = vp;
 
-        barItems = new ArrayList<Integer>();
+        barItems = new ArrayList<>();
         barItems.add(12);
         barItems.add(-56);
         barItems.add(60);
