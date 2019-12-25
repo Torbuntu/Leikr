@@ -13,43 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.Commands;
+package leikr.commands;
 
-import java.awt.Desktop;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.mini2Dx.core.Mdx;
 
 /**
  *
  * @author Torbuntu
  */
-public class WikiCommand extends Command {
+public class CleanCommand extends Command {
 
-    public WikiCommand() {
-        super.name = "wiki";
+    public CleanCommand() {
+        super.name = "clean";
     }
 
     @Override
-    public String execute(String[] command) {
-        String wiki = "https://github.com/Torbuntu/Leikr/wiki";
-        if (command.length == 2) {
-            wiki += "/" + command[1];
-        }
+    public String execute(String[] args) {
         try {
-            Desktop.getDesktop().browse(new URI(wiki));
-        } catch (IOException | URISyntaxException ex) {
-            Logger.getLogger(WikiCommand.class.getName()).log(Level.WARNING, null, ex);
-            return "Host browser unaccessible.";
+            Mdx.files.local("Packages/").deleteDirectory();
+            Mdx.files.local("Packages").mkdirs();
+            return "Package directory cleaned.";
+        } catch (IOException ex) {
+            Logger.getLogger(CleanCommand.class.getName()).log(Level.SEVERE, null, ex);
+            return "Failed to clean package directory. Please check logs.";
         }
-        return "Opening [" + wiki + "] in host browser.";
     }
 
     @Override
     public String help() {
-        return ">wiki [option] \nOpens the Leikr wiki. Use an Option to open a specific wiki page.";
+        return ">clean \nRemoves all lkr packages from the Packages directory.";
     }
 
 }
