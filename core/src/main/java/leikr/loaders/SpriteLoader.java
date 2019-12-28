@@ -18,6 +18,7 @@ package leikr.loaders;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
+import leikr.screens.EngineScreen;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.assets.loader.TextureLoader;
@@ -84,17 +85,38 @@ public class SpriteLoader {
         spriteBank64 = new SpriteSheet(assetManager.get(rootPath, Texture.class), 64, 64);
     }
 
+    /**
+     * Get a sprite from one of the 4 banks.
+     *
+     * If the id is outside of the index range of a bank, the error screen will
+     * be invoked with the message in the catch.
+     *
+     * If a localized message exists, it will append it.
+     *
+     * The first sprite in default bank is returned to prevent followup errors
+     * in the EngineScreen render method.
+     *
+     * @param id The id of the sprite to return
+     * @param size Which bank size to index
+     * @return The sprite given the ID and size
+     */
     public Sprite getSprite(int id, int size) {
-        switch (size) {
-            case 0:
-            default:
-                return spriteBank.getSprite(id);
-            case 1:
-                return spriteBank16.getSprite(id);
-            case 2:
-                return spriteBank32.getSprite(id);
-            case 3:
-                return spriteBank64.getSprite(id);
+        try {
+            switch (size) {
+                case 0:
+                default:
+                    return spriteBank.getSprite(id);
+                case 1:
+                    return spriteBank16.getSprite(id);
+                case 2:
+                    return spriteBank32.getSprite(id);
+                case 3:
+                    return spriteBank64.getSprite(id);
+            }
+        } catch (Exception ex) {
+            EngineScreen.errorEngine("Error in program `render` method. Sprite index out of bounds. " + (ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : ""));
+            Logger.getLogger(SpriteLoader.class.getName()).log(Level.SEVERE, null, ex);
+            return spriteBank.getSprite(0);
         }
     }
 

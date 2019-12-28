@@ -46,7 +46,7 @@ public class EngineScreen extends BasicGameScreen {
 
     Engine engine;
     LeikrSystemManager system;
-    String errorMessage;
+    public static String errorMessage;
     FitViewport viewport;
     FrameBuffer frameBuffer;
 
@@ -72,6 +72,15 @@ public class EngineScreen extends BasicGameScreen {
         recorder = new GifRecorder(gifBatch);
         recorder.setOpenKey(Keys.F2);
         recorder.setRecordKey(Keys.F3);
+    }
+    
+    public static void errorEngine(String message){
+        setErrorMessage(message);
+        engineState = EngineState.ERROR;
+    }
+    
+    public static void setErrorMessage(String message){
+        errorMessage = message;
     }
 
     public static void pauseEngine() {
