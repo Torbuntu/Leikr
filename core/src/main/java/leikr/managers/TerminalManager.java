@@ -153,13 +153,13 @@ public class TerminalManager implements InputProcessor {
     public boolean keyDown(int keycode) {
         if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT)) {
             if (keycode == Keys.NUM_1) {
-                Gdx.graphics.setWindowedMode(240 * 3, 160 * 3);
+                Gdx.graphics.setWindowedMode(240, 160);
             }
             if (keycode == Keys.NUM_2) {
-                Gdx.graphics.setWindowedMode(240 * 4, 160 * 4);
+                Gdx.graphics.setWindowedMode(240 * 2, 160 * 2);
             }
             if (keycode == Keys.NUM_3) {
-                Gdx.graphics.setWindowedMode(240 * 5, 160 * 5);
+                Gdx.graphics.setWindowedMode(240 * 3, 160 * 3);
             }
             return true;
         }
