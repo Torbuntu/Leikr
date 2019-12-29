@@ -15,22 +15,21 @@
  */
 package leikr.screens;
 
+import java.util.ArrayList;
 import leikr.GameRuntime;
-import org.mini2Dx.core.game.GameContainer;
+import leikr.managers.PixelManager;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
-import org.mini2Dx.core.graphics.viewport.FitViewport;
+import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.Texture;
+import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
 import org.mini2Dx.gdx.Input.Keys;
-
-import leikr.managers.PixelManager;
-import java.util.ArrayList;
 
 /**
  *
