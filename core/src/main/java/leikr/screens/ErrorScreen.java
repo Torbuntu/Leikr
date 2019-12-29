@@ -16,10 +16,10 @@
 package leikr.screens;
 
 import leikr.GameRuntime;
-import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
+import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
