@@ -221,13 +221,13 @@ public class EngineScreen extends BasicGameScreen {
             case PAUSE:
                 if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT)) {
                     if (Mdx.input.isKeyJustPressed(Keys.NUM_1)) {
-                        Gdx.graphics.setWindowedMode(240 * 3, 160 * 3);
+                        Gdx.graphics.setWindowedMode(240, 160);
                     }
                     if (Mdx.input.isKeyJustPressed(Keys.NUM_2)) {
-                        Gdx.graphics.setWindowedMode(240 * 4, 160 * 4);
+                        Gdx.graphics.setWindowedMode(240 * 2, 160 * 2);
                     }
                     if (Mdx.input.isKeyJustPressed(Keys.NUM_3)) {
-                        Gdx.graphics.setWindowedMode(240 * 5, 160 * 5);
+                        Gdx.graphics.setWindowedMode(240 * 3, 160 * 3);
                     }
                     break;
                 }
