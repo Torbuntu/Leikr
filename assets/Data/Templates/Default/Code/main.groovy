@@ -6,8 +6,8 @@ class NewProgram extends leikr.Engine {
     void update(float delta){
         
     }
-    void render(){	
-		
+    void render(){
+		drawString(1, "Hello, World!", 0, 80, 240, 1)
     }
 }
 
