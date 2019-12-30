@@ -88,7 +88,9 @@ public class ExportTool {
             Files.walkFileTree(sourceFolderPath, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    zos.putNextEntry(new ZipEntry(sourceFolderPath.relativize(file).toString()));
+                    String path = sourceFolderPath.relativize(file).toString();
+                    path = path.replace('\\', '/');
+                    zos.putNextEntry(new ZipEntry(path));
                     Files.copy(file, zos);
                     zos.closeEntry();
                     return FileVisitResult.CONTINUE;
@@ -98,6 +100,7 @@ public class ExportTool {
             Logger.getLogger(ExportTool.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
 
     public static void unzip(String zipName, String location) {
         File outputDir = new File(Mdx.files.local(location + "/" + zipName).path());
