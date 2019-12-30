@@ -88,8 +88,7 @@ public class ExportTool {
             Files.walkFileTree(sourceFolderPath, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    String path = sourceFolderPath.relativize(file).toString();
-                    path = path.replace('\\', '/');
+                    String path = sourceFolderPath.relativize(file).toString().replace('\\', '/');
                     zos.putNextEntry(new ZipEntry(path));
                     Files.copy(file, zos);
                     zos.closeEntry();
