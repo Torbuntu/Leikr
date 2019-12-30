@@ -19,6 +19,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -62,55 +67,35 @@ public class ExportTool {
     public static String importProject(String project, String location) {
         try {
             unzip(project, location);
-            return "Package [" + project + "] installed successfully. Check ["+ location +"].";
+            return "Package [" + project + "] installed successfully. Check [" + location + "].";
         } catch (Exception ex) {
             Logger.getLogger(ExportTool.class.getName()).log(Level.SEVERE, null, ex);
         }
         return "Failure to install Package. Please check logs.";
     }
 
-    // With help from: https://www.thejavaprogrammer.com/java-zip-unzip-files/
     public static void zip(String name) {
-
-        try {
-            File dir = new File(Mdx.files.local("Programs/" + name).path());
-            String dirPath = dir.getAbsolutePath();
-
-            listFiles(dir);
-            File exportDir = new File(Mdx.files.local("Packages/").path());
-            if (!exportDir.exists()) {
-                exportDir.mkdirs();
-            }
-            File zipFile = new File(Mdx.files.local("Packages/" + name).path() + ".lkr");
-
-            try (FileOutputStream fos = new FileOutputStream(zipFile);
-                    ZipOutputStream zos = new ZipOutputStream(fos)) {
-                byte[] buffer = new byte[1024];
-                int len;
-                for (String path : totalFiles) {
-                    ZipEntry zen = new ZipEntry(path.substring(dirPath.length() + 1, path.length()));
-                    zos.putNextEntry(zen);
-                    try (FileInputStream fis = new FileInputStream(new File(path))) {
-                        while ((len = fis.read(buffer)) > 0) {
-                            zos.write(buffer, 0, len);
-                        }
-                        zos.closeEntry();
-                    }
-                }
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(ExportTool.class.getName()).log(Level.SEVERE, null, ex);
+        File exportDir = new File(Mdx.files.local("Packages/").path());
+        if (!exportDir.exists()) {
+            exportDir.mkdirs();
         }
-        totalFiles.clear();
+        zipFolder(new File(Mdx.files.local("Programs/" + name).path()).toPath(), new File(Mdx.files.local("Packages/" + name).path() + ".lkr").toPath());
     }
 
-    static void listFiles(File dir) throws IOException {
-        for (File file : dir.listFiles()) {
-            if (file.isDirectory()) {
-                listFiles(file);
-            } else {
-                totalFiles.add(file.getAbsolutePath());
-            }
+    //https://www.quickprogrammingtips.com/java/how-to-zip-a-folder-in-java.html
+    private static void zipFolder(Path sourceFolderPath, Path zipPath) {
+        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipPath.toFile()))) {
+            Files.walkFileTree(sourceFolderPath, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    zos.putNextEntry(new ZipEntry(sourceFolderPath.relativize(file).toString()));
+                    Files.copy(file, zos);
+                    zos.closeEntry();
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (Exception ex) {
+            Logger.getLogger(ExportTool.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
