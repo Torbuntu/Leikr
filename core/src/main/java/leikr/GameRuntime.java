@@ -65,6 +65,7 @@ public class GameRuntime extends ScreenBasedGame {
             GameRuntime.GAME_NAME = arg[0];
             DIRECT_LAUNCH = true;
         } else if (CustomSystemProperties.LAUNCH_TITLE.length() > 3) {
+            DIRECT_LAUNCH = true;
             LAUNCH_TITLE = CustomSystemProperties.LAUNCH_TITLE;
             PROGRAM_PATH = "Programs/" + CustomSystemProperties.LAUNCH_TITLE;
         }
