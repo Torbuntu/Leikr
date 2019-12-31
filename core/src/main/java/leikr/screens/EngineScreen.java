@@ -75,14 +75,10 @@ public class EngineScreen extends BasicGameScreen {
     }
     
     public static void errorEngine(String message){
-        setErrorMessage(message);
+        errorMessage = message;
         engineState = EngineState.ERROR;
     }
     
-    public static void setErrorMessage(String message){
-        errorMessage = message;
-    }
-
     public static void pauseEngine() {
         engineState = EngineState.PAUSE;
     }

@@ -19,6 +19,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
 import leikr.customProperties.CustomSystemProperties;
+import leikr.screens.EngineScreen;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.tiled.TiledMap;
@@ -62,24 +63,41 @@ public class MapLoader {
         return tiledMap;
     }
 
+    private boolean checkMap() {
+        if (tiledMap != null) {
+            return true;
+        } else {
+            EngineScreen.errorEngine("Error in program `render` method. `drawMap()` called with null map. Load a map with `loadMap(String name)`");
+            return false;
+        }
+    }
+
     public void drawMap(Graphics g) {
-        tiledMap.draw(g, 0, 0);
+        drawMap(g, 0, 0);
     }
 
     public void drawMap(Graphics g, int x, int y) {
-        tiledMap.draw(g, x, y);
+        if (checkMap()) {
+            tiledMap.draw(g, x, y);
+        }
     }
 
     public void drawMap(Graphics g, int x, int y, int layer) {
-        tiledMap.draw(g, x, y, layer);
+        if (checkMap()) {
+            tiledMap.draw(g, x, y, layer);
+        }
     }
 
     public void drawMap(Graphics g, int x, int y, int sx, int sy, int w, int h) {
-        tiledMap.draw(g, x, y, sx, sy, w, h);
+        if (checkMap()) {
+            tiledMap.draw(g, x, y, sx, sy, w, h);
+        }
     }
 
     public void drawMap(Graphics g, int x, int y, int sx, int sy, int w, int h, int layer) {
-        tiledMap.draw(g, x, y, sx, sy, w, h, layer);
+        if (checkMap()) {
+            tiledMap.draw(g, x, y, sx, sy, w, h, layer);
+        }
     }
 
     // Gets the tileId of the cell located at x and y. 
