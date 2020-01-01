@@ -31,6 +31,7 @@ import leikr.commands.ExportCommand;
 import leikr.commands.FindCommand;
 import leikr.commands.InstallCommand;
 import leikr.commands.NewProgramCommand;
+import leikr.commands.PackageCommand;
 import leikr.commands.PrintDirectoryCommand;
 import leikr.commands.PrintWorkspaceCommand;
 import leikr.commands.RemoveCommand;
@@ -84,6 +85,7 @@ public class TerminalManager implements InputProcessor {
         commandList.put("install", new InstallCommand());
         commandList.put("tool", new ToolCommand());
         commandList.put("uninstall", new RemoveCommand());
+        commandList.put("package", new PackageCommand());
 
     }
 

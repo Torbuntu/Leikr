@@ -81,6 +81,10 @@ public class ExportTool {
         }
         zipFolder(new File(Mdx.files.local("Programs/" + name).path()).toPath(), new File(Mdx.files.local("Packages/" + name).path() + ".lkr").toPath());
     }
+    
+    public static void deployPackage(String name){
+        zipFolder(new File(Mdx.files.local("Deploy/"+name).path()).toPath(), new File(Mdx.files.local("Deploy/"+name).path()+".zip").toPath());
+    }
 
     //https://www.quickprogrammingtips.com/java/how-to-zip-a-folder-in-java.html
     private static void zipFolder(Path sourceFolderPath, Path zipPath) {
