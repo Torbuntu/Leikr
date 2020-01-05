@@ -14,7 +14,7 @@ allprojects {
     ext {
         //Version = 0.0.17
         appName = 'Leikr'
-        mini2DxVersion = '2.0.0-alpha.15'
+        mini2DxVersion = '2.0.0-alpha.16'
         groovyVersion = '3.0.0-rc-2'
     }
 
