@@ -59,6 +59,7 @@ public class TerminalScreen extends BasicGameScreen {
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
+        terminalManager.update();
         switch (terminalManager.getState()) {
             case PROCESSING:
                 break;

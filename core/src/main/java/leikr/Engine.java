@@ -17,6 +17,8 @@ package leikr;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import leikr.controls.LeikrController;
 import leikr.controls.LeikrKeyboard;
 import leikr.controls.LeikrMouse;
@@ -157,13 +159,18 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
             lScreen.dispose();
         }
 
-        if (Mdx.input.getGamePads().size > 0) {
-            Mdx.input.getGamePads().get(0).removeListener(this);
-            Mdx.input.getGamePads().get(0).removeListener(lControllerA);
-        }
-        if (Mdx.input.getGamePads().size > 1) {
-            Mdx.input.getGamePads().get(1).removeListener(this);
-            Mdx.input.getGamePads().get(1).removeListener(lControllerB);
+        //Debugging for ARM-GameShell
+        try {
+            if (Mdx.input.getGamePads().size > 0) {
+                Mdx.input.getGamePads().get(0).removeListener(this);
+                Mdx.input.getGamePads().get(0).removeListener(lControllerA);
+            }
+            if (Mdx.input.getGamePads().size > 1) {
+                Mdx.input.getGamePads().get(1).removeListener(this);
+                Mdx.input.getGamePads().get(1).removeListener(lControllerB);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(Engine.class.getName()).log(Level.SEVERE, null, ex);
         }
         //  Controllers.clearListeners();
     }

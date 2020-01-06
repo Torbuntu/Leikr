@@ -17,6 +17,7 @@ package leikr.managers;
 
 import com.badlogic.gdx.Gdx;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -55,6 +56,9 @@ public class TerminalManager implements InputProcessor {
 
     Map<String, Command> commandList;
 
+    ArrayList<String> programList;
+    int prIdx;
+
     public static enum TerminalState {
         PROCESSING,
         RUN_PROGRAM,
@@ -72,6 +76,15 @@ public class TerminalManager implements InputProcessor {
         history = new ArrayList<>();
         terminalState = TerminalState.PROCESSING;
         commandList = new HashMap<>();
+        programList = new ArrayList<>();
+        try {
+            Arrays.stream(Mdx.files.local("Programs/").list()).filter(e -> e.isDirectory()).forEach(game -> programList.add(game.nameWithoutExtension()));
+            if (programList.size() > 0) {
+                prIdx = programList.size();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(TerminalManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
         commandList.put("about", new AboutCommand());
         commandList.put("ls", new PrintDirectoryCommand());
         commandList.put("new", new NewProgramCommand());
@@ -106,6 +119,31 @@ public class TerminalManager implements InputProcessor {
         } else {
             historyText = "Closed program: [" + GameRuntime.GAME_NAME + "]";
         }
+    }
+
+    public void update() {
+        if (programList.size() <= 0) {
+            return;
+        }
+        if (Mdx.input.isKeyJustPressed(Keys.PAGE_UP)) {
+            System.out.println("up");
+            if (prIdx > 0) {
+                prIdx--;
+            } else {
+                prIdx = programList.size() - 1;
+            }
+            prompt = "run " + programList.get(prIdx);
+        }
+        if (Mdx.input.isKeyJustPressed(Keys.PAGE_DOWN)) {
+            System.out.println("down");
+            if (prIdx < programList.size()-1) {
+                prIdx++;
+            } else {
+                prIdx = 0;
+            }
+            prompt = "run " + programList.get(prIdx);
+        }
+
     }
 
     String getAllHelp() {
