@@ -28,30 +28,34 @@ import org.mini2Dx.core.Mdx;
  * @author tor
  */
 public class PackageCommand extends Command {
-
+    
+    public PackageCommand(){
+        super.name = "package";
+    }
+    
     @Override
     public String execute(String[] args) {
-        String name = args[1];
+        String programName = args[1];
         File outputDir = new File(Mdx.files.local("Deploy/").path());
         if (!outputDir.exists()) {
             outputDir.mkdirs();
         }
         try {
-            Mdx.files.local("Deploy/" + name + "/Programs/").mkdirs();
-            Mdx.files.local("Programs/" + name).copyTo(Mdx.files.local("Deploy/" + name + "/Programs/"));
-            Mdx.files.local("Data").copyTo(Mdx.files.local("Deploy/" + name));
-            Mdx.files.local("Sys").copyTo(Mdx.files.local("Deploy/" + name));
-            Mdx.files.local("Internal").copyTo(Mdx.files.local("Deploy/" + name));
-            Mdx.files.local("Leikr").copyTo(Mdx.files.local("Deploy/" + name));
-            Mdx.files.local("Leikr.bat").copyTo(Mdx.files.local("Deploy/" + name));
-            Mdx.files.local("gamecontrollerdb.txt").copyTo(Mdx.files.local("Deploy/" + name));
-            Mdx.files.local("Leikr.jar").copyTo(Mdx.files.local("Deploy/" + name));
+            Mdx.files.local("Deploy/" + programName + "/Programs/").mkdirs();
+            Mdx.files.local("Programs/" + programName).copyTo(Mdx.files.local("Deploy/" + programName + "/Programs/"));
+            Mdx.files.local("Data").copyTo(Mdx.files.local("Deploy/" + programName));
+            Mdx.files.local("Sys").copyTo(Mdx.files.local("Deploy/" + programName));
+            Mdx.files.local("Internal").copyTo(Mdx.files.local("Deploy/" + programName));
+            Mdx.files.local("Leikr").copyTo(Mdx.files.local("Deploy/" + programName));
+            Mdx.files.local("Leikr.bat").copyTo(Mdx.files.local("Deploy/" + programName));
+            Mdx.files.local("gamecontrollerdb.txt").copyTo(Mdx.files.local("Deploy/" + programName));
+            Mdx.files.local("Leikr.jar").copyTo(Mdx.files.local("Deploy/" + programName));
         } catch (Exception ex) {
             Logger.getLogger(PackageCommand.class.getName()).log(Level.SEVERE, null, ex);
-            return "Failed to package and deploy project [" + name + "]";
+            return "Failed to package and deploy project [" + programName + "]";
         }
         Properties outProp = new Properties();
-        outProp.setProperty("launch_title", name);
+        outProp.setProperty("launch_title", programName);
 
         outProp.setProperty("btn_x", "3");
         outProp.setProperty("btn_a", "1");
@@ -70,15 +74,15 @@ public class PackageCommand extends Command {
         outProp.setProperty("btn_right", "1");
         outProp.setProperty("axis_horizontal", "0");
         outProp.setProperty("axis_vertical", "1");
-        try (FileOutputStream stream = new FileOutputStream(new File("Deploy/" + name + "/Data/system.properties"))) {
+        try (FileOutputStream stream = new FileOutputStream(new File("Deploy/" + programName + "/Data/system.properties"))) {
             outProp.store(stream, "Packaged from Leikr.");
         } catch (Exception ex) {
             Logger.getLogger(PackageCommand.class.getName()).log(Level.SEVERE, null, ex);
-            return "Failed to package and deploy project [" + name + "]";
+            return "Failed to package and deploy project [" + programName + "]";
         }
 
-        ExportTool.deployPackage(name);
-        return "Successfully packaged [" + name + "]. Check the Deploy directory.";
+        ExportTool.deployPackage(programName);
+        return "Successfully packaged [" + programName + "]. Check the Deploy directory.";
     }
 
     @Override
