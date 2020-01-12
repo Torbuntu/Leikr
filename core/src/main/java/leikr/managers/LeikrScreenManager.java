@@ -593,7 +593,7 @@ public class LeikrScreenManager {
     public final void drawPixel(String color, BigDecimal x, BigDecimal y) {
         drawPixel(Colors.rgbToColor(color), x.intValue(), y.intValue());
     }
-    
+
     /**
      * Uses the white pixel with a colored tint to produce a pixel of any
      * desired RGB color String, ex: "255,255,255"
@@ -707,9 +707,36 @@ public class LeikrScreenManager {
         }
     }
 
+    
+    //https://www.geeksforgeeks.org/bresenhams-circle-drawing-algorithm/
     public final void drawCircle(Color color, BigDecimal x, BigDecimal y, BigDecimal r) {
         g.setColor(color);
-        g.drawCircle(x.intValue(), y.intValue(), r.intValue());
+        //g.drawCircle(x.intValue(), y.intValue(), r.intValue());
+        int cx = x.intValue();
+        int cy = y.intValue();
+        int cr = r.intValue();
+        int d = 3 - 2 * cr;
+        int nx = 0;
+        int ny = cr;
+        while (nx <= ny) {
+            drawPixel(color, cx + nx, cy + ny);
+            drawPixel(color, cx + nx, cy - ny);
+            drawPixel(color, cx - nx, cy + ny);
+            drawPixel(color, cx - nx, cy - ny);
+
+            drawPixel(color, cx + ny, cy + nx);
+            drawPixel(color, cx + ny, cy - nx);
+            drawPixel(color, cx - ny, cy + nx);
+            drawPixel(color, cx - ny, cy - nx);
+
+            if (d <= 0) {
+                d += 4 * nx + 6;
+            } else {
+                ny += -1;
+                d += 4 * (nx - ny) + 10;
+            }
+            nx++;
+        }
     }
 
     public final void fillCircle(Color color, BigDecimal x, BigDecimal y, BigDecimal r) {
