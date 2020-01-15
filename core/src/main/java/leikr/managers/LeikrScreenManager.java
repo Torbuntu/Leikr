@@ -19,13 +19,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ScreenUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import leikr.GameRuntime;
 import leikr.loaders.ImageLoader;
 import leikr.loaders.MapLoader;
 import leikr.loaders.SpriteLoader;
 import org.mini2Dx.core.Graphics;
+import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.FrameBuffer;
+import org.mini2Dx.core.graphics.Pixmap;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.graphics.viewport.Viewport;
@@ -707,7 +710,6 @@ public class LeikrScreenManager {
         }
     }
 
-    
     //https://www.geeksforgeeks.org/bresenhams-circle-drawing-algorithm/
     public final void drawCircle(Color color, BigDecimal x, BigDecimal y, BigDecimal r) {
         g.setColor(color);
@@ -810,6 +812,25 @@ public class LeikrScreenManager {
         int bl = 0xFF & b[2];
         return Colors.rgbToColor(re + "," + gr + "," + bl);
         //return (re + "," + gr + "," + bl);
+    }
+
+    public Color getPixel(String name, BigDecimal x, BigDecimal y) {
+        Pixmap pm = Mdx.graphics.newPixmap(Mdx.files.local(GameRuntime.getProgramPath() + "/Art/" + name));
+        Color c = Mdx.graphics.newColor(pm.getPixel(x.intValue(), y.intValue()));
+        pm.dispose();
+        return c;
+    }
+
+    public ArrayList<Color> getPixels(String name) {
+        Pixmap pm = Mdx.graphics.newPixmap(Mdx.files.local(GameRuntime.getProgramPath() + "/Art/" + name));
+        ArrayList<Color> colors = new ArrayList<>();
+        for (int y = 0; y < pm.getHeight(); y++) {
+            for (int x = 0; x < pm.getWidth(); x++) {
+                colors.add(Mdx.graphics.newColor(pm.getPixel(x, y)));
+            }
+        }
+        pm.dispose();
+        return colors;
     }
 
 //END EXPERIMENTAL

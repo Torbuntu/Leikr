@@ -542,6 +542,14 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public Color getPixel(BigDecimal x, BigDecimal y) {
         return lScreen.getPixel(x, y);
     }
+
+    public Color getPixel(String name, BigDecimal x, BigDecimal y) {
+        return lScreen.getPixel(name, x, y);
+    }
+
+    public ArrayList<Color> getPixels(String name) {
+        return lScreen.getPixels(name);
+    }
     //end shape drawing methods
 
     //start Audio handling
