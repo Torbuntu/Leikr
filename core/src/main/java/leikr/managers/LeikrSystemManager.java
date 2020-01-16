@@ -22,9 +22,9 @@ import leikr.loaders.SpriteLoader;
 import leikr.screens.EngineScreen;
 import leikr.screens.LoadScreen;
 import org.mini2Dx.core.Graphics;
-import org.mini2Dx.core.font.MonospaceGameFont;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.files.LocalFileHandleResolver;
+import org.mini2Dx.core.font.MonospaceGameFont;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.gdx.math.MathUtils;
 
