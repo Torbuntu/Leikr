@@ -72,6 +72,7 @@ public class EngineScreen extends BasicGameScreen {
         recorder = new GifRecorder(gifBatch);
         recorder.setOpenKey(Keys.F2);
         recorder.setRecordKey(Keys.F3);
+        recorder.setFPS(60);
     }
     
     public static void errorEngine(String message){
