@@ -15,12 +15,15 @@
  */
 package leikr.managers;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import leikr.GameRuntime;
 import org.mini2Dx.core.Mdx;
+import org.mini2Dx.core.exception.SerializationException;
 import org.mini2Dx.core.serialization.annotation.Field;
 
 /**
@@ -30,7 +33,7 @@ import org.mini2Dx.core.serialization.annotation.Field;
 public class LeikrDataManager {
 
     @Field
-    public Map<String, Object> data;
+    public HashMap<String, Object> data;
 
     public LeikrDataManager() {
         data = new HashMap<>();
@@ -50,10 +53,30 @@ public class LeikrDataManager {
 
     public void saveData(String path) {
         try {
-            Mdx.playerData.writeJson(this, GameRuntime.getProgramPath() + path);
-        } catch (Exception ex) {
+            String dir = GameRuntime.getProgramPath() + "/"+ path;
+            if(!Mdx.files.local(dir).exists()){
+                Mdx.files.local(dir).delete();
+            }
+            Mdx.files.local(dir).writeString(Mdx.json.toJson(data), false);
+        } catch (IOException | SerializationException ex) {
             Logger.getLogger(LeikrDataManager.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public void saveData(String path, HashMap data){
+        this.data = data;
+        saveData(path);
+    }
+
+    public HashMap<String, Object> readData(String path) {
+        try {
+            String json = Mdx.files.local(GameRuntime.getProgramPath()+"/"+path).readString();
+            json = json.replaceAll("[{\"}]", "");
+            data = (HashMap<String, Object>) Arrays.asList(json.split(",")).stream().map(s -> s.split(":")).collect(Collectors.toMap(e -> e[0], e -> (Object)e[1]));
+         } catch (IOException ex) {
+            Logger.getLogger(LeikrDataManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return data;
     }
 
 }

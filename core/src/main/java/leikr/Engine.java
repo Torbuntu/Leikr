@@ -17,6 +17,7 @@ package leikr;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.controls.LeikrController;
@@ -752,6 +753,14 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
     public void saveData(String path) {
         lData.saveData(path);
+    }
+    
+    public void saveData(String path, HashMap dat) {
+        lData.saveData(path, dat);
+    }
+    
+    public HashMap<String, Object> readData(String path){
+        return lData.readData(path);
     }
     //END Data API
 
