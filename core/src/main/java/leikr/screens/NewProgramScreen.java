@@ -18,7 +18,7 @@ package leikr.screens;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import leikr.NewProgramGenerator;
+import leikr.utilities.NewProgramGenerator;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;

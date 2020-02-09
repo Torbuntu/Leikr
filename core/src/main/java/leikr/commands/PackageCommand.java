@@ -20,7 +20,7 @@ import java.io.FileOutputStream;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import leikr.ExportTool;
+import leikr.utilities.ExportTool;
 import org.mini2Dx.core.Mdx;
 
 /**

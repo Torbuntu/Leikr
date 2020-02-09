@@ -33,7 +33,7 @@ public class NewProgramCommand extends Command {
     public String execute(String[] command) {
         if (command.length == 2) {
             try {
-                return leikr.NewProgramGenerator.setNewProgramFileName(command[1], "Default");
+                return leikr.utilities.NewProgramGenerator.setNewProgramFileName(command[1], "Default");
             } catch (IOException ex) {
                 Logger.getLogger(NewProgramCommand.class.getName()).log(Level.SEVERE, null, ex);
                 return "New program with name [" + command[1] + "] failed to generate.";

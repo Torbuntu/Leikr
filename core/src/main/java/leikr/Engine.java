@@ -23,6 +23,7 @@ import leikr.controls.LeikrController;
 import leikr.controls.LeikrKeyboard;
 import leikr.controls.LeikrMouse;
 import leikr.managers.LeikrAudioManager;
+import leikr.managers.LeikrDataManager;
 import leikr.managers.LeikrScreenManager;
 import leikr.managers.LeikrSystemManager;
 import org.mini2Dx.core.Graphics;
@@ -58,6 +59,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public LeikrScreenManager lScreen;
     public LeikrSystemManager lSystem;
     public LeikrAudioManager lAudio;
+    public LeikrDataManager lData;
 
     /**
      * preCreate gets the audio, screen and system singletons.sets up the
@@ -71,6 +73,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
     public final void preCreate(int mSprites, LeikrSystemManager sys, FitViewport viewport, FrameBuffer f) {
         lAudio = LeikrAudioManager.getLeikrAudioManager();
         lScreen = LeikrScreenManager.getLeikrScreenManager(mSprites);
+        lData = new LeikrDataManager();
         lScreen.preCreate(f, viewport);
         lSystem = sys;
         active = true;
@@ -733,6 +736,24 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         lSystem.setCustomFont(path, spacing, width, height);
     }
     //END System API
+
+    //START Data API
+    public void addData(String key, Object value) {
+        lData.addData(key, value);
+    }
+
+    public void deleteData(String key) {
+        lData.deleteData(key);
+    }
+
+    public void clearData() {
+        lData.clearData();
+    }
+
+    public void saveData(String path) {
+        lData.saveData(path);
+    }
+    //END Data API
 
 //Experimental API methods
     public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {

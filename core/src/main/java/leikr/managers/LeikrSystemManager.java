@@ -38,7 +38,7 @@ public class LeikrSystemManager {
     private boolean RUNNING = true;
     AssetManager manager;
     MonospaceGameFont font;
-
+    
     private static LeikrSystemManager instance;
 
     public LeikrSystemManager() {

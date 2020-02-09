@@ -1,5 +1,4 @@
 apply plugin: 'java'
-apply plugin: "application"
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
