@@ -755,7 +755,7 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         lData.saveData(path);
     }
     
-    public void saveData(String path, HashMap dat) {
+    public void saveData(String path, HashMap<String, Object> dat) {
         lData.saveData(path, dat);
     }
     

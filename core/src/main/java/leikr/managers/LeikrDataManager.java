@@ -63,7 +63,7 @@ public class LeikrDataManager {
         }
     }
     
-    public void saveData(String path, HashMap data){
+    public void saveData(String path, HashMap<String, Object> data){
         this.data = data;
         saveData(path);
     }
