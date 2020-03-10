@@ -15,7 +15,7 @@ allprojects {
         //Version = 0.0.18
         appName = 'Leikr'
         mini2DxVersion = '2.0.0-alpha.20'
-        groovyVersion = '3.0.1'
+        groovyVersion = '3.0.2'
     }
 
     repositories {
