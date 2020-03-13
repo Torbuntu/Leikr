@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.managers.TerminalManager;
+import leikr.utilities.NewProgramGenerator;
 
 /**
  *
@@ -33,7 +34,9 @@ public class NewProgramCommand extends Command {
     public String execute(String[] command) {
         if (command.length == 2) {
             try {
-                return leikr.utilities.NewProgramGenerator.setNewProgramFileName(command[1], "Default");
+                String message = NewProgramGenerator.setNewProgramFileName(command[1], "Default");
+                NewProgramGenerator.writePropertyName(command[1]);
+                return message;
             } catch (IOException ex) {
                 Logger.getLogger(NewProgramCommand.class.getName()).log(Level.SEVERE, null, ex);
                 return "New program with name [" + command[1] + "] failed to generate.";

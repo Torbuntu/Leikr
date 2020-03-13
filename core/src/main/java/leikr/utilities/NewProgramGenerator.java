@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.files.FileHandle;
 
@@ -31,50 +33,71 @@ import org.mini2Dx.core.files.FileHandle;
 public class NewProgramGenerator {
 
     private static final String NEW_LOCATION = "New Program template generated at: /Programs/";
-    
+
     public String MAX_SPRITES = "2048";
     public String USE_COMPILED = "false";
     public String COMPILE_SOURCE = "false";
     public String TITLE = "unknown";
     public String TYPE = "Program";
     public String AUTHOR = "unknown";
-    public String VERSION = "0.1";
+    public String VERSION = "0.0.0";
     public String PLAYERS = "1";
     public String ABOUT = "A Leikr Program.";
 
     public static String setNewProgramFileName(String newName, String template) throws IOException {
-        String NP = newName.length() > 0 ? newName : "NewProgram";
-        
+        String newProject = newName.length() > 0 ? newName : "NewProgram";
+
         for (FileHandle name : Mdx.files.local("Programs").list()) {
-            if (name.name().equalsIgnoreCase(NP)) {
-                return "A program with name ["+NP+"] already exists.";
+            if (name.name().equalsIgnoreCase(newProject)) {
+                return "A program with name [" + newProject + "] already exists.";
             }
         }
-        
-        String message = copyTemplate(NP, template);
-        setNewProgramClassName(NP);
+
+        String message = copyTemplate(newProject, template);
+        setNewProgramClassName(newProject);
         return message;
     }
 
-    private static String copyTemplate(String NP, String template) throws IOException {
-        Mdx.files.local("Programs/" + NP).mkdirs();
-        for (FileHandle file : Mdx.files.local("Data/Templates/"+template).list()) {
-            Mdx.files.local("Data/Templates/"+template +"/" + file.name()).copyTo(Mdx.files.local("Programs/" + NP));
+    private static String copyTemplate(String newProject, String template) throws IOException {
+        Mdx.files.local("Programs/" + newProject).mkdirs();
+        for (FileHandle file : Mdx.files.local("Data/Templates/" + template).list()) {
+            Mdx.files.local("Data/Templates/" + template + "/" + file.name()).copyTo(Mdx.files.local("Programs/" + newProject));
         }
-        Mdx.files.local("Programs/" + NP + "/Code/main.groovy").moveTo(Mdx.files.local("Programs/" + NP + "/Code/" + NP + ".groovy"));
-        return NEW_LOCATION + NP + "/";
+        Mdx.files.local("Programs/" + newProject + "/Code/main.groovy").moveTo(Mdx.files.local("Programs/" + newProject + "/Code/" + newProject + ".groovy"));
+        return NEW_LOCATION + newProject + "/";
     }
 
-    private static void setNewProgramClassName(String NP) throws IOException {
-        Path nfPath = new File(Mdx.files.local("Programs/" + NP + "/Code/" + NP + ".groovy").path()).toPath();
+    private static void setNewProgramClassName(String newProject) throws IOException {
+        Path nfPath = new File(Mdx.files.local("Programs/" + newProject + "/Code/" + newProject + ".groovy").path()).toPath();
         String newFile = Files.readString(nfPath);
-        String replace = newFile.replace("NewProgram", NP);
+        String replace = newFile.replace("NewProgram", newProject);
         Files.writeString(nfPath, replace);
     }
-    
-    public void writeProperties(String name){
-        String propPath = Mdx.files.local("Programs/" + name +"/program.properties").path();
-        try(FileOutputStream fos = new FileOutputStream(propPath)){
+
+    public static void writePropertyName(String name) {
+        String propPath = Mdx.files.local("Programs/" + name + "/program.properties").path();
+        try (FileOutputStream fos = new FileOutputStream(propPath)) {
+            Properties props = new Properties();
+            props.setProperty("title", name);
+            props.setProperty("type", "Program");
+            props.setProperty("author", "Unknown");
+            props.setProperty("version", "0.0.0");
+            props.setProperty("players", "1");
+            props.setProperty("about", "Leikr project");
+            props.setProperty("max_sprites", "128");
+            props.setProperty("compile_source", "false");
+            props.setProperty("use_compiled", "false");
+
+            props.store(fos, "Program generated with Leikr Program Generator");
+
+        } catch (Exception ex) {
+            Logger.getLogger(NewProgramGenerator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void writeProperties(String name) {
+        String propPath = Mdx.files.local("Programs/" + name + "/program.properties").path();
+        try (FileOutputStream fos = new FileOutputStream(propPath)) {
             Properties props = new Properties();
             props.setProperty("title", TITLE);
             props.setProperty("type", TYPE);
@@ -85,21 +108,19 @@ public class NewProgramGenerator {
             props.setProperty("max_sprites", MAX_SPRITES);
             props.setProperty("compile_source", COMPILE_SOURCE);
             props.setProperty("use_compiled", USE_COMPILED);
-            
+
             props.store(fos, "Program generated with Leikr Program Generator");
-            
-        }catch(Exception ex){
-            ex.printStackTrace();
+
+        } catch (Exception ex) {
+            Logger.getLogger(NewProgramGenerator.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    
-    
-    
-    void setMaxSprite(String max){
+
+    void setMaxSprite(String max) {
         MAX_SPRITES = max;
     }
-    void setTitle(String title){
+
+    void setTitle(String title) {
         TITLE = title;
     }
 }
