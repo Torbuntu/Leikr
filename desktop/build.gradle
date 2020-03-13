@@ -2,7 +2,7 @@ apply plugin: 'java'
 apply plugin: 'com.github.johnrengelman.shadow'
 
 shadowJar {
-    //minimize()
+//    minimize() //I'd like to minimize, but it is too aggressive currently and requires older JDK
     archiveBaseName = 'Leikr'
     classifier = null
     archiveVersion = null
@@ -21,8 +21,12 @@ task deployLeikr {
         println "From $projectDir/../assets"
         println "To $projectDir/build/libs"
         copy {
+            from "$projectDir/build/libs"
+            into "$projectDir/../deploy"
+        }
+        copy {
             from "$projectDir/../assets"
-            into "$projectDir/build/libs"
+            into "$projectDir/../deploy"
             exclude "*gamecontrollerdb.txt*"
             exclude "*Internal"
         } 
