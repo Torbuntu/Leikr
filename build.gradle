@@ -18,6 +18,10 @@ allprojects {
         mini2DxVersion = '2.0.0-alpha.22'
         groovyVersion = '3.0.2'
         gifRecorderVersion = 'master-SNAPSHOT'
+        gdxVersion = '1.9.10-SNAPSHOT'
+        
+        lwjglNatives = 'natives-linux-arm32'
+        lwjglVersion = '3.2.3'
     }
 
     repositories {
@@ -37,11 +41,22 @@ project(":core") {
     apply plugin: "java"
 
     dependencies {
+        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
         implementation "org.mini2Dx:mini2Dx-core:$mini2DxVersion"
         implementation "org.mini2Dx:mini2Dx-tiled:$mini2DxVersion"
         implementation "org.mini2Dx:mini2Dx-libgdx:$mini2DxVersion"
         implementation "com.github.Anuken:GdxGifRecorder:$gifRecorderVersion"
         implementation "org.codehaus.groovy:groovy:$groovyVersion"
+        
+        
+        //lwjgl3natives:
+        implementation "org.lwjgl:lwjgl:$lwjglVersion"
+	implementation "org.lwjgl:lwjgl-openal:$lwjglVersion"
+	implementation "org.lwjgl:lwjgl-opengl:$lwjglVersion"
+        
+        runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
     }
 }
 

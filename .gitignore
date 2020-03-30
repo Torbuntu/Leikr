@@ -68,3 +68,5 @@ build/
 assets/Programs/*
 assets/gifexport/
 assets/Packages/
+
+deploy/
