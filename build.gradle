@@ -6,6 +6,7 @@ buildscript {
     }
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
+        classpath 'org.mini2Dx:parcl:1.6.1'
     }
 }
 
@@ -14,8 +15,9 @@ allprojects {
     ext {
         //Version = 0.0.18
         appName = 'Leikr'
-        mini2DxVersion = '2.0.0-alpha.21'
+        mini2DxVersion = '2.0.0-alpha.22'
         groovyVersion = '3.0.2'
+        gifRecorderVersion = 'master-SNAPSHOT'
     }
 
     repositories {
@@ -38,7 +40,7 @@ project(":core") {
         implementation "org.mini2Dx:mini2Dx-core:$mini2DxVersion"
         implementation "org.mini2Dx:mini2Dx-tiled:$mini2DxVersion"
         implementation "org.mini2Dx:mini2Dx-libgdx:$mini2DxVersion"
-        implementation "com.github.Anuken:GdxGifRecorder:1.4"
+        implementation "com.github.Anuken:GdxGifRecorder:$gifRecorderVersion"
         implementation "org.codehaus.groovy:groovy:$groovyVersion"
     }
 }
@@ -46,9 +48,33 @@ project(":core") {
 project(":desktop") {
     apply plugin: "java"
     apply plugin: "application"
+    apply plugin: "org.mini2Dx.parcl"
 
     dependencies {
         implementation project(":core")
-        implementation "org.mini2Dx:mini2Dx-libgdx-desktop:$mini2DxVersion"
+        implementation "org.mini2Dx:mini2Dx-libgdx-desktop-lwjgl3:$mini2DxVersion"
+    }
+    
+    
+    parcl {
+        exe {
+            vmArgs = ["-Xmx1g"]
+            exeName = "Leikr"
+        }
+        app {
+            vmArgs = ["-Xmx1g"]
+            appName = "Leikr"
+            applicationCategory = "public.app-category.adventure-games"
+            displayName = "Leikr"
+            identifier = "Leikr"
+            copyright = "Copyright 2020 Torbuntu"
+        }
+        linux {
+            vmArgs = ["-Xmx1g"]
+            binName = "Leikr"
+        }
     }
 }
+
+
+

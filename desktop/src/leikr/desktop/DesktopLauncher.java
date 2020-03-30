@@ -16,14 +16,14 @@
 package leikr.desktop;
 
 import com.badlogic.gdx.Files;
-import com.badlogic.gdx.backends.lwjgl.DesktopMini2DxGame;
+import com.badlogic.gdx.backends.lwjgl3.DesktopMini2DxGame;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Mini2DxConfig;
 import java.io.File;
 import java.security.Security;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
-import org.mini2Dx.libgdx.desktop.DesktopMini2DxConfig;
 
 public class DesktopLauncher {
 
@@ -36,14 +36,11 @@ public class DesktopLauncher {
             System.setProperty("java.security.policy", new File("Sys/mysecurity.policy").getAbsolutePath());
             System.setSecurityManager(new SecurityManager());
         }
-        DesktopMini2DxConfig config = new DesktopMini2DxConfig(GameRuntime.GAME_IDENTIFIER);
-        config.vSyncEnabled = true;
-        config.title = "Leikr";
-        config.width = 720;
-        config.height = 480;
-        config.fullscreen = false;
-        config.addIcon("Data/Logo/logo-16x16.png", Files.FileType.Internal);
-        config.addIcon("Data/Logo/logo-32x32.png", Files.FileType.Internal);
+        Lwjgl3Mini2DxConfig config = new Lwjgl3Mini2DxConfig(GameRuntime.GAME_IDENTIFIER);
+        config.setTitle("Leikr");
+        config.setWindowedMode(720, 480);
+        config.useVsync(true);
+        config.setWindowIcon(Files.FileType.Internal, "Data/Logo/logo-16x16.png", "Data/Logo/logo-32x32.png");
 
         new DesktopMini2DxGame(new GameRuntime(arg), config);
     }
