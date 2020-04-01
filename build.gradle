@@ -19,7 +19,7 @@ allprojects {
         groovyVersion = '3.0.2'
         gifRecorderVersion = 'master-SNAPSHOT'
         gdxVersion = '1.9.10-SNAPSHOT'
-        
+        gdxController = '1.9.10'
         lwjglNatives = 'natives-linux-arm32'
         lwjglVersion = '3.2.3'
     }
@@ -42,6 +42,8 @@ project(":core") {
 
     dependencies {
         implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-controllers-lwjgl3:$gdxController"
+        
         implementation "org.mini2Dx:mini2Dx-core:$mini2DxVersion"
         implementation "org.mini2Dx:mini2Dx-tiled:$mini2DxVersion"
         implementation "org.mini2Dx:mini2Dx-libgdx:$mini2DxVersion"
@@ -51,12 +53,14 @@ project(":core") {
         
         //lwjgl3natives:
         implementation "org.lwjgl:lwjgl:$lwjglVersion"
-	implementation "org.lwjgl:lwjgl-openal:$lwjglVersion"
-	implementation "org.lwjgl:lwjgl-opengl:$lwjglVersion"
+        implementation "org.lwjgl:lwjgl-glfw:$lwjglVersion"
+        implementation "org.lwjgl:lwjgl-openal:$lwjglVersion"
+        implementation "org.lwjgl:lwjgl-opengl:$lwjglVersion"
         
         runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
-	runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
-	runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
+        runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
     }
 }
 
