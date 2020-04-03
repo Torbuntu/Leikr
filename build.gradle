@@ -18,7 +18,7 @@ allprojects {
         mini2DxVersion = '2.0.0-alpha.22'
         groovyVersion = '3.0.2'
         gifRecorderVersion = 'master-SNAPSHOT'
-        gdxVersion = '1.9.10-SNAPSHOT'
+        gdxVersion = '1.9.11-SNAPSHOT'
         gdxController = '1.9.10'
         lwjglNatives = 'natives-linux-arm32'
         lwjglVersion = '3.2.3'

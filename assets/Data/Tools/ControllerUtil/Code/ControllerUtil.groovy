@@ -5,10 +5,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.mini2Dx.core.input.*
+import com.badlogic.gdx.controllers.*
 
 class ControllerUtil extends leikr.Engine {
-    
+  
     def settings = [:]
     def saved = [:]
     def index = "X";
@@ -20,6 +20,7 @@ class ControllerUtil extends leikr.Engine {
     def ERROR = false
     def unpress = false
     def activeController = false
+    def ready = false
     def finished = false
     
     int X;
@@ -71,38 +72,45 @@ class ControllerUtil extends leikr.Engine {
         saved = [X:false, A:false,B:false,Y:false,SELECT:false,START:false,LEFT_BUMPER:false,RIGHT_BUMPER:false,UP:false,DOWN:false,LEFT:false,RIGHT:false]
     }
     
+    void resetController(){
+        Controllers.clearListeners()
+        Controllers.addListener(new ControllerAdapter(){
+            @Override
+           public boolean buttonDown(Controller controller, int buttonCode){
+               println buttonCode
+               lastButtonPressed = buttonCode
+               unpress = false
+           }
+
+           @Override
+           public boolean buttonUp(Controller controller, int buttonCode){
+               println buttonCode
+               if(lastButtonPressed == buttonCode){
+                       unpress = true
+                  }
+           }
+
+           @Override
+           public boolean axisMoved(Controller controller, int axisCode, float value) {
+                       println("axis: $axisCode, value: $value")
+               if(dpad_h){
+                       HORIZONTAL_AXIS = axisCode
+               }
+               if(dpad_v){
+                       VERTICAL_AXIS = axisCode
+               }
+               if(value.toInteger() == 0){
+                       unpress = true
+               }else{
+                       lastButtonPressed = value.toInteger()
+                       unpress = false
+               }
+           }     
+        });
+    }
     
-     @Override
-    public void onButtonDown(GamePad controller, int buttonCode){
-        println buttonCode
-        lastButtonPressed = buttonCode
-        unpress = false
-	}
-	@Override
-	public void onButtonUp(GamePad controller, int buttonCode){
-        println buttonCode
-        if(lastButtonPressed == buttonCode){
-        	unpress = true
-        }
-	}
-	@Override
-	public void onAxisChanged(GamePad controller, int axisCode, float value) {
-		println("axis: $axisCode, value: $value")
-        if(dpad_h){
-        	HORIZONTAL_AXIS = axisCode
-        }
-        if(dpad_v){
-        	VERTICAL_AXIS = axisCode
-        }
-        if(value.toInteger() == 0){
-        	unpress = true
-        }else{
-        	lastButtonPressed = value.toInteger()
-        	unpress = false
-        }
-	}
 	
-	@Override
+    @Override
     public boolean keyTyped(char c) {
     	println("Char: $c, Code: ${(int)c}")
         return false;
@@ -111,13 +119,18 @@ class ControllerUtil extends leikr.Engine {
     void create(){
         loadImages()
         //readDataProps()
-        //if(lControllerA != null) activeController = true
+        
+        
     }
     void update(float delta){
-        if(activeController){
-            if(key("Q")){
+        if(key("Q")){
+            if(lControllerA != null) activeController = true
+                resetController()
+                ready = true
                 saved = [X:false, A:false,B:false,Y:false,SELECT:false,START:false,LEFT_BUMPER:false,RIGHT_BUMPER:false,UP:false,DOWN:false,LEFT:false,RIGHT:false]
-            }
+        }
+        if(activeController){
+            
 
             if(!saved.X){
                 index = "X"
@@ -332,8 +345,13 @@ class ControllerUtil extends leikr.Engine {
         bgColor("200,200,200")
         
         drawButtons()
-        drawTexture("controller",0,0)   
-         
+        drawTexture("controller.png",0,0)   
+        
+        if(!ready){
+            drawString(1, "Press `Q` to start", 0,0)
+            return
+        }
+        
         if(ERROR || !activeController){
             drawString(1, "No controller active.", 0,0)
         }else{
@@ -342,7 +360,6 @@ class ControllerUtil extends leikr.Engine {
 
             }else{
             	drawString(1, "Please press: "+index, 0,0)
-
             }
         }
     }

@@ -15,6 +15,9 @@
  */
 package leikr;
 
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerAdapter;
+import com.badlogic.gdx.controllers.Controllers;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +42,7 @@ import org.mini2Dx.gdx.InputProcessor;
  *
  * @author tor
  */
-public abstract class Engine extends BaseGamePadListener implements InputProcessor {
+public abstract class Engine extends ControllerAdapter implements InputProcessor {
 
     //used by the Engine Screen to determine if the game should be actively running.
     boolean active;
@@ -79,16 +82,19 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         lSystem = sys;
         active = true;
         try {
-            if (Mdx.input.getGamePads().size > 0) {
-                lControllerA = LeikrController.getLeikrControllerListenerA();
-                Mdx.input.getGamePads().get(0).addListener(lControllerA);
-                Mdx.input.getGamePads().get(0).addListener(this);
-            }
-            if (Mdx.input.getGamePads().size > 1) {
-                lControllerB = LeikrController.getLeikrControllerListenerB();
-                Mdx.input.getGamePads().get(1).addListener(lControllerB);
-                Mdx.input.getGamePads().get(1).addListener(this);
-            }
+            lControllerA = LeikrController.getLeikrControllerListenerA();
+            Controllers.addListener(lControllerA);
+//            
+//            if (Mdx.input.getGamePads().size > 0) {
+//                lControllerA = LeikrController.getLeikrControllerListenerA();
+//                Mdx.input.getGamePads().get(0).addListener(lControllerA);
+//                Mdx.input.getGamePads().get(0).addListener(this);
+//            }
+//            if (Mdx.input.getGamePads().size > 1) {
+//                lControllerB = LeikrController.getLeikrControllerListenerB();
+//                Mdx.input.getGamePads().get(1).addListener(lControllerB);
+//                Mdx.input.getGamePads().get(1).addListener(this);
+//            }
         } catch (Exception ex) {
             System.out.println("Controllers not active: " + ex.getMessage());
         }
@@ -165,14 +171,15 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
 
         //Debugging for ARM-GameShell
         try {
-            if (Mdx.input.getGamePads().size > 0) {
-                Mdx.input.getGamePads().get(0).removeListener(this);
-                Mdx.input.getGamePads().get(0).removeListener(lControllerA);
-            }
-            if (Mdx.input.getGamePads().size > 1) {
-                Mdx.input.getGamePads().get(1).removeListener(this);
-                Mdx.input.getGamePads().get(1).removeListener(lControllerB);
-            }
+            Controllers.clearListeners();
+//            if (Mdx.input.getGamePads().size > 0) {
+//                Mdx.input.getGamePads().get(0).removeListener(this);
+//                Mdx.input.getGamePads().get(0).removeListener(lControllerA);
+//            }
+//            if (Mdx.input.getGamePads().size > 1) {
+//                Mdx.input.getGamePads().get(1).removeListener(this);
+//                Mdx.input.getGamePads().get(1).removeListener(lControllerB);
+//            }
         } catch (Exception ex) {
             Logger.getLogger(Engine.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -649,9 +656,9 @@ public abstract class Engine extends BaseGamePadListener implements InputProcess
         if (null != lControllerA && player == 0) {
             return lControllerA.button(button);
         }
-        if (null != lControllerB && player == 1) {
-            return lControllerB.button(button);
-        }
+//        if (null != lControllerB && player == 1) {
+//            return lControllerB.button(button);
+//        }
         //default search is false, in case there are no controllers.
         return false;
     }

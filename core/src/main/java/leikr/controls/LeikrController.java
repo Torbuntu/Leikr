@@ -15,6 +15,11 @@
  */
 package leikr.controls;
 
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerAdapter;
+import com.badlogic.gdx.controllers.ControllerListener;
+import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.math.Vector3;
 import java.util.HashMap;
 import leikr.customProperties.CustomSystemProperties;
 import org.mini2Dx.core.input.BaseGamePadListener;
@@ -24,7 +29,7 @@ import org.mini2Dx.core.input.GamePad;
  *
  * @author tor
  */
-public class LeikrController extends BaseGamePadListener {
+public class LeikrController implements ControllerListener {
 
     HashMap<Object, Boolean> buttons = new HashMap<>();
     HashMap<Object, Object> btnCodes = new HashMap<>();
@@ -112,29 +117,101 @@ public class LeikrController extends BaseGamePadListener {
         return CustomSystemProperties.VERTICAL_AXIS;
     }
 
+//    @Override
+//    public void onButtonDown(GamePad controller, int buttonCode) {
+//        if (CustomSystemProperties.DEBUG) {
+//            System.out.println("Button Down : " + buttonCode);
+//        }
+//        buttons.replace(btnCodes.get(buttonCode), true);
+//    }
+
+//    @Override
+//    public void onButtonUp(GamePad controller, int buttonCode) {
+//        if (CustomSystemProperties.DEBUG) {
+//            System.out.println("Button Up : " + buttonCode);
+//        }
+//        buttons.replace(btnCodes.get(buttonCode), false);
+//    }
+
+    //Keypad
+//    @Override
+//    public void onAxisChanged(GamePad controller, int axisCode, float value) {
+//        //Legacy codes: axis 0 = x axis -1 = left 1 = right
+//        //Legacy codes: axis 1 = y axis -1 = up 1 = down
+//        if (CustomSystemProperties.DEBUG) {
+//            System.out.println(controller.getGamePadType().toFriendlyString() + " : " + axisCode + " | " + value);
+//        }
+//        if ((int) value == 0) {
+//            buttons.replace(UP, false);
+//            buttons.replace(DOWN, false);
+//            buttons.replace(LEFT, false);
+//            buttons.replace(RIGHT, false);
+//        }
+//
+//        if (axisCode == CustomSystemProperties.VERTICAL_AXIS) {
+//            if ((int) value == CustomSystemProperties.DOWN) {
+//                buttons.replace(DOWN, true);
+//            }
+//            if ((int) value == CustomSystemProperties.UP) {
+//                buttons.replace(UP, true);
+//            }
+//            if (CustomSystemProperties.DEBUG) {
+//                System.out.println("Vertical Axis : " + value);
+//            }
+//        }
+//        if (axisCode == CustomSystemProperties.HORIZONTAL_AXIS) {
+//            if ((int) value == CustomSystemProperties.RIGHT) {
+//                buttons.replace(RIGHT, true);
+//            }
+//            if ((int) value == CustomSystemProperties.LEFT) {
+//                buttons.replace(LEFT, true);
+//            }
+//            if (CustomSystemProperties.DEBUG) {
+//                System.out.println("Horizontal Axis : " + value);
+//            }
+//        }
+//    }
+    
+    
+    
+
     @Override
-    public void onButtonDown(GamePad controller, int buttonCode) {
+    public void connected(Controller controller) {
+        System.out.println("Connection: " + controller.getName());
+    }
+
+    @Override
+    public void disconnected(Controller controller) {
+        System.out.println("Disconnection: " + controller.getName());
+    }
+    
+    @Override
+    public boolean buttonDown(Controller controller, int buttonCode){
+        System.out.println("Controller: " + controller.getName() + " , Code: " + buttonCode);
         if (CustomSystemProperties.DEBUG) {
             System.out.println("Button Down : " + buttonCode);
         }
         buttons.replace(btnCodes.get(buttonCode), true);
+        return true;
     }
 
     @Override
-    public void onButtonUp(GamePad controller, int buttonCode) {
+    public boolean buttonUp(Controller controller, int buttonCode) {
+        System.out.println("Controller: " + controller.getName() + " , Code: " + buttonCode);
         if (CustomSystemProperties.DEBUG) {
             System.out.println("Button Up : " + buttonCode);
         }
         buttons.replace(btnCodes.get(buttonCode), false);
+        return true;
     }
 
-    //Keypad
     @Override
-    public void onAxisChanged(GamePad controller, int axisCode, float value) {
+    public boolean axisMoved(Controller controller, int axisCode, float value) {
+        System.out.println("Controller: " + controller.getName() + " , axis: " + axisCode + " , value: " + value);
         //Legacy codes: axis 0 = x axis -1 = left 1 = right
         //Legacy codes: axis 1 = y axis -1 = up 1 = down
         if (CustomSystemProperties.DEBUG) {
-            System.out.println(controller.getGamePadType().toFriendlyString() + " : " + axisCode + " | " + value);
+            System.out.println(controller.getName()+ " : " + axisCode + " | " + value);
         }
         if ((int) value == 0) {
             buttons.replace(UP, false);
@@ -165,5 +242,26 @@ public class LeikrController extends BaseGamePadListener {
                 System.out.println("Horizontal Axis : " + value);
             }
         }
+        return false;
+    }
+
+    @Override
+    public boolean povMoved(Controller controller, int povCode, PovDirection value) {
+        return false;
+    }
+
+    @Override
+    public boolean xSliderMoved(Controller controller, int sliderCode, boolean value) {
+        return false;
+    }
+
+    @Override
+    public boolean ySliderMoved(Controller controller, int sliderCode, boolean value) {
+        return false;
+    }
+
+    @Override
+    public boolean accelerometerMoved(Controller controller, int accelerometerCode, Vector3 value) {
+        return false;
     }
 }
