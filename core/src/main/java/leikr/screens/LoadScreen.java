@@ -46,7 +46,7 @@ public class LoadScreen extends BasicGameScreen {
 
     FitViewport viewport;
     ExecutorService service;
-    Future engineGetter;
+    Future<Engine> engineGetter;
 
     AssetManager assetManager;
     String loadPhrase = "Loading ";
@@ -69,6 +69,7 @@ public class LoadScreen extends BasicGameScreen {
 
     @Override
     public void preTransitionIn(Transition transition) {
+        service = Executors.newFixedThreadPool(1);
         engineGetter = service.submit(EngineLoader.getEngineLoader(true));
     }
 
@@ -81,7 +82,8 @@ public class LoadScreen extends BasicGameScreen {
         if (engineGetter.isDone()) {
             try {
                 EngineScreen scrn = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
-                scrn.setEngine((Engine) engineGetter.get());
+                scrn.setEngine(engineGetter.get());
+                service.shutdown();
                 sm.enterGameScreen(EngineScreen.ID, null, null);
             } catch (InterruptedException | ExecutionException ex) {
                 ErrorScreen.setErrorMessage("Error loading engine: " + ex.getMessage());

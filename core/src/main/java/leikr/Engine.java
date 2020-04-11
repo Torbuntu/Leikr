@@ -172,6 +172,9 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         //Debugging for ARM-GameShell
         try {
             Controllers.clearListeners();
+            Controllers.removeListener(this);
+            Controllers.removeListener(lControllerA);
+            Controllers.removeListener(lControllerB);
 //            if (Mdx.input.getGamePads().size > 0) {
 //                Mdx.input.getGamePads().get(0).removeListener(this);
 //                Mdx.input.getGamePads().get(0).removeListener(lControllerA);
