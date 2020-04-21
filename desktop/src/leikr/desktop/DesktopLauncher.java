@@ -41,7 +41,7 @@ public class DesktopLauncher {
         config.setWindowedMode(720, 480);
         config.useVsync(true);
         config.setWindowIcon(Files.FileType.Internal, "Data/Logo/logo-16x16.png", "Data/Logo/logo-32x32.png");
-
+        
         new DesktopMini2DxGame(new GameRuntime(arg), config);
     }
 }

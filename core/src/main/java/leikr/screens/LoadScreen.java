@@ -86,6 +86,7 @@ public class LoadScreen extends BasicGameScreen {
                 service.shutdown();
                 sm.enterGameScreen(EngineScreen.ID, null, null);
             } catch (InterruptedException | ExecutionException ex) {
+                service.shutdownNow();
                 ErrorScreen.setErrorMessage("Error loading engine: " + ex.getMessage());
                 sm.enterGameScreen(ErrorScreen.ID, null, null);
                 Logger.getLogger(LoadScreen.class.getName()).log(Level.SEVERE, null, ex);

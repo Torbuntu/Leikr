@@ -15,7 +15,6 @@
  */
 package leikr;
 
-import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import java.math.BigDecimal;
@@ -35,7 +34,6 @@ import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.FrameBuffer;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
-import org.mini2Dx.core.input.BaseGamePadListener;
 import org.mini2Dx.gdx.InputProcessor;
 
 /**
@@ -83,18 +81,9 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         active = true;
         try {
             lControllerA = LeikrController.getLeikrControllerListenerA();
+            lControllerB = LeikrController.getLeikrControllerListenerB();
             Controllers.addListener(lControllerA);
-//            
-//            if (Mdx.input.getGamePads().size > 0) {
-//                lControllerA = LeikrController.getLeikrControllerListenerA();
-//                Mdx.input.getGamePads().get(0).addListener(lControllerA);
-//                Mdx.input.getGamePads().get(0).addListener(this);
-//            }
-//            if (Mdx.input.getGamePads().size > 1) {
-//                lControllerB = LeikrController.getLeikrControllerListenerB();
-//                Mdx.input.getGamePads().get(1).addListener(lControllerB);
-//                Mdx.input.getGamePads().get(1).addListener(this);
-//            }
+            Controllers.addListener(lControllerB);
         } catch (Exception ex) {
             System.out.println("Controllers not active: " + ex.getMessage());
         }
@@ -175,18 +164,9 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
             Controllers.removeListener(this);
             Controllers.removeListener(lControllerA);
             Controllers.removeListener(lControllerB);
-//            if (Mdx.input.getGamePads().size > 0) {
-//                Mdx.input.getGamePads().get(0).removeListener(this);
-//                Mdx.input.getGamePads().get(0).removeListener(lControllerA);
-//            }
-//            if (Mdx.input.getGamePads().size > 1) {
-//                Mdx.input.getGamePads().get(1).removeListener(this);
-//                Mdx.input.getGamePads().get(1).removeListener(lControllerB);
-//            }
         } catch (Exception ex) {
             Logger.getLogger(Engine.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //  Controllers.clearListeners();
     }
     //dispose
 
