@@ -15,7 +15,7 @@ allprojects {
         //Version = 0.0.18
         appName = 'Leikr'
         mini2DxVersion = '2.0.0-alpha.26'
-        groovyVersion = '3.0.3'
+        groovyVersion = '3.0.4'
         gifRecorderVersion = 'master-SNAPSHOT'
         gdxVersion = '1.9.11-SNAPSHOT'
         gdxController = '1.9.10'
