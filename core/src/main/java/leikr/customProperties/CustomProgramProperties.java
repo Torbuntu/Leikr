@@ -20,6 +20,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -57,7 +59,7 @@ public class CustomProgramProperties {
             PLAYERS = ((prop.getProperty("players") != null) ? Integer.parseInt(prop.getProperty("players")) : 1);
             ABOUT = ((prop.getProperty("about") != null) ? prop.getProperty("about") : "A Leikr Program.");
         } catch (IOException | NumberFormatException ex) {
-            System.out.println(ex.getMessage());
+            Logger.getLogger(CustomProgramProperties.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }

@@ -15,9 +15,10 @@
  */
 package leikr.loaders;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import leikr.GameRuntime;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
@@ -81,8 +82,8 @@ public class AudioLoader {
                     || file.extension().equalsIgnoreCase("ogg")))
                     .forEach(f -> soundManager.load(soundRootPath + f.name(), Sound.class));
             soundManager.finishLoading();
-        } catch (IOException ex) {
-            System.out.println("Sound load err: " + ex.getMessage());
+        } catch (Exception ex) {
+            Logger.getLogger(AudioLoader.class.getName()).log(Level.WARNING, "Sound load error: {0}", ex.getMessage());
         }
 
         try {
@@ -93,8 +94,8 @@ public class AudioLoader {
                     || file.extension().equalsIgnoreCase("ogg")))
                     .forEach(f -> musicManager.load(musicRootPath + f.name(), Music.class));
             musicManager.finishLoading();
-        } catch (IOException ex) {
-            System.out.println("Music load err: " + ex.getMessage());
+        } catch (Exception ex) {
+            Logger.getLogger(AudioLoader.class.getName()).log(Level.WARNING, "Music load error: {0}", ex.getMessage());
         }
     }
 

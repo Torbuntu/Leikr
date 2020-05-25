@@ -20,6 +20,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -74,7 +76,7 @@ public class CustomSystemProperties {
             VERTICAL_AXIS = (prop.getProperty("axis_vertical") != null) ? Integer.parseInt(prop.getProperty("axis_vertical")) : 1;
 
         } catch (IOException | NumberFormatException ex) {
-            System.out.println(ex.getMessage());
+            Logger.getLogger(CustomSystemProperties.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

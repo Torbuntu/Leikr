@@ -85,7 +85,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
             Controllers.addListener(lControllerA);
             Controllers.addListener(lControllerB);
         } catch (Exception ex) {
-            System.out.println("Controllers not active: " + ex.getMessage());
+            Logger.getLogger(Engine.class.getName()).log(Level.SEVERE, "Controllers not active: {0}", ex.getMessage());
         }
         // input processors
         lMouse = LeikrMouse.getLeikrMouse(viewport);

@@ -126,7 +126,6 @@ public class TerminalManager implements InputProcessor {
             return;
         }
         if (Mdx.input.isKeyJustPressed(Keys.PAGE_UP)) {
-            System.out.println("up");
             if (prIdx > 0) {
                 prIdx--;
             } else {
@@ -135,7 +134,6 @@ public class TerminalManager implements InputProcessor {
             prompt = "run " + programList.get(prIdx);
         }
         if (Mdx.input.isKeyJustPressed(Keys.PAGE_DOWN)) {
-            System.out.println("down");
             if (prIdx < programList.size()-1) {
                 prIdx++;
             } else {

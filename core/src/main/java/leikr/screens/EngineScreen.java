@@ -149,7 +149,7 @@ public class EngineScreen extends BasicGameScreen {
         }
         frameBuffer.dispose();
         engineArgs = new String[0];//set args to an empty array.
-        System.out.println("Engine classes disposed.");
+        Logger.getLogger(EngineScreen.class.getName()).log(Level.INFO, "Engine classes disposed.");
     }
 
     @Override
@@ -171,7 +171,7 @@ public class EngineScreen extends BasicGameScreen {
         } catch (Exception ex) {
             engineState = EngineState.ERROR;
             errorMessage = "Error in program `create` method. " + ex.getLocalizedMessage();
-            Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EngineScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -212,7 +212,7 @@ public class EngineScreen extends BasicGameScreen {
                 } catch (Exception ex) {
                     engineState = EngineState.ERROR;
                     errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
-                    Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(EngineScreen.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 break;
             case PAUSE:
@@ -242,7 +242,7 @@ public class EngineScreen extends BasicGameScreen {
 
         if (!system.update(sm)) {
             system.resetFont();
-            System.out.println("Transition initiated from running program.");
+            Logger.getLogger(EngineScreen.class.getName()).log(Level.WARNING, "Transition initiated from running program.");
         }
     }
 
@@ -289,7 +289,7 @@ public class EngineScreen extends BasicGameScreen {
         } catch (Exception ex) {
             engineState = EngineState.ERROR;
             errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();
-            Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EngineScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

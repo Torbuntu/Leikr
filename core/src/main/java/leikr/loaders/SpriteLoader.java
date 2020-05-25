@@ -60,7 +60,7 @@ public class SpriteLoader {
             instance.loadSpriteSheets();
             instance.addSpritesToSpriteBank();
         } else {
-            System.out.println("No sprites found for: " + GameRuntime.getProgramPath());
+            Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "No sprites found for: {0}", GameRuntime.getProgramPath());
         }
 
         return instance;
@@ -124,15 +124,15 @@ public class SpriteLoader {
         resetSpriteLoader();
         rootPath = "Programs/" + programName + "/Sprites/Sprites.png";
         if (!Mdx.files.local(rootPath).exists()) {
-            System.out.println("No sprites found for: " + rootPath);
+            Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "No sprites found for: {0}", rootPath);
             return;
         }
         try {
             instance.loadSpriteSheets();
             instance.addSpritesToSpriteBank();
         } catch (Exception ex) {
+            Logger.getLogger(SpriteLoader.class.getName()).log(Level.SEVERE, "Manual Sprite sheet not loadable for: {0}", rootPath);
             Logger.getLogger(SpriteLoader.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Manual Sprite sheet not loadable for: " + rootPath);
         }
     }
 

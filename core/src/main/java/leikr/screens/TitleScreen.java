@@ -16,6 +16,8 @@
 package leikr.screens;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import leikr.GameRuntime;
 import leikr.managers.PixelManager;
 import org.mini2Dx.core.Graphics;
@@ -64,7 +66,7 @@ public class TitleScreen extends BasicGameScreen {
             sm.enterGameScreen(TerminalScreen.ID, null, null);
         }
         if (Mdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-            System.out.println("Goodbye!");
+            Logger.getLogger(TitleScreen.class.getName()).log(Level.INFO, "Goodbye!");
             Mdx.platformUtils.exit(true);
         }
     }
