@@ -23,6 +23,10 @@ import leikr.customProperties.CustomProgramProperties;
  */
 public class SetCommand extends Command {
 
+    public SetCommand() {
+        this.name = "set";
+    }
+
     @Override
     public String execute(String[] args) {
         if (args.length < 3) {
