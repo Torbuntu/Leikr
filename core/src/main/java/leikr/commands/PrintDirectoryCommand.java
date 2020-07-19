@@ -44,7 +44,7 @@ public class PrintDirectoryCommand extends Command {
 
     @Override
     public String help() {
-        return ">ls [option] \nDisplays the contents of a given directory or the default directory Programs.";
+        return ">ls [Directory] \nDisplays the contents of a given directory or the default directory Programs.";
     }
 
     private String runLsPrograms() {
@@ -62,7 +62,7 @@ public class PrintDirectoryCommand extends Command {
             return out;
         } catch (IOException ex) {
             Logger.getLogger(PrintDirectoryCommand.class.getName()).log(Level.WARNING, null, ex);
-            return "Failed to execute command [ ls ]";
+            return "[E] Failed to execute command [ ls ]";
         }
     }
 
@@ -73,7 +73,7 @@ public class PrintDirectoryCommand extends Command {
             return out;
         } catch (IOException ex) {
             Logger.getLogger(PrintDirectoryCommand.class.getName()).log(Level.WARNING, null, ex);
-            return "Failed to execute command [ ls ]";
+            return "[E] Failed to execute command [ ls ]";
         }
     }
 
