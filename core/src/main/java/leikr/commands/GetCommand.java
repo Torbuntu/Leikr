@@ -41,6 +41,10 @@ public class GetCommand extends Command {
                 return "version - " + props.VERSION;
             case "compile_source":
                 return "compile_source - " + String.valueOf(props.COMPILE_SOURCE);
+            case "players":
+                return String.valueOf(props.PLAYERS);
+            case "type":
+                return props.TYPE;
             default:
                 return "[W] Property [" + args[2] + "] not found in Program [" + args[1] + "]";
         }
@@ -48,7 +52,7 @@ public class GetCommand extends Command {
 
     @Override
     public String help() {
-        return ">get [optionA] [optionB] \nGets the value of the given Program's property.";
+        return ">get [Program] [Property] \nGets the value of the given Program's property.";
     }
 
 }

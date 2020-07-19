@@ -55,7 +55,7 @@ public class SetCommand extends Command {
 
     @Override
     public String help() {
-        return ">set [optionA] [optionB] [optionC] \nSets the given program's property to the given value.";
+        return ">set [Program] [Property] [Value] \nSets the given program's property to the given value.";
     }
 
 }

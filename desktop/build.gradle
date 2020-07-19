@@ -1,7 +1,10 @@
 apply plugin: 'com.github.johnrengelman.shadow'
 
+targetCompatibility = 13
+sourceCompatibility = 13
+
 shadowJar {
-//    minimize() //I'd like to minimize, but it is too aggressive currently and requires older JDK
+    // minimize() //I'd like to minimize, but it is too aggressive currently and requires older JDK
     archiveBaseName = 'Leikr'
     classifier = null
     archiveVersion = null
