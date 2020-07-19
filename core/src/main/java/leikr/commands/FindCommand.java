@@ -37,7 +37,7 @@ public class FindCommand extends Command {
     @Override
     public String execute(String[] command) {
         if (command.length <= 1) {
-            return "Missing - required program name.";
+            return "[E] Missing - required program name.";
         }
         if (!containsName(command[1])) {
             return "Program [" + command[1] + "] does not exist in Programs directory.";

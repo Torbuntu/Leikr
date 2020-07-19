@@ -14,12 +14,13 @@ allprojects {
     ext {
         //Version = 0.0.18
         appName = 'Leikr'
-        mini2DxVersion = '2.0.0-alpha.26'
+        mini2DxVersion = '2.0.0-alpha.27'
         groovyVersion = '3.0.4'
         gifRecorderVersion = 'master-SNAPSHOT'
         gdxVersion = '1.9.11-SNAPSHOT'
         gdxController = '1.9.10'
-        lwjglNatives = 'natives-linux-arm32'
+        lwjglNatives32 = 'natives-linux-arm32'
+        lwjglNatives64 = 'natives-linux-arm64'
         lwjglVersion = '3.2.3'
     }
 
@@ -57,10 +58,17 @@ project(":core") {
         implementation "org.lwjgl:lwjgl-openal:$lwjglVersion"
         implementation "org.lwjgl:lwjgl-opengl:$lwjglVersion"
         
-        runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
-        runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
-        runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
-        runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
+        //arm32 lwjgl native libs 
+        runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives32"
+        runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives32"
+        runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives32"
+        runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives32"
+        
+        //arm64 lwjgl native libs
+        runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives64"
+        runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives64"
+        runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives64"
+        runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives64"
     }
 }
 

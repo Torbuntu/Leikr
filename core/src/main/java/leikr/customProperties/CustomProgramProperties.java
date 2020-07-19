@@ -17,6 +17,7 @@ package leikr.customProperties;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -61,6 +62,27 @@ public class CustomProgramProperties {
         } catch (IOException | NumberFormatException ex) {
             Logger.getLogger(CustomProgramProperties.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
+
+    public void writeProperties(String gamePath) {
+        try (FileOutputStream stream = new FileOutputStream(new File(gamePath + "/program.properties"))) {
+            Properties prop = new Properties();
+
+            prop.setProperty("max_sprites", String.valueOf(MAX_SPRITES));
+            prop.setProperty("use_compiled", String.valueOf(USE_COMPILED));
+            prop.setProperty("compile_source", String.valueOf(COMPILE_SOURCE));
+            prop.setProperty("title", TITLE);
+            prop.setProperty("type", TYPE);
+            prop.setProperty("author", AUTHOR);
+            prop.setProperty("version", VERSION);
+            prop.setProperty("players", String.valueOf(PLAYERS));
+            prop.setProperty("about", ABOUT);
+            
+            prop.store(stream, null);
+
+        } catch (IOException | NumberFormatException ex) {
+            Logger.getLogger(CustomProgramProperties.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
 }

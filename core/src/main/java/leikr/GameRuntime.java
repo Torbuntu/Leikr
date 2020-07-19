@@ -20,6 +20,7 @@ import leikr.loaders.FontLoader;
 import leikr.screens.EngineScreen;
 import leikr.screens.ErrorScreen;
 import leikr.screens.LoadScreen;
+import leikr.screens.MenuScreen;
 import leikr.screens.NewProgramScreen;
 import leikr.screens.TerminalScreen;
 import leikr.screens.TitleScreen;
@@ -113,6 +114,7 @@ public class GameRuntime extends ScreenBasedGame {
         this.addScreen(new LoadScreen(assetManager, viewport));//4
         this.addScreen(new NewProgramScreen(viewport));//5
         this.addScreen(new TerminalScreen(viewport));//6
+        this.addScreen(new MenuScreen());//7
     }
 
     @Override

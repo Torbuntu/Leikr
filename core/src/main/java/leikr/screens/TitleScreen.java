@@ -39,7 +39,7 @@ import org.mini2Dx.gdx.Input.Keys;
  */
 public class TitleScreen extends BasicGameScreen {
 
-    public static int ID = 2;
+    public static final int ID = 2;
     AssetManager assetManager;
     FitViewport viewport;
     boolean CREDITS = false;
@@ -79,10 +79,10 @@ public class TitleScreen extends BasicGameScreen {
     public void initialise(GameContainer gc) {
         pixels = new ArrayList<>();
 
-        for (int i=0; i<pixCount; i++) {
-            int x = (int)Math.floor(Math.random() * 8) + 91;
-            int height = (int)Math.floor(Math.random() * 7) + 4;
-            pixels.add(new TitleScreenPixel(x, 64, (i%3)+8, height, i*5));
+        for (int i = 0; i < pixCount; i++) {
+            int x = (int) Math.floor(Math.random() * 8) + 91;
+            int height = (int) Math.floor(Math.random() * 7) + 4;
+            pixels.add(new TitleScreenPixel(x, 64, (i % 3) + 8, height, i * 5));
         }
     }
 
@@ -102,51 +102,53 @@ public class TitleScreen extends BasicGameScreen {
     @Override
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
-        renderExtraText(pixelScreen, g, "Game System", 106, 73, (int)(timer / 2));
+        renderExtraText(pixelScreen, g, "Game System", 106, 73, (int) (timer / 2));
         g.drawTexture(assetManager.get("./Data/Images/leikr-logo.png", Texture.class), 90, 64, 48, 16);
         drawLogoSteam(pixelScreen, g);
     }
 
     private void renderExtraText(PixelManager g, Graphics graphics, String text, int x, int y, int step) {
-        for (int i = 0; i < text.length(); i++){
-            double red   = 255*(0.5+0.5*Math.sin((step/3)+0-i));
-            double green = 255*(0.5+0.5*Math.sin((step/3)+2-i));
-            double blue  = 255*(0.5+0.5*Math.sin((step/3)+4-i));
+        for (int i = 0; i < text.length(); i++) {
+            double red = 255 * (0.5 + 0.5 * Math.sin((step / 3) + 0 - i));
+            double green = 255 * (0.5 + 0.5 * Math.sin((step / 3) + 2 - i));
+            double blue = 255 * (0.5 + 0.5 * Math.sin((step / 3) + 4 - i));
 
             char c = text.charAt(i);
-            int yPos = (int)(Math.sin(i+1+step) * (3.0/((step/2)+1)) * 3);
+            int yPos = (int) (Math.sin(i + 1 + step) * (3.0 / ((step / 2) + 1)) * 3);
 
             if (step > cycleLength) {
-                if ((step - cycleLength)/2 > i) {
-                    red = 255; blue = 255; green = 255;
+                if ((step - cycleLength) / 2 > i) {
+                    red = 255;
+                    blue = 255;
+                    green = 255;
                 }
             }
-            
-            graphics.setColor(Colors.rgbToColor(red+","+blue+","+green));
-            graphics.drawString(Character.toString(c), i*4+x, yPos+y);
+
+            graphics.setColor(Colors.rgbToColor(red + "," + blue + "," + green));
+            graphics.drawString(Character.toString(c), i * 4 + x, yPos + y);
         }
     }
 
     private void drawLogoSteam(PixelManager screen, Graphics g) {
-        for (int p=0; p<pixCount; p++) {
+        for (int p = 0; p < pixCount; p++) {
             TitleScreenPixel pix = pixels.get(p);
             switch (timer - pix.delay) {
                 case 0:
                     screen.drawPixel(g, pix.color, pix.x, pix.y);
                     break;
                 case 1:
-                    screen.drawPixel(g, pix.color, pix.x, pix.y-1);
+                    screen.drawPixel(g, pix.color, pix.x, pix.y - 1);
                     break;
                 case 2:
-                    for (int i=2; i<pix.height-1; i++) {
-                        screen.drawPixel(g, pix.color, pix.x, pix.y-i);
+                    for (int i = 2; i < pix.height - 1; i++) {
+                        screen.drawPixel(g, pix.color, pix.x, pix.y - i);
                     }
                     break;
                 case 3:
-                    screen.drawPixel(g, pix.color, pix.x, pix.y-pix.height+1);
+                    screen.drawPixel(g, pix.color, pix.x, pix.y - pix.height + 1);
                     break;
                 case 4:
-                    screen.drawPixel(g, pix.color, pix.x, pix.y-pix.height);
+                    screen.drawPixel(g, pix.color, pix.x, pix.y - pix.height);
                     break;
                 default:
                     break;

@@ -74,12 +74,12 @@ public class EngineScreen extends BasicGameScreen {
         recorder.setRecordKey(Keys.F3);
         recorder.setFPS(60);
     }
-    
-    public static void errorEngine(String message){
+
+    public static void errorEngine(String message) {
         errorMessage = message;
         engineState = EngineState.ERROR;
     }
-    
+
     public static void pauseEngine() {
         engineState = EngineState.PAUSE;
     }
@@ -206,15 +206,15 @@ public class EngineScreen extends BasicGameScreen {
                 break;
             case RUNNING:
                 try {
-                    engine.preUpdate(delta);
-                    engine.update(delta);
-                    engine.update();
-                } catch (Exception ex) {
-                    engineState = EngineState.ERROR;
-                    errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
-                    Logger.getLogger(EngineScreen.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                break;
+                engine.preUpdate(delta);
+                engine.update(delta);
+                engine.update();
+            } catch (Exception ex) {
+                engineState = EngineState.ERROR;
+                errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
+                Logger.getLogger(EngineScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            break;
             case PAUSE:
                 if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT)) {
                     if (Mdx.input.isKeyJustPressed(Keys.NUM_1)) {

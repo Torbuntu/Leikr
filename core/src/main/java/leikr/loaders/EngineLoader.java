@@ -172,10 +172,13 @@ public class EngineLoader implements Callable<Engine> {
      */
     public void compile(String path, String out) {
         String output = GameRuntime.getProgramPath() + "/" + out;
-        String COMPILED = Mdx.files.local(output).toString();
+        String COMPILED = Mdx.files.local(output).path();
         gcl.addClasspath(Mdx.files.local(COMPILED).path());
 
         String codePath = GameRuntime.getProgramPath() + "/" + path;
+        
+        System.out.println("IN: " + codePath);
+        System.out.println("OUT: " + COMPILED);
 
         CompilerConfiguration cc = new CompilerConfiguration();
         cc.setClasspath(codePath);
@@ -199,7 +202,6 @@ public class EngineLoader implements Callable<Engine> {
         } catch (IOException ex) {
             Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     /**

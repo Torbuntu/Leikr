@@ -27,9 +27,11 @@ import leikr.GameRuntime;
 import leikr.commands.AboutCommand;
 import leikr.commands.CleanCommand;
 import leikr.commands.Command;
+import leikr.commands.CompileCommand;
 import leikr.commands.ExitCommand;
 import leikr.commands.ExportCommand;
 import leikr.commands.FindCommand;
+import leikr.commands.GetCommand;
 import leikr.commands.InstallCommand;
 import leikr.commands.NewProgramCommand;
 import leikr.commands.PackageCommand;
@@ -37,6 +39,7 @@ import leikr.commands.PrintDirectoryCommand;
 import leikr.commands.PrintWorkspaceCommand;
 import leikr.commands.RemoveCommand;
 import leikr.commands.RunCommand;
+import leikr.commands.SetCommand;
 import leikr.commands.ToolCommand;
 import leikr.commands.WikiCommand;
 import org.mini2Dx.core.Mdx;
@@ -99,6 +102,9 @@ public class TerminalManager implements InputProcessor {
         commandList.put("tool", new ToolCommand());
         commandList.put("uninstall", new RemoveCommand());
         commandList.put("package", new PackageCommand());
+        commandList.put("compile", new CompileCommand());
+        commandList.put("get", new GetCommand());
+        commandList.put("set", new SetCommand());
 
     }
 
