@@ -162,10 +162,9 @@ note however that all three of the main methods (create, update and render) are 
 
 | Platform | Support Level | Version | Notes |
 |----|----|----|----|
-| Desktop | Full | 0.0.17 | Fedora and other Linux distributions officially supported first. Windows also known to work. No status on Apple computer builds available. Since this is a Java program, it *should just work* on any mainstream desktop OS. However, due to native libs this produce odd results on less common systems. |
-| Raspberry Pi 3B/B+ | Full | 0.0.17 | This requires custom builds of the native libs for LibGDX and LWJGL. Due to this, builds for this come slowly or only when time permits. The only currently supported OS for this is default Raspbian with OpenGL drivers activated and GPU memory boosted. This will be a full release in the future.|
-| Raspberry Pi 3A+ | Full | 0.0.17 | Same story as the 3B+. This board works great, and may replace the 3B+ as the primary target hardware. |
-|Clockwork Pi GameShell| Full | 0.0.17|Same as the Raspberry Pi's||
+| Desktop amd64 | Full | 0.0.18 | Fedora and other Linux distributions officially supported first. Windows also known to work. No status on Apple computer builds available. Since this is a Java program, it *should just work* on any mainstream desktop OS. However, due to native libs this produces odd results on less common systems. |
+| Arm 32/64| Full | 0.0.18 | This requires custom builds of the native libs for LibGDX. Due to this, builds for this come slowly or only when time permits. The only currently supported OS for these architectures are Linux distributions.|
+
 
 #### Note on the Raspberry Pi:
-if you plan to use the raspberry pi, it works best to have compiled the projects on a faster computer beforehand. Compiling projects live on the pi can take a while depending on the size/complexity of your project. 
+if you plan to use the raspberry pi or other SBC, it works best to have compiled the projects on a faster computer beforehand. Compiling projects live on the pi can take a while depending on the size/complexity of your project. 
