@@ -133,25 +133,17 @@ public class TitleScreen extends BasicGameScreen {
         for (int p = 0; p < pixCount; p++) {
             TitleScreenPixel pix = pixels.get(p);
             switch (timer - pix.delay) {
-                case 0:
-                    screen.drawPixel(g, pix.color, pix.x, pix.y);
-                    break;
-                case 1:
-                    screen.drawPixel(g, pix.color, pix.x, pix.y - 1);
-                    break;
-                case 2:
+                case 0 -> screen.drawPixel(g, pix.color, pix.x, pix.y);
+                case 1 -> screen.drawPixel(g, pix.color, pix.x, pix.y - 1);
+                case 2 -> {
                     for (int i = 2; i < pix.height - 1; i++) {
                         screen.drawPixel(g, pix.color, pix.x, pix.y - i);
                     }
-                    break;
-                case 3:
-                    screen.drawPixel(g, pix.color, pix.x, pix.y - pix.height + 1);
-                    break;
-                case 4:
-                    screen.drawPixel(g, pix.color, pix.x, pix.y - pix.height);
-                    break;
-                default:
-                    break;
+                }
+                case 3 -> screen.drawPixel(g, pix.color, pix.x, pix.y - pix.height + 1);
+                case 4 -> screen.drawPixel(g, pix.color, pix.x, pix.y - pix.height);
+                default -> {
+                }
             }
         }
     }

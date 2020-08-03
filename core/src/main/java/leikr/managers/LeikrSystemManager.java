@@ -128,7 +128,7 @@ public class LeikrSystemManager {
     /**
      * A kind of hacky entry to the EngineScreen PAUSE boolean.
      */
-    public void pause() {
+    public final void pause() {
         EngineScreen.pauseEngine();
     }
 
@@ -177,7 +177,7 @@ public class LeikrSystemManager {
 
     //END API
     //START game loop methods on EngineScreen
-    public boolean update(ScreenManager sm) {
+    public final boolean update(ScreenManager sm) {
         if (LOAD_PROGRAM) {
             LOAD_PROGRAM = false;
             RUNNING = false;
@@ -187,7 +187,7 @@ public class LeikrSystemManager {
         return RUNNING;
     }
 
-    public void render(Graphics g) {
+    public final void render(Graphics g) {
         g.setFont(font);
     }
 

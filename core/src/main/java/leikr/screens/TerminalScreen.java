@@ -61,17 +61,11 @@ public class TerminalScreen extends BasicGameScreen {
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         terminalManager.update();
         switch (terminalManager.getState()) {
-            case PROCESSING:
-                break;
-            case RUN_PROGRAM:
-                sm.enterGameScreen(LoadScreen.ID, null, null);
-                break;
-            case NEW_PROGRAM:
-                sm.enterGameScreen(NewProgramScreen.ID, null, null);
-                break;
-            case RUN_UTILITY:
-                sm.enterGameScreen(LoadScreen.ID, null, null);
-                break;
+            case PROCESSING -> {
+            }
+            case RUN_PROGRAM -> sm.enterGameScreen(LoadScreen.ID, null, null);
+            case NEW_PROGRAM -> sm.enterGameScreen(NewProgramScreen.ID, null, null);
+            case RUN_UTILITY -> sm.enterGameScreen(LoadScreen.ID, null, null);
         }
 
         blink++;

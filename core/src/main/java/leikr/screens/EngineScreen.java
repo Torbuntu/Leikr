@@ -16,8 +16,6 @@
 package leikr.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import io.anuke.gif.GifRecorder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.Engine;
@@ -50,9 +48,6 @@ public class EngineScreen extends BasicGameScreen {
     FitViewport viewport;
     FrameBuffer frameBuffer;
 
-    SpriteBatch gifBatch;
-    GifRecorder recorder;
-
     private static String[] engineArgs;
 
     private static boolean CONFIRM = false;
@@ -68,11 +63,6 @@ public class EngineScreen extends BasicGameScreen {
 
     public EngineScreen(FitViewport vp) {
         viewport = vp;
-        gifBatch = new SpriteBatch();
-        recorder = new GifRecorder(gifBatch);
-        recorder.setOpenKey(Keys.F2);
-        recorder.setRecordKey(Keys.F3);
-        recorder.setFPS(60);
     }
 
     public static void errorEngine(String message) {
@@ -114,7 +104,7 @@ public class EngineScreen extends BasicGameScreen {
             sm.enterGameScreen(TerminalScreen.ID, null, null);
         }
     }
-
+    
     void enterErrorScreen(ScreenManager sm) {
         if (null != engine) {
             engine.setActive(false);
@@ -192,30 +182,27 @@ public class EngineScreen extends BasicGameScreen {
                 pause();
             }
         }
-        if (recorder.isOpen() && (Mdx.input.isKeyJustPressed(Keys.F11) || Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyJustPressed(Keys.F))) {
-            recorder.setBounds(-Gdx.graphics.getWidth() / 2, -Gdx.graphics.getHeight() / 2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        }
         switch (engineState) {
-            case BACK:
+            case BACK -> {
                 system.resetFont();
                 enterMenuScreen(sm);
-                break;
-            case ERROR:
+            }
+            case ERROR -> {
                 system.resetFont();
                 enterErrorScreen(sm);
-                break;
-            case RUNNING:
-                try {
-                engine.preUpdate(delta);
-                engine.update(delta);
-                engine.update();
-            } catch (Exception ex) {
-                engineState = EngineState.ERROR;
-                errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
-                Logger.getLogger(EngineScreen.class.getName()).log(Level.SEVERE, null, ex);
             }
-            break;
-            case PAUSE:
+            case RUNNING -> {
+                try {
+                    engine.preUpdate(delta);
+                    engine.update(delta);
+                    engine.update();
+                } catch (Exception ex) {
+                    engineState = EngineState.ERROR;
+                    errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
+                    Logger.getLogger(EngineScreen.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            case PAUSE -> {
                 if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT)) {
                     if (Mdx.input.isKeyJustPressed(Keys.NUM_1)) {
                         Gdx.graphics.setWindowedMode(240, 160);
@@ -225,6 +212,9 @@ public class EngineScreen extends BasicGameScreen {
                     }
                     if (Mdx.input.isKeyJustPressed(Keys.NUM_3)) {
                         Gdx.graphics.setWindowedMode(240 * 3, 160 * 3);
+                    }
+                    if (Mdx.input.isKeyJustPressed(Keys.NUM_4)) {
+                        Gdx.graphics.setWindowedMode(240 * 4, 160 * 4);
                     }
                     break;
                 }
@@ -237,7 +227,7 @@ public class EngineScreen extends BasicGameScreen {
                 if (Mdx.input.isKeyJustPressed(Keys.ENTER) || Mdx.input.isKeyJustPressed(Keys.K)) {
                     resume();
                 }
-                break;
+            }
         }
 
         if (!system.update(sm)) {
@@ -279,7 +269,6 @@ public class EngineScreen extends BasicGameScreen {
         g.flush();
         g.postRender();
         frameBuffer.end();
-        recorder.update();
     }
 
     void renderRunning(Graphics g) {

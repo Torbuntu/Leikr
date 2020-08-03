@@ -1,7 +1,7 @@
 apply plugin: 'com.github.johnrengelman.shadow'
 
-targetCompatibility = 13
-sourceCompatibility = 13
+targetCompatibility = 14
+sourceCompatibility = 14
 
 shadowJar {
     // minimize() //I'd like to minimize, but it is too aggressive currently and requires older JDK

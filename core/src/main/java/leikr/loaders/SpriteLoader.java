@@ -102,17 +102,12 @@ public class SpriteLoader {
      */
     public Sprite getSprite(int id, int size) {
         try {
-            switch (size) {
-                case 0:
-                default:
-                    return spriteBank.getSprite(id);
-                case 1:
-                    return spriteBank16.getSprite(id);
-                case 2:
-                    return spriteBank32.getSprite(id);
-                case 3:
-                    return spriteBank64.getSprite(id);
-            }
+            return switch (size) {
+                case 1 -> spriteBank16.getSprite(id);
+                case 2 -> spriteBank32.getSprite(id);
+                case 3 -> spriteBank64.getSprite(id);
+                default -> spriteBank.getSprite(id);
+            };
         } catch (Exception ex) {
             EngineScreen.errorEngine("Error in program `render` method. Sprite index out of bounds. " + (ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : ""));
             Logger.getLogger(SpriteLoader.class.getName()).log(Level.SEVERE, null, ex);

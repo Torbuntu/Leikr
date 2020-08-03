@@ -154,10 +154,9 @@ public class NewProgramScreen extends BasicGameScreen {
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
         switch (generatorStep) {
-            case BACK:
+            case BACK ->
                 sm.enterGameScreen(TerminalScreen.ID, null, null);
-                break;
-            case CREATE:
+            case CREATE -> {
                 try {
                     newLocation = NewProgramGenerator.setNewProgramFileName(name, template);
                     generator.writeProperties(name);
@@ -167,13 +166,12 @@ public class NewProgramScreen extends BasicGameScreen {
                     ErrorScreen.setErrorMessage(ex.getMessage());
                     sm.enterGameScreen(ErrorScreen.ID, null, null);
                 }
-                break;
-            case ERROR:
+            }
+            case ERROR ->
                 sm.enterGameScreen(ErrorScreen.ID, null, null);
-                break;
 
         }
-        
+
     }
 
     @Override
@@ -190,57 +188,46 @@ public class NewProgramScreen extends BasicGameScreen {
     void renderSteps(Graphics g) {
         g.setColor(Colors.GREEN());
         switch (generatorStep) {
-            case TEMPLATE:
+            case TEMPLATE ->
                 g.drawString("Enter Template (Default): ", 0, 0);
-                break;
-            case NAME:
+            case NAME ->
                 g.drawString("Enter New Program Name: ", 0, 0);
-                break;
-            case TITLE:
+            case TITLE ->
                 g.drawString("Enter Title (unknown): ", 0, 0);
-                break;
-            case TYPE:
+            case TYPE ->
                 g.drawString("Enter Type (Program): ", 0, 0);
-                break;
-            case AUTHOR:
+            case AUTHOR ->
                 g.drawString("Enter Author (unknown): ", 0, 0);
-                break;
-            case VERSION:
+            case VERSION ->
                 g.drawString("Enter Version (0.1): ", 0, 0);
-                break;
-            case PLAYERS:
+            case PLAYERS ->
                 g.drawString("Enter Players (1): ", 0, 0);
-                break;
-            case ABOUT:
+            case ABOUT ->
                 g.drawString("Enter About (A Leikr Program.): ", 0, 0);
-                break;
-            case MAX_SPRITES:
+            case MAX_SPRITES ->
                 g.drawString("Enter Max Sprites (128): ", 0, 0);
-                break;
-            case COMPILE_SOURCE:
+            case COMPILE_SOURCE ->
                 g.drawString("Enter Compile Source (false): ", 0, 0);
-                break;
-            case USE_COMPILED:
+            case USE_COMPILED ->
                 g.drawString("Enter Use Compiled (false): ", 0, 0);
-                break;
-            case FINISHED:
+            case FINISHED -> {
                 g.drawString(newLocation, 0, 0, 232);
                 g.setColor(Colors.BLACK());
                 g.drawRect(0, 152, 240, 8);
                 g.setColor(Colors.GREEN());
                 g.drawString(":q to quit", 0, 152);
-                break;
+            }
         }
         g.drawString(prompt, 0, 12, 232);
     }
 
     void progressStep() {
         switch (generatorStep) {
-            case TEMPLATE:
+            case TEMPLATE -> {
                 template = prompt.length() == 0 ? "Default" : prompt;
                 generatorStep = GeneratorStep.NAME;
-                break;
-            case NAME:
+            }
+            case NAME -> {
                 if (prompt.length() == 0) {
                     break;
                 }
@@ -259,44 +246,44 @@ public class NewProgramScreen extends BasicGameScreen {
                 }
                 name = prompt;
                 generatorStep = GeneratorStep.TITLE;
-                break;
+            }
 
-            case TITLE:
+            case TITLE -> {
                 generator.TITLE = prompt.length() == 0 ? "unknown" : prompt;
                 generatorStep = GeneratorStep.TYPE;
-                break;
-            case TYPE:
-                generator.TYPE = prompt.length() == 0 ? "Program" : prompt;;
+            }
+            case TYPE -> {
+                generator.TYPE = prompt.length() == 0 ? "Program" : prompt;
                 generatorStep = GeneratorStep.AUTHOR;
-                break;
-            case AUTHOR:
-                generator.AUTHOR = prompt.length() == 0 ? "unknown" : prompt;;
+            }
+            case AUTHOR -> {
+                generator.AUTHOR = prompt.length() == 0 ? "unknown" : prompt;
                 generatorStep = GeneratorStep.VERSION;
-                break;
-            case VERSION:
-                generator.VERSION = prompt.length() == 0 ? "0.1" : prompt;;
+            }
+            case VERSION -> {
+                generator.VERSION = prompt.length() == 0 ? "0.1" : prompt;
                 generatorStep = GeneratorStep.PLAYERS;
-                break;
-            case PLAYERS:
-                generator.PLAYERS = prompt.length() == 0 ? "1" : prompt;;
+            }
+            case PLAYERS -> {
+                generator.PLAYERS = prompt.length() == 0 ? "1" : prompt;
                 generatorStep = GeneratorStep.ABOUT;
-                break;
-            case ABOUT:
-                generator.ABOUT = prompt.length() == 0 ? "A Leikr Program." : prompt;;
+            }
+            case ABOUT -> {
+                generator.ABOUT = prompt.length() == 0 ? "A Leikr Program." : prompt;
                 generatorStep = GeneratorStep.MAX_SPRITES;
-                break;
-            case MAX_SPRITES:
-                generator.MAX_SPRITES = prompt.length() == 0 ? "128" : prompt;;
+            }
+            case MAX_SPRITES -> {
+                generator.MAX_SPRITES = prompt.length() == 0 ? "128" : prompt;
                 generatorStep = GeneratorStep.COMPILE_SOURCE;
-                break;
-            case COMPILE_SOURCE:
-                generator.COMPILE_SOURCE = prompt.length() == 0 ? "false" : prompt;;
+            }
+            case COMPILE_SOURCE -> {
+                generator.COMPILE_SOURCE = prompt.length() == 0 ? "false" : prompt;
                 generatorStep = GeneratorStep.USE_COMPILED;
-                break;
-            case USE_COMPILED:
-                generator.USE_COMPILED = prompt.length() == 0 ? "false" : prompt;;
+            }
+            case USE_COMPILED -> {
+                generator.USE_COMPILED = prompt.length() == 0 ? "false" : prompt;
                 generatorStep = GeneratorStep.CREATE;
-                break;
+            }
         }
         prompt = "";
 

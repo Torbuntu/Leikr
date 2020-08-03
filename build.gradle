@@ -14,10 +14,10 @@ allprojects {
     ext {
         //Version = 0.0.18
         appName = 'Leikr'
-        mini2DxVersion = '2.0.0-alpha.27'
-        groovyVersion = '3.0.4'
+        mini2DxVersion = '2.0.0-alpha.28'
+        groovyVersion = '3.0.5'
         gifRecorderVersion = 'master-SNAPSHOT'
-        gdxVersion = '1.9.11-SNAPSHOT'
+        gdxVersion = '1.9.10'
         gdxController = '1.9.10'
         lwjglNatives32 = 'natives-linux-arm32'
         lwjglNatives64 = 'natives-linux-arm64'

@@ -140,7 +140,7 @@ public class TerminalManager implements InputProcessor {
             prompt = "run " + programList.get(prIdx);
         }
         if (Mdx.input.isKeyJustPressed(Keys.PAGE_DOWN)) {
-            if (prIdx < programList.size()-1) {
+            if (prIdx < programList.size() - 1) {
                 prIdx++;
             } else {
                 prIdx = 0;
@@ -196,15 +196,17 @@ public class TerminalManager implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT)) {
-            if (keycode == Keys.NUM_1) {
-                Gdx.graphics.setWindowedMode(240, 160);
+            switch (keycode) {
+                case Keys.NUM_1 ->
+                    Gdx.graphics.setWindowedMode(240, 160);
+                case Keys.NUM_2 ->
+                    Gdx.graphics.setWindowedMode(240 * 2, 160 * 2);
+                case Keys.NUM_3 ->
+                    Gdx.graphics.setWindowedMode(240 * 3, 160 * 3);
+                case Keys.NUM_4 ->
+                    Gdx.graphics.setWindowedMode(240 * 4, 160 * 4);
             }
-            if (keycode == Keys.NUM_2) {
-                Gdx.graphics.setWindowedMode(240 * 2, 160 * 2);
-            }
-            if (keycode == Keys.NUM_3) {
-                Gdx.graphics.setWindowedMode(240 * 3, 160 * 3);
-            }
+
             return true;
         }
         if (keycode == Keys.ESCAPE) {
