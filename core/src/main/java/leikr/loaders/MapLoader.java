@@ -56,7 +56,7 @@ public class MapLoader {
     }
 
     private void resetMapLoader() {
-        rootPath = GameRuntime.getProgramPath() + "/Maps/";
+        rootPath = GameRuntime.getGamePath() + "/Maps/";
     }
 
     public TiledMap getMap() {

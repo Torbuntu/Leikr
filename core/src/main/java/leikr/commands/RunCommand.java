@@ -47,8 +47,7 @@ public class RunCommand extends Command {
             if (!names.contains(command[1])) {
                 return "Program [" + command[1] + "] does not exist in Programs directory.";
             }
-            GameRuntime.GAME_NAME = command[1];
-            GameRuntime.setProgramPath("Programs/" + command[1]);
+            GameRuntime.setGameName(command[1]);
             if (command.length > 2) {
                 String[] args = Arrays.copyOfRange(command, 2, command.length);
                 EngineScreen.setEngineArgs(args);

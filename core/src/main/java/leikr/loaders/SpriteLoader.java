@@ -53,21 +53,21 @@ public class SpriteLoader {
         if (instance == null) {
             instance = new SpriteLoader();
         }
-        if (Mdx.files.local(GameRuntime.getProgramPath() + "/Sprites/Sprites.png").exists()) {
+        if (Mdx.files.local(GameRuntime.getGamePath() + "/Sprites/Sprites.png").exists()) {
             instance.disposeSprites();
 
             instance.resetSpriteLoader();
             instance.loadSpriteSheets();
             instance.addSpritesToSpriteBank();
         } else {
-            Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "No sprites found for: {0}", GameRuntime.getProgramPath());
+            Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "No sprites found for: {0}", GameRuntime.getGamePath());
         }
 
         return instance;
     }
 
     private void resetSpriteLoader() {
-        rootPath = GameRuntime.getProgramPath() + "/Sprites/Sprites.png";
+        rootPath = GameRuntime.getGamePath() + "/Sprites/Sprites.png";
         assetLoader = new TextureLoader();
         assetManager = new AssetManager(new LocalFileHandleResolver());
         assetManager.setAssetLoader(Texture.class, assetLoader);
@@ -103,10 +103,14 @@ public class SpriteLoader {
     public Sprite getSprite(int id, int size) {
         try {
             return switch (size) {
-                case 1 -> spriteBank16.getSprite(id);
-                case 2 -> spriteBank32.getSprite(id);
-                case 3 -> spriteBank64.getSprite(id);
-                default -> spriteBank.getSprite(id);
+                case 1 ->
+                    spriteBank16.getSprite(id);
+                case 2 ->
+                    spriteBank32.getSprite(id);
+                case 3 ->
+                    spriteBank64.getSprite(id);
+                default ->
+                    spriteBank.getSprite(id);
             };
         } catch (Exception ex) {
             EngineScreen.errorEngine("Error in program `render` method. Sprite index out of bounds. " + (ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : ""));

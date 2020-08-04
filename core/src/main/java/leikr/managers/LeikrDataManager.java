@@ -53,8 +53,8 @@ public class LeikrDataManager {
 
     public void saveData(String path) {
         try {
-            String dir = GameRuntime.getProgramPath() + "/"+ path;
-            if(!Mdx.files.local(dir).exists()){
+            String dir = GameRuntime.getGamePath() + "/" + path;
+            if (!Mdx.files.local(dir).exists()) {
                 Mdx.files.local(dir).delete();
             }
             Mdx.files.local(dir).writeString(Mdx.json.toJson(data), false);
@@ -62,18 +62,18 @@ public class LeikrDataManager {
             Logger.getLogger(LeikrDataManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void saveData(String path, HashMap<String, Object> data){
+
+    public void saveData(String path, HashMap<String, Object> data) {
         this.data = data;
         saveData(path);
     }
 
     public HashMap<String, Object> readData(String path) {
         try {
-            String json = Mdx.files.local(GameRuntime.getProgramPath()+"/"+path).readString();
+            String json = Mdx.files.local(GameRuntime.getGamePath()+ "/" + path).readString();
             json = json.replaceAll("[{\"}]", "");
-            data = (HashMap<String, Object>) Arrays.asList(json.split(",")).stream().map(s -> s.split(":")).collect(Collectors.toMap(e -> e[0], e -> (Object)e[1]));
-         } catch (IOException ex) {
+            data = (HashMap<String, Object>) Arrays.asList(json.split(",")).stream().map(s -> s.split(":")).collect(Collectors.toMap(e -> e[0], e -> (Object) e[1]));
+        } catch (IOException ex) {
             Logger.getLogger(LeikrDataManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return data;

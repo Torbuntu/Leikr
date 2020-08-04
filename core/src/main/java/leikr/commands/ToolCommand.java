@@ -52,8 +52,7 @@ public class ToolCommand extends Command {
                 if (!containsName(command[1])) {
                     return "Tool [" + command[1] + "] does not exist in Data/Tools/ directory.";
                 }
-                GameRuntime.GAME_NAME = command[1];
-                GameRuntime.setProgramPath("Data/Tools/" + command[1]);
+                GameRuntime.setGameName(command[1]);
                 TerminalManager.setState(TerminalManager.TerminalState.RUN_UTILITY);
                 return "Running tool [" + command[1] + "].";
             } catch (Exception ex) {

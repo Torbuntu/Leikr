@@ -15,6 +15,8 @@
  */
 package leikr.commands;
 
+import java.util.ArrayList;
+import java.util.List;
 import leikr.customProperties.CustomProgramProperties;
 
 /**
@@ -25,33 +27,39 @@ public class SetCommand extends Command {
 
     public SetCommand() {
         this.name = "set";
+        properties = new ArrayList<>();
+        properties.add("author");
+        properties.add("use_compiled");
+        properties.add("about");
+        properties.add("ver");
+        properties.add("version");
+        properties.add("compile_source");
     }
+
+    private final List<String> properties;
 
     @Override
     public String execute(String[] args) {
         if (args.length < 3) {
             return "[E] Not enough arguments.";
         }
+        if (!properties.contains(args[3])) {
+            return "[W] Property [" + args[2] + "] not found in Program [" + args[1] + "]";
+        }
         CustomProgramProperties props = new CustomProgramProperties("Programs/" + args[1]);
         switch (args[2].toLowerCase()) {
-            case "author":
+            case "author" ->
                 props.AUTHOR = args[3];
-                break;
-            case "use_compiled":
+            case "use_compiled" ->
                 props.USE_COMPILED = Boolean.valueOf(args[3]);
-                break;
-            case "about":
+            case "about" ->
                 props.ABOUT = args[3];
-                break;
-            case "ver":
-            case "version":
+            case "ver" ->
                 props.VERSION = args[3];
-                break;
-            case "compile_source":
+            case "version" ->
+                props.VERSION = args[3];
+            case "compile_source" ->
                 props.COMPILE_SOURCE = Boolean.valueOf(args[3]);
-                break;
-            default:
-                return "[W] Property [" + args[2] + "] not found in Program [" + args[1] + "]";
         }
         props.writeProperties("Programs/" + args[1]);
         return props.toString();

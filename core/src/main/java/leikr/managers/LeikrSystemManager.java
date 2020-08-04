@@ -38,7 +38,7 @@ public class LeikrSystemManager {
     private boolean RUNNING = true;
     AssetManager manager;
     MonospaceGameFont font;
-    
+
     private static LeikrSystemManager instance;
 
     public LeikrSystemManager() {
@@ -74,8 +74,7 @@ public class LeikrSystemManager {
     }
 
     public void loadProgram(String name) {
-        GameRuntime.setProgramPath("Programs/" + name);
-        GameRuntime.GAME_NAME = name;
+        GameRuntime.setGameName(name);
         LOAD_PROGRAM = true;
     }
 

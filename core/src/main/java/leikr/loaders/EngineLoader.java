@@ -42,14 +42,15 @@ import org.mini2Dx.core.files.FileHandle;
  * @author tor
  */
 public class EngineLoader implements Callable<Engine> {
-
+    
     public GroovyClassLoader gcl;
     public CustomProgramProperties cp;
     private GroovyShell sh;
     String rootPath;
-
+    public static boolean RUN_TOOL = false;
+    
     private static EngineLoader instance;
-
+    
     public static EngineLoader getEngineLoader(boolean reload) {
         if (instance == null) {
             instance = new EngineLoader();
@@ -59,11 +60,11 @@ public class EngineLoader implements Callable<Engine> {
         }
         return instance;
     }
-
+    
     private void reset() {
         destroy();
-        rootPath = GameRuntime.getProgramPath() + "/Code/";
-        cp = new CustomProgramProperties(GameRuntime.getProgramPath());
+        rootPath = GameRuntime.getGamePath() + "/Code/";
+        cp = new CustomProgramProperties(GameRuntime.getGamePath());
         gcl = new GroovyClassLoader(ClassLoader.getSystemClassLoader());
         sh = new GroovyShell(gcl);
     }
@@ -83,30 +84,38 @@ public class EngineLoader implements Callable<Engine> {
      * @throws groovy.util.ScriptException
      */
     public Engine getEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, ResourceException, ScriptException {
-        if (GameRuntime.checkLaunchTitle()) {
-            GameRuntime.GAME_NAME = GameRuntime.LAUNCH_TITLE;
-        }
         if (cp.COMPILE_SOURCE) {
             compileEngine();
         }
         if (cp.USE_COMPILED) {
             return getCompiledEngine();
         }
+        if (RUN_TOOL) {
+            RUN_TOOL = false;
+            return getToolEngine();
+        }
         return getSourceEngine();
     }
-
+    
+    private Engine getToolEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        gcl.clearCache();
+        gcl.addClasspath(GameRuntime.getToolPath() + "/Code/");
+        return (Engine) gcl.parseClass(new File(Mdx.files.local(GameRuntime.getToolPath() + "/Code/" + GameRuntime.getGameName() + ".groovy").path())).getDeclaredConstructors()[0].newInstance();
+    }
+    
     private Engine getSourceEngine() throws MalformedURLException, CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         gcl.clearCache();
         gcl.addClasspath(rootPath);
-        return (Engine) gcl.parseClass(new File(Mdx.files.local(rootPath + GameRuntime.GAME_NAME + ".groovy").path())).getDeclaredConstructors()[0].newInstance();//loads the game code  
+        //loads the game code  
+        return (Engine) gcl.parseClass(new File(Mdx.files.local(rootPath + GameRuntime.getGameName() + ".groovy").path())).getDeclaredConstructors()[0].newInstance();
     }
-
+    
     private Engine getCompiledEngine() throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
         String COMPILED = rootPath + "Compiled/";
         gcl.addClasspath(COMPILED);
-        return (Engine) gcl.loadClass(GameRuntime.GAME_NAME).getConstructors()[0].newInstance();
+        return (Engine) gcl.loadClass(GameRuntime.getGameName()).getConstructors()[0].newInstance();
     }
-
+    
     private void compileEngine() throws IOException {
         String COMPILED = rootPath + "Compiled/";
         CompilerConfiguration cc = new CompilerConfiguration();
@@ -114,10 +123,10 @@ public class EngineLoader implements Callable<Engine> {
         if (!Mdx.files.local(COMPILED).exists()) {
             Mdx.files.local(COMPILED).mkdirs();
         }
-
+        
         cc.setTargetDirectory(COMPILED);
         Compiler compiler = new Compiler(cc);
-
+        
         FileHandle[] list = Mdx.files.local(rootPath).list(".groovy");
         ArrayList<String> files = new ArrayList<>();
         for (FileHandle f : list) {
@@ -125,7 +134,7 @@ public class EngineLoader implements Callable<Engine> {
         }
         String[] out = new String[files.size()];
         out = files.toArray(out);
-
+        
         compiler.compile(out);
     }
 
@@ -155,8 +164,8 @@ public class EngineLoader implements Callable<Engine> {
     public Object compile(String path) {
         try {
             String url = path.substring(0, path.lastIndexOf("/"));
-            gcl.addClasspath(Mdx.files.local(GameRuntime.getProgramPath() + "/" + url).path());
-            return gcl.parseClass(new File(Mdx.files.local(GameRuntime.getProgramPath() + "/" + path + ".groovy").path())).getDeclaredConstructors()[0].newInstance();
+            gcl.addClasspath(Mdx.files.local(GameRuntime.getGamePath() + "/" + url).path());
+            return gcl.parseClass(new File(Mdx.files.local(GameRuntime.getGamePath() + "/" + path + ".groovy").path())).getDeclaredConstructors()[0].newInstance();
         } catch (CompilationFailedException | IOException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -171,25 +180,25 @@ public class EngineLoader implements Callable<Engine> {
      * @param out
      */
     public void compile(String path, String out) {
-        String output = GameRuntime.getProgramPath() + "/" + out;
+        String output = GameRuntime.getGamePath() + "/" + out;
         String COMPILED = Mdx.files.local(output).path();
         gcl.addClasspath(Mdx.files.local(COMPILED).path());
-
-        String codePath = GameRuntime.getProgramPath() + "/" + path;
+        
+        String codePath = GameRuntime.getGamePath() + "/" + path;
         
         System.out.println("IN: " + codePath);
         System.out.println("OUT: " + COMPILED);
-
+        
         CompilerConfiguration cc = new CompilerConfiguration();
         cc.setClasspath(codePath);
         try {
             if (!Mdx.files.local(COMPILED).exists()) {
                 Mdx.files.local(COMPILED).mkdirs();
             }
-
+            
             cc.setTargetDirectory(COMPILED);
             Compiler compiler = new Compiler(cc);
-
+            
             FileHandle[] list = Mdx.files.local(rootPath).list(".groovy");
             ArrayList<String> files = new ArrayList<>();
             for (FileHandle f : list) {
@@ -197,7 +206,7 @@ public class EngineLoader implements Callable<Engine> {
             }
             String[] fileNames = new String[files.size()];
             fileNames = files.toArray(fileNames);
-
+            
             compiler.compile(fileNames);
         } catch (IOException ex) {
             Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
@@ -211,7 +220,7 @@ public class EngineLoader implements Callable<Engine> {
      * @param path
      */
     public void loadLib(String path) {
-        String COMPILED = GameRuntime.getProgramPath() + "/" + path + "/";
+        String COMPILED = GameRuntime.getGamePath() + "/" + path + "/";
         gcl.addClasspath(Mdx.files.local(COMPILED).path());
     }
 
@@ -244,7 +253,7 @@ public class EngineLoader implements Callable<Engine> {
         }
         return -1;
     }
-
+    
     public Object parse(String code) {
         try {
             return sh.parse(code);

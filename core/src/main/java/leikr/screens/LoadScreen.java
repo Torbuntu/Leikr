@@ -55,11 +55,12 @@ public class LoadScreen extends BasicGameScreen {
 
     public LoadScreen(AssetManager assetManager, FitViewport vp) {
         this.assetManager = assetManager;
+        viewport = vp;
+
         assetManager.load("./Data/Images/leikr-logo.png", Texture.class);
         assetManager.finishLoading();
-        
+
         service = Executors.newFixedThreadPool(1);
-        viewport = vp;
 
         barItems = new ArrayList<>();
         barItems.add(12);
@@ -122,14 +123,14 @@ public class LoadScreen extends BasicGameScreen {
             // draw game name
             g.setColor(Colors.rgbToColor(0 + "," + (155 + (frame * 2) % 100) + "," + 0));
             g.drawString(GameRuntime.GAME_NAME + loadPhrase, 128, 73);
-            
+
             // loading bar
             g.setColor(Colors.RED());
-            g.fillRect(82+Math.abs(barItems.get(0)), 80, 6, 4);
+            g.fillRect(82 + Math.abs(barItems.get(0)), 80, 6, 4);
             g.setColor(Colors.GREEN());
-            g.fillRect(82+Math.abs(barItems.get(1)), 80, 6, 4);
+            g.fillRect(82 + Math.abs(barItems.get(1)), 80, 6, 4);
             g.setColor(Colors.BLUE());
-            g.fillRect(82+Math.abs(barItems.get(2)), 80, 6, 4);
+            g.fillRect(82 + Math.abs(barItems.get(2)), 80, 6, 4);
 
             g.setColor(Colors.WHITE());
             g.drawRect(82, 80, 80, 4);
@@ -142,7 +143,7 @@ public class LoadScreen extends BasicGameScreen {
     }
 
     private void translateArrayPositions() {
-        for (int i=0; i<barItems.size(); i++) {
+        for (int i = 0; i < barItems.size(); i++) {
             Integer num = barItems.get(i);
             // separate the sign
             int sign = (num != 0) ? num / Math.abs(num) : 1;

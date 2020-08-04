@@ -815,14 +815,14 @@ public class LeikrScreenManager {
     }
 
     public Color getPixel(String name, BigDecimal x, BigDecimal y) {
-        Pixmap pm = Mdx.graphics.newPixmap(Mdx.files.local(GameRuntime.getProgramPath() + "/Art/" + name));
+        Pixmap pm = Mdx.graphics.newPixmap(Mdx.files.local(GameRuntime.getGamePath() + "/Art/" + name));
         Color c = Mdx.graphics.newColor(pm.getPixel(x.intValue(), y.intValue()));
         pm.dispose();
         return c;
     }
 
     public ArrayList<Color> getPixels(String name) {
-        Pixmap pm = Mdx.graphics.newPixmap(Mdx.files.local(GameRuntime.getProgramPath() + "/Art/" + name));
+        Pixmap pm = Mdx.graphics.newPixmap(Mdx.files.local(GameRuntime.getGamePath() + "/Art/" + name));
         ArrayList<Color> colors = new ArrayList<>();
         for (int y = 0; y < pm.getHeight(); y++) {
             for (int x = 0; x < pm.getWidth(); x++) {

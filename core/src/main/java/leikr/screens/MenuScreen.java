@@ -19,13 +19,18 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import leikr.GameRuntime;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.files.FileHandle;
 import org.mini2Dx.core.game.GameContainer;
+import org.mini2Dx.core.graphics.Colors;
+import org.mini2Dx.core.graphics.Texture;
+import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
+import org.mini2Dx.gdx.Input.Keys;
 
 /**
  *
@@ -34,7 +39,14 @@ import org.mini2Dx.core.screen.ScreenManager;
 public class MenuScreen extends BasicGameScreen {
 
     public static int ID = 7;
+    FitViewport viewport;
     FileHandle[] games;
+    Texture icon;
+    int index = 0;
+
+    public MenuScreen(FitViewport vp) {
+        viewport = vp;
+    }
 
     @Override
     public void initialise(GameContainer gc) {
@@ -43,6 +55,8 @@ public class MenuScreen extends BasicGameScreen {
             Arrays.stream(games).forEach(g -> {
                 System.out.println(g.name());
             });
+
+            icon = Mdx.graphics.newTexture(Mdx.files.internal("Data/Logo/logo-16x16.png"));
         } catch (IOException ex) {
             Logger.getLogger(MenuScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -50,10 +64,26 @@ public class MenuScreen extends BasicGameScreen {
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
+        if (Mdx.input.isKeyDown(Keys.ALT_LEFT) && Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyDown(Keys.T)) {
+            sm.enterGameScreen(TerminalScreen.ID, null, null);
+        }
+
+        if (Mdx.input.isKeyJustPressed(Keys.LEFT) && index > 0) {
+            index--;
+        }
+        if (Mdx.input.isKeyJustPressed(Keys.RIGHT) && index < games.length - 1) {
+            index++;
+        }
+        if (Mdx.input.isKeyJustPressed(Keys.ENTER)) {
+            GameRuntime.setGameName(games[index].nameWithoutExtension());
+            sm.enterGameScreen(LoadScreen.ID, null, null);
+        }
     }
 
     @Override
-    public void render(GameContainer gc, Graphics grphcs) {
+    public void render(GameContainer gc, Graphics g) {
+        viewport.apply(g);
+        g.drawString(games[index].nameWithoutExtension(), GameRuntime.WIDTH / 2, GameRuntime.HEIGHT / 2);
     }
 
     @Override

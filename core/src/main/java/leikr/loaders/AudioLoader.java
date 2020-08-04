@@ -69,8 +69,8 @@ public class AudioLoader {
         musicLoader = new MusicLoader();
         musicManager = new AssetManager(new LocalFileHandleResolver());
         musicManager.setAssetLoader(Music.class, musicLoader);
-        musicRootPath = GameRuntime.getProgramPath() + "/Audio/Music/";
-        soundRootPath = GameRuntime.getProgramPath() + "/Audio/Sound/";
+        musicRootPath = GameRuntime.getGamePath() + "/Audio/Music/";
+        soundRootPath = GameRuntime.getGamePath() + "/Audio/Sound/";
     }
 
     private void loadAudio() {

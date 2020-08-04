@@ -98,7 +98,7 @@ public class EngineScreen extends BasicGameScreen {
         if (null != engine) {
             engine.setActive(false);
         }
-        if (GameRuntime.checkLaunchTitle()) {
+        if (GameRuntime.checkDirectLaunch()) {
             Mdx.platformUtils.exit(false);
         } else {
             sm.enterGameScreen(TerminalScreen.ID, null, null);
@@ -109,7 +109,7 @@ public class EngineScreen extends BasicGameScreen {
         if (null != engine) {
             engine.setActive(false);
         }
-        if (GameRuntime.checkLaunchTitle()) {
+        if (GameRuntime.checkDirectLaunch()) {
             sm.enterGameScreen(TitleScreen.ID, null, null);
         } else {
             ErrorScreen.setErrorMessage(errorMessage);

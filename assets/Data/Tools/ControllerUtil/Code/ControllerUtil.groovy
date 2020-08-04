@@ -75,7 +75,7 @@ class ControllerUtil extends leikr.Engine {
     void resetController(){
         Controllers.clearListeners()
         Controllers.addListener(new ControllerAdapter(){
-            @Override
+           @Override
            public boolean buttonDown(Controller controller, int buttonCode){
                println buttonCode
                lastButtonPressed = buttonCode

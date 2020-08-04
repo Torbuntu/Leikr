@@ -34,7 +34,7 @@ public class CompileCommand extends Command {
         if (args.length == 1) {
             return "[E] Missing - required program name.";
         }
-        GameRuntime.setProgramPath("Programs/"+args[1]);
+        GameRuntime.setGameName(args[1]);
         EngineLoader.getEngineLoader(true).compile(args[1] + "/Code", "/Code/Compiled");
         return "Compiled project [" + args[1] + "]";
     }

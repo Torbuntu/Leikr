@@ -50,7 +50,7 @@ public class ImageLoader {
 
     private void reloadImageLoader() {
         assetManager = new AssetManager(new LocalFileHandleResolver());
-        rootPath = GameRuntime.getProgramPath() + "/Art/";
+        rootPath = GameRuntime.getGamePath() + "/Art/";
         try {
             Arrays.asList(Mdx.files.local(rootPath).list()).stream()
                     .filter(file -> !file.isDirectory()

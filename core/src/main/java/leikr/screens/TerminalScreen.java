@@ -16,6 +16,7 @@
 package leikr.screens;
 
 import leikr.GameRuntime;
+import leikr.loaders.EngineLoader;
 import leikr.managers.TerminalManager;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
@@ -63,9 +64,14 @@ public class TerminalScreen extends BasicGameScreen {
         switch (terminalManager.getState()) {
             case PROCESSING -> {
             }
-            case RUN_PROGRAM -> sm.enterGameScreen(LoadScreen.ID, null, null);
-            case NEW_PROGRAM -> sm.enterGameScreen(NewProgramScreen.ID, null, null);
-            case RUN_UTILITY -> sm.enterGameScreen(LoadScreen.ID, null, null);
+            case RUN_PROGRAM ->
+                sm.enterGameScreen(LoadScreen.ID, null, null);
+            case NEW_PROGRAM ->
+                sm.enterGameScreen(NewProgramScreen.ID, null, null);
+            case RUN_UTILITY -> {
+                EngineLoader.RUN_TOOL = true;
+                sm.enterGameScreen(LoadScreen.ID, null, null);
+            }
         }
 
         blink++;
@@ -84,8 +90,8 @@ public class TerminalScreen extends BasicGameScreen {
         g.fillRect(0, 152, GameRuntime.WIDTH, GameRuntime.HEIGHT);
         g.setColor(Colors.GREEN());
         g.drawString(">" + terminalManager.prompt + ((blink > 30) ? (char) 131 : ""), 0, 152, GameRuntime.WIDTH);
-        
-        if(Mdx.input.isKeyDown(Keys.CONTROL_LEFT)){
+
+        if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT)) {
             g.setColor(Colors.RED());
             g.drawString("Ctrl", 0, 146, GameRuntime.WIDTH, 1);
         }
