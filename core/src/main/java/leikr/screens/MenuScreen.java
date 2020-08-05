@@ -15,16 +15,19 @@
  */
 package leikr.screens;
 
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerAdapter;
+import com.badlogic.gdx.controllers.Controllers;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
+import leikr.customProperties.CustomSystemProperties;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.files.FileHandle;
 import org.mini2Dx.core.game.GameContainer;
-import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.Texture;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
@@ -78,6 +81,39 @@ public class MenuScreen extends BasicGameScreen {
             GameRuntime.setGameName(games[index].nameWithoutExtension());
             sm.enterGameScreen(LoadScreen.ID, null, null);
         }
+
+        Controllers.addListener(new ControllerAdapter() {
+            @Override
+            public boolean buttonDown(Controller controller, int buttonIndex) {
+
+                if (buttonIndex == CustomSystemProperties.START) {
+                    System.out.println(buttonIndex);
+
+                    GameRuntime.setGameName(games[index].nameWithoutExtension());
+                    Controllers.clearListeners();
+                    sm.enterGameScreen(LoadScreen.ID, null, null);
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public boolean axisMoved(Controller controller, int axisIndex, float value) {
+                if (axisIndex == CustomSystemProperties.HORIZONTAL_AXIS) {
+                    if ((int) value == CustomSystemProperties.RIGHT && index < games.length - 1) {
+                        index++;
+                        return true;
+                    }
+                    if ((int) value == CustomSystemProperties.LEFT && index > 0) {
+                        index--;
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+        });
+
     }
 
     @Override

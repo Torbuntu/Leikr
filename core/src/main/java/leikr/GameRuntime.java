@@ -112,7 +112,7 @@ public class GameRuntime extends ScreenBasedGame {
         if (DIRECT_LAUNCH) {
             return LoadScreen.ID;
         }
-        return MenuScreen.ID;//initial screen to begin on is the menu screen.
+        return TitleScreen.ID;//initial screen to begin on is the menu screen.
     }
 
 }

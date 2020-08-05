@@ -104,7 +104,7 @@ public class EngineScreen extends BasicGameScreen {
             sm.enterGameScreen(TerminalScreen.ID, null, null);
         }
     }
-    
+
     void enterErrorScreen(ScreenManager sm) {
         if (null != engine) {
             engine.setActive(false);
@@ -175,13 +175,17 @@ public class EngineScreen extends BasicGameScreen {
         if (Mdx.input.isKeyJustPressed(Keys.F5) || Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyJustPressed(Keys.R) || Mdx.input.isKeyJustPressed(Keys.HOME)) {
             reloadEngine(sm);
         }
+        
         if (Mdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+            System.out.println("DEBUG: escape pressed, state - " + engineState);
             if (engineState.equals(EngineState.PAUSE)) {
                 resume();
             } else {
                 pause();
             }
+            System.out.println("DEBUG: escape end, state - " + engineState);
         }
+        
         switch (engineState) {
             case BACK -> {
                 system.resetFont();
