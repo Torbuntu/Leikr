@@ -169,9 +169,7 @@ public class NewProgramScreen extends BasicGameScreen {
             }
             case ERROR ->
                 sm.enterGameScreen(ErrorScreen.ID, null, null);
-
         }
-
     }
 
     @Override
