@@ -43,8 +43,8 @@ public class SetCommand extends Command {
         if (args.length < 3) {
             return "[E] Not enough arguments.";
         }
-        if (!properties.contains(args[3])) {
-            return "[W] Property [" + args[2] + "] not found in Program [" + args[1] + "]";
+        if (!properties.contains(args[2])) {
+            return "[E] Property [" + args[2] + "] not found in Program [" + args[1] + "]";
         }
         CustomProgramProperties props = new CustomProgramProperties("Programs/" + args[1]);
         switch (args[2].toLowerCase()) {
@@ -62,7 +62,7 @@ public class SetCommand extends Command {
                 props.COMPILE_SOURCE = Boolean.valueOf(args[3]);
         }
         props.writeProperties("Programs/" + args[1]);
-        return props.toString();
+        return "[I] Set property [" + args[2] + "] to [" + args[3] + "] for program [" + args[1] + "]";
     }
 
     @Override
