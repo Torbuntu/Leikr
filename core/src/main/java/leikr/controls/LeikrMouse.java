@@ -16,7 +16,7 @@
 package leikr.controls;
 
 import org.mini2Dx.core.Mdx;
-import org.mini2Dx.core.graphics.viewport.FitViewport;
+import org.mini2Dx.core.graphics.viewport.StretchViewport;
 import org.mini2Dx.gdx.math.Vector2;
 
 /**
@@ -26,14 +26,14 @@ import org.mini2Dx.gdx.math.Vector2;
  */
 public class LeikrMouse {
 
-    static FitViewport viewport;
+    static StretchViewport viewport;
 
-    Vector2 realMouse;
-    Vector2 leikrMouse;
+    private final Vector2 realMouse;
+    private final Vector2 leikrMouse;
 
     private static LeikrMouse instance;
 
-    public static LeikrMouse getLeikrMouse(FitViewport viewport) {
+    public static LeikrMouse getLeikrMouse(StretchViewport viewport) {
         if (instance == null) {
             instance = new LeikrMouse();
         }
@@ -46,13 +46,17 @@ public class LeikrMouse {
         leikrMouse = new Vector2();
     }
     
-    public void updateMouse() {
+    /**
+     * Updates the Game world coordinates of the real mouse pointer using the Game Screen's StretchViewport
+     * 
+     */
+    private void updateMouse() {
         realMouse.x = Mdx.input.getX();
         realMouse.y = Mdx.input.getY();
         viewport.toWorldCoordinates(leikrMouse, realMouse.x, realMouse.y);
     }
 
-    static void setViewport(FitViewport view) {
+    static void setViewport(StretchViewport view) {
         viewport = view;
     }
 
@@ -65,10 +69,12 @@ public class LeikrMouse {
     }
 
     public float mouseX() {
+        updateMouse(); 
         return leikrMouse.x;
     }
 
     public float mouseY() {
+        updateMouse(); 
         return leikrMouse.y;
     }
 

@@ -33,7 +33,7 @@ import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.FrameBuffer;
-import org.mini2Dx.core.graphics.viewport.FitViewport;
+import org.mini2Dx.core.graphics.viewport.StretchViewport;
 import org.mini2Dx.gdx.InputProcessor;
 
 /**
@@ -72,7 +72,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
      * @param viewport
      * @param f
      */
-    public final void preCreate(int mSprites, LeikrSystemManager sys, FitViewport viewport, FrameBuffer f) {
+    public final void preCreate(int mSprites, LeikrSystemManager sys, StretchViewport viewport, FrameBuffer f) {
         lAudio = LeikrAudioManager.getLeikrAudioManager();
         lScreen = LeikrScreenManager.getLeikrScreenManager(mSprites);
         lData = new LeikrDataManager();
@@ -103,7 +103,6 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
      * @param delta
      */
     public final void preUpdate(float delta) {
-        lMouse.updateMouse();
         lScreen.preUpdate(delta);
     }
 
