@@ -30,7 +30,7 @@ import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.FrameBuffer;
 import org.mini2Dx.core.graphics.Pixmap;
 import org.mini2Dx.core.graphics.Sprite;
-import org.mini2Dx.core.graphics.viewport.FitViewport;
+import org.mini2Dx.core.graphics.viewport.StretchViewport;
 import org.mini2Dx.core.graphics.viewport.Viewport;
 import org.mini2Dx.gdx.math.MathUtils;
 
@@ -72,7 +72,7 @@ public class LeikrScreenManager {
     private int MAX_SPRITES;
     private int USED_SPRITES;
     private Graphics g;
-    private Viewport v;
+    private Viewport viewport;
     private FrameBuffer frameBuffer;
 
     /**
@@ -101,9 +101,9 @@ public class LeikrScreenManager {
     }
 
     //Engine methods
-    public void preCreate(FrameBuffer f, FitViewport v) {
+    public void preCreate(FrameBuffer f, StretchViewport v) {
         this.frameBuffer = f;
-        this.v = v;
+        this.viewport = v;
     }
 
     public void preRender(Graphics g) {
@@ -799,8 +799,8 @@ public class LeikrScreenManager {
      * @return The Color at the specified coordinate of the frame buffer
      */
     public Color getPixel(BigDecimal x, BigDecimal y) {
-        int gx = MathUtils.ceil((v.getX() * v.getScaleX()) + (x.floatValue() * v.getScaleX()));
-        int gy = MathUtils.ceil((v.getY() * v.getScaleY()) + (y.floatValue() * v.getScaleY()));
+        int gx = MathUtils.ceil((viewport.getX() * viewport.getScaleX()) + (x.floatValue() * viewport.getScaleX()));
+        int gy = MathUtils.ceil((viewport.getY() * viewport.getScaleY()) + (y.floatValue() * viewport.getScaleY()));
         gy = Gdx.graphics.getHeight() - gy;
         frameBuffer.end();
 

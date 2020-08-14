@@ -28,6 +28,7 @@ import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.FrameBuffer;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
+import org.mini2Dx.core.graphics.viewport.StretchViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
@@ -41,11 +42,13 @@ import org.mini2Dx.gdx.Input.Keys;
 public class EngineScreen extends BasicGameScreen {
 
     public static int ID = 1;
+    
+    public static String errorMessage;
 
     Engine engine;
     LeikrSystemManager system;
-    public static String errorMessage;
-    FitViewport viewport;
+    StretchViewport fboView;
+    FitViewport mainView;
     FrameBuffer frameBuffer;
 
     private static String[] engineArgs;
@@ -62,7 +65,8 @@ public class EngineScreen extends BasicGameScreen {
     }
 
     public EngineScreen(FitViewport vp) {
-        viewport = vp;
+        fboView = new StretchViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
+        mainView = vp;
     }
 
     public static void errorEngine(String message) {
@@ -155,7 +159,7 @@ public class EngineScreen extends BasicGameScreen {
         }
         try {
             system.setRunning(true);
-            engine.preCreate(EngineLoader.getEngineLoader(false).cp.MAX_SPRITES, system, viewport, frameBuffer);
+            engine.preCreate(EngineLoader.getEngineLoader(false).cp.MAX_SPRITES, system, fboView, frameBuffer);
             engine.create(engineArgs);
             engine.create();
         } catch (Exception ex) {
@@ -175,17 +179,15 @@ public class EngineScreen extends BasicGameScreen {
         if (Mdx.input.isKeyJustPressed(Keys.F5) || Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyJustPressed(Keys.R) || Mdx.input.isKeyJustPressed(Keys.HOME)) {
             reloadEngine(sm);
         }
-        
+
         if (Mdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-            System.out.println("DEBUG: escape pressed, state - " + engineState);
             if (engineState.equals(EngineState.PAUSE)) {
                 resume();
             } else {
                 pause();
             }
-            System.out.println("DEBUG: escape end, state - " + engineState);
         }
-        
+
         switch (engineState) {
             case BACK -> {
                 system.resetFont();
@@ -240,42 +242,36 @@ public class EngineScreen extends BasicGameScreen {
         }
     }
 
-    /*
-    postRender() and preRender() are not recommended to be used, but for the FrameBuffer object to work
-    inside of the viewport it was necessary to cut off two separate rendering sessions.
-    
-    preRender(240,160) sets the game windowWidth and windowHeight to the required size for proper 
-    rendering. Couldn't find any other way to make this happen.
-     */
     @Override
     public void render(GameContainer gc, Graphics g) {
-        viewport.apply(g);
         if (null != engine && !engine.getActive()) {
             return;
         }
-        g.drawTexture(frameBuffer.getTexture(), 0, 0, false);
-        g.postRender();
-
+        
+        //Apply a StretchViewport so that all FBO operations are scaled correctly to the fbo.
+        fboView.apply(g);
+        
         frameBuffer.begin();
-        g.preRender(GameRuntime.WIDTH, GameRuntime.HEIGHT);
         switch (engineState) {
-            case RUNNING:
+            case RUNNING -> {
                 Gdx.input.setCursorCatched(true);
                 renderRunning(g);
-                break;
-            case PAUSE:
+            }
+            case PAUSE -> {
                 Gdx.input.setCursorCatched(false);
                 renderPause(g);
-                break;
-            case ERROR:
-            default:
+            }
         }
         g.flush();
-        g.postRender();
         frameBuffer.end();
+        
+        //Apply a FitViewport so that the 240x160 and aspect ratio is correct.
+        mainView.apply(g);
+        g.drawTexture(frameBuffer.getTexture(), 0, 0, false);
+
     }
 
-    void renderRunning(Graphics g) {
+    private void renderRunning(Graphics g) {
         try {
             engine.preRender(g);
             engine.render();
@@ -286,12 +282,10 @@ public class EngineScreen extends BasicGameScreen {
         }
     }
 
-    void renderPause(Graphics g) {
-        g.setColor(Colors.WHITE());
-        g.drawString("-- Paused --", 0, 60, GameRuntime.WIDTH, 1);
-        g.drawString("Exit running program?", 0, 74, GameRuntime.WIDTH, 1);
-        g.drawString("Yes           No", 0, 90, GameRuntime.WIDTH, 1);
+    private void renderPause(Graphics g) {
+        g.clearContext(Colors.BLACK());
 
+        //Call shape rendering first, to ensure that the shape renderer draws and ends clean.
         if (CONFIRM) {
             g.setColor(Colors.GREEN());
             g.drawRect(78, 86, 36, 16);
@@ -299,6 +293,11 @@ public class EngineScreen extends BasicGameScreen {
             g.setColor(Colors.RED());
             g.drawRect(130, 86, 36, 16);
         }
+        g.setColor(Colors.WHITE());
+        g.drawString("-- Paused --", 0, 60, GameRuntime.WIDTH, 1);
+        g.drawString("Exit running program?", 0, 74, GameRuntime.WIDTH, 1);
+        g.drawString("Yes           No", 0, 90, GameRuntime.WIDTH, 1);
+
     }
 
     @Override
