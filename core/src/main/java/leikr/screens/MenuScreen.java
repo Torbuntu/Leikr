@@ -28,6 +28,7 @@ import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.files.FileHandle;
 import org.mini2Dx.core.game.GameContainer;
+import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.Texture;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
@@ -55,9 +56,6 @@ public class MenuScreen extends BasicGameScreen {
     public void initialise(GameContainer gc) {
         try {
             games = Mdx.files.local("/Programs").list();
-            Arrays.stream(games).forEach(g -> {
-                System.out.println(g.name());
-            });
 
             icon = Mdx.graphics.newTexture(Mdx.files.internal("Data/Logo/logo-16x16.png"));
         } catch (IOException ex) {
@@ -119,7 +117,20 @@ public class MenuScreen extends BasicGameScreen {
     @Override
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
+        g.setLineHeight(2);
+        
+        g.setColor(Colors.BLACK());
+        g.fillRect(50, 50, 140, 60);
+
+        g.setColor(Colors.GREEN());
+        g.drawRect(50, 50, 140, 60);
+
+        g.setColor(Colors.WHITE());
+        g.drawTexture(icon, GameRuntime.WIDTH / 2 - 50, GameRuntime.HEIGHT / 2 - 8);
         g.drawString(games[index].nameWithoutExtension(), GameRuntime.WIDTH / 2, GameRuntime.HEIGHT / 2);
+
+        g.setColor(Colors.YELLOW());
+        g.drawString("> [INFO] This menu is a work in progress.", 0, 152);
     }
 
     @Override
