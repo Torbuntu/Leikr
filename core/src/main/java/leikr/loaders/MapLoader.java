@@ -45,6 +45,7 @@ public class MapLoader {
             tiledMap.dispose();
         }
         tiledMap = new TiledMap(Mdx.files.local(rootPath + name + ".tmx"));
+        tiledMap.loadTilesetTextures();
     }
 
     public static MapLoader getMapLoader() {
@@ -64,10 +65,14 @@ public class MapLoader {
     }
 
     private boolean checkMap() {
-        if (tiledMap != null) {
+        if (tiledMap == null) {
+            EngineScreen.errorEngine("Error in program `render` method. `drawMap()` called with null map. Load a map with `loadMap(String name)`");
+            return false;
+        }
+        if (tiledMap.isTilesetTexturesLoaded(true)) {
             return true;
         } else {
-            EngineScreen.errorEngine("Error in program `render` method. `drawMap()` called with null map. Load a map with `loadMap(String name)`");
+            EngineScreen.errorEngine("Error in program `render` method. `drawMap()` called before tileset loaded.");
             return false;
         }
     }

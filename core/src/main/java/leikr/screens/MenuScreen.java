@@ -19,21 +19,29 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
+import leikr.customProperties.CustomProgramProperties;
 import leikr.customProperties.CustomSystemProperties;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.files.FileHandle;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Colors;
+import org.mini2Dx.core.graphics.FrameBuffer;
 import org.mini2Dx.core.graphics.Texture;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
+import org.mini2Dx.core.graphics.viewport.StretchViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
+import org.mini2Dx.core.screen.Transition;
 import org.mini2Dx.gdx.Input.Keys;
 
 /**
@@ -44,22 +52,60 @@ public class MenuScreen extends BasicGameScreen {
 
     public static int ID = 7;
     FitViewport viewport;
-    FileHandle[] games;
+    List<CustomProgramProperties> games;
     Texture icon;
     int index = 0;
 
+    FrameBuffer fbo;
+    StretchViewport sViewport;
+    FitViewport fViewport;
+
+    String isCompiled = "";
+
     public MenuScreen(FitViewport vp) {
         viewport = vp;
+        sViewport = new StretchViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
     }
 
     @Override
     public void initialise(GameContainer gc) {
         try {
-            games = Mdx.files.local("/Programs").list();
+            games = new ArrayList<>();
 
-            icon = Mdx.graphics.newTexture(Mdx.files.internal("Data/Logo/logo-16x16.png"));
+            Arrays.asList(Mdx.files.local("/Programs").list()).stream().forEach(game -> {
+                games.add(new CustomProgramProperties("Programs/" + game.nameWithoutExtension()));
+            });
+
         } catch (IOException ex) {
             Logger.getLogger(MenuScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        loadIcon();
+    }
+
+    @Override
+    public void preTransitionIn(Transition transition) {
+        fbo = Mdx.graphics.newFrameBuffer(GameRuntime.WIDTH, GameRuntime.HEIGHT);
+    }
+
+    @Override
+    public void preTransitionOut(Transition transition) {
+        fbo.dispose();
+    }
+
+    private void loadIcon() {
+        try {
+            icon = Mdx.graphics.newTexture(Mdx.files.internal("Programs/" + games.get(index).getTitle() + "/Art/icon.png"));
+            if (Mdx.files.local("Programs/" + games.get(index).getTitle() + "/Code/Compiled").exists()) {
+                isCompiled = " *";
+                if (games.get(index).getUseCompiled()) {
+                    isCompiled = " **";
+                }
+            } else {
+                isCompiled = "";
+            }
+        } catch (Exception ex) {
+            icon = Mdx.graphics.newTexture(Mdx.files.internal("Data/Logo/logo-32x32.png"));
+            Logger.getLogger(MenuScreen.class.getName()).log(Level.WARNING, "No icon file for: {0}", games.get(index).getTitle());
         }
     }
 
@@ -71,12 +117,14 @@ public class MenuScreen extends BasicGameScreen {
 
         if (Mdx.input.isKeyJustPressed(Keys.LEFT) && index > 0) {
             index--;
+            loadIcon();
         }
-        if (Mdx.input.isKeyJustPressed(Keys.RIGHT) && index < games.length - 1) {
+        if (Mdx.input.isKeyJustPressed(Keys.RIGHT) && index < games.size()-1) {
             index++;
+            loadIcon();
         }
         if (Mdx.input.isKeyJustPressed(Keys.ENTER)) {
-            GameRuntime.setGameName(games[index].nameWithoutExtension());
+            GameRuntime.setGameName(games.get(index).getTitle());
             sm.enterGameScreen(LoadScreen.ID, null, null);
         }
 
@@ -87,7 +135,7 @@ public class MenuScreen extends BasicGameScreen {
                 if (buttonIndex == CustomSystemProperties.START) {
                     System.out.println(buttonIndex);
 
-                    GameRuntime.setGameName(games[index].nameWithoutExtension());
+                    GameRuntime.setGameName(games.get(index).getTitle());
                     Controllers.clearListeners();
                     sm.enterGameScreen(LoadScreen.ID, null, null);
                     return true;
@@ -98,7 +146,7 @@ public class MenuScreen extends BasicGameScreen {
             @Override
             public boolean axisMoved(Controller controller, int axisIndex, float value) {
                 if (axisIndex == CustomSystemProperties.HORIZONTAL_AXIS) {
-                    if ((int) value == CustomSystemProperties.RIGHT && index < games.length - 1) {
+                    if ((int) value == CustomSystemProperties.RIGHT && index < games.size()-1) {
                         index++;
                         return true;
                     }
@@ -116,21 +164,29 @@ public class MenuScreen extends BasicGameScreen {
 
     @Override
     public void render(GameContainer gc, Graphics g) {
-        viewport.apply(g);
-        g.setLineHeight(2);
-        
+        sViewport.apply(g);
+        fbo.begin();
+        g.clearContext();
+        // draw texture in background
+        g.drawTexture(icon, 0, 0, 240, 160);
+
         g.setColor(Colors.BLACK());
-        g.fillRect(50, 50, 140, 60);
+        g.fillRect(0, 0, 240, 10);
 
         g.setColor(Colors.GREEN());
-        g.drawRect(50, 50, 140, 60);
+        g.drawLineSegment(0, 10, 240, 10);
 
         g.setColor(Colors.WHITE());
-        g.drawTexture(icon, GameRuntime.WIDTH / 2 - 50, GameRuntime.HEIGHT / 2 - 8);
-        g.drawString(games[index].nameWithoutExtension(), GameRuntime.WIDTH / 2, GameRuntime.HEIGHT / 2);
+
+        g.drawString(games.get(index).getTitle() + isCompiled, 0, 3, 240, 1);
 
         g.setColor(Colors.YELLOW());
         g.drawString("> [INFO] This menu is a work in progress.", 0, 152);
+        g.flush();
+        fbo.end();
+
+        viewport.apply(g);
+        g.drawTexture(fbo.getTexture(), 0, 0, false);
     }
 
     @Override

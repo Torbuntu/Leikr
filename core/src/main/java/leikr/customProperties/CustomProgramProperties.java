@@ -39,11 +39,12 @@ public class CustomProgramProperties {
     public String VERSION = "0";
     public int PLAYERS = 1;
     public String ABOUT = "A Leikr Program.";
+    private String GAME_TITLE = "";
 
     public CustomProgramProperties(String gamePath) {
-
+        GAME_TITLE = gamePath.substring(gamePath.lastIndexOf("/")+1);
         Properties prop = new Properties();
-        try (InputStream stream = new FileInputStream(new File(gamePath + "/program.properties"))) {
+        try ( InputStream stream = new FileInputStream(new File(gamePath + "/program.properties"))) {
             prop.load(stream);
 
             MAX_SPRITES = (prop.getProperty("max_sprites") != null) ? Integer.parseInt(prop.getProperty("max_sprites")) : 128;
@@ -65,7 +66,7 @@ public class CustomProgramProperties {
     }
 
     public void writeProperties(String gamePath) {
-        try (FileOutputStream stream = new FileOutputStream(new File(gamePath + "/program.properties"))) {
+        try ( FileOutputStream stream = new FileOutputStream(new File(gamePath + "/program.properties"))) {
             Properties prop = new Properties();
 
             prop.setProperty("max_sprites", String.valueOf(MAX_SPRITES));
@@ -77,12 +78,20 @@ public class CustomProgramProperties {
             prop.setProperty("version", VERSION);
             prop.setProperty("players", String.valueOf(PLAYERS));
             prop.setProperty("about", ABOUT);
-            
+
             prop.store(stream, null);
 
         } catch (IOException | NumberFormatException ex) {
             Logger.getLogger(CustomProgramProperties.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public boolean getUseCompiled() {
+        return USE_COMPILED;
+    }
+
+    public String getTitle() {
+        return GAME_TITLE;
     }
 
 }
