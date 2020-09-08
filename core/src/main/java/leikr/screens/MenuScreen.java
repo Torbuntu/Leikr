@@ -21,9 +21,7 @@ import com.badlogic.gdx.controllers.Controllers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
@@ -31,7 +29,6 @@ import leikr.customProperties.CustomProgramProperties;
 import leikr.customProperties.CustomSystemProperties;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
-import org.mini2Dx.core.files.FileHandle;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.FrameBuffer;
@@ -119,7 +116,7 @@ public class MenuScreen extends BasicGameScreen {
             index--;
             loadIcon();
         }
-        if (Mdx.input.isKeyJustPressed(Keys.RIGHT) && index < games.size()-1) {
+        if (Mdx.input.isKeyJustPressed(Keys.RIGHT) && index < games.size() - 1) {
             index++;
             loadIcon();
         }
@@ -146,7 +143,7 @@ public class MenuScreen extends BasicGameScreen {
             @Override
             public boolean axisMoved(Controller controller, int axisIndex, float value) {
                 if (axisIndex == CustomSystemProperties.HORIZONTAL_AXIS) {
-                    if ((int) value == CustomSystemProperties.RIGHT && index < games.size()-1) {
+                    if ((int) value == CustomSystemProperties.RIGHT && index < games.size() - 1) {
                         index++;
                         return true;
                     }

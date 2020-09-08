@@ -16,7 +16,9 @@
 package leikr.commands;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.mini2Dx.core.Mdx;
@@ -50,15 +52,17 @@ public class PrintDirectoryCommand extends Command {
     private String runLsPrograms() {
         try {
             out = "";
-            Arrays.asList(Mdx.files.local("Programs").list()).stream()
-                    .forEach(e -> {
-                        System.out.println("TITLE: " + e.nameWithoutExtension());
-                        if (Mdx.files.local("Programs/" + e.nameWithoutExtension() + "/Code/Compiled").exists()) {
-                            out += e.nameWithoutExtension() + " *\n";
-                        } else {
-                            out += e.nameWithoutExtension() + "\n";
-                        }
-                    });
+            List<String> titles = new ArrayList<>();
+
+            Arrays.asList(Mdx.files.local("Programs").list()).forEach(e -> titles.add(e.nameWithoutExtension()));
+
+            titles.stream().sorted().forEach(e -> {
+                if (Mdx.files.local("Programs/" + e + "/Code/Compiled").exists()) {
+                    out += e + " *\n";
+                } else {
+                    out += e + "\n";
+                }
+            });
             return out;
         } catch (IOException ex) {
             Logger.getLogger(PrintDirectoryCommand.class.getName()).log(Level.WARNING, null, ex);
@@ -69,7 +73,10 @@ public class PrintDirectoryCommand extends Command {
     private String runLs(String dir) {
         try {
             out = "";
-            Arrays.asList(Mdx.files.local(dir).list()).stream().forEach(e -> out += e.nameWithoutExtension() + "\n");
+            List<String> titles = new ArrayList<>();
+            Arrays.asList(Mdx.files.local(dir).list()).forEach(e -> titles.add(e.nameWithoutExtension()));
+
+            titles.stream().sorted().forEach(e -> out += e + "\n");
             return out;
         } catch (IOException ex) {
             Logger.getLogger(PrintDirectoryCommand.class.getName()).log(Level.WARNING, null, ex);
