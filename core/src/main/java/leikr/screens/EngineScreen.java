@@ -20,8 +20,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.Engine;
 import leikr.GameRuntime;
+import leikr.exceptions.CreateException;
+import leikr.exceptions.RenderException;
+import leikr.exceptions.UpdateException;
 import leikr.loaders.EngineLoader;
-import leikr.managers.LeikrSystemManager;
+import leikr.managers.AudioManager;
+import leikr.managers.DataManager;
+import leikr.managers.SystemManager;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.game.GameContainer;
@@ -42,20 +47,24 @@ import org.mini2Dx.gdx.Input.Keys;
 public class EngineScreen extends BasicGameScreen {
 
     public static int ID = 1;
-    
+
     public static String errorMessage;
+    private static String[] engineArgs;
+    private static boolean CONFIRM = false;
+    private String path;
 
     Engine engine;
-    LeikrSystemManager system;
-    StretchViewport fboView;
-    FitViewport mainView;
+    EngineLoader engineLoader;
+    FitViewport mainViewport;
     FrameBuffer frameBuffer;
+    GameRuntime runtime;
+    SystemManager system;
+    StretchViewport fboViewport;
 
-    private static String[] engineArgs;
-
-    private static boolean CONFIRM = false;
-
-    public static EngineState engineState;
+    public EngineState engineState;
+    private final leikr.managers.GraphicsManager screenManager;
+    private final DataManager dataManager;
+    private final AudioManager audioManager;
 
     protected enum EngineState {
         RUNNING,
@@ -64,17 +73,24 @@ public class EngineScreen extends BasicGameScreen {
         PAUSE
     }
 
-    public EngineScreen(FitViewport vp) {
-        fboView = new StretchViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
-        mainView = vp;
+    public EngineScreen(FitViewport vp, AudioManager audioManager, DataManager dataManager, leikr.managers.GraphicsManager screenManager, SystemManager systemManager, EngineLoader engineLoader, GameRuntime runtime) {
+        fboViewport = new StretchViewport(runtime.WIDTH, runtime.HEIGHT);
+        mainViewport = vp;
+        system = systemManager;
+        this.engineLoader = engineLoader;
+        this.runtime = runtime;
+
+        this.audioManager = audioManager;
+        this.dataManager = dataManager;
+        this.screenManager = screenManager;
     }
 
-    public static void errorEngine(String message) {
+    public void errorEngine(String message) {
         errorMessage = message;
         engineState = EngineState.ERROR;
     }
 
-    public static void pauseEngine() {
+    public void pauseEngine() {
         engineState = EngineState.PAUSE;
     }
 
@@ -102,7 +118,7 @@ public class EngineScreen extends BasicGameScreen {
         if (null != engine) {
             engine.setActive(false);
         }
-        if (GameRuntime.checkDirectLaunch()) {
+        if (runtime.checkDirectLaunch()) {
             Mdx.platformUtils.exit(false);
         } else {
             sm.enterGameScreen(TerminalScreen.ID, null, null);
@@ -113,7 +129,7 @@ public class EngineScreen extends BasicGameScreen {
         if (null != engine) {
             engine.setActive(false);
         }
-        if (GameRuntime.checkDirectLaunch()) {
+        if (runtime.checkDirectLaunch()) {
             sm.enterGameScreen(TitleScreen.ID, null, null);
         } else {
             ErrorScreen.setErrorMessage(errorMessage);
@@ -125,13 +141,14 @@ public class EngineScreen extends BasicGameScreen {
         sm.enterGameScreen(LoadScreen.ID, null, null);
     }
 
-    public void setEngine(Engine engine) {
+    public void setEngine(Engine engine, String path) {
         this.engine = engine;
+        this.path = path;
+        system.reset();
     }
 
     @Override
     public void initialise(GameContainer gc) {
-        system = LeikrSystemManager.getLeikrSystemManager();
     }
 
     @Override
@@ -149,7 +166,7 @@ public class EngineScreen extends BasicGameScreen {
     @Override
     public void preTransitionIn(Transition trans) {
         engineState = EngineState.RUNNING;
-        frameBuffer = Mdx.graphics.newFrameBuffer(GameRuntime.WIDTH, GameRuntime.HEIGHT);
+        frameBuffer = Mdx.graphics.newFrameBuffer(runtime.WIDTH, runtime.HEIGHT);
     }
 
     @Override
@@ -159,13 +176,12 @@ public class EngineScreen extends BasicGameScreen {
         }
         try {
             system.setRunning(true);
-            engine.preCreate(EngineLoader.getEngineLoader(false).cp.MAX_SPRITES, system, fboView, frameBuffer);
+            engine.preCreate(path, engineLoader.getMaxSprite(), audioManager, dataManager, screenManager, system, fboViewport, frameBuffer);
             engine.create(engineArgs);
             engine.create();
         } catch (Exception ex) {
-            engineState = EngineState.ERROR;
-            errorMessage = "Error in program `create` method. " + ex.getLocalizedMessage();
             Logger.getLogger(EngineScreen.class.getName()).log(Level.SEVERE, null, ex);
+            throw new CreateException("Error in program `create` method. " + ex.getLocalizedMessage());
         }
     }
 
@@ -203,9 +219,10 @@ public class EngineScreen extends BasicGameScreen {
                     engine.update(delta);
                     engine.update();
                 } catch (Exception ex) {
-                    engineState = EngineState.ERROR;
+//                    engineState = EngineState.ERROR;
                     errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage();
                     Logger.getLogger(EngineScreen.class.getName()).log(Level.SEVERE, null, ex);
+                    throw new UpdateException(errorMessage);
                 }
             }
             case PAUSE -> {
@@ -247,10 +264,10 @@ public class EngineScreen extends BasicGameScreen {
         if (null != engine && !engine.getActive()) {
             return;
         }
-        
+
         //Apply a StretchViewport so that all FBO operations are scaled correctly to the fbo.
-        fboView.apply(g);
-        
+        fboViewport.apply(g);
+
         frameBuffer.begin();
         switch (engineState) {
             case RUNNING -> {
@@ -264,9 +281,9 @@ public class EngineScreen extends BasicGameScreen {
         }
         g.flush();
         frameBuffer.end();
-        
+
         //Apply a FitViewport so that the 240x160 and aspect ratio is correct.
-        mainView.apply(g);
+        mainViewport.apply(g);
         g.drawTexture(frameBuffer.getTexture(), 0, 0, false);
 
     }
@@ -276,9 +293,10 @@ public class EngineScreen extends BasicGameScreen {
             engine.preRender(g);
             engine.render();
         } catch (Exception ex) {
-            engineState = EngineState.ERROR;
+//            engineState = EngineState.ERROR;
             errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage();
             Logger.getLogger(EngineScreen.class.getName()).log(Level.SEVERE, null, ex);
+            throw new RenderException(errorMessage);
         }
     }
 
@@ -294,9 +312,9 @@ public class EngineScreen extends BasicGameScreen {
             g.drawRect(130, 86, 36, 16);
         }
         g.setColor(Colors.WHITE());
-        g.drawString("-- Paused --", 0, 60, GameRuntime.WIDTH, 1);
-        g.drawString("Exit running program?", 0, 74, GameRuntime.WIDTH, 1);
-        g.drawString("Yes           No", 0, 90, GameRuntime.WIDTH, 1);
+        g.drawString("-- Paused --", 0, 60, runtime.WIDTH, 1);
+        g.drawString("Exit running program?", 0, 74, runtime.WIDTH, 1);
+        g.drawString("Yes           No", 0, 90, runtime.WIDTH, 1);
 
     }
 

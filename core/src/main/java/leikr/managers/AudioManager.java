@@ -22,26 +22,16 @@ import leikr.loaders.AudioLoader;
  *
  * @author tor
  */
-public class LeikrAudioManager {
+public class AudioManager {
 
-    private AudioLoader audioLoader;
+    private final AudioLoader audioLoader;
 
-    private static LeikrAudioManager instance;
-
-    private LeikrAudioManager() {
-        audioLoader = AudioLoader.getAudioLoader();
+    public AudioManager(AudioLoader audioLoader) {
+        this.audioLoader = audioLoader;
     }
 
-    public static LeikrAudioManager getLeikrAudioManager() {
-        if (instance == null) {
-            instance = new LeikrAudioManager();
-        }
-        instance.resetLeikrAudioManager();
-        return instance;
-    }
-
-    private void resetLeikrAudioManager() {
-        audioLoader = AudioLoader.getAudioLoader();
+    public void resetAudioManager(String path) {
+        audioLoader.resetAudioLoader(path);
     }
 
     //START loaded audio methods
@@ -52,8 +42,8 @@ public class LeikrAudioManager {
     public final void playSound(String name, BigDecimal vol, BigDecimal pit, BigDecimal pan) {
         audioLoader.playSound(name, vol, pit, pan);
     }
-    
-    public final void stopSound(){
+
+    public final void stopSound() {
         audioLoader.stopSound();
     }
 
@@ -72,12 +62,12 @@ public class LeikrAudioManager {
     public final void stopMusic(String fileName) {
         audioLoader.stopMusic(fileName);
     }
-    
-    public void pauseAudio(){
+
+    public void pauseAudio() {
         audioLoader.pauseAudio();
     }
-    
-    public void resumeAudio(){
+
+    public void resumeAudio() {
         audioLoader.resumeAudio();
     }
     //END loaded audio methods

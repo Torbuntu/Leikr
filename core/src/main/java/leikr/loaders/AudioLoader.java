@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import leikr.GameRuntime;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.assets.loader.MusicLoader;
@@ -46,22 +45,10 @@ public class AudioLoader {
     Music mPlayer;
     Sound sPlayer;
 
-    private static AudioLoader instance;
-
-    private AudioLoader() {
+    public AudioLoader() {
     }
 
-    public static AudioLoader getAudioLoader() {
-        if (instance == null) {
-            instance = new AudioLoader();
-        }
-        instance.disposeAudioLoader();
-        instance.resetAudioLoader();
-        instance.loadAudio();
-        return instance;
-    }
-
-    private void resetAudioLoader() {
+    public void resetAudioLoader(String path) {
         soundLoader = new SoundLoader();
         soundManager = new AssetManager(new LocalFileHandleResolver());
         soundManager.setAssetLoader(Sound.class, soundLoader);
@@ -69,8 +56,10 @@ public class AudioLoader {
         musicLoader = new MusicLoader();
         musicManager = new AssetManager(new LocalFileHandleResolver());
         musicManager.setAssetLoader(Music.class, musicLoader);
-        musicRootPath = GameRuntime.getGamePath() + "/Audio/Music/";
-        soundRootPath = GameRuntime.getGamePath() + "/Audio/Sound/";
+        musicRootPath = path + "/Audio/Music/";
+        soundRootPath = path + "/Audio/Sound/";
+        
+        loadAudio();
     }
 
     private void loadAudio() {

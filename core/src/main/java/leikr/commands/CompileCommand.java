@@ -17,7 +17,6 @@ package leikr.commands;
 
 import leikr.GameRuntime;
 import leikr.loaders.EngineLoader;
-import org.mini2Dx.core.Mdx;
 
 /**
  *
@@ -25,8 +24,13 @@ import org.mini2Dx.core.Mdx;
  */
 public class CompileCommand extends Command {
 
-    public CompileCommand() {
+    GameRuntime runtime;
+    EngineLoader engineLoader;
+
+    public CompileCommand(GameRuntime runtime, EngineLoader engineLoader) {
         this.name = "compile";
+        this.runtime = runtime;
+        this.engineLoader = engineLoader;
     }
 
     @Override
@@ -34,8 +38,8 @@ public class CompileCommand extends Command {
         if (args.length == 1) {
             return "[E] Missing - required program name.";
         }
-        GameRuntime.setGameName(args[1]);
-        EngineLoader.getEngineLoader(true).compile(args[1] + "/Code", "/Code/Compiled");
+        runtime.setGameName(args[1]);
+        engineLoader.compile(args[1] + "/Code", "/Code/Compiled");
         return "Compiled project [" + args[1] + "]";
     }
 

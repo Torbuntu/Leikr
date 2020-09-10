@@ -26,10 +26,14 @@ import leikr.utilities.NewProgramGenerator;
  * @author tor
  */
 public class NewProgramCommand extends Command {
-    public NewProgramCommand(){
+
+    private final TerminalManager terminalManager;
+
+    public NewProgramCommand(TerminalManager terminalManager) {
         super.name = "new";
+        this.terminalManager = terminalManager;
     }
-    
+
     @Override
     public String execute(String[] command) {
         if (command.length == 2) {
@@ -42,12 +46,12 @@ public class NewProgramCommand extends Command {
                 return "New program with name [" + command[1] + "] failed to generate.";
             }
         }
-        TerminalManager.setState(TerminalManager.TerminalState.NEW_PROGRAM);
+        terminalManager.setState(TerminalManager.TerminalState.NEW_PROGRAM);
         return "Create a new program.";
     }
-    
+
     @Override
-    public String help(){
+    public String help() {
         return ">new [option]\nOpens a new project builder.\nIf run with option, will attempt to generate a project with the given name.";
     }
 

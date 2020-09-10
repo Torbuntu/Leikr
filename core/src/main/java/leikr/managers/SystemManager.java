@@ -18,8 +18,8 @@ package leikr.managers;
 import java.math.BigDecimal;
 import leikr.GameRuntime;
 import leikr.loaders.EngineLoader;
+import leikr.loaders.FontLoader;
 import leikr.loaders.SpriteLoader;
-import leikr.screens.EngineScreen;
 import leikr.screens.LoadScreen;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.assets.AssetManager;
@@ -32,29 +32,27 @@ import org.mini2Dx.gdx.math.MathUtils;
  *
  * @author tor
  */
-public class LeikrSystemManager {
+public class SystemManager {
 
     private boolean LOAD_PROGRAM = false;
     private boolean RUNNING = true;
     AssetManager manager;
+    EngineLoader engineLoader;
+    FontLoader fontLoader;
+    SpriteLoader spriteLoader;
     MonospaceGameFont font;
+    GameRuntime runtime;
 
-    private static LeikrSystemManager instance;
-
-    public LeikrSystemManager() {
+    public SystemManager(EngineLoader engineLoader, FontLoader fontLoader, SpriteLoader spriteLoader, GameRuntime runtime) {
         this.manager = new AssetManager(new LocalFileHandleResolver());
-        font = GameRuntime.primaryFontLoader.getDefaultFont();
+        this.engineLoader = engineLoader;
+        this.fontLoader = fontLoader;
+        this.spriteLoader = spriteLoader;
+        font = fontLoader.getDefaultFont();
+        this.runtime = runtime;
     }
 
-    public static LeikrSystemManager getLeikrSystemManager() {
-        if (instance == null) {
-            instance = new LeikrSystemManager();
-        }
-        instance.reset();
-        return instance;
-    }
-
-    private void reset() {
+    public void reset() {
         manager.clearAssetLoaders();
     }
 
@@ -66,15 +64,15 @@ public class LeikrSystemManager {
      * font to the default loaded system font.
      */
     public void resetFont() {
-        font = GameRuntime.primaryFontLoader.getDefaultFont();
+        font = fontLoader.getDefaultFont();
     }
 
     public void setCustomFont(String fontPath, int spacing, int width, int height) {
-        font = GameRuntime.primaryFontLoader.getCustomFont(manager, fontPath, spacing, width, height);
+        font = fontLoader.getCustomFont(manager, fontPath, spacing, width, height);
     }
 
     public void loadProgram(String name) {
-        GameRuntime.setGameName(name);
+        runtime.setGameName(name);
         LOAD_PROGRAM = true;
     }
 
@@ -124,13 +122,6 @@ public class LeikrSystemManager {
     }
 
     //END Math functions
-    /**
-     * A kind of hacky entry to the EngineScreen PAUSE boolean.
-     */
-    public final void pause() {
-        EngineScreen.pauseEngine();
-    }
-
     public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {
         return x1.floatValue() + w1.floatValue() >= x2.floatValue() && x2.floatValue() + w2.floatValue() >= x1.floatValue() && y1.floatValue() + h1.floatValue() >= y2.floatValue() && y2.floatValue() + h2.floatValue() >= y1.floatValue();
     }
@@ -145,32 +136,31 @@ public class LeikrSystemManager {
 
     //START EngineLoader API
     public void loadSpriteSheet(String sheetName) {
-        SpriteLoader sl = SpriteLoader.getSpriteLoader();
-        sl.loadManualSpritesheets(sheetName);
+        spriteLoader.loadManualSpritesheets(sheetName);
     }
 
     public Object compile(String path) {
-        return EngineLoader.getEngineLoader(false).compile(path);
+        return engineLoader.compile(path);
     }
 
     public void compile(String path, String out) {
-        EngineLoader.getEngineLoader(false).compile(path, out);
+        engineLoader.compile(path, out);
     }
 
     public Object eval(String code) {
-        return EngineLoader.getEngineLoader(false).eval(code);
+        return engineLoader.eval(code);
     }
 
     public Object parse(String code) {
-        return EngineLoader.getEngineLoader(false).parse(code);
+        return engineLoader.parse(code);
     }
 
     public void loadLib(String path) {
-        EngineLoader.getEngineLoader(false).loadLib(path);
+        engineLoader.loadLib(path);
     }
 
     public Object newInstance(String name) {
-        return EngineLoader.getEngineLoader(false).newInstance(name);
+        return engineLoader.newInstance(name);
     }
     //END EngineLoader API
 

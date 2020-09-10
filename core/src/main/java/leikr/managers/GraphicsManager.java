@@ -19,7 +19,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.ScreenUtils;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import leikr.GameRuntime;
 import leikr.loaders.ImageLoader;
 import leikr.loaders.MapLoader;
 import leikr.loaders.SpriteLoader;
@@ -41,7 +40,20 @@ import org.mini2Dx.gdx.math.MathUtils;
  *
  * @author tor
  */
-public class LeikrScreenManager {
+public class GraphicsManager {
+
+    private String path;
+
+    /*
+     * Properties set by Custom Properties
+     *
+     * These can be overwritten for a more custom experience.
+     */
+    private int maxSprites;
+    private int usedSprites;
+    private Graphics g;
+    private Viewport viewport;
+    private FrameBuffer frameBuffer;
 
     /*
      Loaders
@@ -62,41 +74,27 @@ public class LeikrScreenManager {
     Color bgColor;
     PixelManager pixelManager;
 
-    private static LeikrScreenManager instance;
-
-    /*
-     * Properties set by Custom Properties
-     *
-     * These can be overwritten for a more custom experience.
-     */
-    private int MAX_SPRITES;
-    private int USED_SPRITES;
-    private Graphics g;
-    private Viewport viewport;
-    private FrameBuffer frameBuffer;
-
     /**
      * LeikrScreenManager constructor
      *
-     * @param mSprites
+     * @param spriteLoader
+     * @param imageLoader
+     * @param mapLoader
+     * @param pixelManager
      */
-    private LeikrScreenManager() {
+    public GraphicsManager(SpriteLoader spriteLoader, ImageLoader imageLoader, MapLoader mapLoader, PixelManager pixelManager) {
+        this.spriteLoader = spriteLoader;
+        this.imageLoader = imageLoader;
+        this.mapLoader = mapLoader;
+        this.pixelManager = pixelManager;
     }
 
-    public static LeikrScreenManager getLeikrScreenManager(int mSprites) {
-        if (instance == null) {
-            instance = new LeikrScreenManager();
-        }
-        instance.resetLeikrScreenManager(mSprites);
-        return instance;
-    }
-
-    private void resetLeikrScreenManager(int mSprites) {
-        MAX_SPRITES = mSprites;
-        spriteLoader = SpriteLoader.getSpriteLoader();
-        imageLoader = ImageLoader.getImageLoader();
-        mapLoader = MapLoader.getMapLoader();
-        pixelManager = PixelManager.getPixelManager();
+    public void resetScreenManager(String path, int mSprites) {
+        this.path = path;
+        maxSprites = mSprites;
+        spriteLoader.resetSpriteLoader(path);
+        imageLoader.reloadImageLoader(path);
+        mapLoader.resetMapLoader(path);
         bgColor = Colors.BLACK();
     }
 
@@ -108,7 +106,7 @@ public class LeikrScreenManager {
 
     public void preRender(Graphics g) {
         //set to 0 before drawing anything
-        USED_SPRITES = 0;
+        usedSprites = 0;
         this.g = g;
         this.g.clearContext(bgColor);
     }
@@ -128,7 +126,7 @@ public class LeikrScreenManager {
 
     //Helper methods
     public int getUsedSprites() {
-        return USED_SPRITES;
+        return usedSprites;
     }
     //End helper methods
 
@@ -277,34 +275,34 @@ public class LeikrScreenManager {
     //end drawString methods
     //sprite helper methods.
     private void drawSpriteRotate(int id, BigDecimal x, BigDecimal y, BigDecimal degr, int size) {
-        if (USED_SPRITES >= MAX_SPRITES) {
+        if (usedSprites >= maxSprites) {
             return;
         }
         Sprite t = spriteLoader.getSprite(id, size);
         t.rotate(degr.floatValue());
         g.drawSprite(t, x.floatValue(), y.floatValue());
         t.rotate(-degr.floatValue());
-        USED_SPRITES++;
+        usedSprites++;
     }
 
     private void drawSpriteFlip(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, int size) {
-        if (USED_SPRITES >= MAX_SPRITES) {
+        if (usedSprites >= maxSprites) {
             return;
         }
         Sprite t = spriteLoader.getSprite(id, size);
         t.setFlip(flipX, flipY);
         g.drawSprite(t, x.floatValue(), y.floatValue());
         t.setFlip(false, false);
-        USED_SPRITES++;
+        usedSprites++;
     }
 
     //start 8x8 sprites. Default size 0 (8x8)
     public final void sprite(int id, BigDecimal x, BigDecimal y) {
-        if (USED_SPRITES >= MAX_SPRITES) {
+        if (usedSprites >= maxSprites) {
             return;
         }
         g.drawSprite(spriteLoader.getSprite(id, 0), x.floatValue(), y.floatValue());
-        USED_SPRITES++;
+        usedSprites++;
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, BigDecimal degr) {
@@ -322,11 +320,11 @@ public class LeikrScreenManager {
 
     //start sizable sprites
     public final void sprite(int id, BigDecimal x, BigDecimal y, int size) {
-        if (USED_SPRITES >= MAX_SPRITES) {
+        if (usedSprites >= maxSprites) {
             return;
         }
         g.drawSprite(spriteLoader.getSprite(id, size), x.floatValue(), y.floatValue());
-        USED_SPRITES++;
+        usedSprites++;
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, BigDecimal degr, int size) {
@@ -338,7 +336,7 @@ public class LeikrScreenManager {
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, BigDecimal degr, int size) {
-        if (USED_SPRITES >= MAX_SPRITES) {
+        if (usedSprites >= maxSprites) {
             return;
         }
         Sprite t = spriteLoader.getSprite(id, size);
@@ -347,7 +345,7 @@ public class LeikrScreenManager {
         g.drawSprite(t, x.floatValue(), y.floatValue());
         t.setFlip(false, false);
         t.rotate(-degr.floatValue());
-        USED_SPRITES++;
+        usedSprites++;
     }
     //end sizable sprites
 
@@ -357,7 +355,7 @@ public class LeikrScreenManager {
     }
 
     public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, int size) {
-        if (USED_SPRITES >= MAX_SPRITES) {
+        if (usedSprites >= maxSprites) {
             return;
         }
         int x = px.intValue();
@@ -369,7 +367,7 @@ public class LeikrScreenManager {
             for (int w = 0; w < pw.intValue(); w++) {
                 if (i < ids.size()) {
                     g.drawSprite(spriteLoader.getSprite(ids.get(i), size), x, y);
-                    USED_SPRITES++;
+                    usedSprites++;
                 }
                 i++;
                 x += inc;
@@ -384,7 +382,7 @@ public class LeikrScreenManager {
     }
 
     public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, boolean flipX, boolean flipY, int size) {
-        if (USED_SPRITES >= MAX_SPRITES) {
+        if (usedSprites >= maxSprites) {
             return;
         }
         if (!flipX && !flipY) {
@@ -414,7 +412,7 @@ public class LeikrScreenManager {
                     t.setFlip(true, true);
                     g.drawSprite(t, x, y);
                     t.setFlip(false, false);
-                    USED_SPRITES++;
+                    usedSprites++;
                 }
                 i++;
                 x -= inc;
@@ -437,7 +435,7 @@ public class LeikrScreenManager {
                     t.setFlip(false, true);
                     g.drawSprite(t, x, y);
                     t.setFlip(false, false);
-                    USED_SPRITES++;
+                    usedSprites++;
                 }
                 i++;
                 x += inc;
@@ -461,7 +459,7 @@ public class LeikrScreenManager {
                     t.setFlip(true, false);
                     g.drawSprite(t, x, y);
                     t.setFlip(false, false);
-                    USED_SPRITES++;
+                    usedSprites++;
                 }
                 i++;
                 x -= inc;
@@ -507,18 +505,18 @@ public class LeikrScreenManager {
     }
 
     public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size) {
-        if (USED_SPRITES >= MAX_SPRITES) {
+        if (usedSprites >= maxSprites) {
             return;
         }
         Sprite t = spriteLoader.getSprite(id, size);
         t.setScale(scaleX.floatValue(), scaleY.floatValue());
         g.drawSprite(t, x.floatValue(), y.floatValue());
         t.setScale(1);
-        USED_SPRITES++;
+        usedSprites++;
     }
 
     public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, BigDecimal degr, int size) {
-        if (USED_SPRITES >= MAX_SPRITES) {
+        if (usedSprites >= maxSprites) {
             return;
         }
         Sprite t = spriteLoader.getSprite(id, size);
@@ -527,11 +525,11 @@ public class LeikrScreenManager {
         g.drawSprite(t, x.floatValue(), y.floatValue());
         t.rotate(-degr.floatValue());
         t.setScale(1);
-        USED_SPRITES++;
+        usedSprites++;
     }
 
     public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, int size) {
-        if (USED_SPRITES >= MAX_SPRITES) {
+        if (usedSprites >= maxSprites) {
             return;
         }
         Sprite t = spriteLoader.getSprite(id, size);
@@ -540,11 +538,11 @@ public class LeikrScreenManager {
         g.drawSprite(t, x.floatValue(), y.floatValue());
         t.flip(!flipX, !flipY);
         t.setScale(1);
-        USED_SPRITES++;
+        usedSprites++;
     }
 
     public final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, BigDecimal degr, int size) {
-        if (USED_SPRITES >= MAX_SPRITES) {
+        if (usedSprites >= maxSprites) {
             return;
         }
         Sprite t = spriteLoader.getSprite(id, size);
@@ -555,7 +553,7 @@ public class LeikrScreenManager {
         t.flip(!flipX, !flipY);
         t.rotate(-degr.floatValue());
         t.setScale(1);
-        USED_SPRITES++;
+        usedSprites++;
     }
     //END special sprite mode
 
@@ -815,14 +813,14 @@ public class LeikrScreenManager {
     }
 
     public Color getPixel(String name, BigDecimal x, BigDecimal y) {
-        Pixmap pm = Mdx.graphics.newPixmap(Mdx.files.local(GameRuntime.getGamePath() + "/Art/" + name));
+        Pixmap pm = Mdx.graphics.newPixmap(Mdx.files.local(path + "/Art/" + name));
         Color c = Mdx.graphics.newColor(pm.getPixel(x.intValue(), y.intValue()));
         pm.dispose();
         return c;
     }
 
     public ArrayList<Color> getPixels(String name) {
-        Pixmap pm = Mdx.graphics.newPixmap(Mdx.files.local(GameRuntime.getGamePath() + "/Art/" + name));
+        Pixmap pm = Mdx.graphics.newPixmap(Mdx.files.local(path + "/Art/" + name));
         ArrayList<Color> colors = new ArrayList<>();
         for (int y = 0; y < pm.getHeight(); y++) {
             for (int x = 0; x < pm.getWidth(); x++) {

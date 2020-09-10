@@ -35,17 +35,19 @@ import org.mini2Dx.gdx.Input.Keys;
 public class ErrorScreen extends BasicGameScreen {
 
     public static int ID = 3;
-    AssetManager assetManager;
-    FitViewport viewport;
     boolean MENU = false;
     boolean RELOAD = false;
     static String errorMessage;
+    AssetManager assetManager;
+    FitViewport viewport;
+    GameRuntime runtime;
 
-    public ErrorScreen(AssetManager assetManager, FitViewport vp) {
+    public ErrorScreen(AssetManager assetManager, FitViewport vp, GameRuntime runtime) {
         this.assetManager = assetManager;
         viewport = vp;
-        viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
+        viewport = new FitViewport(runtime.WIDTH, runtime.HEIGHT);
         errorMessage = "";
+        this.runtime = runtime;
     }
 
     public static void setErrorMessage(String message) {
@@ -91,7 +93,7 @@ public class ErrorScreen extends BasicGameScreen {
         g.setColor(Colors.RED());
         g.drawString("Message:  " + errorMessage, 0, 0, 232);
         g.setColor(Colors.BLACK());
-        g.drawRect(0, 152, GameRuntime.WIDTH, 8);
+        g.drawRect(0, 152, runtime.WIDTH, 8);
         g.setColor(Colors.GREEN());
         g.drawString(":q to quit", 0, 152);
     }

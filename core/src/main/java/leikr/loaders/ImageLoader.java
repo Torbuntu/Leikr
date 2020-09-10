@@ -34,31 +34,22 @@ public class ImageLoader {
     AssetManager assetManager;
     String rootPath;
 
-    private static ImageLoader instance;
-
-    private ImageLoader() {
+    public ImageLoader() {
+        
     }
 
-    public static ImageLoader getImageLoader() {
-        if (instance == null) {
-            instance = new ImageLoader();
-        }
-        instance.disposeImages();
-        instance.reloadImageLoader();
-        return instance;
-    }
-
-    private void reloadImageLoader() {
+    public void reloadImageLoader(String path) {
+        disposeImages();
         assetManager = new AssetManager(new LocalFileHandleResolver());
-        rootPath = GameRuntime.getGamePath() + "/Art/";
+        rootPath = path + "/Art/";
         try {
             Arrays.asList(Mdx.files.local(rootPath).list()).stream()
                     .filter(file -> !file.isDirectory()
                     && (file.extension().equalsIgnoreCase("png")
                     || file.extension().equalsIgnoreCase("jpg")
                     || file.extension().equalsIgnoreCase("bmp")))
-                    .forEach(path -> {
-                        assetManager.load(rootPath + path.name(), Texture.class);
+                    .forEach(p -> {
+                        assetManager.load(rootPath + p.name(), Texture.class);
                     });
             assetManager.finishLoading();
         } catch (IOException ex) {

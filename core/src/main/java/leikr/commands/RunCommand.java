@@ -32,8 +32,12 @@ import org.mini2Dx.core.Mdx;
  */
 public class RunCommand extends Command {
 
-    public RunCommand() {
+    GameRuntime runtime;
+    private final TerminalManager terminalManager;
+    public RunCommand(GameRuntime runtime, TerminalManager terminalManager) {
         super.name = "run";
+        this.runtime = runtime;
+        this.terminalManager = terminalManager;
     }
 
     @Override
@@ -47,12 +51,12 @@ public class RunCommand extends Command {
             if (!names.contains(command[1])) {
                 return "Program [" + command[1] + "] does not exist in Programs directory.";
             }
-            GameRuntime.setGameName(command[1]);
+            runtime.setGameName(command[1]);
             if (command.length > 2) {
                 String[] args = Arrays.copyOfRange(command, 2, command.length);
                 EngineScreen.setEngineArgs(args);
             }
-            TerminalManager.setState(TerminalState.RUN_PROGRAM);
+            terminalManager.setState(TerminalState.RUN_PROGRAM);
             return "Loading...";
         } catch (IOException ex) {
             Logger.getLogger(RunCommand.class.getName()).log(Level.WARNING, null, ex);

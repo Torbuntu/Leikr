@@ -37,19 +37,20 @@ public class TerminalScreen extends BasicGameScreen {
 
     public static int ID = 6;
 
-    FitViewport viewport;
-
-    int blink = 0;
+    private int blink = 0;
 
     TerminalManager terminalManager;
+    FitViewport viewport;
+    GameRuntime runtime;
 
-    public TerminalScreen(FitViewport vp) {
+    public TerminalScreen(FitViewport vp, TerminalManager terminalManager, GameRuntime runtime) {
         viewport = vp;
+        this.runtime = runtime;
+        this.terminalManager = terminalManager;
     }
 
     @Override
     public void initialise(GameContainer gc) {
-        terminalManager = new TerminalManager();
     }
 
     @Override
@@ -64,8 +65,11 @@ public class TerminalScreen extends BasicGameScreen {
         switch (terminalManager.getState()) {
             case PROCESSING -> {
             }
-            case RUN_PROGRAM ->
+            case RUN_PROGRAM -> {
+                LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID);
+                ls.setGameName(runtime.getGameName());
                 sm.enterGameScreen(LoadScreen.ID, null, null);
+            }
             case NEW_PROGRAM ->
                 sm.enterGameScreen(NewProgramScreen.ID, null, null);
             case RUN_UTILITY -> {
@@ -87,13 +91,13 @@ public class TerminalScreen extends BasicGameScreen {
 
         g.drawString(terminalManager.historyText, 0, 0, 240);
         g.setColor(Colors.BLACK());
-        g.fillRect(0, 152, GameRuntime.WIDTH, GameRuntime.HEIGHT);
+        g.fillRect(0, 152, runtime.WIDTH, runtime.HEIGHT);
         g.setColor(Colors.GREEN());
-        g.drawString(">" + terminalManager.prompt + ((blink > 30) ? (char) 131 : ""), 0, 152, GameRuntime.WIDTH);
+        g.drawString(">" + terminalManager.prompt + ((blink > 30) ? (char) 131 : ""), 0, 152, runtime.WIDTH);
 
         if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT)) {
             g.setColor(Colors.RED());
-            g.drawString("Ctrl", 0, 146, GameRuntime.WIDTH, 1);
+            g.drawString("Ctrl", 0, 146, runtime.WIDTH, 1);
         }
     }
 

@@ -49,15 +49,15 @@ public class TitleScreen extends BasicGameScreen {
     int pixCount = 75;
     int cycleLength = 25;
 
-    public PixelManager pixelScreen;
+    private final PixelManager pixelManager;
 
-    public TitleScreen(AssetManager assetManager, FitViewport vp) {
+    public TitleScreen(AssetManager assetManager, FitViewport vp, PixelManager pixelManager, GameRuntime runtime) {
         this.assetManager = assetManager;
         assetManager.load("./Data/Images/leikr-logo.png", Texture.class);
         assetManager.finishLoading();
 
-        viewport = new FitViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
-        pixelScreen = PixelManager.getPixelManager();
+        viewport = new FitViewport(runtime.WIDTH, runtime.HEIGHT);
+        this.pixelManager = pixelManager;
     }
 
     void checkInput(ScreenManager sm) {
@@ -102,12 +102,12 @@ public class TitleScreen extends BasicGameScreen {
     @Override
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
-        renderExtraText(pixelScreen, g, "Game System", 106, 73, (int) (timer / 2));
+        renderExtraText(g, "Game System", 106, 73, (int) (timer / 2));
         g.drawTexture(assetManager.get("./Data/Images/leikr-logo.png", Texture.class), 90, 64, 48, 16);
-        drawLogoSteam(pixelScreen, g);
+        drawLogoSteam(pixelManager, g);
     }
 
-    private void renderExtraText(PixelManager g, Graphics graphics, String text, int x, int y, int step) {
+    private void renderExtraText(Graphics graphics, String text, int x, int y, int step) {
         for (int i = 0; i < text.length(); i++) {
             double red = 255 * (0.5 + 0.5 * Math.sin((step / 3) + 0 - i));
             double green = 255 * (0.5 + 0.5 * Math.sin((step / 3) + 2 - i));

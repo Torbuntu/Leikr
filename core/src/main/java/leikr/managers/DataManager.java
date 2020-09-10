@@ -30,13 +30,19 @@ import org.mini2Dx.core.serialization.annotation.Field;
  *
  * @author tor
  */
-public class LeikrDataManager {
+public class DataManager {
+
+    private String gamePath;
 
     @Field
     public HashMap<String, Object> data;
 
-    public LeikrDataManager() {
+    public DataManager() {
         data = new HashMap<>();
+    }
+
+    public void setGamePath(String path) {
+        gamePath = path;
     }
 
     public void addData(String key, Object value) {
@@ -53,13 +59,13 @@ public class LeikrDataManager {
 
     public void saveData(String path) {
         try {
-            String dir = GameRuntime.getGamePath() + "/" + path;
+            String dir = gamePath + "/" + path;
             if (!Mdx.files.local(dir).exists()) {
                 Mdx.files.local(dir).delete();
             }
             Mdx.files.local(dir).writeString(Mdx.json.toJson(data), false);
         } catch (IOException | SerializationException ex) {
-            Logger.getLogger(LeikrDataManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -70,11 +76,11 @@ public class LeikrDataManager {
 
     public HashMap<String, Object> readData(String path) {
         try {
-            String json = Mdx.files.local(GameRuntime.getGamePath()+ "/" + path).readString();
+            String json = Mdx.files.local(gamePath + "/" + path).readString();
             json = json.replaceAll("[{\"}]", "");
             data = (HashMap<String, Object>) Arrays.asList(json.split(",")).stream().map(s -> s.split(":")).collect(Collectors.toMap(e -> e[0], e -> (Object) e[1]));
         } catch (IOException ex) {
-            Logger.getLogger(LeikrDataManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         return data;
     }

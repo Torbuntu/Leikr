@@ -34,18 +34,10 @@ public class PixelManager {
 
     SpriteSheet pixels;
     List<Color> colorPalette;
-    private static PixelManager instance;
 
-    private PixelManager() {
+    public PixelManager() {
         createPalette();
         createPixmap();
-    }
-
-    public static PixelManager getPixelManager() {
-        if (null == instance) {
-            instance = new PixelManager();
-        }
-        return instance;
     }
 
     public Color getDrawColor(int color) {

@@ -23,7 +23,7 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.Engine;
-import leikr.GameRuntime;
+import leikr.exceptions.CreateException;
 import leikr.loaders.EngineLoader;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.assets.AssetManager;
@@ -44,17 +44,21 @@ public class LoadScreen extends BasicGameScreen {
 
     public static int ID = 4;
 
+    int frame = 0;
+    String loadPhrase = "Loading ";
+    String gameName;
+    ArrayList<Integer> barItems;
+
     FitViewport viewport;
     ExecutorService service;
     Future<Engine> engineGetter;
+    EngineLoader engineLoader;
 
     AssetManager assetManager;
-    String loadPhrase = "Loading ";
-    int frame = 0;
-    ArrayList<Integer> barItems;
 
-    public LoadScreen(AssetManager assetManager, FitViewport vp) {
+    public LoadScreen(AssetManager assetManager, FitViewport vp, EngineLoader engineLoader) {
         this.assetManager = assetManager;
+        this.engineLoader = engineLoader;
         viewport = vp;
 
         assetManager.load("./Data/Images/leikr-logo.png", Texture.class);
@@ -68,10 +72,15 @@ public class LoadScreen extends BasicGameScreen {
         barItems.add(60);
     }
 
+    public void setGameName(String name) {
+        gameName = name;
+    }
+
     @Override
     public void preTransitionIn(Transition transition) {
         service = Executors.newFixedThreadPool(1);
-        engineGetter = service.submit(EngineLoader.getEngineLoader(true));
+        engineLoader.reset("Programs/" + gameName);
+        engineGetter = service.submit(engineLoader);
     }
 
     @Override
@@ -82,15 +91,14 @@ public class LoadScreen extends BasicGameScreen {
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
         if (engineGetter.isDone()) {
             try {
-                EngineScreen scrn = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
-                scrn.setEngine(engineGetter.get());
+                EngineScreen es = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
+                es.setEngine(engineGetter.get(), "Programs/" + gameName);
                 service.shutdown();
                 sm.enterGameScreen(EngineScreen.ID, null, null);
             } catch (InterruptedException | ExecutionException ex) {
-                service.shutdownNow();
-                ErrorScreen.setErrorMessage("Error loading engine: " + ex.getMessage());
-                sm.enterGameScreen(ErrorScreen.ID, null, null);
                 Logger.getLogger(LoadScreen.class.getName()).log(Level.SEVERE, null, ex);
+                service.shutdownNow();
+                throw new CreateException("Error loading engine: " + ex.getMessage());
             }
         }
 
@@ -122,7 +130,7 @@ public class LoadScreen extends BasicGameScreen {
 
             // draw game name
             g.setColor(Colors.rgbToColor(0 + "," + (155 + (frame * 2) % 100) + "," + 0));
-            g.drawString(GameRuntime.GAME_NAME + loadPhrase, 128, 73);
+            g.drawString(gameName + loadPhrase, 128, 73);
 
             // loading bar
             g.setColor(Colors.RED());

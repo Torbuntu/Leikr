@@ -17,9 +17,8 @@ package leikr.loaders;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import leikr.GameRuntime;
 import leikr.customProperties.CustomSystemProperties;
-import leikr.screens.EngineScreen;
+import leikr.exceptions.RenderException;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.tiled.TiledMap;
@@ -35,9 +34,7 @@ public class MapLoader {
 
     String rootPath;
 
-    private static MapLoader instance;
-
-    private MapLoader() {
+    public MapLoader() {
     }
 
     public void loadMap(String name) {
@@ -48,16 +45,9 @@ public class MapLoader {
         tiledMap.loadTilesetTextures();
     }
 
-    public static MapLoader getMapLoader() {
-        if (instance == null) {
-            instance = new MapLoader();
-        }
-        instance.resetMapLoader();
-        return instance;
-    }
-
-    private void resetMapLoader() {
-        rootPath = GameRuntime.getGamePath() + "/Maps/";
+    public void resetMapLoader(String path) {
+        disposeMap();
+        rootPath = path + "/Maps/";
     }
 
     public TiledMap getMap() {
@@ -66,14 +56,12 @@ public class MapLoader {
 
     private boolean checkMap() {
         if (tiledMap == null) {
-            EngineScreen.errorEngine("Error in program `render` method. `drawMap()` called with null map. Load a map with `loadMap(String name)`");
-            return false;
+            throw new RenderException("Error in program `render` method. `drawMap()` called with null map. Load a map with `loadMap(String name)`");
         }
         if (tiledMap.isTilesetTexturesLoaded(true)) {
             return true;
         } else {
-            EngineScreen.errorEngine("Error in program `render` method. `drawMap()` called before tileset loaded.");
-            return false;
+            throw new RenderException("Error in program `render` method. `drawMap()` called before tileset loaded.");
         }
     }
 

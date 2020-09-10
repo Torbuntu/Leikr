@@ -32,8 +32,13 @@ public class ToolCommand extends Command {
 
     String out;
 
-    public ToolCommand() {
+    GameRuntime runtime;
+    private final TerminalManager terminalManager;
+
+    public ToolCommand(GameRuntime runtime, TerminalManager terminalManager) {
         super.name = "tool";
+        this.runtime = runtime;
+        this.terminalManager = terminalManager;
     }
 
     @Override
@@ -52,8 +57,8 @@ public class ToolCommand extends Command {
                 if (!containsName(command[1])) {
                     return "Tool [" + command[1] + "] does not exist in Data/Tools/ directory.";
                 }
-                GameRuntime.setGameName(command[1]);
-                TerminalManager.setState(TerminalManager.TerminalState.RUN_UTILITY);
+                runtime.setGameName(command[1]);
+                terminalManager.setState(TerminalManager.TerminalState.RUN_UTILITY);
                 return "Running tool [" + command[1] + "].";
             } catch (Exception ex) {
                 Logger.getLogger(ToolCommand.class.getName()).log(Level.WARNING, null, ex);

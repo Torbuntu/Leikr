@@ -59,9 +59,12 @@ public class MenuScreen extends BasicGameScreen {
 
     String isCompiled = "";
 
-    public MenuScreen(FitViewport vp) {
+    GameRuntime runtime;
+
+    public MenuScreen(FitViewport vp, GameRuntime runtime) {
         viewport = vp;
-        sViewport = new StretchViewport(GameRuntime.WIDTH, GameRuntime.HEIGHT);
+        sViewport = new StretchViewport(runtime.WIDTH, runtime.HEIGHT);
+        this.runtime = runtime;
     }
 
     @Override
@@ -81,7 +84,7 @@ public class MenuScreen extends BasicGameScreen {
 
     @Override
     public void preTransitionIn(Transition transition) {
-        fbo = Mdx.graphics.newFrameBuffer(GameRuntime.WIDTH, GameRuntime.HEIGHT);
+        fbo = Mdx.graphics.newFrameBuffer(runtime.WIDTH, runtime.HEIGHT);
     }
 
     @Override
@@ -121,7 +124,16 @@ public class MenuScreen extends BasicGameScreen {
             loadIcon();
         }
         if (Mdx.input.isKeyJustPressed(Keys.ENTER)) {
-            GameRuntime.setGameName(games.get(index).getTitle());
+            LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID);
+            ls.setGameName(games.get(index).getTitle());
+            runtime.setGameName(games.get(index).getTitle());
+            sm.enterGameScreen(LoadScreen.ID, null, null);
+        }
+
+        if (runtime.checkFileDropped()) {
+            LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID);
+            ls.setGameName(runtime.getFileDroppedTitle());
+            runtime.setGameName(runtime.getFileDroppedTitle());
             sm.enterGameScreen(LoadScreen.ID, null, null);
         }
 
@@ -132,7 +144,9 @@ public class MenuScreen extends BasicGameScreen {
                 if (buttonIndex == CustomSystemProperties.START) {
                     System.out.println(buttonIndex);
 
-                    GameRuntime.setGameName(games.get(index).getTitle());
+                    LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID);
+                    ls.setGameName(games.get(index).getTitle());
+                    runtime.setGameName(games.get(index).getTitle());
                     Controllers.clearListeners();
                     sm.enterGameScreen(LoadScreen.ID, null, null);
                     return true;

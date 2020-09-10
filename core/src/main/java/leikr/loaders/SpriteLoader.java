@@ -17,8 +17,7 @@ package leikr.loaders;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import leikr.GameRuntime;
-import leikr.screens.EngineScreen;
+import leikr.exceptions.RenderException;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.assets.loader.TextureLoader;
@@ -43,34 +42,25 @@ public class SpriteLoader {
 
     String rootPath;
 
-    private static SpriteLoader instance;
-
-    private SpriteLoader() {
+    public SpriteLoader() {
 
     }
 
-    public static SpriteLoader getSpriteLoader() {
-        if (instance == null) {
-            instance = new SpriteLoader();
-        }
-        if (Mdx.files.local(GameRuntime.getGamePath() + "/Sprites/Sprites.png").exists()) {
-            instance.disposeSprites();
+    public void resetSpriteLoader(String path) {
+        rootPath = path + "/Sprites/Sprites.png";
+        disposeSprites();
 
-            instance.resetSpriteLoader();
-            instance.loadSpriteSheets();
-            instance.addSpritesToSpriteBank();
-        } else {
-            Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "No sprites found for: {0}", GameRuntime.getGamePath());
-        }
-
-        return instance;
-    }
-
-    private void resetSpriteLoader() {
-        rootPath = GameRuntime.getGamePath() + "/Sprites/Sprites.png";
         assetLoader = new TextureLoader();
         assetManager = new AssetManager(new LocalFileHandleResolver());
         assetManager.setAssetLoader(Texture.class, assetLoader);
+        System.out.println("Loader set for sprites");
+        if (Mdx.files.local(path + "/Sprites/Sprites.png").exists()) {
+            loadSpriteSheets();
+            addSpritesToSpriteBank();
+        } else {
+            Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "No sprites found for: {0}", path);
+        }
+
     }
 
     private void loadSpriteSheets() {
@@ -113,22 +103,22 @@ public class SpriteLoader {
                     spriteBank.getSprite(id);
             };
         } catch (Exception ex) {
-            EngineScreen.errorEngine("Error in program `render` method. Sprite index out of bounds. " + (ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : ""));
             Logger.getLogger(SpriteLoader.class.getName()).log(Level.SEVERE, null, ex);
-            return spriteBank.getSprite(0);
+            throw new RenderException("Error in program `render` method. Sprite index out of bounds. " + (ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : ""));
+//            return spriteBank.getSprite(0);
         }
     }
 
     public void loadManualSpritesheets(String programName) {
-        resetSpriteLoader();
+//        resetSpriteLoader();
         rootPath = "Programs/" + programName + "/Sprites/Sprites.png";
         if (!Mdx.files.local(rootPath).exists()) {
             Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "No sprites found for: {0}", rootPath);
             return;
         }
         try {
-            instance.loadSpriteSheets();
-            instance.addSpritesToSpriteBank();
+            loadSpriteSheets();
+            addSpritesToSpriteBank();
         } catch (Exception ex) {
             Logger.getLogger(SpriteLoader.class.getName()).log(Level.SEVERE, "Manual Sprite sheet not loadable for: {0}", rootPath);
             Logger.getLogger(SpriteLoader.class.getName()).log(Level.SEVERE, null, ex);

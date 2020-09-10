@@ -42,6 +42,7 @@ import leikr.commands.RunCommand;
 import leikr.commands.SetCommand;
 import leikr.commands.ToolCommand;
 import leikr.commands.WikiCommand;
+import leikr.loaders.EngineLoader;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.gdx.Input.Keys;
 import org.mini2Dx.gdx.InputProcessor;
@@ -62,20 +63,25 @@ public class TerminalManager implements InputProcessor {
     ArrayList<String> programList;
     int prIdx;
 
-    public static enum TerminalState {
+    public enum TerminalState {
         PROCESSING,
         RUN_PROGRAM,
         NEW_PROGRAM,
         RUN_UTILITY
     }
 
-    public static TerminalState terminalState;
+    public TerminalState terminalState;
+
+    GameRuntime runtime;
 
     /**
-     * The list of available commands. displayed when "help" with no params is
+     * The list of available commands.displayed when "help" without params is
      * run.
+     *
+     * @param runtime
+     * @param engineLoader
      */
-    public TerminalManager() {
+    public TerminalManager(GameRuntime runtime, EngineLoader engineLoader) {
         history = new ArrayList<>();
         terminalState = TerminalState.PROCESSING;
         commandList = new HashMap<>();
@@ -90,25 +96,27 @@ public class TerminalManager implements InputProcessor {
         }
         commandList.put("about", new AboutCommand());
         commandList.put("ls", new PrintDirectoryCommand());
-        commandList.put("new", new NewProgramCommand());
+        commandList.put("new", new NewProgramCommand(this));
         commandList.put("exit", new ExitCommand());
-        commandList.put("run", new RunCommand());
+        commandList.put("run", new RunCommand(runtime, this));
         commandList.put("find", new FindCommand());
         commandList.put("clean", new CleanCommand());
         commandList.put("pwd", new PrintWorkspaceCommand());
         commandList.put("wiki", new WikiCommand());
         commandList.put("export", new ExportCommand());
         commandList.put("install", new InstallCommand());
-        commandList.put("tool", new ToolCommand());
+        commandList.put("tool", new ToolCommand(runtime, this));
         commandList.put("uninstall", new RemoveCommand());
         commandList.put("package", new PackageCommand());
-        commandList.put("compile", new CompileCommand());
+        commandList.put("compile", new CompileCommand(runtime, engineLoader));
         commandList.put("get", new GetCommand());
         commandList.put("set", new SetCommand());
 
+        this.runtime = runtime;
+
     }
 
-    public static void setState(TerminalState state) {
+    public void setState(TerminalState state) {
         terminalState = state;
     }
 
@@ -120,10 +128,10 @@ public class TerminalManager implements InputProcessor {
         terminalState = TerminalState.PROCESSING;
         prompt = "";
         index = history.size() - 1;
-        if (GameRuntime.GAME_NAME.length() < 2) {
+        if (runtime.getGameName().length() < 2) {
             historyText = "No program loaded.";
         } else {
-            historyText = "Closed program: [" + GameRuntime.GAME_NAME + "]";
+            historyText = "Closed program: [" + runtime.getGameName() + "]";
         }
     }
 

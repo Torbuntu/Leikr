@@ -25,10 +25,10 @@ import java.util.logging.Logger;
 import leikr.controls.LeikrController;
 import leikr.controls.LeikrKeyboard;
 import leikr.controls.LeikrMouse;
-import leikr.managers.LeikrAudioManager;
-import leikr.managers.LeikrDataManager;
-import leikr.managers.LeikrScreenManager;
-import leikr.managers.LeikrSystemManager;
+import leikr.managers.AudioManager;
+import leikr.managers.DataManager;
+import leikr.managers.GraphicsManager;
+import leikr.managers.SystemManager;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.graphics.Color;
@@ -58,26 +58,33 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
      *
      * The managers are used to load the custom assets for a game at startup.
      */
-    public LeikrScreenManager lScreen;
-    public LeikrSystemManager lSystem;
-    public LeikrAudioManager lAudio;
-    public LeikrDataManager lData;
+    public GraphicsManager lGraphics;
+    public SystemManager lSystem;
+    public AudioManager lAudio;
+    public DataManager lData;
 
     /**
      * preCreate gets the audio, screen and system singletons.sets up the
      * controllers if there are any connected.
      *
+     * @param path
      * @param mSprites maximum allowed sprites to draw at one time
-     * @param sys object used to interact with the Leikr lSystem at runtime
+     * @param audioManager
+     * @param dataManager
+     * @param graphicsManager
+     * @param systemManager object used to interact with the Leikr lSystem at runtime
      * @param viewport
-     * @param f
+     * @param framebuffer
      */
-    public final void preCreate(int mSprites, LeikrSystemManager sys, StretchViewport viewport, FrameBuffer f) {
-        lAudio = LeikrAudioManager.getLeikrAudioManager();
-        lScreen = LeikrScreenManager.getLeikrScreenManager(mSprites);
-        lData = new LeikrDataManager();
-        lScreen.preCreate(f, viewport);
-        lSystem = sys;
+    public final void preCreate(String path, int mSprites, AudioManager audioManager, DataManager dataManager, GraphicsManager graphicsManager, SystemManager systemManager, StretchViewport viewport, FrameBuffer framebuffer) {
+        lAudio = audioManager;
+        lGraphics = graphicsManager;
+        lData = dataManager;
+        lSystem = systemManager;
+
+        lAudio.resetAudioManager(path);
+        lGraphics.resetScreenManager(path, mSprites);
+        lGraphics.preCreate(framebuffer, viewport);
         active = true;
         try {
             lControllerA = LeikrController.getLeikrControllerListenerA();
@@ -103,7 +110,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
      * @param delta
      */
     public final void preUpdate(float delta) {
-        lScreen.preUpdate(delta);
+        lGraphics.preUpdate(delta);
     }
 
     /**
@@ -117,7 +124,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
      */
     public final void preRender(Graphics g) {
         lSystem.render(g);
-        lScreen.preRender(g);
+        lGraphics.preRender(g);
     }
 
     /*
@@ -153,8 +160,8 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
             lAudio.dispose();
         }
 
-        if (lScreen != null) {
-            lScreen.dispose();
+        if (lGraphics != null) {
+            lGraphics.dispose();
         }
 
         //Debugging for ARM-GameShell
@@ -172,7 +179,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     //Start Helper methods
     //custom prop functions
     public int getUsedSprites() {
-        return lScreen.getUsedSprites();
+        return lGraphics.getUsedSprites();
     }
     //end custom prop functions
 
@@ -193,10 +200,6 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         this.active = state;
     }
 
-    public final void pause() {
-        lSystem.pause();
-    }
-
     public final void loadSpriteSheet(String progName) {
         lSystem.loadSpriteSheet(progName);
     }
@@ -204,344 +207,344 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
 
     //Image methods
     public final void loadImages() {
-        lScreen.loadImages();
+        lGraphics.loadImages();
     }
 
     public final void drawTexture(String name, BigDecimal x, BigDecimal y) {
-        lScreen.drawTexture(name, x, y);
+        lGraphics.drawTexture(name, x, y);
     }
 
     public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        lScreen.drawTexture(name, x, y, w, h);
+        lGraphics.drawTexture(name, x, y, w, h);
     }
 
     public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h, boolean flipv) {
-        lScreen.drawTexture(name, x, y, w, h, flipv);
+        lGraphics.drawTexture(name, x, y, w, h, flipv);
     }
 
     //end Image methods
     //Map methods
     public final void loadMap(String map) {
-        lScreen.loadMap(map);
+        lGraphics.loadMap(map);
     }
 
     public final void drawMap() {
-        lScreen.drawMap();
+        lGraphics.drawMap();
     }
 
     public final void drawMap(BigDecimal x, BigDecimal y) {
-        lScreen.drawMap(x, y);
+        lGraphics.drawMap(x, y);
     }
 
     public final void drawMap(BigDecimal x, BigDecimal y, int layer) {
-        lScreen.drawMap(x, y, layer);
+        lGraphics.drawMap(x, y, layer);
     }
 
     public final void drawMap(BigDecimal x, BigDecimal y, BigDecimal sx, BigDecimal sy, BigDecimal w, BigDecimal h) {
-        lScreen.drawMap(x, y, sx, sy, w, h);
+        lGraphics.drawMap(x, y, sx, sy, w, h);
     }
 
     public final void drawMap(BigDecimal x, BigDecimal y, BigDecimal sx, BigDecimal sy, BigDecimal w, BigDecimal h, int layer) {
-        lScreen.drawMap(x, y, sx, sy, w, h, layer);
+        lGraphics.drawMap(x, y, sx, sy, w, h, layer);
     }
 
     public final int getMapTile(BigDecimal x, BigDecimal y) {
-        return lScreen.getMapTile(x, y);
+        return lGraphics.getMapTile(x, y);
     }
 
     public final int getMapTile(BigDecimal x, BigDecimal y, int layer) {
-        return lScreen.getMapTile(x, y, layer);
+        return lGraphics.getMapTile(x, y, layer);
     }
 
     public final void setMapTile(int id, BigDecimal x, BigDecimal y) {
-        lScreen.setMapTile(id, x, y);
+        lGraphics.setMapTile(id, x, y);
     }
 
     public final void setMapTile(int id, BigDecimal x, BigDecimal y, int layer) {
-        lScreen.setMapTile(id, x, y, layer);
+        lGraphics.setMapTile(id, x, y, layer);
     }
 
     public final void removeMapTile(BigDecimal x, BigDecimal y) {
-        lScreen.removeMapTile(x, y);
+        lGraphics.removeMapTile(x, y);
     }
 
     public final void removeMapTile(BigDecimal x, BigDecimal y, int layer) {
-        lScreen.removeMapTile(x, y, layer);
+        lGraphics.removeMapTile(x, y, layer);
     }
 
     public final int getMapHeight() {
-        return lScreen.getMapHeight();
+        return lGraphics.getMapHeight();
     }
 
     public final int getMapWidth() {
-        return lScreen.getMapWidth();
+        return lGraphics.getMapWidth();
     }
     //end Map methods
 
     //start color methods
     public final void bgColor(Color color) {
-        lScreen.bgColor(color);
+        lGraphics.bgColor(color);
     }
 
     public final void bgColor(int color) {
-        lScreen.bgColor(color);
+        lGraphics.bgColor(color);
     }
 
     public final void bgColor(String color) {
-        lScreen.bgColor(color);
+        lGraphics.bgColor(color);
     }
 
     public final Color getColor(int color) {
-        return lScreen.getColor(color);
+        return lGraphics.getColor(color);
     }
 
     public final Color getColor(String color) {
-        return lScreen.getColor(color);
+        return lGraphics.getColor(color);
     }
     //end color methods
 
     //Helper methods
     public final void setClip(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        lScreen.setClip(x, y, w, h);
+        lGraphics.setClip(x, y, w, h);
     }
 
     public final void removeClip() {
-        lScreen.removeClip();
+        lGraphics.removeClip();
     }
 
     //end helper methods
     //text methods
     public final void drawString(Color color, String text, BigDecimal x, BigDecimal y) {
-        lScreen.drawString(color, text, x, y);
+        lGraphics.drawString(color, text, x, y);
     }
 
     public final void drawString(Color color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
-        lScreen.drawString(color, text, x, y, width);
+        lGraphics.drawString(color, text, x, y, width);
     }
 
     public final void drawString(Color color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
-        lScreen.drawString(color, text, x, y, width, align);
+        lGraphics.drawString(color, text, x, y, width, align);
     }
 
     public final void drawString(int color, String text, BigDecimal x, BigDecimal y) {
-        lScreen.drawString(color, text, x, y);
+        lGraphics.drawString(color, text, x, y);
     }
 
     public final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
-        lScreen.drawString(color, text, x, y, width);
+        lGraphics.drawString(color, text, x, y, width);
     }
 
     public final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
-        lScreen.drawString(color, text, x, y, width, align);
+        lGraphics.drawString(color, text, x, y, width, align);
     }
 
     public final void drawString(String color, String text, BigDecimal x, BigDecimal y) {
-        lScreen.drawString(color, text, x, y);
+        lGraphics.drawString(color, text, x, y);
     }
 
     public final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
-        lScreen.drawString(color, text, x, y, width);
+        lGraphics.drawString(color, text, x, y, width);
     }
 
     public final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
-        lScreen.drawString(color, text, x, y, width, align);
+        lGraphics.drawString(color, text, x, y, width, align);
     }
     //end drawString methods
 
     //start 8x8 sprites
     public final void sprite(int id, BigDecimal x, BigDecimal y) {
-        lScreen.sprite(id, x, y);
+        lGraphics.sprite(id, x, y);
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, BigDecimal degr) {
-        lScreen.sprite(id, x, y, degr);
+        lGraphics.sprite(id, x, y, degr);
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY) {
-        lScreen.sprite(id, x, y, flipX, flipY);
+        lGraphics.sprite(id, x, y, flipX, flipY);
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, BigDecimal degr) {
-        lScreen.sprite(id, x, y, flipX, flipY, degr);
+        lGraphics.sprite(id, x, y, flipX, flipY, degr);
     }
     //end 8x8 sprites
 
     //start sizable sprites
     public final void sprite(int id, BigDecimal x, BigDecimal y, int size) {
-        lScreen.sprite(id, x, y, size);
+        lGraphics.sprite(id, x, y, size);
     }
 
     public final void sprite(int id, BigDecimal degr, BigDecimal x, BigDecimal y, int size) {
-        lScreen.sprite(id, degr, x, y, size);
+        lGraphics.sprite(id, degr, x, y, size);
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, int size) {
-        lScreen.sprite(id, x, y, flipX, flipY, size);
+        lGraphics.sprite(id, x, y, flipX, flipY, size);
     }
 
     public final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, BigDecimal degr, int size) {
-        lScreen.sprite(id, x, y, flipX, flipY, degr, size);
+        lGraphics.sprite(id, x, y, flipX, flipY, degr, size);
     }
     //end sizable sprites
 
     public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph) {
-        lScreen.sprite(ids, px, py, pw, ph);
+        lGraphics.sprite(ids, px, py, pw, ph);
     }
 
     public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, int size) {
-        lScreen.sprite(ids, px, py, pw, ph, size);
+        lGraphics.sprite(ids, px, py, pw, ph, size);
     }
 
     public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, boolean flipX, boolean flipY) {
-        lScreen.sprite(ids, px, py, pw, ph, flipX, flipY);
+        lGraphics.sprite(ids, px, py, pw, ph, flipX, flipY);
     }
 
     public final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, boolean flipX, boolean flipY, int size) {
-        lScreen.sprite(ids, px, py, pw, ph, flipX, flipY, size);
+        lGraphics.sprite(ids, px, py, pw, ph, flipX, flipY, size);
     }
 
     //start scaled sprites
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale) {
-        lScreen.spriteSc(id, x, y, scale);
+        lGraphics.spriteSc(id, x, y, scale);
     }
 
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY) {
-        lScreen.spriteSc(id, x, y, scaleX, scaleY);
+        lGraphics.spriteSc(id, x, y, scaleX, scaleY);
     }
 
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, BigDecimal degr) {
-        lScreen.spriteSc(id, x, y, scaleX, scaleY, degr);
+        lGraphics.spriteSc(id, x, y, scaleX, scaleY, degr);
     }
 
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY) {
-        lScreen.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY);
+        lGraphics.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY);
     }
 
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, BigDecimal degr) {
-        lScreen.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, degr);
+        lGraphics.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, degr);
     }
 
     //Scaled sprites with size
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale, int size) {
-        lScreen.spriteSc(id, x, y, scale, size);
+        lGraphics.spriteSc(id, x, y, scale, size);
     }
 
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size) {
-        lScreen.spriteSc(id, x, y, scaleX, scaleY, size);
+        lGraphics.spriteSc(id, x, y, scaleX, scaleY, size);
     }
 
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, BigDecimal degr, int size) {
-        lScreen.spriteSc(id, x, y, scaleX, scaleY, degr, size);
+        lGraphics.spriteSc(id, x, y, scaleX, scaleY, degr, size);
     }
 
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, int size) {
-        lScreen.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, size);
+        lGraphics.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, size);
     }
 
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, BigDecimal degr, int size) {
-        lScreen.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, degr, size);
+        lGraphics.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, degr, size);
     }
     //end scaled sprites
 
     //start shape drawing methods
     public final void drawPixel(Color color, BigDecimal x, BigDecimal y) {
-        lScreen.drawPixel(color, x, y);
+        lGraphics.drawPixel(color, x, y);
     }
 
     public final void drawPixel(int color, BigDecimal x, BigDecimal y) {
-        lScreen.drawPixel(color, x, y);
+        lGraphics.drawPixel(color, x, y);
     }
 
     public final void drawPixel(String color, BigDecimal x, BigDecimal y) {
-        lScreen.drawPixel(color, x, y);
+        lGraphics.drawPixel(color, x, y);
     }
 
     public final void drawRect(Color color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        lScreen.drawRect(color, x, y, w, h);
+        lGraphics.drawRect(color, x, y, w, h);
     }
 
     public final void drawRect(int color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        lScreen.drawRect(color, x, y, w, h);
+        lGraphics.drawRect(color, x, y, w, h);
     }
 
     public final void drawRect(String color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        lScreen.drawRect(color, x, y, w, h);
+        lGraphics.drawRect(color, x, y, w, h);
     }
 
     public final void fillRect(Color color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        lScreen.fillRect(color, x, y, w, h);
+        lGraphics.fillRect(color, x, y, w, h);
     }
 
     public final void fillRect(int color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        lScreen.fillRect(color, x, y, w, h);
+        lGraphics.fillRect(color, x, y, w, h);
     }
 
     public final void fillRect(String color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        lScreen.fillRect(color, x, y, w, h);
+        lGraphics.fillRect(color, x, y, w, h);
     }
 
     public final void drawLineSegment(Color color, BigDecimal x0, BigDecimal y0, BigDecimal x1, BigDecimal y1) {
-        lScreen.drawLineSegment(color, x0, y0, x1, y1);
+        lGraphics.drawLineSegment(color, x0, y0, x1, y1);
     }
 
     public final void drawLineSegment(int color, BigDecimal x1, BigDecimal y1, BigDecimal x2, BigDecimal y2) {
-        lScreen.drawLineSegment(color, x1, y1, x2, y2);
+        lGraphics.drawLineSegment(color, x1, y1, x2, y2);
     }
 
     public final void drawLineSegment(String color, BigDecimal x0, BigDecimal y0, BigDecimal x1, BigDecimal y1) {
-        lScreen.drawLineSegment(color, x0, y0, x1, y1);
+        lGraphics.drawLineSegment(color, x0, y0, x1, y1);
     }
 
     public final void drawCircle(Color color, BigDecimal x, BigDecimal y, BigDecimal r) {
-        lScreen.drawCircle(color, x, y, r);
+        lGraphics.drawCircle(color, x, y, r);
     }
 
     public final void drawCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r) {
-        lScreen.drawCircle(color, x, y, r);
+        lGraphics.drawCircle(color, x, y, r);
     }
 
     public final void drawCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r) {
-        lScreen.drawCircle(color, x, y, r);
+        lGraphics.drawCircle(color, x, y, r);
     }
 
     public final void fillCircle(Color color, BigDecimal x, BigDecimal y, BigDecimal r) {
-        lScreen.fillCircle(color, x, y, r);
+        lGraphics.fillCircle(color, x, y, r);
     }
 
     public final void fillCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r) {
-        lScreen.fillCircle(color, x, y, r);
+        lGraphics.fillCircle(color, x, y, r);
     }
 
     public final void fillCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r) {
-        lScreen.fillCircle(color, x, y, r);
+        lGraphics.fillCircle(color, x, y, r);
     }
 
     public final void tint(Color color) {
-        lScreen.tint(color);
+        lGraphics.tint(color);
     }
 
     public final void tint(int color) {
-        lScreen.tint(color);
+        lGraphics.tint(color);
     }
 
     public final void tint(String color) {
-        lScreen.tint(color);
+        lGraphics.tint(color);
     }
 
     public final void tint() {
-        lScreen.tint();
+        lGraphics.tint();
     }
 
     public Color getPixel(BigDecimal x, BigDecimal y) {
-        return lScreen.getPixel(x, y);
+        return lGraphics.getPixel(x, y);
     }
 
     public Color getPixel(String name, BigDecimal x, BigDecimal y) {
-        return lScreen.getPixel(name, x, y);
+        return lGraphics.getPixel(name, x, y);
     }
 
     public ArrayList<Color> getPixels(String name) {
-        return lScreen.getPixels(name);
+        return lGraphics.getPixels(name);
     }
     //end shape drawing methods
 
