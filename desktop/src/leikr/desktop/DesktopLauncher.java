@@ -18,6 +18,8 @@ package leikr.desktop;
 import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl3.DesktopMini2DxGame;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Mini2DxConfig;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Mini2DxWindow;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Mini2DxWindowListener;
 import java.io.File;
 import java.security.Security;
 import java.util.Arrays;
@@ -43,6 +45,49 @@ public class DesktopLauncher {
         config.setWindowedMode(720, 480);
         config.useVsync(true);
         config.setWindowIcon(Files.FileType.Internal, "Data/Logo/logo-16x16.png", "Data/Logo/logo-32x32.png");
+        Lwjgl3Mini2DxWindowListener windowListener = new Lwjgl3Mini2DxWindowListener() {
+            @Override
+            public void filesDropped(String[] files) {
+                GameRuntime.fileDroppedTitle = files[0].substring(files[0].lastIndexOf('/')+1, files[0].length());
+                System.out.println(GameRuntime.fileDroppedTitle);
+                Arrays.asList(files).stream().forEach(f -> System.out.println(f));
+            }
+
+            @Override
+            public void created(Lwjgl3Mini2DxWindow lmdw) {
+            }
+
+            @Override
+            public void resized(Lwjgl3Mini2DxWindow lmdw) {
+            }
+
+            @Override
+            public void iconified(boolean isIconified) {
+            }
+
+            @Override
+            public void maximized(boolean isMaximized) {
+            }
+
+            @Override
+            public void focusLost() {
+            }
+
+            @Override
+            public void focusGained() {
+            }
+
+            @Override
+            public boolean closeRequested() {
+                return true;
+            }
+
+            @Override
+            public void refreshRequested() {
+            }
+        };
+        
+        config.windowListener = windowListener;
         
         new DesktopMini2DxGame(new GameRuntime(arg), config);
     }
