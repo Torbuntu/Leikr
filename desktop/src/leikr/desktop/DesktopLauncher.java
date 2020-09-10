@@ -41,6 +41,7 @@ public class DesktopLauncher {
         Lwjgl3Mini2DxConfig config = new Lwjgl3Mini2DxConfig(GameRuntime.GAME_IDENTIFIER);
         // Required to temp fix input lag on Linux
         config.targetFPS = 60;
+        config.foregroundFPS = 60;
         config.setTitle("Leikr");
         config.setWindowedMode(720, 480);
         config.useVsync(true);

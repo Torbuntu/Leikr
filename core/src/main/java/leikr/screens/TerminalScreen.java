@@ -62,6 +62,14 @@ public class TerminalScreen extends BasicGameScreen {
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         terminalManager.update();
+        if (runtime.checkFileDropped()) {
+            LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID);
+            ls.setGameName(runtime.getFileDroppedTitle());
+            runtime.setGameName(runtime.getFileDroppedTitle());
+            runtime.clearFileDropped();
+            sm.enterGameScreen(LoadScreen.ID, null, null);
+        }
+
         switch (terminalManager.getState()) {
             case PROCESSING -> {
             }

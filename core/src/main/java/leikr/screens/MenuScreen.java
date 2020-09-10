@@ -134,6 +134,7 @@ public class MenuScreen extends BasicGameScreen {
             LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID);
             ls.setGameName(runtime.getFileDroppedTitle());
             runtime.setGameName(runtime.getFileDroppedTitle());
+            runtime.clearFileDropped();
             sm.enterGameScreen(LoadScreen.ID, null, null);
         }
 

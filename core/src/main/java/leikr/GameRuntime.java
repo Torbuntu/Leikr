@@ -165,7 +165,10 @@ public class GameRuntime extends ScreenBasedGame {
             return fileDroppedTitle;
         }
         return "";
-
+    }
+    
+    public void clearFileDropped(){
+        fileDroppedTitle = "";
     }
 
 }
