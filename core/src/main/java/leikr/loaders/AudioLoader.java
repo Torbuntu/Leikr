@@ -33,17 +33,17 @@ import org.mini2Dx.core.files.LocalFileHandleResolver;
  */
 public class AudioLoader {
 
-    AssetManager soundManager;
-    AssetManager musicManager;
+    private String musicRootPath;
+    private String soundRootPath;
 
-    SoundLoader soundLoader;
-    MusicLoader musicLoader;
+    private AssetManager soundManager;
+    private AssetManager musicManager;
 
-    String musicRootPath;
-    String soundRootPath;
+    private SoundLoader soundLoader;
+    private MusicLoader musicLoader;
 
-    Music mPlayer;
-    Sound sPlayer;
+    private Music mPlayer;
+    private Sound sPlayer;
 
     public AudioLoader() {
     }
@@ -58,7 +58,7 @@ public class AudioLoader {
         musicManager.setAssetLoader(Music.class, musicLoader);
         musicRootPath = path + "/Audio/Music/";
         soundRootPath = path + "/Audio/Sound/";
-        
+
         loadAudio();
     }
 

@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import leikr.GameRuntime;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.files.LocalFileHandleResolver;
@@ -31,11 +30,12 @@ import org.mini2Dx.core.graphics.Texture;
  */
 public class ImageLoader {
 
-    AssetManager assetManager;
-    String rootPath;
+    private String rootPath;
+
+    private AssetManager assetManager;
 
     public ImageLoader() {
-        
+
     }
 
     public void reloadImageLoader(String path) {

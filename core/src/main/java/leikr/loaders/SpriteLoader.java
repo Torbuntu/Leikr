@@ -32,6 +32,8 @@ import org.mini2Dx.core.graphics.Texture;
  */
 public class SpriteLoader {
 
+    private String rootPath;
+
     private AssetManager assetManager;
     private TextureLoader assetLoader;
 
@@ -39,8 +41,6 @@ public class SpriteLoader {
     private SpriteSheet spriteBank16;
     private SpriteSheet spriteBank32;
     private SpriteSheet spriteBank64;
-
-    private String rootPath;
 
     public SpriteLoader() {
     }
@@ -106,7 +106,7 @@ public class SpriteLoader {
             throw new RenderException("Error in program `render` method. Sprite index out of bounds. " + (ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : ""));
         }
     }
-    
+
     /*
     TODO: Look into custom exceptions. 
     public Sprite getSprite(int id, int size) {
@@ -119,8 +119,7 @@ public class SpriteLoader {
     }
 }
     
-    */
-
+     */
     public void loadManualSpritesheets(String programName) {
 //        resetSpriteLoader();
         rootPath = "Programs/" + programName + "/Sprites/Sprites.png";

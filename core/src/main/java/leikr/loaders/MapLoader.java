@@ -28,11 +28,12 @@ import org.mini2Dx.tiled.TiledMap;
  * @author tor
  */
 public class MapLoader {
+
     //TODO: Add handlers for object layers and collisions.  
+    private String rootPath;
 
-    TiledMap tiledMap;
+    private TiledMap tiledMap;
 
-    String rootPath;
     private final CustomSystemProperties customSystemProperties;
 
     public MapLoader(CustomSystemProperties customSystemProperties) {
