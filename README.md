@@ -82,7 +82,7 @@ or
 
 `>gradlew clean build deployLeikr`
 
-the release will show up in the `./leikr/desktop/build/libs` directory. You should end up with the following:
+the release will show up in the `./leikr/deploy` directory. You should end up with the following:
 
 ```
 Data/
