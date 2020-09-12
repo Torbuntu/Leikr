@@ -21,7 +21,7 @@ task deployLeikr {
     dependsOn shadowJar
     doLast {
         println "From $projectDir/../assets"
-        println "To $projectDir/build/libs"
+        println "To $projectDir/../deploy"
         copy {
             from "$projectDir/build/libs"
             into "$projectDir/../deploy"
