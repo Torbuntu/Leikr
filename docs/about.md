@@ -30,9 +30,9 @@ Instead, Leikr aims to promote the use of whatever tools someone is most comfort
 
 | Type | Tool | Note |
 |----|----|-----|
-| Art, Sprites | [Aseprite](https://www.aseprite.org/) / [LibreSprite](https://github.com/LibreSprite/LibreSprite), [Gimp](https://www.gimp.org/) | for sprites Leikr needs a file called Sprites.png, but in the art directory any png file will work |
-| Music | [LMMS](https://lmms.io/), [FL Studio](https://image-line.com) | Leikr uses .WAV files for Music |
-| Sfx | [RFXGEN](https://github.com/raysan5/rfxgen) | Leikr uses .WAV files for SFX |
+| Art, Sprites | [Aseprite](https://www.aseprite.org/) / [LibreSprite](https://github.com/LibreSprite/LibreSprite), [Gimp](https://www.gimp.org/) | for sprites Leikr needs a file called Sprites.png, but in the art directory any png, jpg, or bmp file will work |
+| Music | [LMMS](https://lmms.io/), [FL Studio](https://image-line.com) | Leikr uses .WAV, .mp3, and .ogg  files for Music |
+| Sfx | [RFXGEN](https://github.com/raysan5/rfxgen) | Leikr uses .WAV, .mp3, and .ogg files for SFX |
 | Code | [NetBeans](https://netbeans.apache.org/), [Gedit](https://wiki.gnome.org/Apps/Gedit), [Nano](https://www.nano-editor.org/)| Any Text editor with support for Groovy highlighting will be plenty sufficient |
 
 Using simple to make assets allows for users to use any tools they wish for developing on Leikr[.](https://torbuntu.github.io/Leikr/docs/hacking) 
