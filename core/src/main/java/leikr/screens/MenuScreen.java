@@ -142,7 +142,7 @@ public class MenuScreen extends BasicGameScreen {
             @Override
             public boolean buttonDown(Controller controller, int buttonIndex) {
 
-                if (buttonIndex == customSystemProperties.getSTART()) {
+                if (buttonIndex == customSystemProperties.getStart()) {
                     System.out.println(buttonIndex);
 
                     LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID);
@@ -157,12 +157,12 @@ public class MenuScreen extends BasicGameScreen {
 
             @Override
             public boolean axisMoved(Controller controller, int axisIndex, float value) {
-                if (axisIndex == customSystemProperties.getHORIZONTAL_AXIS()) {
-                    if ((int) value == customSystemProperties.getRIGHT() && index < games.size() - 1) {
+                if (axisIndex == customSystemProperties.getHorizontalAxis()) {
+                    if ((int) value == customSystemProperties.getRight() && index < games.size() - 1) {
                         index++;
                         return true;
                     }
-                    if ((int) value == customSystemProperties.getLEFT() && index > 0) {
+                    if ((int) value == customSystemProperties.getLeft() && index > 0) {
                         index--;
                         return true;
                     }

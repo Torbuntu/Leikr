@@ -91,9 +91,9 @@ public class GameRuntime extends ScreenBasedGame {
         if (args.length > 0 && args[0].length() > 3 && !args[0].equalsIgnoreCase("insecure")) {
             gameName = args[0];
             directLaunch = true;
-        } else if (customSystemProperties.getLAUNCH_TITLE().length() > 3) {
+        } else if (customSystemProperties.getLaunchTitle().length() > 3) {
             directLaunch = true;
-            gameName = customSystemProperties.getLAUNCH_TITLE();
+            gameName = customSystemProperties.getLaunchTitle();
             System.out.println("Game Title: " + gameName);
         }
     }
@@ -126,8 +126,7 @@ public class GameRuntime extends ScreenBasedGame {
     }
 
     private void initializeLoaders() {
-        primaryFontLoader = new FontLoader();
-        primaryFontLoader.initializeDefaultFont(assetManager);
+        primaryFontLoader = new FontLoader(assetManager);
         primaryFontLoader.getDefaultFont().load(assetManager);
         Mdx.graphicsContext.setFont(primaryFontLoader.getDefaultFont());
 

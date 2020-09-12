@@ -72,27 +72,27 @@ public class LeikrController implements ControllerListener {
         btnCodes.put(customSystemProperties.getB(), B);
         btnCodes.put(customSystemProperties.getX(), X);
         btnCodes.put(customSystemProperties.getY(), Y);
-        btnCodes.put(customSystemProperties.getLEFT_BUMPER(), LEFT_BUMPER);
-        btnCodes.put(customSystemProperties.getRIGHT_BUMPER(), RIGHT_BUMPER);
-        btnCodes.put(customSystemProperties.getSELECT(), SELECT);
-        btnCodes.put(customSystemProperties.getSTART(), START);
+        btnCodes.put(customSystemProperties.getLeftBumper(), LEFT_BUMPER);
+        btnCodes.put(customSystemProperties.getRightBumper(), RIGHT_BUMPER);
+        btnCodes.put(customSystemProperties.getSelect(), SELECT);
+        btnCodes.put(customSystemProperties.getStart(), START);
 
         btnLookup.put(A, customSystemProperties.getA());
         btnLookup.put(B, customSystemProperties.getB());
         btnLookup.put(X, customSystemProperties.getX());
         btnLookup.put(Y, customSystemProperties.getY());
-        btnLookup.put(LEFT_BUMPER, customSystemProperties.getLEFT_BUMPER());
-        btnLookup.put(RIGHT_BUMPER, customSystemProperties.getRIGHT_BUMPER());
-        btnLookup.put(SELECT, customSystemProperties.getSELECT());
-        btnLookup.put(START, customSystemProperties.getSTART());
+        btnLookup.put(LEFT_BUMPER, customSystemProperties.getLeftBumper());
+        btnLookup.put(RIGHT_BUMPER, customSystemProperties.getRightBumper());
+        btnLookup.put(SELECT, customSystemProperties.getSelect());
+        btnLookup.put(START, customSystemProperties.getStart());
 
-        btnLookup.put(UP, customSystemProperties.getUP());
-        btnLookup.put(DOWN, customSystemProperties.getDOWN());
-        btnLookup.put(LEFT, customSystemProperties.getLEFT());
-        btnLookup.put(RIGHT, customSystemProperties.getRIGHT());
+        btnLookup.put(UP, customSystemProperties.getUp());
+        btnLookup.put(DOWN, customSystemProperties.getDown());
+        btnLookup.put(LEFT, customSystemProperties.getLeft());
+        btnLookup.put(RIGHT, customSystemProperties.getRight());
 
-        horizontalAxis = customSystemProperties.getHORIZONTAL_AXIS();
-        verticalAxis = customSystemProperties.getVERTICAL_AXIS();
+        horizontalAxis = customSystemProperties.getHorizontalAxis();
+        verticalAxis = customSystemProperties.getVerticalAxis();
         debug = customSystemProperties.isDEBUG();
     }
 
@@ -156,10 +156,10 @@ public class LeikrController implements ControllerListener {
         }
 
         if (axisCode == verticalAxis) {
-            if ((int) value == customSystemProperties.getDOWN()) {
+            if ((int) value == customSystemProperties.getDown()) {
                 buttons.replace(DOWN, true);
             }
-            if ((int) value == customSystemProperties.getUP()) {
+            if ((int) value == customSystemProperties.getUp()) {
                 buttons.replace(UP, true);
             }
             if (debug) {
@@ -167,10 +167,10 @@ public class LeikrController implements ControllerListener {
             }
         }
         if (axisCode == horizontalAxis) {
-            if ((int) value == customSystemProperties.getRIGHT()) {
+            if ((int) value == customSystemProperties.getRight()) {
                 buttons.replace(RIGHT, true);
             }
-            if ((int) value == customSystemProperties.getLEFT()) {
+            if ((int) value == customSystemProperties.getLeft()) {
                 buttons.replace(LEFT, true);
             }
             if (debug) {

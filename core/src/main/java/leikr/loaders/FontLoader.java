@@ -28,9 +28,9 @@ import org.mini2Dx.core.graphics.Texture;
  */
 public class FontLoader {
 
-    MonospaceGameFont defaultFont;
+    private final MonospaceGameFont defaultFont;
 
-    public void initializeDefaultFont(AssetManager manager) {
+    public FontLoader(AssetManager manager) {
         manager.load("./Data/Images/Fonts/ultra_compact_6x4.png", Texture.class);
         manager.finishLoading();
         FontParameters params = new FontParameters();

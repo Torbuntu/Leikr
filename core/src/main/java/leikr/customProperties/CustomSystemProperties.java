@@ -29,23 +29,23 @@ import java.util.logging.Logger;
  */
 public class CustomSystemProperties {
 
-    private static String LAUNCH_TITLE;
+    private static String launchTitle;
 
-    private int X;
+    private int x;
     private int A;
     private int B;
     private int Y;
-    private int LEFT_BUMPER;
-    private int RIGHT_BUMPER;
-    private int SELECT;
-    private int START;
-    private int UP;
-    private int DOWN;
-    private int RIGHT;
-    private int LEFT;
+    private int leftBumper;
+    private int rightBumper;
+    private int select;
+    private int start;
+    private int up;
+    private int down;
+    private int right;
+    private int left;
 
-    private int HORIZONTAL_AXIS;
-    private int VERTICAL_AXIS;
+    private int horizontalAxis;
+    private int verticalAxis;
 
     private boolean DEBUG;
 
@@ -53,39 +53,39 @@ public class CustomSystemProperties {
         Properties prop = new Properties();
         try ( InputStream stream = new FileInputStream(new File("Data/system.properties"))) {
             prop.load(stream);
-            LAUNCH_TITLE = (prop.getProperty("launch_title") != null) ? prop.getProperty("launch_title") : "";
+            launchTitle = (prop.getProperty("launch_title") != null) ? prop.getProperty("launch_title") : "";
             DEBUG = (prop.getProperty("debug_mode") != null) ? Boolean.valueOf(prop.getProperty("debug_mode")) : false;
 
-            X = (prop.getProperty("btn_x") != null) ? Integer.parseInt(prop.getProperty("btn_x")) : 3;
+            x = (prop.getProperty("btn_x") != null) ? Integer.parseInt(prop.getProperty("btn_x")) : 3;
             A = (prop.getProperty("btn_a") != null) ? Integer.parseInt(prop.getProperty("btn_a")) : 1;
             B = (prop.getProperty("btn_b") != null) ? Integer.parseInt(prop.getProperty("btn_b")) : 0;
             Y = (prop.getProperty("btn_y") != null) ? Integer.parseInt(prop.getProperty("btn_y")) : 2;
 
-            LEFT_BUMPER = (prop.getProperty("btn_lbumper") != null) ? Integer.parseInt(prop.getProperty("btn_lbumper")) : 9;
-            RIGHT_BUMPER = (prop.getProperty("btn_rbumper") != null) ? Integer.parseInt(prop.getProperty("btn_rbumper")) : 10;
+            leftBumper = (prop.getProperty("btn_lbumper") != null) ? Integer.parseInt(prop.getProperty("btn_lbumper")) : 9;
+            rightBumper = (prop.getProperty("btn_rbumper") != null) ? Integer.parseInt(prop.getProperty("btn_rbumper")) : 10;
 
-            SELECT = (prop.getProperty("btn_select") != null) ? Integer.parseInt(prop.getProperty("btn_select")) : 4;
-            START = (prop.getProperty("btn_start") != null) ? Integer.parseInt(prop.getProperty("btn_start")) : 6;
+            select = (prop.getProperty("btn_select") != null) ? Integer.parseInt(prop.getProperty("btn_select")) : 4;
+            start = (prop.getProperty("btn_start") != null) ? Integer.parseInt(prop.getProperty("btn_start")) : 6;
 
-            UP = (prop.getProperty("btn_up") != null) ? Integer.parseInt(prop.getProperty("btn_up")) : -1;
-            DOWN = (prop.getProperty("btn_down") != null) ? Integer.parseInt(prop.getProperty("btn_down")) : 1;
-            LEFT = (prop.getProperty("btn_left") != null) ? Integer.parseInt(prop.getProperty("btn_left")) : -1;
-            RIGHT = (prop.getProperty("btn_right") != null) ? Integer.parseInt(prop.getProperty("btn_right")) : 1;
+            up = (prop.getProperty("btn_up") != null) ? Integer.parseInt(prop.getProperty("btn_up")) : -1;
+            down = (prop.getProperty("btn_down") != null) ? Integer.parseInt(prop.getProperty("btn_down")) : 1;
+            left = (prop.getProperty("btn_left") != null) ? Integer.parseInt(prop.getProperty("btn_left")) : -1;
+            right = (prop.getProperty("btn_right") != null) ? Integer.parseInt(prop.getProperty("btn_right")) : 1;
 
-            HORIZONTAL_AXIS = (prop.getProperty("axis_horizontal") != null) ? Integer.parseInt(prop.getProperty("axis_horizontal")) : 0;
-            VERTICAL_AXIS = (prop.getProperty("axis_vertical") != null) ? Integer.parseInt(prop.getProperty("axis_vertical")) : 1;
+            horizontalAxis = (prop.getProperty("axis_horizontal") != null) ? Integer.parseInt(prop.getProperty("axis_horizontal")) : 0;
+            verticalAxis = (prop.getProperty("axis_vertical") != null) ? Integer.parseInt(prop.getProperty("axis_vertical")) : 1;
 
         } catch (IOException | NumberFormatException ex) {
             Logger.getLogger(CustomSystemProperties.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    public String getLAUNCH_TITLE() {
-        return LAUNCH_TITLE;
+    public String getLaunchTitle() {
+        return launchTitle;
     }
 
     public int getX() {
-        return X;
+        return x;
     }
 
     public int getA() {
@@ -100,44 +100,44 @@ public class CustomSystemProperties {
         return Y;
     }
 
-    public int getLEFT_BUMPER() {
-        return LEFT_BUMPER;
+    public int getLeftBumper() {
+        return leftBumper;
     }
 
-    public int getRIGHT_BUMPER() {
-        return RIGHT_BUMPER;
+    public int getRightBumper() {
+        return rightBumper;
     }
 
-    public int getSELECT() {
-        return SELECT;
+    public int getSelect() {
+        return select;
     }
 
-    public int getSTART() {
-        return START;
+    public int getStart() {
+        return start;
     }
 
-    public int getUP() {
-        return UP;
+    public int getUp() {
+        return up;
     }
 
-    public int getDOWN() {
-        return DOWN;
+    public int getDown() {
+        return down;
     }
 
-    public int getRIGHT() {
-        return RIGHT;
+    public int getRight() {
+        return right;
     }
 
-    public int getLEFT() {
-        return LEFT;
+    public int getLeft() {
+        return left;
     }
 
-    public int getHORIZONTAL_AXIS() {
-        return HORIZONTAL_AXIS;
+    public int getHorizontalAxis() {
+        return horizontalAxis;
     }
 
-    public int getVERTICAL_AXIS() {
-        return VERTICAL_AXIS;
+    public int getVerticalAxis() {
+        return verticalAxis;
     }
 
     public boolean isDEBUG() {
