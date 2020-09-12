@@ -52,7 +52,7 @@ public class FindCommand extends Command {
         }
     }
 
-    boolean containsName(String name) {
+    private boolean containsName(String name) {
         try {
             ArrayList<String> names = new ArrayList<>();
             Arrays.asList(Mdx.files.local("Programs").list()).stream().forEach(e -> names.add(e.nameWithoutExtension()));

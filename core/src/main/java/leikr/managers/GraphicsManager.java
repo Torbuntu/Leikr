@@ -51,18 +51,16 @@ public class GraphicsManager {
      */
     private int maxSprites;
     private int usedSprites;
-    private Graphics g;
-    private Viewport viewport;
-    private FrameBuffer frameBuffer;
+
 
     /*
      Loaders
      
      The loaders are used to load the custom assets for a game at startup.
      */
-    SpriteLoader spriteLoader;
-    ImageLoader imageLoader;
-    MapLoader mapLoader;
+    private final SpriteLoader spriteLoader;
+    private final ImageLoader imageLoader;
+    private final MapLoader mapLoader;
 
     /*
     Color objects.
@@ -71,8 +69,12 @@ public class GraphicsManager {
     bgColor is what preRender uses to clear the backrgound.
     
      */
-    Color bgColor;
-    PixelManager pixelManager;
+    private Color bgColor;
+    private final PixelManager pixelManager;
+
+    private Graphics g;
+    private Viewport viewport;
+    private FrameBuffer frameBuffer;
 
     /**
      * LeikrScreenManager constructor
@@ -89,9 +91,15 @@ public class GraphicsManager {
         this.pixelManager = pixelManager;
     }
 
-    public void resetScreenManager(String path, int mSprites) {
+    /**
+     * Resets and initializes assets for a new loaded game.
+     *
+     * @param path
+     * @param maxSprites
+     */
+    public void resetScreenManager(String path, int maxSprites) {
         this.path = path;
-        maxSprites = mSprites;
+        this.maxSprites = maxSprites;
         spriteLoader.resetSpriteLoader(path);
         imageLoader.reloadImageLoader(path);
         mapLoader.resetMapLoader(path);

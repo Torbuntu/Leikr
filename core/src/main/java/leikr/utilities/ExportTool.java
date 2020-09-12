@@ -24,9 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
@@ -40,9 +38,7 @@ import org.mini2Dx.core.Mdx;
  */
 public class ExportTool {
 
-    static List<String> totalFiles = new ArrayList<String>();
-
-    public static String exportAll() {
+    public String exportAll() {
         try {
             Arrays.asList(Mdx.files.local("Programs/").list()).forEach(file -> {
                 zip(file.name());
@@ -54,7 +50,7 @@ public class ExportTool {
         return "Failed to export all projects.";
     }
 
-    public static String export(String project) {
+    public String export(String project) {
         try {
             zip(project);
             return "Package [" + project + "] exported successfully. Check Packages directory.";
@@ -64,7 +60,7 @@ public class ExportTool {
         return "Failure to export Package. Please check logs.";
     }
 
-    public static String importProject(String project, String location) {
+    public String importProject(String project, String location) {
         try {
             unzip(project, location);
             return "Package [" + project + "] installed successfully. Check [" + location + "].";
@@ -74,28 +70,28 @@ public class ExportTool {
         return "Failure to install Package. Please check logs.";
     }
 
-    public static void zip(String name) {
+    public void zip(String name) {
         File exportDir = new File(Mdx.files.local("Packages/").path());
         if (!exportDir.exists()) {
             exportDir.mkdirs();
         }
         zipFolder(new File(Mdx.files.local("Programs/" + name).path()).toPath(), new File(Mdx.files.local("Packages/" + name).path() + ".lkr").toPath());
     }
-    
-    public static void deployPackage(String name){
-        zipFolder(new File(Mdx.files.local("Deploy/"+name).path()).toPath(), new File(Mdx.files.local("Deploy/"+name).path()+".zip").toPath());
+
+    public void deployPackage(String name) {
+        zipFolder(new File(Mdx.files.local("Deploy/" + name).path()).toPath(), new File(Mdx.files.local("Deploy/" + name).path() + ".zip").toPath());
     }
 
     //https://www.quickprogrammingtips.com/java/how-to-zip-a-folder-in-java.html
-    private static void zipFolder(Path sourceFolderPath, Path zipPath) {
-        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipPath.toFile()))) {
+    private void zipFolder(Path sourceFolderPath, Path zipPath) {
+        try ( ZipOutputStream zipOutStream = new ZipOutputStream(new FileOutputStream(zipPath.toFile()))) {
             Files.walkFileTree(sourceFolderPath, new SimpleFileVisitor<Path>() {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                     String path = sourceFolderPath.relativize(file).toString().replace('\\', '/');
-                    zos.putNextEntry(new ZipEntry(path));
-                    Files.copy(file, zos);
-                    zos.closeEntry();
+                    zipOutStream.putNextEntry(new ZipEntry(path));
+                    Files.copy(file, zipOutStream);
+                    zipOutStream.closeEntry();
                     return FileVisitResult.CONTINUE;
                 }
             });
@@ -104,8 +100,7 @@ public class ExportTool {
         }
     }
 
-
-    public static void unzip(String zipName, String location) {
+    public void unzip(String zipName, String location) {
         File outputDir = new File(Mdx.files.local(location + "/" + zipName).path());
 
         if (!outputDir.exists()) {
@@ -116,26 +111,25 @@ public class ExportTool {
         int len;
         File lkrPackage = new File(Mdx.files.local("Packages/" + zipName).path() + ".lkr");
 
-        try (FileInputStream fis = new FileInputStream(lkrPackage);
-                ZipInputStream zis = new ZipInputStream(fis)) {
-            ZipEntry zen = zis.getNextEntry();
-            while (zen != null) {
-                String fileName = zen.getName();
+        try ( FileInputStream fileInStream = new FileInputStream(lkrPackage);  ZipInputStream zipInStream = new ZipInputStream(fileInStream)) {
+            ZipEntry zipEntry = zipInStream.getNextEntry();
+            while (zipEntry != null) {
+                String fileName = zipEntry.getName();
 
                 File newFile = new File(outputDir + File.separator + fileName);
 
                 new File(newFile.getParent()).mkdirs();
 
-                try (FileOutputStream fos = new FileOutputStream(newFile)) {
-                    while ((len = zis.read(buffer)) > 0) {
-                        fos.write(buffer, 0, len);
+                try ( FileOutputStream fileOutStream = new FileOutputStream(newFile)) {
+                    while ((len = zipInStream.read(buffer)) > 0) {
+                        fileOutStream.write(buffer, 0, len);
                     }
                 }
-                zis.closeEntry();
-                zen = zis.getNextEntry();
+                zipInStream.closeEntry();
+                zipEntry = zipInStream.getNextEntry();
             }
-            zis.closeEntry();
-            fis.close();
+            zipInStream.closeEntry();
+            fileInStream.close();
 
         } catch (IOException ex) {
             Logger.getLogger(ExportTool.class.getName()).log(Level.SEVERE, null, ex);

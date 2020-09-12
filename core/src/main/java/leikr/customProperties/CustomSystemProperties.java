@@ -29,29 +29,29 @@ import java.util.logging.Logger;
  */
 public class CustomSystemProperties {
 
-    public static String LAUNCH_TITLE;
+    private static String LAUNCH_TITLE;
 
-    public static int X;
-    public static int A;
-    public static int B;
-    public static int Y;
-    public static int LEFT_BUMPER;
-    public static int RIGHT_BUMPER;
-    public static int SELECT;
-    public static int START;
-    public static int UP;
-    public static int DOWN;
-    public static int RIGHT;
-    public static int LEFT;
+    private int X;
+    private int A;
+    private int B;
+    private int Y;
+    private int LEFT_BUMPER;
+    private int RIGHT_BUMPER;
+    private int SELECT;
+    private int START;
+    private int UP;
+    private int DOWN;
+    private int RIGHT;
+    private int LEFT;
 
-    public static int HORIZONTAL_AXIS;
-    public static int VERTICAL_AXIS;
+    private int HORIZONTAL_AXIS;
+    private int VERTICAL_AXIS;
 
-    public static boolean DEBUG;
+    private boolean DEBUG;
 
-    public static void init() {
+    public CustomSystemProperties() {
         Properties prop = new Properties();
-        try (InputStream stream = new FileInputStream(new File("Data/system.properties"))) {
+        try ( InputStream stream = new FileInputStream(new File("Data/system.properties"))) {
             prop.load(stream);
             LAUNCH_TITLE = (prop.getProperty("launch_title") != null) ? prop.getProperty("launch_title") : "";
             DEBUG = (prop.getProperty("debug_mode") != null) ? Boolean.valueOf(prop.getProperty("debug_mode")) : false;
@@ -79,4 +79,69 @@ public class CustomSystemProperties {
             Logger.getLogger(CustomSystemProperties.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public String getLAUNCH_TITLE() {
+        return LAUNCH_TITLE;
+    }
+
+    public int getX() {
+        return X;
+    }
+
+    public int getA() {
+        return A;
+    }
+
+    public int getB() {
+        return B;
+    }
+
+    public int getY() {
+        return Y;
+    }
+
+    public int getLEFT_BUMPER() {
+        return LEFT_BUMPER;
+    }
+
+    public int getRIGHT_BUMPER() {
+        return RIGHT_BUMPER;
+    }
+
+    public int getSELECT() {
+        return SELECT;
+    }
+
+    public int getSTART() {
+        return START;
+    }
+
+    public int getUP() {
+        return UP;
+    }
+
+    public int getDOWN() {
+        return DOWN;
+    }
+
+    public int getRIGHT() {
+        return RIGHT;
+    }
+
+    public int getLEFT() {
+        return LEFT;
+    }
+
+    public int getHORIZONTAL_AXIS() {
+        return HORIZONTAL_AXIS;
+    }
+
+    public int getVERTICAL_AXIS() {
+        return VERTICAL_AXIS;
+    }
+
+    public boolean isDEBUG() {
+        return DEBUG;
+    }
+
 }

@@ -23,8 +23,11 @@ import leikr.utilities.ExportTool;
  */
 public class InstallCommand extends Command {
 
-    public InstallCommand() {
+    private final ExportTool exportTool;
+
+    public InstallCommand(ExportTool exportTool) {
         super.name = "install";
+        this.exportTool = exportTool;
     }
 
     @Override
@@ -33,9 +36,9 @@ public class InstallCommand extends Command {
             return "Missing - required name argument.";
         }
         if (command.length == 3) {
-            return ExportTool.importProject(command[1], command[2]);
+            return exportTool.importProject(command[1], command[2]);
         } else {
-            return ExportTool.importProject(command[1], "Programs");
+            return exportTool.importProject(command[1], "Programs");
         }
     }
 

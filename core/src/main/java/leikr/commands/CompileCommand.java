@@ -24,8 +24,8 @@ import leikr.loaders.EngineLoader;
  */
 public class CompileCommand extends Command {
 
-    GameRuntime runtime;
-    EngineLoader engineLoader;
+    private final GameRuntime runtime;
+    private final EngineLoader engineLoader;
 
     public CompileCommand(GameRuntime runtime, EngineLoader engineLoader) {
         this.name = "compile";

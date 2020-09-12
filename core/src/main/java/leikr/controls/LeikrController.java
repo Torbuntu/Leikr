@@ -30,41 +30,30 @@ import leikr.customProperties.CustomSystemProperties;
  */
 public class LeikrController implements ControllerListener {
 
-    HashMap<Object, Boolean> buttons = new HashMap<>();
-    HashMap<Object, Object> btnCodes = new HashMap<>();
-    HashMap<Object, Object> btnLookup = new HashMap<>();
+    private final HashMap<Object, Boolean> buttons = new HashMap<>();
+    private final HashMap<Object, Object> btnCodes = new HashMap<>();
+    private final HashMap<Object, Object> btnLookup = new HashMap<>();
 
-    private static LeikrController instance;
-    private static LeikrController instanceTwo;
+    private final String UP = "UP";
+    private final String DOWN = "DOWN";
+    private final String LEFT = "LEFT";
+    private final String RIGHT = "RIGHT";
+    private final String A = "A";
+    private final String B = "B";
+    private final String X = "X";
+    private final String Y = "Y";
+    private final String LEFT_BUMPER = "LEFT_BUMPER";
+    private final String RIGHT_BUMPER = "RIGHT_BUMPER";
+    private final String SELECT = "SELECT";
+    private final String START = "START";
 
-    String UP = "UP";
-    String DOWN = "DOWN";
-    String LEFT = "LEFT";
-    String RIGHT = "RIGHT";
-    String A = "A";
-    String B = "B";
-    String X = "X";
-    String Y = "Y";
-    String LEFT_BUMPER = "LEFT_BUMPER";
-    String RIGHT_BUMPER = "RIGHT_BUMPER";
-    String SELECT = "SELECT";
-    String START = "START";
+    private final int horizontalAxis;
+    private final int verticalAxis;
+    private final boolean debug;
+    private final CustomSystemProperties customSystemProperties;
 
-    public static LeikrController getLeikrControllerListenerA() {
-        if (instance == null) {
-            instance = new LeikrController();
-        }
-        return instance;
-    }
-
-    public static LeikrController getLeikrControllerListenerB() {
-        if (instanceTwo == null) {
-            instanceTwo = new LeikrController();
-        }
-        return instanceTwo;
-    }
-
-    public LeikrController() {
+    public LeikrController(CustomSystemProperties customSystemProperties) {
+        this.customSystemProperties = customSystemProperties;
         buttons.put(A, false);
         buttons.put(B, false);
         buttons.put(X, false);
@@ -79,28 +68,32 @@ public class LeikrController implements ControllerListener {
         buttons.put(UP, false);
         buttons.put(DOWN, false);
 
-        btnCodes.put(CustomSystemProperties.A, A);
-        btnCodes.put(CustomSystemProperties.B, B);
-        btnCodes.put(CustomSystemProperties.X, X);
-        btnCodes.put(CustomSystemProperties.Y, Y);
-        btnCodes.put(CustomSystemProperties.LEFT_BUMPER, LEFT_BUMPER);
-        btnCodes.put(CustomSystemProperties.RIGHT_BUMPER, RIGHT_BUMPER);
-        btnCodes.put(CustomSystemProperties.SELECT, SELECT);
-        btnCodes.put(CustomSystemProperties.START, START);
+        btnCodes.put(customSystemProperties.getA(), A);
+        btnCodes.put(customSystemProperties.getB(), B);
+        btnCodes.put(customSystemProperties.getX(), X);
+        btnCodes.put(customSystemProperties.getY(), Y);
+        btnCodes.put(customSystemProperties.getLEFT_BUMPER(), LEFT_BUMPER);
+        btnCodes.put(customSystemProperties.getRIGHT_BUMPER(), RIGHT_BUMPER);
+        btnCodes.put(customSystemProperties.getSELECT(), SELECT);
+        btnCodes.put(customSystemProperties.getSTART(), START);
 
-        btnLookup.put(A, CustomSystemProperties.A);
-        btnLookup.put(B, CustomSystemProperties.B);
-        btnLookup.put(X, CustomSystemProperties.X);
-        btnLookup.put(Y, CustomSystemProperties.Y);
-        btnLookup.put(LEFT_BUMPER, CustomSystemProperties.LEFT_BUMPER);
-        btnLookup.put(RIGHT_BUMPER, CustomSystemProperties.RIGHT_BUMPER);
-        btnLookup.put(SELECT, CustomSystemProperties.SELECT);
-        btnLookup.put(START, CustomSystemProperties.START);
+        btnLookup.put(A, customSystemProperties.getA());
+        btnLookup.put(B, customSystemProperties.getB());
+        btnLookup.put(X, customSystemProperties.getX());
+        btnLookup.put(Y, customSystemProperties.getY());
+        btnLookup.put(LEFT_BUMPER, customSystemProperties.getLEFT_BUMPER());
+        btnLookup.put(RIGHT_BUMPER, customSystemProperties.getRIGHT_BUMPER());
+        btnLookup.put(SELECT, customSystemProperties.getSELECT());
+        btnLookup.put(START, customSystemProperties.getSTART());
 
-        btnLookup.put(UP, CustomSystemProperties.UP);
-        btnLookup.put(DOWN, CustomSystemProperties.DOWN);
-        btnLookup.put(LEFT, CustomSystemProperties.LEFT);
-        btnLookup.put(RIGHT, CustomSystemProperties.RIGHT);
+        btnLookup.put(UP, customSystemProperties.getUP());
+        btnLookup.put(DOWN, customSystemProperties.getDOWN());
+        btnLookup.put(LEFT, customSystemProperties.getLEFT());
+        btnLookup.put(RIGHT, customSystemProperties.getRIGHT());
+
+        horizontalAxis = customSystemProperties.getHORIZONTAL_AXIS();
+        verticalAxis = customSystemProperties.getVERTICAL_AXIS();
+        debug = customSystemProperties.isDEBUG();
     }
 
     //engine api for returning boolean status of button presses on snes style controller
@@ -109,11 +102,11 @@ public class LeikrController implements ControllerListener {
     }
 
     public int horizontalAxis() {
-        return CustomSystemProperties.HORIZONTAL_AXIS;
+        return horizontalAxis;
     }
 
     public int verticalAxis() {
-        return CustomSystemProperties.VERTICAL_AXIS;
+        return verticalAxis;
     }
 
     @Override
@@ -125,10 +118,10 @@ public class LeikrController implements ControllerListener {
     public void disconnected(Controller controller) {
         Logger.getLogger(LeikrController.class.getName()).log(Level.WARNING, "Disconnection: {0}", controller.getName());
     }
-    
+
     @Override
-    public boolean buttonDown(Controller controller, int buttonCode){
-        if (CustomSystemProperties.DEBUG) {
+    public boolean buttonDown(Controller controller, int buttonCode) {
+        if (debug) {
             Logger.getLogger(LeikrController.class.getName()).log(Level.INFO, "Controller: {0} , Code: {1}", new Object[]{controller.getName(), buttonCode});
             Logger.getLogger(LeikrController.class.getName()).log(Level.INFO, "Button Down : {0}", buttonCode);
         }
@@ -138,7 +131,7 @@ public class LeikrController implements ControllerListener {
 
     @Override
     public boolean buttonUp(Controller controller, int buttonCode) {
-        if (CustomSystemProperties.DEBUG) {
+        if (debug) {
             Logger.getLogger(LeikrController.class.getName()).log(Level.INFO, "Controller: {0} , Code: {1}", new Object[]{controller.getName(), buttonCode});
             Logger.getLogger(LeikrController.class.getName()).log(Level.INFO, "Button Up : {0}", buttonCode);
         }
@@ -148,10 +141,10 @@ public class LeikrController implements ControllerListener {
 
     @Override
     public boolean axisMoved(Controller controller, int axisCode, float value) {
-        
+
         //Legacy codes: axis 0 = x axis -1 = left 1 = right
         //Legacy codes: axis 1 = y axis -1 = up 1 = down
-        if (CustomSystemProperties.DEBUG) {
+        if (debug) {
             Logger.getLogger(LeikrController.class.getName()).log(Level.INFO, "{0} : {1} | {2}", new Object[]{controller.getName(), axisCode, value});
             Logger.getLogger(LeikrController.class.getName()).log(Level.INFO, "Controller: {0} , axis: {1} , value: {2}", new Object[]{controller.getName(), axisCode, value});
         }
@@ -162,25 +155,25 @@ public class LeikrController implements ControllerListener {
             buttons.replace(RIGHT, false);
         }
 
-        if (axisCode == CustomSystemProperties.VERTICAL_AXIS) {
-            if ((int) value == CustomSystemProperties.DOWN) {
+        if (axisCode == verticalAxis) {
+            if ((int) value == customSystemProperties.getDOWN()) {
                 buttons.replace(DOWN, true);
             }
-            if ((int) value == CustomSystemProperties.UP) {
+            if ((int) value == customSystemProperties.getUP()) {
                 buttons.replace(UP, true);
             }
-            if (CustomSystemProperties.DEBUG) {
+            if (debug) {
                 Logger.getLogger(LeikrController.class.getName()).log(Level.INFO, "Vertical Axis : {0}", value);
             }
         }
-        if (axisCode == CustomSystemProperties.HORIZONTAL_AXIS) {
-            if ((int) value == CustomSystemProperties.RIGHT) {
+        if (axisCode == horizontalAxis) {
+            if ((int) value == customSystemProperties.getRIGHT()) {
                 buttons.replace(RIGHT, true);
             }
-            if ((int) value == CustomSystemProperties.LEFT) {
+            if ((int) value == customSystemProperties.getLEFT()) {
                 buttons.replace(LEFT, true);
             }
-            if (CustomSystemProperties.DEBUG) {
+            if (debug) {
                 Logger.getLogger(LeikrController.class.getName()).log(Level.INFO, "Horizontal Axis : {0}", value);
             }
         }

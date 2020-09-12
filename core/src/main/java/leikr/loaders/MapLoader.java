@@ -33,8 +33,10 @@ public class MapLoader {
     TiledMap tiledMap;
 
     String rootPath;
+    private final CustomSystemProperties customSystemProperties;
 
-    public MapLoader() {
+    public MapLoader(CustomSystemProperties customSystemProperties) {
+        this.customSystemProperties = customSystemProperties;
     }
 
     public void loadMap(String name) {
@@ -102,7 +104,7 @@ public class MapLoader {
         try {
             return tiledMap.getTile(x, y, layer).getTileId(1);
         } catch (Exception ex) {
-            if (CustomSystemProperties.DEBUG) {
+            if (customSystemProperties.isDEBUG()) {
                 Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex);
             }
             return -1;
@@ -117,7 +119,7 @@ public class MapLoader {
         try {
             tiledMap.getTileLayer(layer).setTileId(x, y, id);
         } catch (Exception ex) {
-            if (CustomSystemProperties.DEBUG) {
+            if (customSystemProperties.isDEBUG()) {
                 Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex);
             }
         }
@@ -131,7 +133,7 @@ public class MapLoader {
         try {
             tiledMap.getTileLayer(layer).setTileId(x, y, -1);
         } catch (Exception ex) {
-            if (CustomSystemProperties.DEBUG) {
+            if (customSystemProperties.isDEBUG()) {
                 Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex);
             }
         }

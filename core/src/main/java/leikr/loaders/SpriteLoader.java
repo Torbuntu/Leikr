@@ -32,18 +32,17 @@ import org.mini2Dx.core.graphics.Texture;
  */
 public class SpriteLoader {
 
-    AssetManager assetManager;
-    TextureLoader assetLoader;
+    private AssetManager assetManager;
+    private TextureLoader assetLoader;
 
-    SpriteSheet spriteBank;
-    SpriteSheet spriteBank16;
-    SpriteSheet spriteBank32;
-    SpriteSheet spriteBank64;
+    private SpriteSheet spriteBank;
+    private SpriteSheet spriteBank16;
+    private SpriteSheet spriteBank32;
+    private SpriteSheet spriteBank64;
 
-    String rootPath;
+    private String rootPath;
 
     public SpriteLoader() {
-
     }
 
     public void resetSpriteLoader(String path) {
@@ -92,22 +91,35 @@ public class SpriteLoader {
      */
     public Sprite getSprite(int id, int size) {
         try {
-            return switch (size) {
+            return (switch (size) {
                 case 1 ->
-                    spriteBank16.getSprite(id);
+                    spriteBank16;
                 case 2 ->
-                    spriteBank32.getSprite(id);
+                    spriteBank32;
                 case 3 ->
-                    spriteBank64.getSprite(id);
+                    spriteBank64;
                 default ->
-                    spriteBank.getSprite(id);
-            };
+                    spriteBank;
+            }).getSprite(id);
         } catch (Exception ex) {
             Logger.getLogger(SpriteLoader.class.getName()).log(Level.SEVERE, null, ex);
             throw new RenderException("Error in program `render` method. Sprite index out of bounds. " + (ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : ""));
-//            return spriteBank.getSprite(0);
         }
     }
+    
+    /*
+    TODO: Look into custom exceptions. 
+    public Sprite getSprite(int id, int size) {
+        return convertException(() -> (switch (size) {
+                case 1 -> spriteBank16;
+                case 2 -> spriteBank32;
+                case 3 -> spriteBank64;
+                default -> spriteBank;
+            }).getSprite(id), RenderException::new);
+    }
+}
+    
+    */
 
     public void loadManualSpritesheets(String programName) {
 //        resetSpriteLoader();

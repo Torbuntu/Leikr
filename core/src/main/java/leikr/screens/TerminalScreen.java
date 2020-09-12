@@ -35,18 +35,20 @@ import org.mini2Dx.gdx.Input.Keys;
  */
 public class TerminalScreen extends BasicGameScreen {
 
-    public static int ID = 6;
+    public static final int ID = 6;
 
     private int blink = 0;
 
-    TerminalManager terminalManager;
-    FitViewport viewport;
-    GameRuntime runtime;
+    private final TerminalManager terminalManager;
+    private final FitViewport viewport;
+    private final EngineLoader engineLoader;
+    private final GameRuntime runtime;
 
-    public TerminalScreen(FitViewport vp, TerminalManager terminalManager, GameRuntime runtime) {
-        viewport = vp;
+    public TerminalScreen(FitViewport vp, TerminalManager terminalManager, EngineLoader engineLoader, GameRuntime runtime) {
         this.runtime = runtime;
         this.terminalManager = terminalManager;
+        this.engineLoader = engineLoader;
+        viewport = vp;
     }
 
     @Override
@@ -81,7 +83,7 @@ public class TerminalScreen extends BasicGameScreen {
             case NEW_PROGRAM ->
                 sm.enterGameScreen(NewProgramScreen.ID, null, null);
             case RUN_UTILITY -> {
-                EngineLoader.RUN_TOOL = true;
+                engineLoader.setRunTool();
                 sm.enterGameScreen(LoadScreen.ID, null, null);
             }
         }
@@ -97,11 +99,11 @@ public class TerminalScreen extends BasicGameScreen {
         viewport.apply(g);
         g.setColor(Colors.GREEN());
 
-        g.drawString(terminalManager.historyText, 0, 0, 240);
+        g.drawString(terminalManager.getHistoryText(), 0, 0, 240);
         g.setColor(Colors.BLACK());
         g.fillRect(0, 152, runtime.WIDTH, runtime.HEIGHT);
         g.setColor(Colors.GREEN());
-        g.drawString(">" + terminalManager.prompt + ((blink > 30) ? (char) 131 : ""), 0, 152, runtime.WIDTH);
+        g.drawString(">" + terminalManager.getPrompt() + ((blink > 30) ? (char) 131 : ""), 0, 152, runtime.WIDTH);
 
         if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT)) {
             g.setColor(Colors.RED());

@@ -43,6 +43,7 @@ import leikr.commands.SetCommand;
 import leikr.commands.ToolCommand;
 import leikr.commands.WikiCommand;
 import leikr.loaders.EngineLoader;
+import leikr.utilities.ExportTool;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.gdx.Input.Keys;
 import org.mini2Dx.gdx.InputProcessor;
@@ -53,15 +54,15 @@ import org.mini2Dx.gdx.InputProcessor;
  */
 public class TerminalManager implements InputProcessor {
 
-    public String prompt = "";
-    public String historyText = "";
-    public ArrayList<String> history;
-    int index;
+    private String prompt = "";
+    private String historyText = "";
+    private ArrayList<String> history;
+    private int index;
 
-    Map<String, Command> commandList;
+    private Map<String, Command> commandList;
 
-    ArrayList<String> programList;
-    int prIdx;
+    private ArrayList<String> programList;
+    private int programIndex;
 
     public enum TerminalState {
         PROCESSING,
@@ -70,9 +71,10 @@ public class TerminalManager implements InputProcessor {
         RUN_UTILITY
     }
 
-    public TerminalState terminalState;
+    private TerminalState terminalState;
 
-    GameRuntime runtime;
+    private final GameRuntime runtime;
+    private final ExportTool exportTool;
 
     /**
      * The list of available commands.displayed when "help" without params is
@@ -83,13 +85,17 @@ public class TerminalManager implements InputProcessor {
      */
     public TerminalManager(GameRuntime runtime, EngineLoader engineLoader) {
         history = new ArrayList<>();
-        terminalState = TerminalState.PROCESSING;
-        commandList = new HashMap<>();
         programList = new ArrayList<>();
+        commandList = new HashMap<>();
+        terminalState = TerminalState.PROCESSING;
+        exportTool = new ExportTool();
+
         try {
-            Arrays.stream(Mdx.files.local("Programs/").list()).filter(e -> e.isDirectory()).forEach(game -> programList.add(game.nameWithoutExtension()));
+            Arrays.stream(Mdx.files.local("Programs/").list())
+                    .filter(e -> e.isDirectory())
+                    .forEach(game -> programList.add(game.nameWithoutExtension()));
             if (programList.size() > 0) {
-                prIdx = programList.size();
+                programIndex = programList.size();
             }
         } catch (Exception ex) {
             Logger.getLogger(TerminalManager.class.getName()).log(Level.SEVERE, null, ex);
@@ -98,22 +104,41 @@ public class TerminalManager implements InputProcessor {
         commandList.put("ls", new PrintDirectoryCommand());
         commandList.put("new", new NewProgramCommand(this));
         commandList.put("exit", new ExitCommand());
-        commandList.put("run", new RunCommand(runtime, this));
+        commandList.put("run", new RunCommand(runtime, this, engineLoader));
         commandList.put("find", new FindCommand());
         commandList.put("clean", new CleanCommand());
         commandList.put("pwd", new PrintWorkspaceCommand());
         commandList.put("wiki", new WikiCommand());
-        commandList.put("export", new ExportCommand());
-        commandList.put("install", new InstallCommand());
+        commandList.put("export", new ExportCommand(exportTool));
+        commandList.put("install", new InstallCommand(exportTool));
         commandList.put("tool", new ToolCommand(runtime, this));
         commandList.put("uninstall", new RemoveCommand());
-        commandList.put("package", new PackageCommand());
+        commandList.put("package", new PackageCommand(exportTool));
         commandList.put("compile", new CompileCommand(runtime, engineLoader));
         commandList.put("get", new GetCommand());
         commandList.put("set", new SetCommand());
 
         this.runtime = runtime;
+    }
 
+    public String getPrompt() {
+        return prompt;
+    }
+
+    public String getHistoryText() {
+        return historyText;
+    }
+    
+    public void setToolRunning(){
+        terminalState = TerminalState.RUN_UTILITY;
+    }
+    
+    public void setNewProgramRunning(){
+        terminalState = TerminalState.NEW_PROGRAM;
+    }
+    
+    public void setProgramRunning(){
+        terminalState = TerminalState.RUN_PROGRAM;
     }
 
     public void setState(TerminalState state) {
@@ -140,20 +165,20 @@ public class TerminalManager implements InputProcessor {
             return;
         }
         if (Mdx.input.isKeyJustPressed(Keys.PAGE_UP)) {
-            if (prIdx > 0) {
-                prIdx--;
+            if (programIndex > 0) {
+                programIndex--;
             } else {
-                prIdx = programList.size() - 1;
+                programIndex = programList.size() - 1;
             }
-            prompt = "run " + programList.get(prIdx);
+            prompt = "run " + programList.get(programIndex);
         }
         if (Mdx.input.isKeyJustPressed(Keys.PAGE_DOWN)) {
-            if (prIdx < programList.size() - 1) {
-                prIdx++;
+            if (programIndex < programList.size() - 1) {
+                programIndex++;
             } else {
-                prIdx = 0;
+                programIndex = 0;
             }
-            prompt = "run " + programList.get(prIdx);
+            prompt = "run " + programList.get(programIndex);
         }
 
     }

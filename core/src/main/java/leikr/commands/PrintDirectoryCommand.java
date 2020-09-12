@@ -29,7 +29,7 @@ import org.mini2Dx.core.Mdx;
  */
 public class PrintDirectoryCommand extends Command {
 
-    public String out;
+    private String out;
 
     public PrintDirectoryCommand() {
         super.name = "ls";

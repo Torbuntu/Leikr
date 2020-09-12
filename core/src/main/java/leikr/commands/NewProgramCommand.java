@@ -28,25 +28,27 @@ import leikr.utilities.NewProgramGenerator;
 public class NewProgramCommand extends Command {
 
     private final TerminalManager terminalManager;
+    private final NewProgramGenerator newProgramGenerator;
 
     public NewProgramCommand(TerminalManager terminalManager) {
         super.name = "new";
         this.terminalManager = terminalManager;
+        newProgramGenerator = new NewProgramGenerator();
     }
 
     @Override
     public String execute(String[] command) {
         if (command.length == 2) {
             try {
-                String message = NewProgramGenerator.setNewProgramFileName(command[1], "Default");
-                NewProgramGenerator.writePropertyName(command[1]);
+                String message = newProgramGenerator.setNewProgramFileName(command[1], "Default");
+                newProgramGenerator.writePropertyName(command[1]);
                 return message;
             } catch (IOException ex) {
                 Logger.getLogger(NewProgramCommand.class.getName()).log(Level.SEVERE, null, ex);
                 return "New program with name [" + command[1] + "] failed to generate.";
             }
         }
-        terminalManager.setState(TerminalManager.TerminalState.NEW_PROGRAM);
+        terminalManager.setNewProgramRunning();
         return "Create a new program.";
     }
 

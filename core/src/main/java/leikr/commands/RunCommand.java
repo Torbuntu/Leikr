@@ -21,9 +21,8 @@ import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.GameRuntime;
+import leikr.loaders.EngineLoader;
 import leikr.managers.TerminalManager;
-import leikr.managers.TerminalManager.TerminalState;
-import leikr.screens.EngineScreen;
 import org.mini2Dx.core.Mdx;
 
 /**
@@ -32,12 +31,15 @@ import org.mini2Dx.core.Mdx;
  */
 public class RunCommand extends Command {
 
-    GameRuntime runtime;
+    private final GameRuntime runtime;
     private final TerminalManager terminalManager;
-    public RunCommand(GameRuntime runtime, TerminalManager terminalManager) {
+    private final EngineLoader engineLoader;
+
+    public RunCommand(GameRuntime runtime, TerminalManager terminalManager, EngineLoader engineLoader) {
         super.name = "run";
         this.runtime = runtime;
         this.terminalManager = terminalManager;
+        this.engineLoader = engineLoader;
     }
 
     @Override
@@ -54,9 +56,9 @@ public class RunCommand extends Command {
             runtime.setGameName(command[1]);
             if (command.length > 2) {
                 String[] args = Arrays.copyOfRange(command, 2, command.length);
-                EngineScreen.setEngineArgs(args);
+                engineLoader.setEngineArgs(args);
             }
-            terminalManager.setState(TerminalState.RUN_PROGRAM);
+            terminalManager.setProgramRunning();
             return "Loading...";
         } catch (IOException ex) {
             Logger.getLogger(RunCommand.class.getName()).log(Level.WARNING, null, ex);

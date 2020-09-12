@@ -35,22 +35,22 @@ import org.mini2Dx.gdx.Input.Keys;
 public class ErrorScreen extends BasicGameScreen {
 
     public static int ID = 3;
-    boolean MENU = false;
-    boolean RELOAD = false;
-    static String errorMessage;
-    AssetManager assetManager;
-    FitViewport viewport;
-    GameRuntime runtime;
+    private boolean MENU = false;
+    private final boolean RELOAD;
+    private String errorMessage;
+    private final AssetManager assetManager;
+    private final FitViewport viewport;
+    private final GameRuntime runtime;
 
     public ErrorScreen(AssetManager assetManager, FitViewport vp, GameRuntime runtime) {
+        this.RELOAD = false;
         this.assetManager = assetManager;
         viewport = vp;
-        viewport = new FitViewport(runtime.WIDTH, runtime.HEIGHT);
         errorMessage = "";
         this.runtime = runtime;
     }
 
-    public static void setErrorMessage(String message) {
+    public void setErrorMessage(String message) {
         errorMessage = message;
     }
 

@@ -40,15 +40,18 @@ import org.mini2Dx.gdx.Input.Keys;
 public class TitleScreen extends BasicGameScreen {
 
     public static final int ID = 2;
-    AssetManager assetManager;
-    FitViewport viewport;
+
     boolean CREDITS = false;
+    private double red, blue, green;
 
-    int timer = 0;
-    ArrayList<TitleScreenPixel> pixels;
-    int pixCount = 75;
-    int cycleLength = 25;
+    private int timer = 0;
+    private final int pixCount = 75;
+    private final int cycleLength = 25;
 
+    private ArrayList<TitleScreenPixel> pixels;
+
+    private final AssetManager assetManager;
+    private final FitViewport viewport;
     private final PixelManager pixelManager;
 
     public TitleScreen(AssetManager assetManager, FitViewport vp, PixelManager pixelManager, GameRuntime runtime) {
@@ -109,9 +112,9 @@ public class TitleScreen extends BasicGameScreen {
 
     private void renderExtraText(Graphics graphics, String text, int x, int y, int step) {
         for (int i = 0; i < text.length(); i++) {
-            double red = 255 * (0.5 + 0.5 * Math.sin((step / 3) + 0 - i));
-            double green = 255 * (0.5 + 0.5 * Math.sin((step / 3) + 2 - i));
-            double blue = 255 * (0.5 + 0.5 * Math.sin((step / 3) + 4 - i));
+            red = 255 * (0.5 + 0.5 * Math.sin((step / 3) + 0 - i));
+            green = 255 * (0.5 + 0.5 * Math.sin((step / 3) + 2 - i));
+            blue = 255 * (0.5 + 0.5 * Math.sin((step / 3) + 4 - i));
 
             char c = text.charAt(i);
             int yPos = (int) (Math.sin(i + 1 + step) * (3.0 / ((step / 2) + 1)) * 3);
@@ -133,17 +136,20 @@ public class TitleScreen extends BasicGameScreen {
         for (int p = 0; p < pixCount; p++) {
             TitleScreenPixel pix = pixels.get(p);
             switch (timer - pix.delay) {
-                case 0 -> screen.drawPixel(g, pix.color, pix.x, pix.y);
-                case 1 -> screen.drawPixel(g, pix.color, pix.x, pix.y - 1);
+                case 0 ->
+                    screen.drawPixel(g, pix.color, pix.x, pix.y);
+                case 1 ->
+                    screen.drawPixel(g, pix.color, pix.x, pix.y - 1);
                 case 2 -> {
                     for (int i = 2; i < pix.height - 1; i++) {
                         screen.drawPixel(g, pix.color, pix.x, pix.y - i);
                     }
                 }
-                case 3 -> screen.drawPixel(g, pix.color, pix.x, pix.y - pix.height + 1);
-                case 4 -> screen.drawPixel(g, pix.color, pix.x, pix.y - pix.height);
-                default -> {
-                }
+                case 3 ->
+                    screen.drawPixel(g, pix.color, pix.x, pix.y - pix.height + 1);
+                case 4 ->
+                    screen.drawPixel(g, pix.color, pix.x, pix.y - pix.height);
+
             }
         }
     }

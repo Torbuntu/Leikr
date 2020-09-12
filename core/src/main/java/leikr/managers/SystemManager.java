@@ -34,25 +34,28 @@ import org.mini2Dx.gdx.math.MathUtils;
  */
 public class SystemManager {
 
-    private boolean LOAD_PROGRAM = false;
-    private boolean RUNNING = true;
-    AssetManager manager;
-    EngineLoader engineLoader;
-    FontLoader fontLoader;
-    SpriteLoader spriteLoader;
-    MonospaceGameFont font;
-    GameRuntime runtime;
+    private boolean loadProgram = false;
+    private boolean running = true;
+    private boolean pause = false;
+
+    private final AssetManager manager;
+    private final EngineLoader engineLoader;
+    private final FontLoader fontLoader;
+    private final SpriteLoader spriteLoader;
+    private final GameRuntime runtime;
+    private MonospaceGameFont font;
 
     public SystemManager(EngineLoader engineLoader, FontLoader fontLoader, SpriteLoader spriteLoader, GameRuntime runtime) {
         this.manager = new AssetManager(new LocalFileHandleResolver());
         this.engineLoader = engineLoader;
         this.fontLoader = fontLoader;
         this.spriteLoader = spriteLoader;
-        font = fontLoader.getDefaultFont();
         this.runtime = runtime;
+        font = fontLoader.getDefaultFont();
     }
 
     public void reset() {
+        pause = false;
         manager.clearAssetLoaders();
     }
 
@@ -73,7 +76,15 @@ public class SystemManager {
 
     public void loadProgram(String name) {
         runtime.setGameName(name);
-        LOAD_PROGRAM = true;
+        loadProgram = true;
+    }
+
+    public void pause() {
+        pause = true;
+    }
+
+    public void pause(boolean shouldPause) {
+        pause = shouldPause;
     }
 
     //START Math functions
@@ -167,13 +178,17 @@ public class SystemManager {
     //END API
     //START game loop methods on EngineScreen
     public final boolean update(ScreenManager sm) {
-        if (LOAD_PROGRAM) {
-            LOAD_PROGRAM = false;
-            RUNNING = false;
+        if (loadProgram) {
+            loadProgram = false;
+            running = false;
             sm.enterGameScreen(LoadScreen.ID, null, null);
         }
         font.load(manager);
-        return RUNNING;
+        return running;
+    }
+
+    public final boolean checkShouldPause() {
+        return pause;
     }
 
     public final void render(Graphics g) {
@@ -181,7 +196,7 @@ public class SystemManager {
     }
 
     public void setRunning(boolean run) {
-        RUNNING = run;
+        running = run;
     }
     //END game loop methods on EngineScreen
 }

@@ -23,8 +23,11 @@ import leikr.utilities.ExportTool;
  */
 public class ExportCommand extends Command {
 
-    public ExportCommand() {
+    private final ExportTool exportTool;
+
+    public ExportCommand(ExportTool exportTool) {
         super.name = "export";
+        this.exportTool = exportTool;
     }
 
     @Override
@@ -33,9 +36,9 @@ public class ExportCommand extends Command {
             return "Missing - required name argument.";
         }
         if (command[1].equalsIgnoreCase("all")) {
-            return ExportTool.exportAll();
+            return exportTool.exportAll();
         } else {
-            return ExportTool.export(command[1]);
+            return exportTool.export(command[1]);
         }
     }
 

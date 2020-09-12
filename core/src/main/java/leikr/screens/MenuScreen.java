@@ -48,23 +48,23 @@ import org.mini2Dx.gdx.Input.Keys;
 public class MenuScreen extends BasicGameScreen {
 
     public static int ID = 7;
-    FitViewport viewport;
-    List<CustomProgramProperties> games;
-    Texture icon;
-    int index = 0;
+    private int index = 0;
+    private String isCompiled = "";
 
-    FrameBuffer fbo;
-    StretchViewport sViewport;
-    FitViewport fViewport;
+    private List<CustomProgramProperties> games;
 
-    String isCompiled = "";
+    private final FitViewport fitViewport;
+    private final StretchViewport stretchViewport;
+    private final GameRuntime runtime;
+    private Texture icon;
+    private FrameBuffer framebuffer;
+    private final CustomSystemProperties customSystemProperties;
 
-    GameRuntime runtime;
-
-    public MenuScreen(FitViewport vp, GameRuntime runtime) {
-        viewport = vp;
-        sViewport = new StretchViewport(runtime.WIDTH, runtime.HEIGHT);
+    public MenuScreen(CustomSystemProperties customSystemProperties, FitViewport vp, GameRuntime runtime) {
+        this.customSystemProperties = customSystemProperties;
         this.runtime = runtime;
+        fitViewport = vp;
+        stretchViewport = new StretchViewport(runtime.WIDTH, runtime.HEIGHT);
     }
 
     @Override
@@ -84,12 +84,12 @@ public class MenuScreen extends BasicGameScreen {
 
     @Override
     public void preTransitionIn(Transition transition) {
-        fbo = Mdx.graphics.newFrameBuffer(runtime.WIDTH, runtime.HEIGHT);
+        framebuffer = Mdx.graphics.newFrameBuffer(runtime.WIDTH, runtime.HEIGHT);
     }
 
     @Override
     public void preTransitionOut(Transition transition) {
-        fbo.dispose();
+        framebuffer.dispose();
     }
 
     private void loadIcon() {
@@ -142,7 +142,7 @@ public class MenuScreen extends BasicGameScreen {
             @Override
             public boolean buttonDown(Controller controller, int buttonIndex) {
 
-                if (buttonIndex == CustomSystemProperties.START) {
+                if (buttonIndex == customSystemProperties.getSTART()) {
                     System.out.println(buttonIndex);
 
                     LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID);
@@ -157,12 +157,12 @@ public class MenuScreen extends BasicGameScreen {
 
             @Override
             public boolean axisMoved(Controller controller, int axisIndex, float value) {
-                if (axisIndex == CustomSystemProperties.HORIZONTAL_AXIS) {
-                    if ((int) value == CustomSystemProperties.RIGHT && index < games.size() - 1) {
+                if (axisIndex == customSystemProperties.getHORIZONTAL_AXIS()) {
+                    if ((int) value == customSystemProperties.getRIGHT() && index < games.size() - 1) {
                         index++;
                         return true;
                     }
-                    if ((int) value == CustomSystemProperties.LEFT && index > 0) {
+                    if ((int) value == customSystemProperties.getLEFT() && index > 0) {
                         index--;
                         return true;
                     }
@@ -176,8 +176,8 @@ public class MenuScreen extends BasicGameScreen {
 
     @Override
     public void render(GameContainer gc, Graphics g) {
-        sViewport.apply(g);
-        fbo.begin();
+        stretchViewport.apply(g);
+        framebuffer.begin();
         g.clearContext();
         // draw texture in background
         g.drawTexture(icon, 0, 0, 240, 160);
@@ -195,10 +195,10 @@ public class MenuScreen extends BasicGameScreen {
         g.setColor(Colors.YELLOW());
         g.drawString("> [INFO] This menu is a work in progress.", 0, 152);
         g.flush();
-        fbo.end();
+        framebuffer.end();
 
-        viewport.apply(g);
-        g.drawTexture(fbo.getTexture(), 0, 0, false);
+        fitViewport.apply(g);
+        g.drawTexture(framebuffer.getTexture(), 0, 0, false);
     }
 
     @Override

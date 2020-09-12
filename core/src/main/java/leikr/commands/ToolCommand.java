@@ -30,9 +30,9 @@ import org.mini2Dx.core.Mdx;
  */
 public class ToolCommand extends Command {
 
-    String out;
+    private String out;
 
-    GameRuntime runtime;
+    private final GameRuntime runtime;
     private final TerminalManager terminalManager;
 
     public ToolCommand(GameRuntime runtime, TerminalManager terminalManager) {
@@ -58,7 +58,7 @@ public class ToolCommand extends Command {
                     return "Tool [" + command[1] + "] does not exist in Data/Tools/ directory.";
                 }
                 runtime.setGameName(command[1]);
-                terminalManager.setState(TerminalManager.TerminalState.RUN_UTILITY);
+                terminalManager.setToolRunning();
                 return "Running tool [" + command[1] + "].";
             } catch (Exception ex) {
                 Logger.getLogger(ToolCommand.class.getName()).log(Level.WARNING, null, ex);
@@ -68,7 +68,7 @@ public class ToolCommand extends Command {
         }
     }
 
-    boolean containsName(String name) {
+    private boolean containsName(String name) {
         try {
             ArrayList<String> names = new ArrayList<>();
             Arrays.asList(Mdx.files.local("Data/Tools").list()).stream().forEach(e -> names.add(e.nameWithoutExtension()));

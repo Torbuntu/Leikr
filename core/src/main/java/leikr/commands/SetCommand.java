@@ -25,6 +25,8 @@ import leikr.customProperties.CustomProgramProperties;
  */
 public class SetCommand extends Command {
 
+    private final List<String> properties;
+
     public SetCommand() {
         this.name = "set";
         properties = new ArrayList<>();
@@ -35,8 +37,6 @@ public class SetCommand extends Command {
         properties.add("version");
         properties.add("compile_source");
     }
-
-    private final List<String> properties;
 
     @Override
     public String execute(String[] args) {

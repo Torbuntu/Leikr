@@ -26,6 +26,7 @@ import leikr.managers.AudioManager;
 import leikr.managers.DataManager;
 import leikr.managers.PixelManager;
 import leikr.managers.GraphicsManager;
+import leikr.managers.InputManager;
 import leikr.managers.SystemManager;
 import leikr.managers.TerminalManager;
 import leikr.screens.EngineScreen;
@@ -44,15 +45,16 @@ import org.mini2Dx.core.graphics.viewport.FitViewport;
 
 public class GameRuntime extends ScreenBasedGame {
 
-    public static final String GAME_IDENTIFIER = "torbuntu.leikr";
-    public static String fileDroppedTitle;
+    public final String GAME_IDENTIFIER = "torbuntu.leikr";
+    public String fileDroppedTitle;
+
     public final int WIDTH = 240;
     public final int HEIGHT = 160;
     private boolean directLaunch;
     private String gameName;
 
-    FitViewport viewport;
-    AssetManager assetManager;
+    private final FitViewport viewport;
+    private AssetManager assetManager;
 
     // Loaders
     private FontLoader primaryFontLoader;
@@ -67,26 +69,32 @@ public class GameRuntime extends ScreenBasedGame {
     private AudioManager audioManager;
     private DataManager dataManager;
     private PixelManager pixelManager;
-    private GraphicsManager screenManager;
+    private GraphicsManager graphicsManager;
+    private InputManager inputManager;
     private SystemManager systemManager;
+
+    private ManagerDTO managerDTO;
+
+    private final CustomSystemProperties customSystemProperties;
 
     /**
      * Creates CustomSystemProperties for detecting launch title.
      *
-     * @param arg
+     * @param args
      */
-    public GameRuntime(String[] arg) {
+    public GameRuntime(String[] args) {
         directLaunch = false;
         gameName = "";
         viewport = new FitViewport(WIDTH, HEIGHT);
-        CustomSystemProperties.init();
+        customSystemProperties = new CustomSystemProperties();
 
-        if (arg.length > 0 && arg[0].length() > 3 && !arg[0].equalsIgnoreCase("insecure")) {
-            gameName = arg[0];
+        if (args.length > 0 && args[0].length() > 3 && !args[0].equalsIgnoreCase("insecure")) {
+            gameName = args[0];
             directLaunch = true;
-        } else if (CustomSystemProperties.LAUNCH_TITLE.length() > 3) {
+        } else if (customSystemProperties.getLAUNCH_TITLE().length() > 3) {
             directLaunch = true;
-            gameName = CustomSystemProperties.LAUNCH_TITLE;
+            gameName = customSystemProperties.getLAUNCH_TITLE();
+            System.out.println("Game Title: " + gameName);
         }
     }
 
@@ -95,37 +103,18 @@ public class GameRuntime extends ScreenBasedGame {
         assetManager = new AssetManager(new LocalFileHandleResolver());
 
         // Loaders
-        primaryFontLoader = new FontLoader();
-        primaryFontLoader.initializeDefaultFont(assetManager);
-        primaryFontLoader.getDefaultFont().load(assetManager);
-        Mdx.graphicsContext.setFont(primaryFontLoader.getDefaultFont());
-
-        audioLoader = new AudioLoader();
-        engineLoader = new EngineLoader(this);
-        imageLoader = new ImageLoader();
-        mapLoader = new MapLoader();
-        spriteLoader = new SpriteLoader();
-        terminalManager = new TerminalManager(this, engineLoader);
+        initializeLoaders();
 
         //Managers
-        audioManager = new AudioManager(audioLoader);
-        dataManager = new DataManager();
-        pixelManager = new PixelManager();
-        screenManager = new GraphicsManager(spriteLoader, imageLoader, mapLoader, pixelManager);
-        systemManager = new SystemManager(engineLoader, primaryFontLoader, spriteLoader, this);
+        initializeManagers();
+
+        // Initialize screens
+        initializeScreens();
 
         //Transparent image to hide host system cursor.
         Pixmap tmp = Mdx.graphics.newPixmap(Mdx.files.local("Internal/Cursor.png"));
         Mdx.graphics.newCustomCursor(tmp, tmp, 0, 0).setVisible(false);
         tmp.dispose();
-
-        this.addScreen(new EngineScreen(viewport, audioManager, dataManager, screenManager, systemManager, engineLoader, this));//1
-        this.addScreen(new TitleScreen(assetManager, viewport, pixelManager, this));//2
-        this.addScreen(new ErrorScreen(assetManager, viewport, this));//3
-        this.addScreen(new LoadScreen(assetManager, viewport, engineLoader));//4
-        this.addScreen(new NewProgramScreen(viewport));//5
-        this.addScreen(new TerminalScreen(viewport, terminalManager, this));//6
-        this.addScreen(new MenuScreen(viewport, this));//7
     }
 
     @Override
@@ -134,6 +123,42 @@ public class GameRuntime extends ScreenBasedGame {
             return LoadScreen.ID;
         }
         return TitleScreen.ID;//initial screen to begin on is the menu screen.
+    }
+
+    private void initializeLoaders() {
+        primaryFontLoader = new FontLoader();
+        primaryFontLoader.initializeDefaultFont(assetManager);
+        primaryFontLoader.getDefaultFont().load(assetManager);
+        Mdx.graphicsContext.setFont(primaryFontLoader.getDefaultFont());
+
+        audioLoader = new AudioLoader();
+        engineLoader = new EngineLoader(this);
+        imageLoader = new ImageLoader();
+        mapLoader = new MapLoader(customSystemProperties);
+        spriteLoader = new SpriteLoader();
+    }
+
+    private void initializeManagers() {
+        audioManager = new AudioManager(audioLoader);
+        dataManager = new DataManager();
+        pixelManager = new PixelManager();
+        graphicsManager = new GraphicsManager(spriteLoader, imageLoader, mapLoader, pixelManager);
+        inputManager = new InputManager(customSystemProperties);
+        systemManager = new SystemManager(engineLoader, primaryFontLoader, spriteLoader, this);
+        terminalManager = new TerminalManager(this, engineLoader);
+
+        // DTO for passing managers to lower systems
+        managerDTO = new ManagerDTO(audioManager, dataManager, pixelManager, graphicsManager, inputManager, systemManager);
+    }
+
+    private void initializeScreens() {
+        this.addScreen(new EngineScreen(viewport, managerDTO, engineLoader, this));//1
+        this.addScreen(new TitleScreen(assetManager, viewport, pixelManager, this));//2
+        this.addScreen(new ErrorScreen(assetManager, viewport, this));//3
+        this.addScreen(new LoadScreen(assetManager, viewport, engineLoader, gameName));//4
+        this.addScreen(new NewProgramScreen(viewport));//5
+        this.addScreen(new TerminalScreen(viewport, terminalManager, engineLoader, this));//6
+        this.addScreen(new MenuScreen(customSystemProperties, viewport, this));//7
     }
 
     public boolean checkDirectLaunch() {
@@ -166,8 +191,8 @@ public class GameRuntime extends ScreenBasedGame {
         }
         return "";
     }
-    
-    public void clearFileDropped(){
+
+    public void clearFileDropped() {
         fileDroppedTitle = "";
     }
 

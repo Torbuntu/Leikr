@@ -26,22 +26,12 @@ import org.mini2Dx.gdx.math.Vector2;
  */
 public class LeikrMouse {
 
-    static StretchViewport viewport;
+    private StretchViewport viewport;
 
     private final Vector2 realMouse;
     private final Vector2 leikrMouse;
-
-    private static LeikrMouse instance;
-
-    public static LeikrMouse getLeikrMouse(StretchViewport viewport) {
-        if (instance == null) {
-            instance = new LeikrMouse();
-        }
-        setViewport(viewport);
-        return instance;
-    }
     
-    private LeikrMouse(){
+    public LeikrMouse(){
         realMouse = new Vector2();
         leikrMouse = new Vector2();
     }
@@ -56,7 +46,7 @@ public class LeikrMouse {
         viewport.toWorldCoordinates(leikrMouse, realMouse.x, realMouse.y);
     }
 
-    static void setViewport(StretchViewport view) {
+    public void setViewport(StretchViewport view) {
         viewport = view;
     }
 

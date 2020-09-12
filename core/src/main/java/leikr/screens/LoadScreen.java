@@ -23,7 +23,6 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.Engine;
-import leikr.exceptions.CreateException;
 import leikr.loaders.EngineLoader;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.assets.AssetManager;
@@ -44,21 +43,22 @@ public class LoadScreen extends BasicGameScreen {
 
     public static int ID = 4;
 
-    int frame = 0;
-    String loadPhrase = "Loading ";
-    String gameName;
-    ArrayList<Integer> barItems;
+    private int frame = 0;
+    private String loadPhrase = "Loading ";
+    private String gameName;
+    private final ArrayList<Integer> barItems;
 
-    FitViewport viewport;
-    ExecutorService service;
-    Future<Engine> engineGetter;
-    EngineLoader engineLoader;
+    private final FitViewport viewport;
+    private final EngineLoader engineLoader;
+    private ExecutorService service;
+    private Future<Engine> engineGetter;
 
-    AssetManager assetManager;
+    private final AssetManager assetManager;
 
-    public LoadScreen(AssetManager assetManager, FitViewport vp, EngineLoader engineLoader) {
+    public LoadScreen(AssetManager assetManager, FitViewport vp, EngineLoader engineLoader, String gameName) {
         this.assetManager = assetManager;
         this.engineLoader = engineLoader;
+        this.gameName = gameName;
         viewport = vp;
 
         assetManager.load("./Data/Images/leikr-logo.png", Texture.class);
@@ -96,9 +96,14 @@ public class LoadScreen extends BasicGameScreen {
                 service.shutdown();
                 sm.enterGameScreen(EngineScreen.ID, null, null);
             } catch (InterruptedException | ExecutionException ex) {
-                Logger.getLogger(LoadScreen.class.getName()).log(Level.SEVERE, null, ex);
                 service.shutdownNow();
-                throw new CreateException("Error loading engine: " + ex.getMessage());
+                Logger.getLogger(LoadScreen.class.getName()).log(Level.SEVERE, null, ex);
+
+                ErrorScreen es = (ErrorScreen) sm.getGameScreen(ErrorScreen.ID);
+                String error = "Error loading engine: " + ex.getMessage();
+
+                es.setErrorMessage(error);
+                sm.enterGameScreen(ErrorScreen.ID, null, null);
             }
         }
 

@@ -39,14 +39,15 @@ import org.mini2Dx.gdx.InputProcessor;
 public class NewProgramScreen extends BasicGameScreen {
 
     public static int ID = 5;
-    FitViewport viewport;
-
     String prompt;
     String name;
     String template;
+    String errorMessage;
 
-    String newLocation;
-    NewProgramGenerator generator;
+    private String newLocation;
+    private final FitViewport viewport;
+
+    private NewProgramGenerator generator;
 
     protected enum GeneratorStep {
         NAME,
@@ -70,6 +71,7 @@ public class NewProgramScreen extends BasicGameScreen {
 
     public NewProgramScreen(FitViewport vp) {
         viewport = vp;
+        generator = new NewProgramGenerator();
     }
 
     @Override
@@ -87,7 +89,6 @@ public class NewProgramScreen extends BasicGameScreen {
         name = "";
         template = "";
         generatorStep = GeneratorStep.TEMPLATE;
-        generator = new NewProgramGenerator();
         Mdx.input.setInputProcessor(new InputProcessor() {
             @Override
             public boolean keyDown(int i) {
@@ -158,17 +159,21 @@ public class NewProgramScreen extends BasicGameScreen {
                 sm.enterGameScreen(TerminalScreen.ID, null, null);
             case CREATE -> {
                 try {
-                    newLocation = NewProgramGenerator.setNewProgramFileName(name, template);
+                    newLocation = generator.setNewProgramFileName(name, template);
                     generator.writeProperties(name);
                     generatorStep = GeneratorStep.FINISHED;
                 } catch (IOException ex) {
                     Logger.getLogger(NewProgramScreen.class.getName()).log(Level.SEVERE, null, ex);
-                    ErrorScreen.setErrorMessage(ex.getMessage());
+                    ErrorScreen es = (ErrorScreen) sm.getGameScreen(ErrorScreen.ID);
+                    es.setErrorMessage(ex.getMessage());
                     sm.enterGameScreen(ErrorScreen.ID, null, null);
                 }
             }
-            case ERROR ->
+            case ERROR -> {
+                ErrorScreen es = (ErrorScreen) sm.getGameScreen(ErrorScreen.ID);
+                es.setErrorMessage(errorMessage);
                 sm.enterGameScreen(ErrorScreen.ID, null, null);
+            }
         }
     }
 
@@ -232,14 +237,14 @@ public class NewProgramScreen extends BasicGameScreen {
                 try {
                     for (FileHandle pn : Mdx.files.local("Programs").list()) {
                         if (pn.name().equalsIgnoreCase(prompt)) {
-                            ErrorScreen.setErrorMessage("A program with name [" + prompt + "] already exists.");
+                            errorMessage = "A program with name [" + prompt + "] already exists.";
                             generatorStep = GeneratorStep.ERROR;
                             return;
                         }
                     }
                 } catch (IOException ex) {
                     Logger.getLogger(NewProgramScreen.class.getName()).log(Level.SEVERE, null, ex);
-                    ErrorScreen.setErrorMessage(ex.getMessage());
+                    errorMessage = ex.getMessage();
                     generatorStep = GeneratorStep.ERROR;
                 }
                 name = prompt;
@@ -247,39 +252,39 @@ public class NewProgramScreen extends BasicGameScreen {
             }
 
             case TITLE -> {
-                generator.TITLE = prompt.length() == 0 ? "unknown" : prompt;
+                generator.setTitle(prompt.length() == 0 ? "unknown" : prompt);
                 generatorStep = GeneratorStep.TYPE;
             }
             case TYPE -> {
-                generator.TYPE = prompt.length() == 0 ? "Program" : prompt;
+                generator.setType(prompt.length() == 0 ? "Program" : prompt);
                 generatorStep = GeneratorStep.AUTHOR;
             }
             case AUTHOR -> {
-                generator.AUTHOR = prompt.length() == 0 ? "unknown" : prompt;
+                generator.setAuthor(prompt.length() == 0 ? "unknown" : prompt);
                 generatorStep = GeneratorStep.VERSION;
             }
             case VERSION -> {
-                generator.VERSION = prompt.length() == 0 ? "0.1" : prompt;
+                generator.setVersion(prompt.length() == 0 ? "0.1" : prompt);
                 generatorStep = GeneratorStep.PLAYERS;
             }
             case PLAYERS -> {
-                generator.PLAYERS = prompt.length() == 0 ? "1" : prompt;
+                generator.setPlayers(prompt.length() == 0 ? "1" : prompt);
                 generatorStep = GeneratorStep.ABOUT;
             }
             case ABOUT -> {
-                generator.ABOUT = prompt.length() == 0 ? "A Leikr Program." : prompt;
+                generator.setAbout(prompt.length() == 0 ? "A Leikr Program." : prompt);
                 generatorStep = GeneratorStep.MAX_SPRITES;
             }
             case MAX_SPRITES -> {
-                generator.MAX_SPRITES = prompt.length() == 0 ? "128" : prompt;
+                generator.setMaxSprites(prompt.length() == 0 ? "128" : prompt);
                 generatorStep = GeneratorStep.COMPILE_SOURCE;
             }
             case COMPILE_SOURCE -> {
-                generator.COMPILE_SOURCE = prompt.length() == 0 ? "false" : prompt;
+                generator.setCompileSource(prompt.length() == 0 ? "false" : prompt);
                 generatorStep = GeneratorStep.USE_COMPILED;
             }
             case USE_COMPILED -> {
-                generator.USE_COMPILED = prompt.length() == 0 ? "false" : prompt;
+                generator.setUseCompiled(prompt.length() == 0 ? "false" : prompt);
                 generatorStep = GeneratorStep.CREATE;
             }
         }

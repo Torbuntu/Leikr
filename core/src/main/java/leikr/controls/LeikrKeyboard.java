@@ -25,15 +25,6 @@ import org.mini2Dx.gdx.Input.Keys;
  */
 public class LeikrKeyboard {
 
-    private static LeikrKeyboard instance;
-
-    public static LeikrKeyboard getLeikrKeyboard() {
-        if (instance == null) {
-            instance = new LeikrKeyboard();
-        }
-        return instance;
-    }
-
     /**
      * Returns boolean of if the value of a key is pressed. Examples: "K",
      * "Enter", "Left Shift"

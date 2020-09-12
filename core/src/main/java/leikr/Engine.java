@@ -67,45 +67,46 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
      * preCreate gets the audio, screen and system singletons.sets up the
      * controllers if there are any connected.
      *
-     * @param path
-     * @param mSprites maximum allowed sprites to draw at one time
-     * @param audioManager
-     * @param dataManager
-     * @param graphicsManager
-     * @param systemManager object used to interact with the Leikr lSystem at runtime
+     * @param path the path to the game assets
+     * @param maxSprites maximum allowed sprites to draw at one time
+     * @param managerDTO DTO with the manager objects
      * @param viewport
      * @param framebuffer
      */
-    public final void preCreate(String path, int mSprites, AudioManager audioManager, DataManager dataManager, GraphicsManager graphicsManager, SystemManager systemManager, StretchViewport viewport, FrameBuffer framebuffer) {
-        lAudio = audioManager;
-        lGraphics = graphicsManager;
-        lData = dataManager;
-        lSystem = systemManager;
+    public final void preCreate(String path, int maxSprites, ManagerDTO managerDTO, StretchViewport viewport, FrameBuffer framebuffer) {
+        // set managers
+        lAudio = managerDTO.getAudioManager();
+        lGraphics = managerDTO.getGraphicsManager();
+        lData = managerDTO.getDataManager();
+        lSystem = managerDTO.getSystemManager();
 
+        // reset the settings to apply to new game assets
         lAudio.resetAudioManager(path);
-        lGraphics.resetScreenManager(path, mSprites);
+        lGraphics.resetScreenManager(path, maxSprites);
         lGraphics.preCreate(framebuffer, viewport);
-        active = true;
+
+        // set the input processors
         try {
-            lControllerA = LeikrController.getLeikrControllerListenerA();
-            lControllerB = LeikrController.getLeikrControllerListenerB();
+            lControllerA = managerDTO.getInputManager().getControllerA();
+            lControllerB = managerDTO.getInputManager().getControllerB();
             Controllers.addListener(lControllerA);
             Controllers.addListener(lControllerB);
         } catch (Exception ex) {
             Logger.getLogger(Engine.class.getName()).log(Level.SEVERE, "Controllers not active: {0}", ex.getMessage());
         }
-        // input processors
-        lMouse = LeikrMouse.getLeikrMouse(viewport);
-        lKeyboard = LeikrKeyboard.getLeikrKeyboard();
+        lMouse = managerDTO.getInputManager().getMouse();
+        lMouse.setViewport(viewport);
+        lKeyboard = managerDTO.getInputManager().getKeyboard();
         Mdx.input.setInputProcessor(this);
+
+        active = true;
     }
 
     /**
-     * Run just before the Engine update method.Used to update system objects
-     * behind the scenes. lMouse positions updates
+     * Run just before the Engine update method. Used to update system objects
+     * behind the scenes.
      *
-     *
-     * update screen objects
+     * update screen objects.
      *
      * @param delta
      */
@@ -114,11 +115,10 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     }
 
     /**
-     * preRender
+     * Run just before the Engine render method.
      *
-     * run just before the Engine render method.Used to set up system objects
-     * before doing any Engine rendering.Applies viewport and preRenders the
-     * screen.
+     * Used to set up system objects before doing any Engine rendering. Applies
+     * the viewports and preRenders the screen.
      *
      * @param g
      */
@@ -147,6 +147,9 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
 
     // end override functions
     // Optional override methods
+    /**
+     * Runs optional code when a game is paused with escape.
+     */
     public void onPause() {
     }
 
@@ -641,9 +644,9 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         if (null != lControllerA && player == 0) {
             return lControllerA.button(button);
         }
-//        if (null != lControllerB && player == 1) {
-//            return lControllerB.button(button);
-//        }
+        if (null != lControllerB && player == 1) {
+            return lControllerB.button(button);
+        }
         //default search is false, in case there are no controllers.
         return false;
     }
@@ -757,6 +760,14 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     //END Data API
 
 //Experimental API methods
+    public void pause() {
+        lSystem.pause();
+    }
+
+    public void pause(boolean shouldPause) {
+        lSystem.pause(shouldPause);
+    }
+
     public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {
         return lSystem.collides(x1, y1, w1, h1, x2, y2, w2, h2);
     }
