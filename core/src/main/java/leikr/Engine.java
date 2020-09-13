@@ -31,6 +31,8 @@ import leikr.managers.GraphicsManager;
 import leikr.managers.SystemManager;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
+import org.mini2Dx.core.audio.Music;
+import org.mini2Dx.core.audio.Sound;
 import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.FrameBuffer;
 import org.mini2Dx.core.graphics.viewport.StretchViewport;
@@ -552,6 +554,10 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     //end shape drawing methods
 
     //start Audio handling
+    public final Sound getSound(String fileName){
+        return lAudio.getSound(fileName);
+    }
+    
     public final void playSound(String name) {
         lAudio.playSound(name);
     }
@@ -563,6 +569,14 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     public final void stopSound() {
         lAudio.stopSound();
     }
+    
+    public final void stopSound(String fileName){
+        lAudio.stopSound(fileName);
+    }
+    
+    public final Music getMusic(String fileName){
+        return lAudio.getMusic(fileName);
+    }
 
     public final void playMusic(String name) {
         lAudio.playMusic(name);
@@ -572,8 +586,8 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         lAudio.playMusic(name, loop);
     }
 
-    public final void stopAllMusic() {
-        lAudio.stopAllMusic();
+    public final void stopMusic() {
+        lAudio.stopMusic();
     }
 
     public final void stopMusic(String fileName) {

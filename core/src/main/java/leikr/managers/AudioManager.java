@@ -17,6 +17,8 @@ package leikr.managers;
 
 import java.math.BigDecimal;
 import leikr.loaders.AudioLoader;
+import org.mini2Dx.core.audio.Sound;
+import org.mini2Dx.core.audio.Music;
 
 /**
  *
@@ -35,6 +37,10 @@ public class AudioManager {
     }
 
     //START loaded audio methods
+    public final Sound getSound(String fileName){
+        return audioLoader.getSound(fileName);
+    }
+    
     public final void playSound(String name) {
         audioLoader.playSound(name);
     }
@@ -46,6 +52,14 @@ public class AudioManager {
     public final void stopSound() {
         audioLoader.stopSound();
     }
+    
+    public final void stopSound(String fileName){
+        audioLoader.stopSound(fileName);
+    }
+    
+    public final Music getMusic(String fileName){
+        return audioLoader.getMusic(fileName);
+    }
 
     public final void playMusic(String name) {
         audioLoader.playMusic(name);
@@ -55,11 +69,11 @@ public class AudioManager {
         audioLoader.playMusic(name, loop);
     }
 
-    public final void stopAllMusic() {
+    public final void stopMusic() {
         audioLoader.stopMusic();
     }
-
-    public final void stopMusic(String fileName) {
+    
+    public final void stopMusic(String fileName){
         audioLoader.stopMusic(fileName);
     }
 

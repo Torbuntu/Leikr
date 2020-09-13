@@ -36,9 +36,6 @@ public class AudioLoader {
 
     private AssetManager assetManager;
 
-    private Music mPlayer;
-    private Sound sPlayer;
-
     public AudioLoader() {
     }
 
@@ -58,7 +55,6 @@ public class AudioLoader {
                     || file.extension().equalsIgnoreCase("mp3")
                     || file.extension().equalsIgnoreCase("ogg")))
                     .forEach(f -> assetManager.load(soundRootPath + f.name(), Sound.class));
-            assetManager.finishLoading();
         } catch (Exception ex) {
             Logger.getLogger(AudioLoader.class.getName()).log(Level.WARNING, "Sound load error: {0}", ex.getMessage());
         }
@@ -70,76 +66,128 @@ public class AudioLoader {
                     || file.extension().equalsIgnoreCase("mp3")
                     || file.extension().equalsIgnoreCase("ogg")))
                     .forEach(f -> assetManager.load(musicRootPath + f.name(), Music.class));
-            assetManager.finishLoading();
         } catch (Exception ex) {
             Logger.getLogger(AudioLoader.class.getName()).log(Level.WARNING, "Music load error: {0}", ex.getMessage());
         }
+        load();
     }
 
-    //probably useless, but makes me feel safe. 
-    public void load() {
+    private void load() {
         assetManager.finishLoading();
     }
 
-    public void playSound(String fileName) {
-        sPlayer = assetManager.get(soundRootPath + fileName, Sound.class);
-        sPlayer.play();
+    /**
+     * Returns the Sound object by name.
+     *
+     * Getting the Sound object itself is useful for having more control over
+     * the Sound object in the game code.
+     *
+     * @param fileName the name of the Sound file to get
+     * @return the Sound object
+     */
+    public Sound getSound(String fileName) {
+        return assetManager.get(soundRootPath + fileName, Sound.class);
     }
 
-    public void playSound(String fileName, BigDecimal vol, BigDecimal pit, BigDecimal pan) {
-        //vol: range [0,1]
-        //pit: 0.5 and 2.0
-        //pan: panning in the range -1 (full left) to 1 (full right). 0 is center position.
-        sPlayer = assetManager.get(soundRootPath + fileName, Sound.class);
-        sPlayer.play(vol.floatValue(), pit.floatValue(), pan.floatValue());
+    public void playSound(String fileName) {
+        assetManager.get(soundRootPath + fileName, Sound.class).play();
+    }
+
+    /**
+     * Plays a sound with the given parameters applied.
+     *
+     * @param fileName the name of the sound file to play, including the
+     * extension (wav, ogg, mp3)
+     * @param volume the volume to play this sound at, range 0 to 1
+     * @param pitch the pitch shift value, between 0.5 and 2.0
+     * @param pan the left/right pan value, between -1.0 and 1.0
+     */
+    public void playSound(String fileName, BigDecimal volume, BigDecimal pitch, BigDecimal pan) {
+        assetManager.get(soundRootPath + fileName, Sound.class).play(volume.floatValue(), pitch.floatValue(), pan.floatValue());
+    }
+
+    /**
+     * Stops all Sounds from playing.
+     */
+    public void stopSound() {
+        for (Sound s : assetManager.getAll(Sound.class).values()) {
+            s.stop();
+        }
+    }
+
+    public void stopSound(String fileName) {
+        assetManager.get(soundRootPath + fileName, Sound.class).stop();
+    }
+
+    /**
+     * Returns the Music object by name.
+     *
+     * Useful for having more manual control of the Music object in game code.
+     *
+     * @param fileName the name of the Music file.
+     * @return the Music object
+     */
+    public Music getMusic(String fileName) {
+        return assetManager.get(musicRootPath + fileName, Music.class);
     }
 
     public void playMusic(String fileName) {
-        mPlayer = assetManager.get(musicRootPath + fileName, Music.class);
-        mPlayer.play();
+        assetManager.get(musicRootPath + fileName, Music.class).play();
     }
 
     public void playMusic(String fileName, boolean loop) {
-        mPlayer = assetManager.get(musicRootPath + fileName, Music.class);
+        Music mPlayer = assetManager.get(musicRootPath + fileName, Music.class);
         mPlayer.setLooping(loop);
         mPlayer.play();
     }
 
     public void stopMusic() {
-        mPlayer.stop();
-    }
-
-    public void stopSound() {
-        sPlayer.stop();
+        for (Music m : assetManager.getAll(Music.class).values()) {
+            m.stop();
+        }
     }
 
     public void stopMusic(String fileName) {
-        mPlayer = assetManager.get(musicRootPath + fileName, Music.class);
-        mPlayer.stop();
+        assetManager.get(musicRootPath + fileName, Music.class).stop();
     }
 
+    /**
+     * Pauses all audio from playing.
+     *
+     */
     public void pauseAudio() {
-        if (mPlayer != null) {
-            mPlayer.pause();
+        for (Music m : assetManager.getAll(Music.class).values()) {
+            m.pause();
         }
-        if (sPlayer != null) {
-            sPlayer.pause();
+        for (Sound s : assetManager.getAll(Sound.class).values()) {
+            s.pause();
         }
     }
 
+    /**
+     * Resumes the last playing song.
+     *
+     * Sounds are not currently resumed.
+     */
     public void resumeAudio() {
-        if (mPlayer != null) {
-            mPlayer.play();
+        for (Music m : assetManager.getAll(Music.class).values()) {
+            m.play();
+        }
+        for (Sound s : assetManager.getAll(Sound.class).values()) {
+            s.resume();
         }
     }
 
+    /**
+     * Stops all audio from playing and disposes the assets.
+     */
     public void disposeAudioLoader() {
         if (null != assetManager) {
-            if (sPlayer != null) {
-                sPlayer.stop();
+            for (Sound s : assetManager.getAll(Sound.class).values()) {
+                s.stop();
             }
-            if (mPlayer != null) {
-                mPlayer.stop();
+            for (Music m : assetManager.getAll(Music.class).values()) {
+                m.stop();
             }
             assetManager.clearAssetLoaders();
             assetManager.dispose();
