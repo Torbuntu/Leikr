@@ -59,6 +59,9 @@ public class NewProgramGenerator {
     }
 
     private String copyTemplate(String newProject, String template) throws IOException {
+        if (!Mdx.files.local("Data/Templates/" + template).exists()) {
+            throw new IOException("Templates: [" + template + "] does not exist");
+        }
         Mdx.files.local("Programs/" + newProject).mkdirs();
         for (FileHandle file : Mdx.files.local("Data/Templates/" + template).list()) {
             Mdx.files.local("Data/Templates/" + template + "/" + file.name()).copyTo(Mdx.files.local("Programs/" + newProject));
