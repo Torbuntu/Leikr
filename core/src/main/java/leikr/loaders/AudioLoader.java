@@ -167,7 +167,7 @@ public class AudioLoader {
     /**
      * Resumes the last playing song.
      *
-     * Sounds are not currently resumed.
+     * Note: Sometimes Sound objects are not resumed. Not sure why.
      */
     public void resumeAudio() {
         for (Music m : assetManager.getAll(Music.class).values()) {

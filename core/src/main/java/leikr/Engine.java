@@ -45,7 +45,7 @@ import org.mini2Dx.gdx.InputProcessor;
 public abstract class Engine extends ControllerAdapter implements InputProcessor {
 
     //used by the Engine Screen to determine if the game should be actively running.
-    boolean active;
+    private boolean active;
 
     /*
      * Controllers and listeners for handling custom controller input
@@ -65,6 +65,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     public AudioManager lAudio;
     public DataManager lData;
 
+    // <editor-fold desc="Pre game loop methods" defaultstate="collapsed"> 
     /**
      * preCreate gets the audio, screen and system singletons.sets up the
      * controllers if there are any connected.
@@ -122,16 +123,15 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
      * Used to set up system objects before doing any Engine rendering. Applies
      * the viewports and preRenders the screen.
      *
-     * @param g
+     * @param graphics
      */
-    public final void preRender(Graphics g) {
-        lSystem.render(g);
-        lGraphics.preRender(g);
+    public final void preRender(Graphics graphics) {
+        lSystem.render(graphics);
+        lGraphics.preRender(graphics);
     }
+    // </editor-fold>
 
-    /*
-     * Override functions for game scripting. 
-     */
+    // <editor-fold desc="Override functions for game code" defaultstate="collapsed">
     public void create() {
     }
 
@@ -147,19 +147,14 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     public void render() {
     }
 
-    // end override functions
-    // Optional override methods
-    /**
-     * Runs optional code when a game is paused with escape.
-     */
     public void onPause() {
     }
 
     public void onResume() {
     }
-    // END Optional override methods.
+    // </editor-fold>
 
-    //disposes the game objects on exit
+    // <editor-fold desc="Dispose" defaultstate="collapsed">
     public final void dispose() {
         if (lAudio != null) {
             lAudio.dispose();
@@ -179,15 +174,9 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
             Logger.getLogger(Engine.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    //dispose
+    // </editor-fold>
 
-    //Start Helper methods
-    //custom prop functions
-    public int getUsedSprites() {
-        return lGraphics.getUsedSprites();
-    }
-    //end custom prop functions
-
+    // <editor-fold desc="Helper and System api" defaultstate="collapsed">
     /**
      * Returns the FPS as an int
      *
@@ -195,6 +184,10 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
      */
     public final int FPS() {
         return Mdx.platformUtils.getFramesPerSecond();
+    }
+
+    public int getUsedSprites() {
+        return lGraphics.getUsedSprites();
     }
 
     public final boolean getActive() {
@@ -208,9 +201,17 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     public final void loadSpriteSheet(String progName) {
         lSystem.loadSpriteSheet(progName);
     }
-    //End helper methods.
 
-    //Image methods
+    public void loadProgram(String name) {
+        lSystem.loadProgram(name);
+    }
+
+    public void setFont(String path, int spacing, int width, int height) {
+        lSystem.setCustomFont(path, spacing, width, height);
+    }
+    // </editor-fold>
+
+    // <editor-fold desc="Texture api" defaultstate="collapsed"> 
     public final void loadImages() {
         lGraphics.loadImages();
     }
@@ -226,9 +227,9 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     public final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h, boolean flipv) {
         lGraphics.drawTexture(name, x, y, w, h, flipv);
     }
+    // </editor-fold>
 
-    //end Image methods
-    //Map methods
+    // <editor-fold desc="Map api" defaultstate="collapsed">
     public final void loadMap(String map) {
         lGraphics.loadMap(map);
     }
@@ -284,9 +285,9 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     public final int getMapWidth() {
         return lGraphics.getMapWidth();
     }
-    //end Map methods
+    // </editor-fold>
 
-    //start color methods
+    // <editor-fold desc="Color api" defaultstate="collapsed">
     public final void bgColor(Color color) {
         lGraphics.bgColor(color);
     }
@@ -306,9 +307,9 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     public final Color getColor(String color) {
         return lGraphics.getColor(color);
     }
-    //end color methods
+    // </editor-fold>
 
-    //Helper methods
+    // <editor-fold desc="Graphics helper api" defaultstate="collapsed">
     public final void setClip(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
         lGraphics.setClip(x, y, w, h);
     }
@@ -316,9 +317,9 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     public final void removeClip() {
         lGraphics.removeClip();
     }
+    // </editor-fold>
 
-    //end helper methods
-    //text methods
+    // <editor-fold desc="String api" defaultstate="collapsed"> 
     public final void drawString(Color color, String text, BigDecimal x, BigDecimal y) {
         lGraphics.drawString(color, text, x, y);
     }
@@ -354,9 +355,9 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     public final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
         lGraphics.drawString(color, text, x, y, width, align);
     }
-    //end drawString methods
+    // </editor-fold>
 
-    //start 8x8 sprites
+    // <editor-fold desc="Sprite api" defaultstate="collapsed"> 
     public final void sprite(int id, BigDecimal x, BigDecimal y) {
         lGraphics.sprite(id, x, y);
     }
@@ -449,9 +450,9 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     public void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, BigDecimal degr, int size) {
         lGraphics.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, degr, size);
     }
-    //end scaled sprites
+    // </editor-fold>
 
-    //start shape drawing methods
+    // <editor-fold desc="Shape drawing api" defaultstate="collapsed"> 
     public final void drawPixel(Color color, BigDecimal x, BigDecimal y) {
         lGraphics.drawPixel(color, x, y);
     }
@@ -551,13 +552,13 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     public ArrayList<Color> getPixels(String name) {
         return lGraphics.getPixels(name);
     }
-    //end shape drawing methods
+    // </editor-fold>
 
-    //start Audio handling
-    public final Sound getSound(String fileName){
+    // <editor-fold desc="Audio api" defaultstate="collapsed">
+    public final Sound getSound(String fileName) {
         return lAudio.getSound(fileName);
     }
-    
+
     public final void playSound(String name) {
         lAudio.playSound(name);
     }
@@ -569,12 +570,12 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     public final void stopSound() {
         lAudio.stopSound();
     }
-    
-    public final void stopSound(String fileName){
+
+    public final void stopSound(String fileName) {
         lAudio.stopSound(fileName);
     }
-    
-    public final Music getMusic(String fileName){
+
+    public final Music getMusic(String fileName) {
         return lAudio.getMusic(fileName);
     }
 
@@ -601,9 +602,9 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     public final void resumeAudio() {
         lAudio.resumeAudio();
     }
-    //end Audio handling
+    // </editor-fold>
 
-    //START Math utils
+    // <editor-fold desc="Math api" defaultstate="collapsed">
     public float cos(BigDecimal radians) {
         return lSystem.cos(radians);
     }
@@ -647,9 +648,9 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     public int round(BigDecimal number) {
         return lSystem.round(number);
     }
-    //END Math utils
+    // </editor-fold>
 
-    //START input handling
+    // <editor-fold desc="Input api" defaultstate="collapsed"> 
     public final boolean button(String button) {
         return (null != lControllerA) ? lControllerA.button(button) : false;
     }
@@ -735,19 +736,9 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     public boolean scrolled(int amount) {
         return false;
     }
+    // </editor-fold>
 
-    //end input handling
-    //START System api
-    public void loadProgram(String name) {
-        lSystem.loadProgram(name);
-    }
-
-    public void setFont(String path, int spacing, int width, int height) {
-        lSystem.setCustomFont(path, spacing, width, height);
-    }
-    //END System API
-
-    //START Data API
+    // <editor-fold desc="Data api" defaultstate="collapsed"> 
     public void addData(String key, Object value) {
         lData.addData(key, value);
     }
@@ -771,9 +762,9 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     public HashMap<String, Object> readData(String path) {
         return lData.readData(path);
     }
-    //END Data API
+    // </editor-fold>
 
-//Experimental API methods
+    // <editor-fold desc="Experimental" defaultstate="collapsed"> 
     public void pause() {
         lSystem.pause();
     }
@@ -817,5 +808,5 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     public Object newInstance(String name) {
         return lSystem.newInstance(name);
     }
-    //END Experimental
+    // </editor-fold>
 }

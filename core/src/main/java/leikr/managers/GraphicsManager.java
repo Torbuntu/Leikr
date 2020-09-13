@@ -215,6 +215,7 @@ public class GraphicsManager {
     //end Map methods
 
     //start color methods
+    @Deprecated
     private void setDrawColor(int color) {
         g.setColor(pixelManager.getDrawColor(color));
     }

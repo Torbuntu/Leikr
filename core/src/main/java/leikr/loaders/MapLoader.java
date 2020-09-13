@@ -96,7 +96,13 @@ public class MapLoader {
         }
     }
 
-    // Gets the tileId of the cell located at x and y. 
+    /**
+     * Gets the tileId of the cell located at x and y on the default layer 0.
+     *
+     * @param x
+     * @param y
+     * @return the tileId of the tile at x,y
+     */
     public int getMapTile(int x, int y) {
         return getMapTile(x, y, 0);
     }
