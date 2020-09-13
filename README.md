@@ -51,7 +51,7 @@ Depending on your system, you can either launch the system through the `Leikr` s
 
 ###### `>` is the terminal icon, don't type this.
 
-###### Java is required to run this program. Best used with AdoptOpenJDK. Version 0.0.15 uses JDK 12
+###### Java is required to run this program. Best used with AdoptOpenJDK. Version 0.0.18+ requires Java 14 at a minimum
 
 
 1. git clone the project. Then enter the `leikr` directory.
@@ -63,37 +63,28 @@ Depending on your system, you can either launch the system through the `Leikr` s
 
 2. Run the gradlew command: 
 
-depending on your OS.
-
 `>./gradlew launchDesktop` 
-
-or 
-
-`>gradlew launchDesktop` 
-
 
 ## Building a release 
 
-to build a release on your platform run: 
+to build a release: 
 
 `>./gradlew clean build deployLeikr` 
 
-or 
-
-`>gradlew clean build deployLeikr`
-
-the release will show up in the `./leikr/deploy` directory. You should end up with the following:
+the release will show up in the `Leikr/deploy` directory. You should end up with the following:
 
 ```
 Data/
 Programs/
+Sys/
 Leikr
 Leikr.bat
 Leikr.jar
-Sys/
 ```
 
 ## Starting your own Program
+
+From the Leikr terminal view, you can run either `new GameName` to quickly generated a project from an internal template, or you can run `new` and walk through a generator.
 
 Projects structure
 ```
@@ -120,9 +111,7 @@ Programs/
      program.properties
 ```
 
-Add `YourGameName.groovy` in the `Code/` directory. 
-
-In order for your game to be runnable it should be similar to the following template:
+In order for your game to be runnable, the main class file should be similar to the following template:
 
 ```java
 //extend the engine to get the API 
@@ -153,18 +142,12 @@ note however that all three of the main methods (create, update and render) are 
 | Resolution | 240x160 |
 | Sprites    | 128 max draw calls per frame. Sprites.png gets split into 8x8, 16x16, 32x32 and 64x64 pixel sprites. |
 | Art | Can load images to be used as backgrounds or however else you wish. |
-| Maps | .tmx maps loadabled from `Maps` directory. (currently unlimited) Animated tiles supported. |
-| Audio | 16bit .WAV files loaded from `Audio/Sound` and `Audio/Music`  (Limitations TBD) |
+| Maps | .tmx maps loadabled from `Maps` directory. (Animated tiles are supported) |
+| Audio | 16bit .WAV, .OGG, or MP3 files loaded from `Audio/Sound` and `Audio/Music` |
 | Controls | Primary: Keyboard, Mouse. Secondary: USB Controllers (snes layout). Tested using SNES style controllers on Linux. Note: The controllers are configurable using the Program `Controllers` which comes with the system. It maps inputs to the file `Data/system.properties` |
 
 
-## Supported Platforms
+#### Note on ARM builds:
+The primary target will eventually be ARM devices (such as Raspberry Pi, Pine devices like Pinebook Pro and Pinetab, etc...)
 
-| Platform | Support Level | Version | Notes |
-|----|----|----|----|
-| Desktop amd64 | Full | 0.0.18 | Fedora and other Linux distributions officially supported first. Windows also known to work. No status on Apple computer builds available. Since this is a Java program, it *should just work* on any mainstream desktop OS. However, due to native libs this produces odd results on less common systems. |
-| Arm 32/64| Full | 0.0.18 | This requires custom builds of the native libs for LibGDX. Due to this, builds for this come slowly or only when time permits. The only currently supported OS for these architectures are Linux distributions.|
-
-
-#### Note on the Raspberry Pi:
 if you plan to use the raspberry pi or other SBC, it works best to have compiled the projects on a faster computer beforehand. Compiling projects live on the pi can take a while depending on the size/complexity of your project. 
