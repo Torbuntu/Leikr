@@ -43,12 +43,12 @@ import org.mini2Dx.core.files.FileHandle;
  */
 public class EngineLoader implements Callable<Engine> {
 
-    String rootPath;
-    public boolean RUN_TOOL = false;
+    private String rootPath;
+    private boolean runTool = false;
     private String[] engineArgs;
 
-    public GroovyClassLoader gcl;
-    public CustomProgramProperties cp;
+    private GroovyClassLoader gcl;
+    private CustomProgramProperties cp;
     private GroovyShell sh;
     private final GameRuntime runtime;
 
@@ -73,7 +73,7 @@ public class EngineLoader implements Callable<Engine> {
     }
     
     public void setRunTool(){
-        RUN_TOOL = true;
+        runTool = true;
     }
 
     public int getMaxSprite() {
@@ -101,8 +101,8 @@ public class EngineLoader implements Callable<Engine> {
         if (cp.USE_COMPILED) {
             return getCompiledEngine();
         }
-        if (RUN_TOOL) {
-            RUN_TOOL = false;
+        if (runTool) {
+            runTool = false;
             return getToolEngine();
         }
         return getSourceEngine();

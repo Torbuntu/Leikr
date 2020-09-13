@@ -35,7 +35,6 @@ public class ImageLoader {
     private AssetManager assetManager;
 
     public ImageLoader() {
-
     }
 
     public void reloadImageLoader(String path) {

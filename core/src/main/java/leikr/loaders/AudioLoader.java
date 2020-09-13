@@ -21,8 +21,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
-import org.mini2Dx.core.assets.loader.MusicLoader;
-import org.mini2Dx.core.assets.loader.SoundLoader;
 import org.mini2Dx.core.audio.Music;
 import org.mini2Dx.core.audio.Sound;
 import org.mini2Dx.core.files.LocalFileHandleResolver;
@@ -36,11 +34,7 @@ public class AudioLoader {
     private String musicRootPath;
     private String soundRootPath;
 
-    private AssetManager soundManager;
-    private AssetManager musicManager;
-
-    private SoundLoader soundLoader;
-    private MusicLoader musicLoader;
+    private AssetManager assetManager;
 
     private Music mPlayer;
     private Sound sPlayer;
@@ -49,13 +43,7 @@ public class AudioLoader {
     }
 
     public void resetAudioLoader(String path) {
-        soundLoader = new SoundLoader();
-        soundManager = new AssetManager(new LocalFileHandleResolver());
-        soundManager.setAssetLoader(Sound.class, soundLoader);
-
-        musicLoader = new MusicLoader();
-        musicManager = new AssetManager(new LocalFileHandleResolver());
-        musicManager.setAssetLoader(Music.class, musicLoader);
+        assetManager = new AssetManager(new LocalFileHandleResolver());
         musicRootPath = path + "/Audio/Music/";
         soundRootPath = path + "/Audio/Sound/";
 
@@ -69,8 +57,8 @@ public class AudioLoader {
                     && (file.extension().equalsIgnoreCase("wav")
                     || file.extension().equalsIgnoreCase("mp3")
                     || file.extension().equalsIgnoreCase("ogg")))
-                    .forEach(f -> soundManager.load(soundRootPath + f.name(), Sound.class));
-            soundManager.finishLoading();
+                    .forEach(f -> assetManager.load(soundRootPath + f.name(), Sound.class));
+            assetManager.finishLoading();
         } catch (Exception ex) {
             Logger.getLogger(AudioLoader.class.getName()).log(Level.WARNING, "Sound load error: {0}", ex.getMessage());
         }
@@ -81,8 +69,8 @@ public class AudioLoader {
                     && (file.extension().equalsIgnoreCase("wav")
                     || file.extension().equalsIgnoreCase("mp3")
                     || file.extension().equalsIgnoreCase("ogg")))
-                    .forEach(f -> musicManager.load(musicRootPath + f.name(), Music.class));
-            musicManager.finishLoading();
+                    .forEach(f -> assetManager.load(musicRootPath + f.name(), Music.class));
+            assetManager.finishLoading();
         } catch (Exception ex) {
             Logger.getLogger(AudioLoader.class.getName()).log(Level.WARNING, "Music load error: {0}", ex.getMessage());
         }
@@ -90,12 +78,11 @@ public class AudioLoader {
 
     //probably useless, but makes me feel safe. 
     public void load() {
-        soundManager.finishLoading();
-        musicManager.finishLoading();
+        assetManager.finishLoading();
     }
 
     public void playSound(String fileName) {
-        sPlayer = soundManager.get(soundRootPath + fileName, Sound.class);
+        sPlayer = assetManager.get(soundRootPath + fileName, Sound.class);
         sPlayer.play();
     }
 
@@ -103,17 +90,17 @@ public class AudioLoader {
         //vol: range [0,1]
         //pit: 0.5 and 2.0
         //pan: panning in the range -1 (full left) to 1 (full right). 0 is center position.
-        sPlayer = soundManager.get(soundRootPath + fileName, Sound.class);
+        sPlayer = assetManager.get(soundRootPath + fileName, Sound.class);
         sPlayer.play(vol.floatValue(), pit.floatValue(), pan.floatValue());
     }
 
     public void playMusic(String fileName) {
-        mPlayer = musicManager.get(musicRootPath + fileName, Music.class);
+        mPlayer = assetManager.get(musicRootPath + fileName, Music.class);
         mPlayer.play();
     }
 
     public void playMusic(String fileName, boolean loop) {
-        mPlayer = musicManager.get(musicRootPath + fileName, Music.class);
+        mPlayer = assetManager.get(musicRootPath + fileName, Music.class);
         mPlayer.setLooping(loop);
         mPlayer.play();
     }
@@ -127,7 +114,7 @@ public class AudioLoader {
     }
 
     public void stopMusic(String fileName) {
-        mPlayer = musicManager.get(musicRootPath + fileName, Music.class);
+        mPlayer = assetManager.get(musicRootPath + fileName, Music.class);
         mPlayer.stop();
     }
 
@@ -147,19 +134,15 @@ public class AudioLoader {
     }
 
     public void disposeAudioLoader() {
-        if (null != soundManager) {
+        if (null != assetManager) {
             if (sPlayer != null) {
                 sPlayer.stop();
             }
-            soundManager.clearAssetLoaders();
-            soundManager.dispose();
-        }
-        if (null != musicManager) {
             if (mPlayer != null) {
                 mPlayer.stop();
             }
-            musicManager.clearAssetLoaders();
-            musicManager.dispose();
+            assetManager.clearAssetLoaders();
+            assetManager.dispose();
         }
     }
 
