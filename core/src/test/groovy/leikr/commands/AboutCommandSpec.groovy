@@ -34,7 +34,6 @@ class AboutCommandSpec extends Specification {
         def result = command.help()
         
         then:
-        println "whoop"
         result == expectedResult
     }
     

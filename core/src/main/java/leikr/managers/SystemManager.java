@@ -191,7 +191,7 @@ public class SystemManager {
         return pause;
     }
 
-    public final void render(Graphics g) {
+    public final void preRender(Graphics g) {
         g.setFont(font);
     }
 

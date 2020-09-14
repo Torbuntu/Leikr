@@ -209,7 +209,7 @@ public class EngineScreen extends BasicGameScreen {
         //Apply a StretchViewport so that all FBO operations are scaled correctly to the fbo.
         fboViewport.apply(g);
 
-        // Main render methods
+        // Main preRender methods
         frameBuffer.begin();
         switch (engineState) {
             case RUNNING -> {

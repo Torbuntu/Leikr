@@ -67,8 +67,8 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
 
     // <editor-fold desc="Pre game loop methods" defaultstate="collapsed"> 
     /**
-     * preCreate gets the audio, screen and system singletons.sets up the
-     * controllers if there are any connected.
+     * preCreate sets the audio, graphics, data, and system objects and sets up
+     * the controllers if there are any connected.
      *
      * @param path the path to the game assets
      * @param maxSprites maximum allowed sprites to draw at one time
@@ -100,7 +100,12 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         lMouse = managerDTO.getInputManager().getMouse();
         lMouse.setViewport(viewport);
         lKeyboard = managerDTO.getInputManager().getKeyboard();
-        Mdx.input.setInputProcessor(this);
+        
+        try {
+            Mdx.input.setInputProcessor(this);
+        } catch (Exception ex) {
+            Logger.getLogger(Engine.class.getName()).log(Level.SEVERE, "Input processor not set: {0}", ex.getMessage());
+        }
 
         active = true;
     }
@@ -126,7 +131,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
      * @param graphics
      */
     public final void preRender(Graphics graphics) {
-        lSystem.render(graphics);
+        lSystem.preRender(graphics);
         lGraphics.preRender(graphics);
     }
     // </editor-fold>
