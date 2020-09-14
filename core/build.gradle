@@ -1,3 +1,13 @@
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 targetCompatibility = 14
 sourceCompatibility = 14
+
+
+test {
+    println new File("$projectDir/../assets")
+    workingDir = new File("$projectDir/../assets")
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}

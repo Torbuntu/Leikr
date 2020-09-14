@@ -34,15 +34,15 @@ public class NewProgramGenerator {
 
     private final String NEW_LOCATION = "New Program template generated at: /Programs/";
 
-    public String maxSprites = "2048";
-    public String useCompiled = "false";
-    public String compileSource = "false";
-    public String title = "unknown";
-    public String type = "Program";
-    public String author = "unknown";
-    public String version = "0.0.0";
-    public String players = "1";
-    public String about = "A Leikr Program.";
+    private String maxSprites = "2048";
+    private String useCompiled = "false";
+    private String compileSource = "false";
+    private String title = "unknown";
+    private String type = "Program";
+    private String author = "unknown";
+    private String version = "0.0.0";
+    private String players = "1";
+    private String about = "A Leikr Program.";
 
     public String setNewProgramFileName(String newName, String template) throws IOException {
         String newProject = newName.length() > 0 ? newName : "NewProgram";

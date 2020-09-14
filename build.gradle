@@ -14,7 +14,7 @@ allprojects {
     ext {
         //Version = 0.0.19
         appName = 'Leikr'
-        mini2DxVersion = '2.0.0-alpha.30'
+        mini2DxVersion = '2.0.0-alpha.31'
         groovyVersion = '3.0.5'
         gdxVersion = '1.9.12-SNAPSHOT'
         lwjglNatives32 = 'natives-linux-arm32'
@@ -37,7 +37,8 @@ allprojects {
 }
 
 project(":core") {
-    apply plugin: "java"
+    apply plugin: 'java'
+    apply plugin: 'groovy'
 
     dependencies {
         implementation "com.badlogicgames.gdx:gdx-controllers-lwjgl3:$gdxVersion"
@@ -64,6 +65,8 @@ project(":core") {
         runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives64"
         runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives64"
         runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives64"
+        
+        testImplementation 'org.spockframework:spock-core:2.0-M3-groovy-3.0'
     }
 }
 
@@ -75,6 +78,3 @@ project(":desktop") {
         implementation "org.mini2Dx:mini2Dx-libgdx-desktop-lwjgl3:$mini2DxVersion"
     }
 }
-
-
-
