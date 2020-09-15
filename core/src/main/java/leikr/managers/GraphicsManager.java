@@ -662,12 +662,12 @@ public class GraphicsManager {
         }
     }
 
-    public final void drawLineSegment(int c, BigDecimal p0, BigDecimal v0, BigDecimal p1, BigDecimal v1) {
-        drawLineSegment(pixelManager.getDrawColor(c), p0, v0, p1, v1);
+    public final void drawLineSegment(int c, BigDecimal x0, BigDecimal y0, BigDecimal x1, BigDecimal y1) {
+        drawLineSegment(pixelManager.getDrawColor(c), x0, y0, x1, y1);
     }
 
-    public final void drawLineSegment(String c, BigDecimal p0, BigDecimal v0, BigDecimal p1, BigDecimal v1) {
-        drawLineSegment(Colors.rgbToColor(c), p0, v0, p1, v1);
+    public final void drawLineSegment(String c, BigDecimal x0, BigDecimal y0, BigDecimal x1, BigDecimal y1) {
+        drawLineSegment(Colors.rgbToColor(c), x0, y0, x1, y1);
     }
 
     public final void drawLineSegment(Color c, BigDecimal p0, BigDecimal v0, BigDecimal p1, BigDecimal v1) {
