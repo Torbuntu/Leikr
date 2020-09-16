@@ -16,6 +16,10 @@
 
 package leikr.managers
 
+import com.badlogic.gdx.utils.ScreenUtils
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.GL20;
+
 import java.math.BigDecimal;
 import leikr.loaders.ImageLoader;
 import leikr.loaders.MapLoader;
@@ -270,6 +274,44 @@ class GraphicsManagerSpec extends Specification {
         size    || desc
         0       || "original size"
         1       || "16x16 size"
+    }
+    
+    def "getPixel returns Color" () {
+        given:
+        def x = new BigDecimal(1)
+        def y = new BigDecimal(1)
+        
+        FrameBuffer fbo = Mock(FrameBuffer)
+        StretchViewport svp = Mock(StretchViewport)
+        
+        Gdx.graphics = Mock(com.badlogic.gdx.Graphics)
+        Gdx.gl = Mock(GL20)
+        
+        when:
+        manager.preCreate(fbo, svp)
+        manager.getPixel(x, y)
+        
+        then:
+        with(svp){
+            1 * getX()
+            1 * getY()
+        
+            2 * getScaleX()
+            2 * getScaleY()
+        }
+        
+        1 * Gdx.graphics.getHeight()
+        
+        1 * Gdx.gl.glPixelStorei(_, _)
+        1 * Gdx.gl.glReadPixels(_, _, _, _, _, _, _)
+        
+        1 * fbo.end()
+        1 * fbo.begin()
+        
+        1 * Mdx.graphics.newColor(_, _, _, _)
+        
+        
+        0 * _
     }
     
 }
