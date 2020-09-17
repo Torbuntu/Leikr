@@ -67,7 +67,7 @@ public class ExportTool {
         } catch (Exception ex) {
             Logger.getLogger(ExportTool.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return "Failure to install Package. Please check logs.";
+        return "[E] Failure to install Package. Please check logs.";
     }
 
     public void zip(String name) {

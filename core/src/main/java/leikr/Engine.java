@@ -100,7 +100,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         lMouse = managerDTO.getInputManager().getMouse();
         lMouse.setViewport(viewport);
         lKeyboard = managerDTO.getInputManager().getKeyboard();
-        
+
         try {
             Mdx.input.setInputProcessor(this);
         } catch (Exception ex) {

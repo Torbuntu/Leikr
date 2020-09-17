@@ -18,6 +18,8 @@ package leikr.screens;
 import leikr.GameRuntime;
 import leikr.loaders.EngineLoader;
 import leikr.managers.TerminalManager;
+import leikr.managers.TerminalManager.TerminalState;
+import leikr.utilities.ExportTool;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.game.GameContainer;
@@ -43,12 +45,14 @@ public class TerminalScreen extends BasicGameScreen {
     private final FitViewport viewport;
     private final EngineLoader engineLoader;
     private final GameRuntime runtime;
+    private final ExportTool exportTool;
 
     public TerminalScreen(FitViewport vp, TerminalManager terminalManager, EngineLoader engineLoader, GameRuntime runtime) {
         this.runtime = runtime;
         this.terminalManager = terminalManager;
         this.engineLoader = engineLoader;
         viewport = vp;
+        exportTool = new ExportTool();
     }
 
     @Override
@@ -65,15 +69,35 @@ public class TerminalScreen extends BasicGameScreen {
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
         terminalManager.update();
         if (runtime.checkFileDropped()) {
-            LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID);
-            ls.setGameName(runtime.getFileDroppedTitle());
-            runtime.setGameName(runtime.getFileDroppedTitle());
-            runtime.clearFileDropped();
-            sm.enterGameScreen(LoadScreen.ID, null, null);
+            if (runtime.getFileDroppedTitle().endsWith(".lkr")) {
+                terminalManager.setState(TerminalState.INSTALLING);
+            } else {
+                LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID);
+                ls.setGameName(runtime.getFileDroppedTitle());
+                runtime.setGameName(runtime.getFileDroppedTitle());
+                runtime.clearFileDropped();
+                sm.enterGameScreen(LoadScreen.ID, null, null);
+            }
         }
 
         switch (terminalManager.getState()) {
-            case PROCESSING -> {
+            case INSTALLING -> {
+                if (Mdx.input.isKeyJustPressed(Keys.Y)) {
+                    String title = runtime.getFileDroppedTitle().substring(0, runtime.getFileDroppedTitle().lastIndexOf('.'));
+                    String success = exportTool.importProject(title, "Programs");
+                    if (!success.startsWith("[E]")) {
+
+                        LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID);
+                        ls.setGameName(title);
+                        runtime.setGameName(title);
+                        runtime.clearFileDropped();
+                        sm.enterGameScreen(LoadScreen.ID, null, null);
+                    }
+                }
+                if (Mdx.input.isKeyJustPressed(Keys.N)) {
+                    runtime.clearFileDropped();
+                    terminalManager.setState(TerminalState.PROCESSING);
+                }
             }
             case RUN_PROGRAM -> {
                 LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID);
@@ -99,16 +123,24 @@ public class TerminalScreen extends BasicGameScreen {
         viewport.apply(g);
         g.setColor(Colors.GREEN());
 
-        g.drawString(terminalManager.getHistoryText(), 0, 0, 240);
-        g.setColor(Colors.BLACK());
-        g.fillRect(0, 152, runtime.WIDTH, runtime.HEIGHT);
-        g.setColor(Colors.GREEN());
-        g.drawString(">" + terminalManager.getPrompt() + ((blink > 30) ? (char) 131 : ""), 0, 152, runtime.WIDTH);
+        switch (terminalManager.getState()) {
+            case INSTALLING -> {
+                g.drawString("Install and run program [" + runtime.getFileDroppedTitle() + "]? [Y/N]", 0, 60, runtime.WIDTH, 1);
+            }
+            default -> {
+                g.drawString(terminalManager.getHistoryText(), 0, 0, 240);
+                g.setColor(Colors.BLACK());
+                g.fillRect(0, 152, runtime.WIDTH, runtime.HEIGHT);
+                g.setColor(Colors.GREEN());
+                g.drawString(">" + terminalManager.getPrompt() + ((blink > 30) ? (char) 131 : ""), 0, 152, runtime.WIDTH);
 
-        if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT)) {
-            g.setColor(Colors.RED());
-            g.drawString("Ctrl", 0, 146, runtime.WIDTH, 1);
+                if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT)) {
+                    g.setColor(Colors.RED());
+                    g.drawString("Ctrl", 0, 146, runtime.WIDTH, 1);
+                }
+            }
         }
+
     }
 
     @Override

@@ -42,7 +42,7 @@ public class CustomProgramProperties {
     private String GAME_TITLE = "";
 
     public CustomProgramProperties(String gamePath) {
-        GAME_TITLE = gamePath.substring(gamePath.lastIndexOf("/")+1);
+        GAME_TITLE = gamePath.substring(gamePath.lastIndexOf("/") + 1);
         Properties prop = new Properties();
         try ( InputStream stream = new FileInputStream(new File(gamePath + "/program.properties"))) {
             prop.load(stream);

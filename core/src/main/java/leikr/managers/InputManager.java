@@ -38,8 +38,8 @@ public class InputManager {
         keyboard = new LeikrKeyboard();
         mouse = new LeikrMouse();
     }
-    
-    public void setMouseViewport(StretchViewport viewport){
+
+    public void setMouseViewport(StretchViewport viewport) {
         mouse.setViewport(viewport);
     }
 

@@ -46,7 +46,7 @@ public class AboutCommand extends Command {
             return "Title: " + cpp.TITLE + "\nType: " + cpp.TYPE + "\nPlayers: " + cpp.PLAYERS + "\nAuthor: " + cpp.AUTHOR + "\nAbout: " + cpp.ABOUT;
         } catch (Exception ex) {
             Logger.getLogger(AboutCommand.class.getName()).log(Level.SEVERE, null, ex);
-            return "Failed to load property file for ["+ command[1] +"].";
+            return "Failed to load property file for [" + command[1] + "].";
         }
     }
 

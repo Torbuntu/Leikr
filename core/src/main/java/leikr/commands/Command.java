@@ -20,7 +20,10 @@ package leikr.commands;
  * @author tor
  */
 public abstract class Command {
+
     public String name;
+
     public abstract String execute(String[] args);
+
     public abstract String help();
 }

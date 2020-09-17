@@ -16,6 +16,7 @@
 package leikr.screens;
 
 class TitleScreenPixel {
+
     public int x = 0;
     public int y = 0;
     public int color = 1;

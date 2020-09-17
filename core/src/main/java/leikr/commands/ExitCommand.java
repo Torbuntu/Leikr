@@ -21,21 +21,21 @@ import org.mini2Dx.core.Mdx;
  *
  * @author tor
  */
-public class ExitCommand extends Command{
+public class ExitCommand extends Command {
 
-    public ExitCommand(){
+    public ExitCommand() {
         super.name = "exit";
     }
-    
+
     @Override
     public String execute(String[] args) {
         Mdx.platformUtils.exit(true);
         return "Goodbye!";
     }
-    
+
     @Override
-    public String help(){
+    public String help() {
         return ">exit \nExits the Leikr Game system.";
     }
-    
+
 }

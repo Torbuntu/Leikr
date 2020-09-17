@@ -30,15 +30,16 @@ public class LeikrMouse {
 
     private final Vector2 realMouse;
     private final Vector2 leikrMouse;
-    
-    public LeikrMouse(){
+
+    public LeikrMouse() {
         realMouse = new Vector2();
         leikrMouse = new Vector2();
     }
-    
+
     /**
-     * Updates the Game world coordinates of the real mouse pointer using the Game Screen's StretchViewport
-     * 
+     * Updates the Game world coordinates of the real mouse pointer using the
+     * Game Screen's StretchViewport
+     *
      */
     private void updateMouse() {
         realMouse.x = Mdx.input.getX();
@@ -52,6 +53,7 @@ public class LeikrMouse {
 
     /**
      * Detects a mouse click event.
+     *
      * @return
      */
     public boolean mouseClick() {
@@ -59,12 +61,12 @@ public class LeikrMouse {
     }
 
     public float mouseX() {
-        updateMouse(); 
+        updateMouse();
         return leikrMouse.x;
     }
 
     public float mouseY() {
-        updateMouse(); 
+        updateMouse();
         return leikrMouse.y;
     }
 

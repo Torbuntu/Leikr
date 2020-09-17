@@ -65,6 +65,7 @@ public class TerminalManager implements InputProcessor {
     private int programIndex;
 
     public enum TerminalState {
+        INSTALLING,
         PROCESSING,
         RUN_PROGRAM,
         NEW_PROGRAM,
@@ -128,16 +129,16 @@ public class TerminalManager implements InputProcessor {
     public String getHistoryText() {
         return historyText;
     }
-    
-    public void setToolRunning(){
+
+    public void setToolRunning() {
         terminalState = TerminalState.RUN_UTILITY;
     }
-    
-    public void setNewProgramRunning(){
+
+    public void setNewProgramRunning() {
         terminalState = TerminalState.NEW_PROGRAM;
     }
-    
-    public void setProgramRunning(){
+
+    public void setProgramRunning() {
         terminalState = TerminalState.RUN_PROGRAM;
     }
 
@@ -222,8 +223,8 @@ public class TerminalManager implements InputProcessor {
             return c.execute(command);
         } catch (Exception ex) {
             Logger.getLogger(TerminalManager.class.getName()).log(Level.SEVERE, null, ex);
+            return "[E] " + command[0] + " failed with exception: " + ex.getMessage();
         }
-        return "Unknown command [" + command[0] + "]";
     }
 
     @Override

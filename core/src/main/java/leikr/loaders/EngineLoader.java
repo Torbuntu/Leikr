@@ -63,16 +63,16 @@ public class EngineLoader implements Callable<Engine> {
         gcl = new GroovyClassLoader(ClassLoader.getSystemClassLoader());
         sh = new GroovyShell(gcl);
     }
-    
-    public void setEngineArgs(String[] args){
+
+    public void setEngineArgs(String[] args) {
         engineArgs = args;
     }
-    
-    public String[] getEngineArgs(){
+
+    public String[] getEngineArgs() {
         return engineArgs;
     }
-    
-    public void setRunTool(){
+
+    public void setRunTool() {
         runTool = true;
     }
 

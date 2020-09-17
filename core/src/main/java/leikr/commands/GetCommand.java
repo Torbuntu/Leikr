@@ -34,14 +34,22 @@ public class GetCommand extends Command {
         }
         CustomProgramProperties props = new CustomProgramProperties("Programs/" + args[1]);
         return switch (args[2].toLowerCase()) {
-            case "author" -> "author - " + props.AUTHOR;
-            case "use_compiled" -> "use_compiled - " + String.valueOf(props.USE_COMPILED);
-            case "about" -> "about - " + props.ABOUT;
-            case "ver", "version" -> "version - " + props.VERSION;
-            case "compile_source" -> "compile_source - " + String.valueOf(props.COMPILE_SOURCE);
-            case "players" -> String.valueOf(props.PLAYERS);
-            case "type" -> props.TYPE;
-            default -> "[W] Property [" + args[2] + "] not found in Program [" + args[1] + "]";
+            case "author" ->
+                "author - " + props.AUTHOR;
+            case "use_compiled" ->
+                "use_compiled - " + String.valueOf(props.USE_COMPILED);
+            case "about" ->
+                "about - " + props.ABOUT;
+            case "ver", "version" ->
+                "version - " + props.VERSION;
+            case "compile_source" ->
+                "compile_source - " + String.valueOf(props.COMPILE_SOURCE);
+            case "players" ->
+                String.valueOf(props.PLAYERS);
+            case "type" ->
+                props.TYPE;
+            default ->
+                "[W] Property [" + args[2] + "] not found in Program [" + args[1] + "]";
         };
     }
 
