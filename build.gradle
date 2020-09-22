@@ -78,6 +78,7 @@ project(":desktop") {
 
     dependencies {
         implementation project(":core")
+		implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         implementation "org.mini2Dx:mini2Dx-libgdx-desktop-lwjgl3:$mini2DxVersion"
     }
 }
