@@ -1,1 +1,1 @@
-START java -XX:+CMSClassUnloadingEnabled -jar Leikr.jar 
+START java -jar Leikr.jar 
