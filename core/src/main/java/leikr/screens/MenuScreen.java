@@ -39,6 +39,7 @@ import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
+import org.mini2Dx.core.util.Align;
 import org.mini2Dx.gdx.Input.Keys;
 
 /**
@@ -111,6 +112,9 @@ public class MenuScreen extends BasicGameScreen {
 
     @Override
     public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
+        if (Mdx.input.isKeyJustPressed(Keys.ESCAPE)) {
+            Mdx.platformUtils.exit(true);
+        }
         if (Mdx.input.isKeyDown(Keys.ALT_LEFT) && Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyDown(Keys.T)) {
             sm.enterGameScreen(TerminalScreen.ID, null, null);
         }
@@ -142,7 +146,7 @@ public class MenuScreen extends BasicGameScreen {
             @Override
             public boolean buttonDown(Controller controller, int buttonIndex) {
 
-                if (buttonIndex == customSystemProperties.getStart()) {
+                if (buttonIndex == customSystemProperties.getStart() || buttonIndex == customSystemProperties.getA()) {
                     System.out.println(buttonIndex);
 
                     LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID);
@@ -190,10 +194,18 @@ public class MenuScreen extends BasicGameScreen {
 
         g.setColor(Colors.WHITE());
 
-        g.drawString(games.get(index).getTitle() + isCompiled, 0, 3, 240, 1);
+        g.drawString(games.get(index).getTitle() + isCompiled, 0, 3, 240, Align.CENTER);
+
+        if (index > 0) {
+            g.drawString("<-", 10, 3, 240, Align.LEFT);
+        }
+        if (index < games.size() - 1) {
+            g.drawString("->", -10, 3, 240, Align.RIGHT);
+        }
 
         g.setColor(Colors.YELLOW());
-        g.drawString("> [INFO] This menu is a work in progress.", 0, 152);
+        g.drawString("[ENTER/START] - Play", 0, 152, 240, Align.LEFT);
+        g.drawString("[Ctl+Alt+T] - Enter Terminal", 0, 152, 240, Align.RIGHT);
         g.flush();
         framebuffer.end();
 
