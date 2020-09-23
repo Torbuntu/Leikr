@@ -92,10 +92,18 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         try {
             lControllerA = managerDTO.getInputManager().getControllerA();
             lControllerB = managerDTO.getInputManager().getControllerB();
-            Controllers.addListener(lControllerA);
-            Controllers.addListener(lControllerB);
+            if (Controllers.getControllers().size < 1) {
+                throw new RuntimeException("No controllers, continue as Keyboard + Mouse");
+            }
+
+            if (Controllers.getControllers().size > 0) {
+                Controllers.getControllers().get(0).addListener(lControllerA);
+            }
+            if (Controllers.getControllers().size > 1) {
+                Controllers.getControllers().get(1).addListener(lControllerB);
+            }
         } catch (Exception ex) {
-            Logger.getLogger(Engine.class.getName()).log(Level.SEVERE, "Controllers not active: {0}", ex.getMessage());
+            Logger.getLogger(Engine.class.getName()).log(Level.WARNING, "Controllers not active: {0}", ex.getMessage());
         }
         lMouse = managerDTO.getInputManager().getMouse();
         lMouse.setViewport(viewport);
@@ -171,12 +179,14 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
 
         //Debugging for ARM-GameShell
         try {
-            Controllers.clearListeners();
-            Controllers.removeListener(this);
-            Controllers.removeListener(lControllerA);
-            Controllers.removeListener(lControllerB);
+            if (Controllers.getControllers().size > 0) {
+                Controllers.getControllers().get(0).removeListener(lControllerA);
+            }
+            if (Controllers.getControllers().size > 1) {
+                Controllers.getControllers().get(1).removeListener(lControllerB);
+            }
         } catch (Exception ex) {
-            Logger.getLogger(Engine.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Engine.class.getName()).log(Level.WARNING, null, ex);
         }
     }
     // </editor-fold>

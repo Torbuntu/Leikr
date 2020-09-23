@@ -14,9 +14,10 @@ allprojects {
     ext {
         //Version = 0.0.19
         appName = 'Leikr'
-        mini2DxVersion = '2.0.0-alpha.31'
+        mini2DxVersion = '2.0.0-alpha.32'
         groovyVersion = '3.0.5'
         gdxVersion = '1.9.12-SNAPSHOT'
+        gdxControllersVersion = '2.0.0-SNAPSHOT'
         lwjglNatives32 = 'natives-linux-arm32'
         lwjglNatives64 = 'natives-linux-arm64'
         lwjglVersion = '3.2.3'
@@ -42,6 +43,8 @@ project(":core") {
     apply plugin: 'groovy'
 
     dependencies {
+        //implementation "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
+        
         implementation "com.badlogicgames.gdx:gdx-controllers-lwjgl3:$gdxVersion"
         implementation "org.mini2Dx:mini2Dx-libgdx-desktop-lwjgl3:$mini2DxVersion"
         
@@ -49,19 +52,19 @@ project(":core") {
         implementation "org.mini2Dx:mini2Dx-tiled:$mini2DxVersion"
         implementation "org.codehaus.groovy:groovy:$groovyVersion"
         
-        //lwjgl3natives:
+        // lwjgl3natives:
         implementation "org.lwjgl:lwjgl:$lwjglVersion"
         implementation "org.lwjgl:lwjgl-glfw:$lwjglVersion"
         implementation "org.lwjgl:lwjgl-openal:$lwjglVersion"
         implementation "org.lwjgl:lwjgl-opengl:$lwjglVersion"
         
-        //arm32 lwjgl native libs 
+        // arm32 lwjgl native libs 
         runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives32"
         runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives32"
         runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives32"
         runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives32"
         
-        //arm64 lwjgl native libs
+        // arm64 lwjgl native libs
         runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives64"
         runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives64"
         runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives64"
@@ -78,7 +81,9 @@ project(":desktop") {
 
     dependencies {
         implementation project(":core")
-		implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        //implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
+        
+        implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         implementation "org.mini2Dx:mini2Dx-libgdx-desktop-lwjgl3:$mini2DxVersion"
     }
 }

@@ -30,6 +30,8 @@ import leikr.customProperties.CustomSystemProperties;
  */
 public class LeikrController implements ControllerListener {
 
+    private final int ID;
+
     private final HashMap<Object, Boolean> buttons = new HashMap<>();
     private final HashMap<Object, Object> btnCodes = new HashMap<>();
     private final HashMap<Object, Object> btnLookup = new HashMap<>();
@@ -52,8 +54,10 @@ public class LeikrController implements ControllerListener {
     private final boolean debug;
     private final CustomSystemProperties customSystemProperties;
 
-    public LeikrController(CustomSystemProperties customSystemProperties) {
+    public LeikrController(CustomSystemProperties customSystemProperties, int id) {
         this.customSystemProperties = customSystemProperties;
+        this.ID = id;
+
         buttons.put(A, false);
         buttons.put(B, false);
         buttons.put(X, false);
@@ -111,19 +115,18 @@ public class LeikrController implements ControllerListener {
 
     @Override
     public void connected(Controller controller) {
-        Logger.getLogger(LeikrController.class.getName()).log(Level.WARNING, "Connection: {0}", controller.getName());
+        Logger.getLogger(LeikrController.class.getName()).log(Level.WARNING, "ID: " + ID + ", New Connection: {0}", controller.getName());
     }
 
     @Override
     public void disconnected(Controller controller) {
-        Logger.getLogger(LeikrController.class.getName()).log(Level.WARNING, "Disconnection: {0}", controller.getName());
+        Logger.getLogger(LeikrController.class.getName()).log(Level.WARNING, "ID: " + ID + ", Disconnected: {0}", controller.getName());
     }
 
     @Override
     public boolean buttonDown(Controller controller, int buttonCode) {
         if (debug) {
-            Logger.getLogger(LeikrController.class.getName()).log(Level.INFO, "Controller: {0} , Code: {1}", new Object[]{controller.getName(), buttonCode});
-            Logger.getLogger(LeikrController.class.getName()).log(Level.INFO, "Button Down : {0}", buttonCode);
+            Logger.getLogger(LeikrController.class.getName()).log(Level.INFO, "ID: " + ID + ", Controller: {0} , Code: {1}", new Object[]{controller.getName(), buttonCode});
         }
         buttons.replace(btnCodes.get(buttonCode), true);
         return true;
@@ -132,8 +135,7 @@ public class LeikrController implements ControllerListener {
     @Override
     public boolean buttonUp(Controller controller, int buttonCode) {
         if (debug) {
-            Logger.getLogger(LeikrController.class.getName()).log(Level.INFO, "Controller: {0} , Code: {1}", new Object[]{controller.getName(), buttonCode});
-            Logger.getLogger(LeikrController.class.getName()).log(Level.INFO, "Button Up : {0}", buttonCode);
+            Logger.getLogger(LeikrController.class.getName()).log(Level.INFO, "ID: " + ID + ", Controller: {0} , Code: {1}", new Object[]{controller.getName(), buttonCode});
         }
         buttons.replace(btnCodes.get(buttonCode), false);
         return true;
@@ -145,8 +147,7 @@ public class LeikrController implements ControllerListener {
         //Legacy codes: axis 0 = x axis -1 = left 1 = right
         //Legacy codes: axis 1 = y axis -1 = up 1 = down
         if (debug) {
-            Logger.getLogger(LeikrController.class.getName()).log(Level.INFO, "{0} : {1} | {2}", new Object[]{controller.getName(), axisCode, value});
-            Logger.getLogger(LeikrController.class.getName()).log(Level.INFO, "Controller: {0} , axis: {1} , value: {2}", new Object[]{controller.getName(), axisCode, value});
+            Logger.getLogger(LeikrController.class.getName()).log(Level.INFO, "ID: {0}, Controller: {1} , axis: {2} , value: {3}", new Object[]{ID, controller.getName(), axisCode, value});
         }
         if ((int) value == 0) {
             buttons.replace(UP, false);

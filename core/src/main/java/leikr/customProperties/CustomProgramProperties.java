@@ -61,7 +61,7 @@ public class CustomProgramProperties {
             PLAYERS = ((prop.getProperty("players") != null) ? Integer.parseInt(prop.getProperty("players")) : 1);
             ABOUT = ((prop.getProperty("about") != null) ? prop.getProperty("about") : "A Leikr Program.");
         } catch (IOException | NumberFormatException ex) {
-            Logger.getLogger(CustomProgramProperties.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CustomProgramProperties.class.getName()).log(Level.SEVERE, ex.getMessage());
         }
     }
 
@@ -82,7 +82,7 @@ public class CustomProgramProperties {
             prop.store(stream, null);
 
         } catch (IOException | NumberFormatException ex) {
-            Logger.getLogger(CustomProgramProperties.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CustomProgramProperties.class.getName()).log(Level.SEVERE, ex.getMessage());
         }
     }
 

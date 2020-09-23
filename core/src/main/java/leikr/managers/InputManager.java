@@ -15,6 +15,9 @@
  */
 package leikr.managers;
 
+import com.badlogic.gdx.controllers.Controllers;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import leikr.controls.LeikrController;
 import leikr.controls.LeikrKeyboard;
 import leikr.controls.LeikrMouse;
@@ -33,8 +36,8 @@ public class InputManager {
     private final LeikrMouse mouse;
 
     public InputManager(CustomSystemProperties customSystemProperties) {
-        controllerA = new LeikrController(customSystemProperties);
-        controllerB = new LeikrController(customSystemProperties);
+        controllerA = new LeikrController(customSystemProperties, 1);
+        controllerB = new LeikrController(customSystemProperties, 2);
         keyboard = new LeikrKeyboard();
         mouse = new LeikrMouse();
     }
@@ -57,6 +60,16 @@ public class InputManager {
 
     public LeikrMouse getMouse() {
         return mouse;
+    }
+
+    public void dispose() {
+        try {
+            Controllers.clearListeners();
+            Controllers.removeListener(controllerA);
+            Controllers.removeListener(controllerB);
+        }catch(Exception ex){
+            Logger.getLogger(InputManager.class.getName()).log(Level.WARNING, "No active controllers to dispose");
+        }
     }
 
 }
