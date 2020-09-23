@@ -20,7 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.Engine;
 import leikr.GameRuntime;
-import leikr.ManagerDTO;
+import leikr.managers.ManagerDTO;
 import leikr.loaders.EngineLoader;
 import leikr.managers.SystemManager;
 import org.mini2Dx.core.Graphics;
@@ -294,7 +294,7 @@ public class EngineScreen extends BasicGameScreen {
         if (runtime.checkDirectLaunch()) {
             Mdx.platformUtils.exit(false);
         } else {
-            sm.enterGameScreen(TerminalScreen.ID, null, null);
+            sm.enterGameScreen(MenuScreen.ID, null, null);
         }
     }
 

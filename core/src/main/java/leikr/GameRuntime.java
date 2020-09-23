@@ -15,6 +15,7 @@
  */
 package leikr;
 
+import leikr.managers.ManagerDTO;
 import leikr.customProperties.CustomSystemProperties;
 import leikr.loaders.AudioLoader;
 import leikr.loaders.EngineLoader;

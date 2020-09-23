@@ -15,6 +15,7 @@
  */
 package leikr;
 
+import leikr.managers.ManagerDTO;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import java.math.BigDecimal;
