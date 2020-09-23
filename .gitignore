@@ -65,8 +65,7 @@ build/
 /.nb-gradle/
 
 ## Leikr
-assets/Programs/*
-assets/gifexport/
+
 assets/Packages/
 
 deploy/
