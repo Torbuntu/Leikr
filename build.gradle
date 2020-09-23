@@ -12,7 +12,7 @@ buildscript {
 allprojects {
 
     ext {
-        //Version = 0.0.19
+        //Version = 1.0.0-SNAPSHOT //(silly versioning)
         appName = 'Leikr'
         mini2DxVersion = '2.0.0-alpha.32'
         groovyVersion = '3.0.5'

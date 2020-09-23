@@ -95,6 +95,7 @@ public class EngineScreen extends BasicGameScreen {
     @Override
     public void preTransitionIn(Transition trans) {
         engineState = EngineState.RUNNING;
+        Gdx.input.setCursorCatched(true);
         frameBuffer = Mdx.graphics.newFrameBuffer(runtime.WIDTH, runtime.HEIGHT);
     }
 
@@ -118,6 +119,7 @@ public class EngineScreen extends BasicGameScreen {
     @Override
     public void preTransitionOut(Transition transition) {
         Gdx.input.setCursorCatched(false);
+        runtime.getCursor().setVisible(false);
     }
 
     @Override
@@ -213,11 +215,9 @@ public class EngineScreen extends BasicGameScreen {
         frameBuffer.begin();
         switch (engineState) {
             case RUNNING -> {
-                Gdx.input.setCursorCatched(true);
                 renderRunning(g);
             }
             case PAUSE -> {
-                Gdx.input.setCursorCatched(false);
                 renderPause(g);
             }
         }

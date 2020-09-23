@@ -41,6 +41,7 @@ import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.files.LocalFileHandleResolver;
 import org.mini2Dx.core.game.ScreenBasedGame;
+import org.mini2Dx.core.graphics.CustomCursor;
 import org.mini2Dx.core.graphics.Pixmap;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 
@@ -75,6 +76,8 @@ public class GameRuntime extends ScreenBasedGame {
     private SystemManager systemManager;
 
     private ManagerDTO managerDTO;
+
+    private CustomCursor cursor;
 
     private final CustomSystemProperties customSystemProperties;
 
@@ -114,8 +117,9 @@ public class GameRuntime extends ScreenBasedGame {
 
         //Transparent image to hide host system cursor.
         Pixmap tmp = Mdx.graphics.newPixmap(Mdx.files.local("Internal/Cursor.png"));
-        Mdx.graphics.newCustomCursor(tmp, tmp, 0, 0).setVisible(false);
+        cursor = Mdx.graphics.newCustomCursor(tmp, tmp, 0, 0);
         tmp.dispose();
+        cursor.setVisible(false);
     }
 
     @Override
@@ -194,6 +198,10 @@ public class GameRuntime extends ScreenBasedGame {
 
     public void clearFileDropped() {
         fileDroppedTitle = "";
+    }
+
+    public CustomCursor getCursor() {
+        return cursor;
     }
 
 }
