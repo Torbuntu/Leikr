@@ -110,7 +110,7 @@ public class TerminalManager implements InputProcessor {
         commandList.put("clean", new CleanCommand());
         commandList.put("pwd", new PrintWorkspaceCommand(runtime));
         commandList.put("wiki", new WikiCommand());
-        commandList.put("export", new ExportCommand(runtime, exportTool));
+        commandList.put("export", new ExportCommand(exportTool));
         commandList.put("install", new InstallCommand(runtime, exportTool));
         commandList.put("tool", new ToolCommand(runtime, this));
         commandList.put("uninstall", new RemoveCommand(runtime));

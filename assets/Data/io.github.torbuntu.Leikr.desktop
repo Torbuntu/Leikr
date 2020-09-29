@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=Leikr Game System
+Exec=/app/Leikr/Leikr
+Type=Application
+Icon=io.github.torbuntu.Leikr
+Categories=Game;
+
