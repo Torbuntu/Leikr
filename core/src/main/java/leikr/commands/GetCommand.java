@@ -15,6 +15,7 @@
  */
 package leikr.commands;
 
+import leikr.GameRuntime;
 import leikr.customProperties.CustomProgramProperties;
 
 /**
@@ -23,8 +24,11 @@ import leikr.customProperties.CustomProgramProperties;
  */
 public class GetCommand extends Command {
 
-    public GetCommand() {
-        this.name = "get";
+    private final GameRuntime runtime;
+
+    public GetCommand(GameRuntime runtime) {
+        super.name = "get";
+        this.runtime = runtime;
     }
 
     @Override
@@ -32,7 +36,7 @@ public class GetCommand extends Command {
         if (args.length < 2) {
             return "[E] Not enough arguments.";
         }
-        CustomProgramProperties props = new CustomProgramProperties("Programs/" + args[1]);
+        CustomProgramProperties props = new CustomProgramProperties(runtime.getProgramsPath() + args[1]);
         return switch (args[2].toLowerCase()) {
             case "author" ->
                 "author - " + props.AUTHOR;

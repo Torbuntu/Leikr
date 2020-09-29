@@ -59,10 +59,10 @@ public class DataManager {
     public void saveData(String path) {
         try {
             String dir = gamePath + "/" + path;
-            if (!Mdx.files.local(dir).exists()) {
-                Mdx.files.local(dir).delete();
+            if (!Mdx.files.external(dir).exists()) {
+                Mdx.files.external(dir).delete();
             }
-            Mdx.files.local(dir).writeString(Mdx.json.toJson(data), false);
+            Mdx.files.external(dir).writeString(Mdx.json.toJson(data), false);
         } catch (IOException | SerializationException ex) {
             Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -75,7 +75,7 @@ public class DataManager {
 
     public HashMap<String, Object> readData(String path) {
         try {
-            String json = Mdx.files.local(gamePath + "/" + path).readString();
+            String json = Mdx.files.external(gamePath + "/" + path).readString();
             json = json.replaceAll("[{\"}]", "");
             data = (HashMap<String, Object>) Arrays.asList(json.split(",")).stream().map(s -> s.split(":")).collect(Collectors.toMap(e -> e[0], e -> (Object) e[1]));
         } catch (IOException ex) {

@@ -53,10 +53,12 @@ public class TitleScreen extends BasicGameScreen {
     private final AssetManager assetManager;
     private final FitViewport viewport;
     private final PixelManager pixelManager;
+    private final GameRuntime runtime;
 
     public TitleScreen(AssetManager assetManager, FitViewport vp, PixelManager pixelManager, GameRuntime runtime) {
         this.assetManager = assetManager;
-        assetManager.load("./Data/Images/leikr-logo.png", Texture.class);
+        this.runtime = runtime;
+        assetManager.load(runtime.getDataPath() + "Images/leikr-logo.png", Texture.class);
         assetManager.finishLoading();
 
         viewport = new FitViewport(runtime.WIDTH, runtime.HEIGHT);
@@ -106,7 +108,7 @@ public class TitleScreen extends BasicGameScreen {
     public void render(GameContainer gc, Graphics g) {
         viewport.apply(g);
         renderExtraText(g, "Game System", 106, 73, (int) (timer / 2));
-        g.drawTexture(assetManager.get("./Data/Images/leikr-logo.png", Texture.class), 90, 64, 48, 16);
+        g.drawTexture(assetManager.get(runtime.getDataPath() + "Images/leikr-logo.png", Texture.class), 90, 64, 48, 16);
         drawLogoSteam(pixelManager, g);
     }
 

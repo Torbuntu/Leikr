@@ -23,7 +23,7 @@ import leikr.loaders.SpriteLoader;
 import leikr.screens.LoadScreen;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.assets.AssetManager;
-import org.mini2Dx.core.files.LocalFileHandleResolver;
+import org.mini2Dx.core.files.ExternalFileHandleResolver;
 import org.mini2Dx.core.font.MonospaceGameFont;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.gdx.math.MathUtils;
@@ -46,7 +46,7 @@ public class SystemManager {
     private MonospaceGameFont font;
 
     public SystemManager(EngineLoader engineLoader, FontLoader fontLoader, SpriteLoader spriteLoader, GameRuntime runtime) {
-        this.manager = new AssetManager(new LocalFileHandleResolver());
+        this.manager = new AssetManager(new ExternalFileHandleResolver());
         this.engineLoader = engineLoader;
         this.fontLoader = fontLoader;
         this.spriteLoader = spriteLoader;

@@ -15,6 +15,9 @@
  */
 package leikr;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import leikr.managers.ManagerDTO;
 import leikr.customProperties.CustomSystemProperties;
 import leikr.loaders.AudioLoader;
@@ -39,7 +42,7 @@ import leikr.screens.TerminalScreen;
 import leikr.screens.TitleScreen;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
-import org.mini2Dx.core.files.LocalFileHandleResolver;
+import org.mini2Dx.core.files.ExternalFileHandleResolver;
 import org.mini2Dx.core.game.ScreenBasedGame;
 import org.mini2Dx.core.graphics.CustomCursor;
 import org.mini2Dx.core.graphics.Pixmap;
@@ -54,6 +57,11 @@ public class GameRuntime extends ScreenBasedGame {
     public final int HEIGHT = 160;
     private boolean directLaunch;
     private String gameName;
+
+    private final String programsPath;
+    private final String basePath;
+    private final String dataPath;
+    private final String deployPath;
 
     private final FitViewport viewport;
     private AssetManager assetManager;
@@ -87,6 +95,11 @@ public class GameRuntime extends ScreenBasedGame {
      * @param args
      */
     public GameRuntime(String[] args) {
+        basePath = System.getProperty("user.home") + "/.config/Leikr/";
+        programsPath = System.getProperty("user.home") + "/.config/Leikr/Programs/";
+        dataPath = System.getProperty("user.home") + "/.config/Leikr/Data/";
+        deployPath = System.getProperty("user.home") + "/.config/Leikr/Deploy/";
+        System.out.println(programsPath + "\n" + dataPath);
         directLaunch = false;
         gameName = "";
         viewport = new FitViewport(WIDTH, HEIGHT);
@@ -102,9 +115,26 @@ public class GameRuntime extends ScreenBasedGame {
         }
     }
 
+    void checkFileSystem() throws IOException {
+        String leikrConfig = System.getProperty("user.home") + "/.config/Leikr/";
+        if (!Mdx.files.external(leikrConfig).exists()) {
+            Mdx.files.external(leikrConfig).mkdirs();
+            Mdx.files.external(programsPath).mkdirs();
+            Mdx.files.external(dataPath).mkdirs();
+            Mdx.files.local("Data").copyTo(Mdx.files.external(leikrConfig));
+            Mdx.files.local("Programs").copyTo(Mdx.files.external(leikrConfig));
+        }
+    }
+
     @Override
     public void initialise() {
-        assetManager = new AssetManager(new LocalFileHandleResolver());
+        try {
+            checkFileSystem();
+        } catch (IOException ex) {
+            Logger.getLogger(GameRuntime.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        assetManager = new AssetManager(new ExternalFileHandleResolver());
 
         // Loaders
         initializeLoaders();
@@ -158,9 +188,9 @@ public class GameRuntime extends ScreenBasedGame {
     private void initializeScreens() {
         this.addScreen(new EngineScreen(viewport, managerDTO, engineLoader, this));//1
         this.addScreen(new TitleScreen(assetManager, viewport, pixelManager, this));//2
-        this.addScreen(new ErrorScreen(assetManager, viewport, this));//3
-        this.addScreen(new LoadScreen(assetManager, viewport, engineLoader, gameName));//4
-        this.addScreen(new NewProgramScreen(viewport));//5
+        this.addScreen(new ErrorScreen(viewport, this));//3
+        this.addScreen(new LoadScreen(this, assetManager, viewport, engineLoader, gameName));//4
+        this.addScreen(new NewProgramScreen(viewport, this));//5
         this.addScreen(new TerminalScreen(viewport, terminalManager, engineLoader, this));//6
         this.addScreen(new MenuScreen(customSystemProperties, viewport, this));//7
     }
@@ -202,6 +232,34 @@ public class GameRuntime extends ScreenBasedGame {
 
     public CustomCursor getCursor() {
         return cursor;
+    }
+
+    /**
+     * Returns the full path to Leikr's Programs directory. NOTE: This includes a
+     * trailing `/`
+     *
+     * @return programsPath
+     */
+    public String getProgramsPath() {
+        return programsPath;
+    }
+
+    /**
+     * Returns the full path to Leikr's Data directory. NOTE: This includes a
+     * trailing `/`
+     *
+     * @return dataPath
+     */
+    public String getDataPath() {
+        return dataPath;
+    }
+
+    public String getDeployPath() {
+        return deployPath;
+    }
+
+    public String getBasePath() {
+        return basePath;
     }
 
 }

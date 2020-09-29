@@ -15,6 +15,7 @@
  */
 package leikr.commands;
 
+import leikr.GameRuntime;
 import leikr.utilities.ExportTool;
 
 /**
@@ -24,9 +25,11 @@ import leikr.utilities.ExportTool;
 public class ExportCommand extends Command {
 
     private final ExportTool exportTool;
+    private final GameRuntime runtime;
 
-    public ExportCommand(ExportTool exportTool) {
+    public ExportCommand(GameRuntime runtime, ExportTool exportTool) {
         super.name = "export";
+        this.runtime = runtime;
         this.exportTool = exportTool;
     }
 

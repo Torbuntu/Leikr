@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import leikr.GameRuntime;
 import leikr.customProperties.CustomProgramProperties;
 import org.mini2Dx.core.Mdx;
 
@@ -29,8 +30,11 @@ import org.mini2Dx.core.Mdx;
  */
 public class AboutCommand extends Command {
 
-    public AboutCommand() {
+    private final GameRuntime runtime;
+
+    public AboutCommand(GameRuntime runtime) {
         super.name = "about";
+        this.runtime = runtime;
     }
 
     @Override
@@ -42,7 +46,7 @@ public class AboutCommand extends Command {
             return "Program [" + command[1] + "] does not exist in Programs directory.";
         }
         try {
-            CustomProgramProperties cpp = new CustomProgramProperties("Programs/" + command[1]);
+            CustomProgramProperties cpp = new CustomProgramProperties(runtime.getProgramsPath() + command[1]);
             return "Title: " + cpp.TITLE + "\nType: " + cpp.TYPE + "\nPlayers: " + cpp.PLAYERS + "\nAuthor: " + cpp.AUTHOR + "\nAbout: " + cpp.ABOUT;
         } catch (Exception ex) {
             Logger.getLogger(AboutCommand.class.getName()).log(Level.SEVERE, null, ex);
@@ -53,7 +57,7 @@ public class AboutCommand extends Command {
     boolean containsName(String name) {
         try {
             ArrayList<String> names = new ArrayList<>();
-            Arrays.asList(Mdx.files.local("Programs").list()).stream().forEach(e -> names.add(e.nameWithoutExtension()));
+            Arrays.asList(Mdx.files.external(runtime.getProgramsPath() ).list()).stream().forEach(e -> names.add(e.nameWithoutExtension()));
             return names.contains(name);
         } catch (IOException ex) {
             Logger.getLogger(AboutCommand.class.getName()).log(Level.SEVERE, null, ex);

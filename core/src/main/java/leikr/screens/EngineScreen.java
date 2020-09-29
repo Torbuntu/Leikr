@@ -1,4 +1,4 @@
-/*
+ /*
  * Copyright 2019 See AUTHORS file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,6 @@ import org.mini2Dx.core.graphics.FrameBuffer;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.graphics.viewport.StretchViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
-import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
 import org.mini2Dx.gdx.Input.Keys;
@@ -123,7 +122,7 @@ public class EngineScreen extends BasicGameScreen {
     }
 
     @Override
-    public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
+    public void update(GameContainer gc, ScreenManager sm, float delta) {
         if (Mdx.input.isKeyJustPressed(Keys.F5) || Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyJustPressed(Keys.R) || Mdx.input.isKeyJustPressed(Keys.HOME)) {
             reloadEngine(sm);
         }

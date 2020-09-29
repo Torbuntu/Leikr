@@ -44,7 +44,7 @@ public class MapLoader {
         if (null != tiledMap) {
             tiledMap.dispose();
         }
-        tiledMap = new TiledMap(Mdx.files.local(rootPath + name + ".tmx"));
+        tiledMap = new TiledMap(Mdx.files.external(rootPath + name + ".tmx"));
         tiledMap.loadTilesetTextures();
     }
 

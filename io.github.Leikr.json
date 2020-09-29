@@ -1,0 +1,43 @@
+{
+	"id": "io.github.Leikr",
+	"branch": "1.0",
+	"runtime": "org.freedesktop.Platform",
+	"runtime-version": "20.08",
+	"command": "/app/Leikr/Leikr",
+	"sdk": "org.freedesktop.Sdk",
+	"sdk-extensions": ["org.freedesktop.Sdk.Extension.openjdk"],
+	"modules": [{
+		"name": "openjdk",
+		"buildsystem": "simple",
+		"build-commands": ["/usr/lib/sdk/openjdk/install.sh"]
+	}, {
+		"name": "leikr",
+		"buildsystem": "simple",
+		"build-commands": [
+			"install --directory --mode=0755 /app/Leikr/",
+			"tar --directory=/app/Leikr/ --extract --file=Leikr-1.0.0-SNAPSHOT.tar.xz",
+			"install -D --mode=0644 --target-directory=/app/share/applications/ io.github.Leikr.desktop",
+			"install -D --mode=0644 /app/Leikr/Data/Logo/logo-32x32.png /app/share/icons/hicolor/scalable/apps/io.github.Leikr.png" 
+		],
+		"sources": [
+			{
+				"type": "file",
+				"url": "https://github.com/Torbuntu/Leikr/releases/download/v1.0.0-SNAPSHOT/Leikr-1.0.0-SNAPSHOT.tar.xz",
+				"sha256": "d6e3a673aa8d775e29415c3d6dd894f9be2e1e54c11443b2b70a448af00f11f5"
+			},
+			{
+				"type": "file",
+				"path": "io.github.Leikr.desktop"
+			}
+		]
+	}],
+	"finish-args": [
+		"--env=PATH=/app/jre/bin:/usr/bin",
+        	"--share=ipc",
+        	"--socket=x11",
+		"--socket=wayland",
+		"--socket=pulseaudio",
+        	"--filesystem=xdg-config",
+        	"--device=all"
+	]
+}

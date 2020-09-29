@@ -89,7 +89,7 @@ public class TerminalManager implements InputProcessor {
         programList = new ArrayList<>();
         commandList = new HashMap<>();
         terminalState = TerminalState.PROCESSING;
-        exportTool = new ExportTool();
+        exportTool = new ExportTool(runtime);
 
         try {
             Arrays.stream(Mdx.files.local("Programs/").list())
@@ -101,23 +101,23 @@ public class TerminalManager implements InputProcessor {
         } catch (Exception ex) {
             Logger.getLogger(TerminalManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-        commandList.put("about", new AboutCommand());
-        commandList.put("ls", new PrintDirectoryCommand());
-        commandList.put("new", new NewProgramCommand(this));
+        commandList.put("about", new AboutCommand(runtime));
+        commandList.put("ls", new PrintDirectoryCommand(runtime));
+        commandList.put("new", new NewProgramCommand(runtime, this));
         commandList.put("exit", new ExitCommand());
         commandList.put("run", new RunCommand(runtime, this, engineLoader));
-        commandList.put("find", new FindCommand());
+        commandList.put("find", new FindCommand(runtime));
         commandList.put("clean", new CleanCommand());
-        commandList.put("pwd", new PrintWorkspaceCommand());
+        commandList.put("pwd", new PrintWorkspaceCommand(runtime));
         commandList.put("wiki", new WikiCommand());
-        commandList.put("export", new ExportCommand(exportTool));
-        commandList.put("install", new InstallCommand(exportTool));
+        commandList.put("export", new ExportCommand(runtime, exportTool));
+        commandList.put("install", new InstallCommand(runtime, exportTool));
         commandList.put("tool", new ToolCommand(runtime, this));
-        commandList.put("uninstall", new RemoveCommand());
-        commandList.put("package", new PackageCommand(exportTool));
+        commandList.put("uninstall", new RemoveCommand(runtime));
+        commandList.put("package", new PackageCommand(runtime, exportTool));
         commandList.put("compile", new CompileCommand(runtime, engineLoader));
-        commandList.put("get", new GetCommand());
-        commandList.put("set", new SetCommand());
+        commandList.put("get", new GetCommand(runtime));
+        commandList.put("set", new SetCommand(runtime));
 
         this.runtime = runtime;
     }

@@ -46,7 +46,7 @@ public class ToolCommand extends Command {
         if (command.length == 1) {
             try {
                 out = "";
-                Arrays.asList(Mdx.files.local("Data/Tools").list()).stream().forEach(e -> out += e.nameWithoutExtension() + "\n");
+                Arrays.asList(Mdx.files.external(runtime.getDataPath() + "Tools").list()).stream().forEach(e -> out += e.nameWithoutExtension() + "\n");
                 return out;
             } catch (IOException ex) {
                 Logger.getLogger(ToolCommand.class.getName()).log(Level.WARNING, null, ex);
@@ -71,7 +71,7 @@ public class ToolCommand extends Command {
     private boolean containsName(String name) {
         try {
             ArrayList<String> names = new ArrayList<>();
-            Arrays.asList(Mdx.files.local("Data/Tools").list()).stream().forEach(e -> names.add(e.nameWithoutExtension()));
+            Arrays.asList(Mdx.files.external(runtime.getDataPath() + "Tools").list()).stream().forEach(e -> names.add(e.nameWithoutExtension()));
             return names.contains(name);
         } catch (IOException ex) {
             Logger.getLogger(ToolCommand.class.getName()).log(Level.SEVERE, null, ex);

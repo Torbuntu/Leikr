@@ -39,11 +39,11 @@ public class CompileCommand extends Command {
         if (args.length == 1) {
             return "[E] Missing - required program name.";
         }
-        if (!Mdx.files.local("Programs/" + args[1]).exists()) {
+        if (!Mdx.files.local(runtime.getProgramsPath() + args[1]).exists()) {
             return "[E] Program name [" + args[1] + "] not in [Programs] directory.";
         }
         runtime.setGameName(args[1]);
-        engineLoader.reset("Programs/" + args[1]);
+        engineLoader.reset(runtime.getProgramsPath() + args[1]);
         // Assumes the Programs/GameTitle/ root directory, so Code is all we need to set the compiler class path
         engineLoader.compile("Code", "/Code/Compiled");
         return "Compiled project [" + args[1] + "]";

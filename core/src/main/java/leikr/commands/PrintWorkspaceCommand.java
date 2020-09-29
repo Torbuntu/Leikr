@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import leikr.GameRuntime;
 
 /**
  *
@@ -27,14 +28,17 @@ import java.util.logging.Logger;
  */
 public class PrintWorkspaceCommand extends Command {
 
-    public PrintWorkspaceCommand() {
+    private final GameRuntime runtime;
+
+    public PrintWorkspaceCommand(GameRuntime runtime) {
         super.name = "pwd";
+        this.runtime = runtime;
     }
 
     @Override
     public String execute(String[] args) {
         try {
-            File f = new File("Programs");
+            File f = new File(runtime.getProgramsPath());
             Desktop.getDesktop().open(f);
             return f.getAbsolutePath();
         } catch (IOException ex) {

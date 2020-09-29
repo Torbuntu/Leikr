@@ -33,8 +33,8 @@ public class CleanCommand extends Command {
     @Override
     public String execute(String[] args) {
         try {
-            Mdx.files.local("Packages/").deleteDirectory();
-            Mdx.files.local("Packages").mkdirs();
+            Mdx.files.external(System.getProperty("user.home") + "/.config/Leikr/Packages/").deleteDirectory();
+            Mdx.files.external(System.getProperty("user.home") + "/.config/Leikr/Packages").mkdirs();
             return "Package directory cleaned.";
         } catch (IOException ex) {
             Logger.getLogger(CleanCommand.class.getName()).log(Level.SEVERE, null, ex);

@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import leikr.GameRuntime;
 import org.mini2Dx.core.Mdx;
 
 /**
@@ -30,9 +31,11 @@ import org.mini2Dx.core.Mdx;
 public class PrintDirectoryCommand extends Command {
 
     private String out;
+    private final GameRuntime runtime;
 
-    public PrintDirectoryCommand() {
+    public PrintDirectoryCommand(GameRuntime runtime) {
         super.name = "ls";
+        this.runtime = runtime;
     }
 
     @Override
@@ -54,10 +57,10 @@ public class PrintDirectoryCommand extends Command {
             out = "";
             List<String> titles = new ArrayList<>();
 
-            Arrays.asList(Mdx.files.local("Programs").list()).forEach(e -> titles.add(e.nameWithoutExtension()));
+            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).forEach(e -> titles.add(e.nameWithoutExtension()));
 
             titles.stream().sorted().forEach(e -> {
-                if (Mdx.files.local("Programs/" + e + "/Code/Compiled").exists()) {
+                if (Mdx.files.external(runtime.getProgramsPath() + e + "/Code/Compiled").exists()) {
                     out += e + " *\n";
                 } else {
                     out += e + "\n";
@@ -74,7 +77,7 @@ public class PrintDirectoryCommand extends Command {
         try {
             out = "";
             List<String> titles = new ArrayList<>();
-            Arrays.asList(Mdx.files.local(dir).list()).forEach(e -> titles.add(e.nameWithoutExtension()));
+            Arrays.asList(Mdx.files.external(dir).list()).forEach(e -> titles.add(e.nameWithoutExtension()));
 
             titles.stream().sorted().forEach(e -> out += e + "\n");
             return out;

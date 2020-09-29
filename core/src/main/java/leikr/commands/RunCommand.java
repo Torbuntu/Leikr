@@ -49,7 +49,7 @@ public class RunCommand extends Command {
         }
         try {
             ArrayList<String> names = new ArrayList<>();
-            Arrays.asList(Mdx.files.local("Programs").list()).stream().forEach(e -> names.add(e.nameWithoutExtension()));
+            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream().forEach(e -> names.add(e.nameWithoutExtension()));
             if (!names.contains(command[1])) {
                 return "Program [" + command[1] + "] does not exist in Programs directory.";
             }

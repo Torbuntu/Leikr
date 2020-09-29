@@ -23,6 +23,7 @@ import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.Engine;
+import leikr.GameRuntime;
 import leikr.loaders.EngineLoader;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.assets.AssetManager;
@@ -54,14 +55,16 @@ public class LoadScreen extends BasicGameScreen {
     private Future<Engine> engineGetter;
 
     private final AssetManager assetManager;
+    private final GameRuntime runtime;
 
-    public LoadScreen(AssetManager assetManager, FitViewport vp, EngineLoader engineLoader, String gameName) {
+    public LoadScreen(GameRuntime runtime, AssetManager assetManager, FitViewport vp, EngineLoader engineLoader, String gameName) {
+        this.runtime = runtime;
         this.assetManager = assetManager;
         this.engineLoader = engineLoader;
         this.gameName = gameName;
         viewport = vp;
 
-        assetManager.load("./Data/Images/leikr-logo.png", Texture.class);
+        assetManager.load(runtime.getDataPath() + "Images/leikr-logo.png", Texture.class);
         assetManager.finishLoading();
 
         service = Executors.newFixedThreadPool(1);
@@ -79,7 +82,7 @@ public class LoadScreen extends BasicGameScreen {
     @Override
     public void preTransitionIn(Transition transition) {
         service = Executors.newFixedThreadPool(1);
-        engineLoader.reset("Programs/" + gameName);
+        engineLoader.reset(runtime.getProgramsPath() + gameName);
         engineGetter = service.submit(engineLoader);
     }
 
@@ -92,7 +95,7 @@ public class LoadScreen extends BasicGameScreen {
         if (engineGetter.isDone()) {
             try {
                 EngineScreen es = (EngineScreen) sm.getGameScreen(EngineScreen.ID);
-                es.setEngine(engineGetter.get(), "Programs/" + gameName);
+                es.setEngine(engineGetter.get(), runtime.getProgramsPath() + gameName);
                 service.shutdown();
                 sm.enterGameScreen(EngineScreen.ID, null, null);
             } catch (InterruptedException | ExecutionException ex) {
@@ -129,7 +132,7 @@ public class LoadScreen extends BasicGameScreen {
         viewport.apply(g);
         if (!engineGetter.isDone()) {
             // logo and loading
-            g.drawTexture(assetManager.get("./Data/Images/leikr-logo.png", Texture.class), 80, 64, 48, 16);
+            g.drawTexture(assetManager.get(runtime.getDataPath()+"Images/leikr-logo.png", Texture.class), 80, 64, 48, 16);
             g.setColor(Colors.WHITE());
             g.drawString("Loading", 96, 73);
 

@@ -21,7 +21,7 @@ import leikr.exceptions.RenderException;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.assets.loader.TextureLoader;
-import org.mini2Dx.core.files.LocalFileHandleResolver;
+import org.mini2Dx.core.files.ExternalFileHandleResolver;
 import org.mini2Dx.core.graphics.Sprite;
 import org.mini2Dx.core.graphics.SpriteSheet;
 import org.mini2Dx.core.graphics.Texture;
@@ -50,10 +50,10 @@ public class SpriteLoader {
         disposeSprites();
 
         assetLoader = new TextureLoader();
-        assetManager = new AssetManager(new LocalFileHandleResolver());
+        assetManager = new AssetManager(new ExternalFileHandleResolver());
         assetManager.setAssetLoader(Texture.class, assetLoader);
         System.out.println("Loader set for sprites");
-        if (Mdx.files.local(path + "/Sprites/Sprites.png").exists()) {
+        if (Mdx.files.external(path + "/Sprites/Sprites.png").exists()) {
             loadSpriteSheets();
             addSpritesToSpriteBank();
         } else {

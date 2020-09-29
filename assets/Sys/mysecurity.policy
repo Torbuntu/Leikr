@@ -28,10 +28,10 @@ grant{
 	permission java.io.FilePermission "./-", "read,write,delete,execute";
 	
 	//Leikr directories, sandboxed 
-	permission java.io.FilePermission "Programs/-", "read,write";
-	permission java.io.FilePermission "Programs", "read";
-	permission java.io.FilePermission "Data/-", "read,write";	
-	permission java.io.FilePermission "Data", "read";	
+	permission java.io.FilePermission "${user.home}${/}.config${/}Leikr${/}Programs/-", "read,write";
+	permission java.io.FilePermission "${user.home}${/}.config${/}Leikr${/}Programs", "read";
+	permission java.io.FilePermission "${user.home}${/}.config${/}Leikr${/}Data/-", "read,write";	
+	permission java.io.FilePermission "${user.home}${/}.config${/}Leikr${/}Data", "read";	
 };
 
 //Leikr specific

@@ -18,6 +18,7 @@ package leikr.screens;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import leikr.GameRuntime;
 import leikr.utilities.NewProgramGenerator;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.Graphics;
@@ -47,7 +48,7 @@ public class NewProgramScreen extends BasicGameScreen {
     private String newLocation;
     private final FitViewport viewport;
 
-    private NewProgramGenerator generator;
+    private final NewProgramGenerator generator;
 
     protected enum GeneratorStep {
         NAME,
@@ -69,9 +70,9 @@ public class NewProgramScreen extends BasicGameScreen {
 
     private static GeneratorStep generatorStep;
 
-    public NewProgramScreen(FitViewport vp) {
+    public NewProgramScreen(FitViewport vp, GameRuntime runtime) {
         viewport = vp;
-        generator = new NewProgramGenerator();
+        generator = new NewProgramGenerator(runtime);
     }
 
     @Override

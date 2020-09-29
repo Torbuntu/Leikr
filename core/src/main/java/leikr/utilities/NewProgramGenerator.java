@@ -23,6 +23,7 @@ import java.nio.file.Path;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import leikr.GameRuntime;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.files.FileHandle;
 
@@ -44,10 +45,16 @@ public class NewProgramGenerator {
     private String players = "1";
     private String about = "A Leikr Program.";
 
+    private final GameRuntime runtime;
+
+    public NewProgramGenerator(GameRuntime runtime) {
+        this.runtime = runtime;
+    }
+
     public String setNewProgramFileName(String newName, String template) throws IOException {
         String newProject = newName.length() > 0 ? newName : "NewProgram";
 
-        for (FileHandle name : Mdx.files.local("Programs").list()) {
+        for (FileHandle name : Mdx.files.external(runtime.getProgramsPath()).list()) {
             if (name.name().equalsIgnoreCase(newProject)) {
                 return "A program with name [" + newProject + "] already exists.";
             }
@@ -59,27 +66,27 @@ public class NewProgramGenerator {
     }
 
     private String copyTemplate(String newProject, String template) throws IOException {
-        if (!Mdx.files.local("Data/Templates/" + template).exists()) {
+        if (!Mdx.files.external(runtime.getDataPath() + "Templates/" + template).exists()) {
             throw new IOException("Templates: [" + template + "] does not exist");
         }
-        Mdx.files.local("Programs/" + newProject).mkdirs();
-        for (FileHandle file : Mdx.files.local("Data/Templates/" + template).list()) {
-            Mdx.files.local("Data/Templates/" + template + "/" + file.name()).copyTo(Mdx.files.local("Programs/" + newProject));
+        Mdx.files.external(runtime.getProgramsPath() + newProject).mkdirs();
+        for (FileHandle file : Mdx.files.external(runtime.getDataPath() + "Templates/" + template).list()) {
+            Mdx.files.external(runtime.getDataPath() + "Templates/" + template + "/" + file.name()).copyTo(Mdx.files.external(runtime.getProgramsPath() + newProject));
         }
-        Mdx.files.local("Programs/" + newProject + "/Code/main.groovy").moveTo(Mdx.files.local("Programs/" + newProject + "/Code/" + newProject + ".groovy"));
+        Mdx.files.external(runtime.getProgramsPath() + newProject + "/Code/main.groovy").moveTo(Mdx.files.external(runtime.getProgramsPath() + newProject + "/Code/" + newProject + ".groovy"));
         return NEW_LOCATION + newProject + "/";
     }
 
     private void setNewProgramClassName(String newProject) throws IOException {
-        Path nfPath = new File(Mdx.files.local("Programs/" + newProject + "/Code/" + newProject + ".groovy").path()).toPath();
+        Path nfPath = new File(Mdx.files.external(runtime.getProgramsPath() + newProject + "/Code/" + newProject + ".groovy").path()).toPath();
         String newFile = Files.readString(nfPath);
         String replace = newFile.replace("NewProgram", newProject);
         Files.writeString(nfPath, replace);
     }
 
     public void writePropertyName(String name) {
-        String propPath = Mdx.files.local("Programs/" + name + "/program.properties").path();
-        try ( FileOutputStream fos = new FileOutputStream(propPath)) {
+        String propPath = Mdx.files.external(runtime.getProgramsPath() + name + "/program.properties").path();
+        try (FileOutputStream fos = new FileOutputStream(propPath)) {
             Properties props = new Properties();
             props.setProperty("title", name);
             props.setProperty("type", "Program");
@@ -99,8 +106,8 @@ public class NewProgramGenerator {
     }
 
     public void writeProperties(String name) {
-        String propPath = Mdx.files.local("Programs/" + name + "/program.properties").path();
-        try ( FileOutputStream fos = new FileOutputStream(propPath)) {
+        String propPath = Mdx.files.external(runtime.getProgramsPath() + name + "/program.properties").path();
+        try (FileOutputStream fos = new FileOutputStream(propPath)) {
             Properties props = new Properties();
             props.setProperty("title", title);
             props.setProperty("type", type);

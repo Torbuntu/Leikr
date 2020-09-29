@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import leikr.GameRuntime;
 import org.mini2Dx.core.Mdx;
 
 /**
@@ -28,8 +29,11 @@ import org.mini2Dx.core.Mdx;
  */
 public class RemoveCommand extends Command {
 
-    public RemoveCommand() {
+    private final GameRuntime runtime;
+
+    public RemoveCommand(GameRuntime runtime) {
         super.name = "uninstall";
+        this.runtime = runtime;
     }
 
     @Override
@@ -41,7 +45,7 @@ public class RemoveCommand extends Command {
             return "Program [" + command[1] + "] does not exist in Programs directory.";
         }
         try {
-            Mdx.files.local("Programs/" + command[1]).deleteDirectory();
+            Mdx.files.external(runtime.getProgramsPath() + command[1]).deleteDirectory();
             return "Program [" + command[1] + "] has been uninstalled.";
         } catch (IOException ex) {
             Logger.getLogger(RemoveCommand.class.getName()).log(Level.SEVERE, null, ex);

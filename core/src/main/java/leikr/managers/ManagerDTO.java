@@ -15,13 +15,6 @@
  */
 package leikr.managers;
 
-import leikr.managers.AudioManager;
-import leikr.managers.DataManager;
-import leikr.managers.GraphicsManager;
-import leikr.managers.InputManager;
-import leikr.managers.PixelManager;
-import leikr.managers.SystemManager;
-
 /**
  *
  * @author tor

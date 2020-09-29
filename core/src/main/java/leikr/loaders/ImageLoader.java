@@ -21,7 +21,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
-import org.mini2Dx.core.files.LocalFileHandleResolver;
+import org.mini2Dx.core.files.ExternalFileHandleResolver;
 import org.mini2Dx.core.graphics.Texture;
 
 /**
@@ -39,10 +39,10 @@ public class ImageLoader {
 
     public void reloadImageLoader(String path) {
         disposeImages();
-        assetManager = new AssetManager(new LocalFileHandleResolver());
+        assetManager = new AssetManager(new ExternalFileHandleResolver());
         rootPath = path + "/Art/";
         try {
-            Arrays.asList(Mdx.files.local(rootPath).list()).stream()
+            Arrays.asList(Mdx.files.external(rootPath).list()).stream()
                     .filter(file -> !file.isDirectory()
                     && (file.extension().equalsIgnoreCase("png")
                     || file.extension().equalsIgnoreCase("jpg")

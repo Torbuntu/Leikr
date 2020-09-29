@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import leikr.GameRuntime;
 import org.mini2Dx.core.Mdx;
 
 /**
@@ -30,8 +31,11 @@ import org.mini2Dx.core.Mdx;
  */
 public class FindCommand extends Command {
 
-    public FindCommand() {
+    private final GameRuntime runtime;
+
+    public FindCommand(GameRuntime runtime) {
         super.name = "find";
+        this.runtime = runtime;
     }
 
     @Override
@@ -43,7 +47,7 @@ public class FindCommand extends Command {
             return "Program [" + command[1] + "] does not exist in Programs directory.";
         }
         try {
-            File f = new File("Programs/" + command[1]);
+            File f = new File(runtime.getProgramsPath() + command[1]);
             Desktop.getDesktop().open(f);
             return f.getAbsolutePath();
         } catch (IOException ex) {
@@ -55,7 +59,7 @@ public class FindCommand extends Command {
     private boolean containsName(String name) {
         try {
             ArrayList<String> names = new ArrayList<>();
-            Arrays.asList(Mdx.files.local("Programs").list()).stream().forEach(e -> names.add(e.nameWithoutExtension()));
+            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream().forEach(e -> names.add(e.nameWithoutExtension()));
             return names.contains(name);
         } catch (IOException ex) {
             Logger.getLogger(FindCommand.class.getName()).log(Level.SEVERE, null, ex);

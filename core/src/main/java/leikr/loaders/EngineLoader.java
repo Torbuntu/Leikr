@@ -111,14 +111,14 @@ public class EngineLoader implements Callable<Engine> {
     private Engine getToolEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         gcl.clearCache();
         gcl.addClasspath(runtime.getToolPath() + "/Code/");
-        return (Engine) gcl.parseClass(new File(Mdx.files.local(runtime.getToolPath() + "/Code/" + runtime.getGameName() + ".groovy").path())).getDeclaredConstructors()[0].newInstance();
+        return (Engine) gcl.parseClass(new File(Mdx.files.external(runtime.getToolPath() + "/Code/" + runtime.getGameName() + ".groovy").path())).getDeclaredConstructors()[0].newInstance();
     }
 
     private Engine getSourceEngine() throws MalformedURLException, CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         gcl.clearCache();
         gcl.addClasspath(rootPath);
         //loads the game code  
-        return (Engine) gcl.parseClass(new File(Mdx.files.local(rootPath + runtime.getGameName() + ".groovy").path())).getDeclaredConstructors()[0].newInstance();
+        return (Engine) gcl.parseClass(new File(Mdx.files.external(rootPath + runtime.getGameName() + ".groovy").path())).getDeclaredConstructors()[0].newInstance();
     }
 
     private Engine getCompiledEngine() throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
@@ -131,14 +131,14 @@ public class EngineLoader implements Callable<Engine> {
         String COMPILED = rootPath + "Compiled/";
         CompilerConfiguration cc = new CompilerConfiguration();
         cc.setClasspath(rootPath);
-        if (!Mdx.files.local(COMPILED).exists()) {
-            Mdx.files.local(COMPILED).mkdirs();
+        if (!Mdx.files.external(COMPILED).exists()) {
+            Mdx.files.external(COMPILED).mkdirs();
         }
 
         cc.setTargetDirectory(COMPILED);
         Compiler compiler = new Compiler(cc);
 
-        FileHandle[] list = Mdx.files.local(rootPath).list(".groovy");
+        FileHandle[] list = Mdx.files.external(rootPath).list(".groovy");
         ArrayList<String> files = new ArrayList<>();
         for (FileHandle f : list) {
             files.add(f.path());
@@ -175,8 +175,8 @@ public class EngineLoader implements Callable<Engine> {
     public Object compile(String path) {
         try {
             String url = path.substring(0, path.lastIndexOf("/"));
-            gcl.addClasspath(Mdx.files.local(runtime.getGamePath() + "/" + url).path());
-            return gcl.parseClass(new File(Mdx.files.local(runtime.getGamePath() + "/" + path + ".groovy").path())).getDeclaredConstructors()[0].newInstance();
+            gcl.addClasspath(Mdx.files.external(runtime.getGamePath() + "/" + url).path());
+            return gcl.parseClass(new File(Mdx.files.external(runtime.getGamePath() + "/" + path + ".groovy").path())).getDeclaredConstructors()[0].newInstance();
         } catch (CompilationFailedException | IOException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -192,8 +192,8 @@ public class EngineLoader implements Callable<Engine> {
      */
     public void compile(String path, String out) {
         String output = runtime.getGamePath() + "/" + out;
-        String COMPILED = Mdx.files.local(output).path();
-        gcl.addClasspath(Mdx.files.local(COMPILED).path());
+        String COMPILED = Mdx.files.external(output).path();
+        gcl.addClasspath(Mdx.files.external(COMPILED).path());
 
         String codePath = runtime.getGamePath() + "/" + path;
 
@@ -203,14 +203,14 @@ public class EngineLoader implements Callable<Engine> {
         CompilerConfiguration cc = new CompilerConfiguration();
         cc.setClasspath(codePath);
         try {
-            if (!Mdx.files.local(COMPILED).exists()) {
-                Mdx.files.local(COMPILED).mkdirs();
+            if (!Mdx.files.external(COMPILED).exists()) {
+                Mdx.files.external(COMPILED).mkdirs();
             }
 
             cc.setTargetDirectory(COMPILED);
             Compiler compiler = new Compiler(cc);
 
-            FileHandle[] list = Mdx.files.local(rootPath).list(".groovy");
+            FileHandle[] list = Mdx.files.external(rootPath).list(".groovy");
             ArrayList<String> files = new ArrayList<>();
             for (FileHandle f : list) {
                 files.add(f.path());
@@ -232,7 +232,7 @@ public class EngineLoader implements Callable<Engine> {
      */
     public void loadLib(String path) {
         String COMPILED = runtime.getGamePath() + "/" + path + "/";
-        gcl.addClasspath(Mdx.files.local(COMPILED).path());
+        gcl.addClasspath(Mdx.files.external(COMPILED).path());
     }
 
     /**

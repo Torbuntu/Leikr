@@ -20,6 +20,7 @@ import java.io.FileOutputStream;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import leikr.GameRuntime;
 import leikr.utilities.ExportTool;
 import org.mini2Dx.core.Mdx;
 
@@ -30,29 +31,30 @@ import org.mini2Dx.core.Mdx;
 public class PackageCommand extends Command {
 
     private final ExportTool exportTool;
+    private final GameRuntime runtime;
 
-    public PackageCommand(ExportTool exportTool) {
+    public PackageCommand(GameRuntime runtime, ExportTool exportTool) {
         super.name = "package";
+        this.runtime = runtime;
         this.exportTool = exportTool;
     }
 
     @Override
     public String execute(String[] args) {
         String programName = args[1];
-        File outputDir = new File(Mdx.files.local("Deploy/").path());
+        File outputDir = new File(Mdx.files.external(runtime.getDeployPath()).path());
         if (!outputDir.exists()) {
             outputDir.mkdirs();
         }
         try {
-            Mdx.files.local("Deploy/" + programName + "/Programs/").mkdirs();
-            Mdx.files.local("Programs/" + programName).copyTo(Mdx.files.local("Deploy/" + programName + "/Programs/"));
-            Mdx.files.local("Data").copyTo(Mdx.files.local("Deploy/" + programName));
-            Mdx.files.local("Sys").copyTo(Mdx.files.local("Deploy/" + programName));
-//            Mdx.files.local("Internal").copyTo(Mdx.files.local("Deploy/" + programName));
-            Mdx.files.local("Leikr").copyTo(Mdx.files.local("Deploy/" + programName));
-            Mdx.files.local("Leikr.bat").copyTo(Mdx.files.local("Deploy/" + programName));
-            Mdx.files.local("gamecontrollerdb.txt").copyTo(Mdx.files.local("Deploy/" + programName));
-            Mdx.files.local("Leikr.jar").copyTo(Mdx.files.local("Deploy/" + programName));
+            Mdx.files.external(runtime.getDeployPath() + programName + "/Programs/").mkdirs();
+            Mdx.files.external(runtime.getProgramsPath() + programName).copyTo(Mdx.files.external(runtime.getDeployPath() + programName + "/Programs/"));
+            Mdx.files.external(runtime.getDataPath()).copyTo(Mdx.files.external(runtime.getDeployPath() + programName));
+            Mdx.files.external(runtime.getBasePath() + "Sys").copyTo(Mdx.files.external(runtime.getDeployPath() + programName));
+            Mdx.files.external(runtime.getBasePath() + "Leikr").copyTo(Mdx.files.external(runtime.getDeployPath()+ programName));
+            Mdx.files.external(runtime.getBasePath() + "Leikr.bat").copyTo(Mdx.files.external(runtime.getDeployPath() + programName));
+            Mdx.files.external(runtime.getBasePath() + "gamecontrollerdb.txt").copyTo(Mdx.files.external(runtime.getDeployPath() + programName));
+            Mdx.files.external(runtime.getBasePath() + "Leikr.jar").copyTo(Mdx.files.external(runtime.getDeployPath()+ programName));
         } catch (Exception ex) {
             Logger.getLogger(PackageCommand.class.getName()).log(Level.SEVERE, null, ex);
             return "Failed to package and deploy project [" + programName + "]";
@@ -77,7 +79,7 @@ public class PackageCommand extends Command {
         outProp.setProperty("btn_right", "1");
         outProp.setProperty("axis_horizontal", "0");
         outProp.setProperty("axis_vertical", "1");
-        try ( FileOutputStream stream = new FileOutputStream(new File("Deploy/" + programName + "/Data/system.properties"))) {
+        try ( FileOutputStream stream = new FileOutputStream(new File(runtime.getDeployPath() + programName + "/Data/system.properties"))) {
             outProp.store(stream, "Packaged from Leikr.");
         } catch (Exception ex) {
             Logger.getLogger(PackageCommand.class.getName()).log(Level.SEVERE, null, ex);

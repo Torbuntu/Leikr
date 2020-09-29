@@ -26,7 +26,6 @@ import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 import org.mini2Dx.core.screen.BasicGameScreen;
-import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
 import org.mini2Dx.gdx.Input.Keys;
@@ -52,7 +51,7 @@ public class TerminalScreen extends BasicGameScreen {
         this.terminalManager = terminalManager;
         this.engineLoader = engineLoader;
         viewport = vp;
-        exportTool = new ExportTool();
+        exportTool = new ExportTool(runtime);
     }
 
     @Override
@@ -66,7 +65,7 @@ public class TerminalScreen extends BasicGameScreen {
     }
 
     @Override
-    public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float delta) {
+    public void update(GameContainer gc, ScreenManager sm, float delta) {
         terminalManager.update();
         if (runtime.checkFileDropped()) {
             if (runtime.getFileDroppedTitle().endsWith(".lkr")) {
@@ -84,7 +83,7 @@ public class TerminalScreen extends BasicGameScreen {
             case INSTALLING -> {
                 if (Mdx.input.isKeyJustPressed(Keys.Y)) {
                     String title = runtime.getFileDroppedTitle().substring(0, runtime.getFileDroppedTitle().lastIndexOf('.'));
-                    String success = exportTool.importProject(title, "Programs");
+                    String success = exportTool.importProject(title, runtime.getProgramsPath());
                     if (!success.startsWith("[E]")) {
 
                         LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID);

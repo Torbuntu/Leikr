@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
+import leikr.GameRuntime;
 import org.mini2Dx.core.Mdx;
 
 /**
@@ -38,9 +39,15 @@ import org.mini2Dx.core.Mdx;
  */
 public class ExportTool {
 
+    private final GameRuntime runtime;
+
+    public ExportTool(GameRuntime runtime){
+        this.runtime = runtime;
+    }
+    
     public String exportAll() {
         try {
-            Arrays.asList(Mdx.files.local("Programs/").list()).forEach(file -> {
+            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).forEach(file -> {
                 zip(file.name());
             });
             return "Projects exported.";
@@ -70,16 +77,16 @@ public class ExportTool {
         return "[E] Failure to install Package. Please check logs.";
     }
 
-    public void zip(String name) {
-        File exportDir = new File(Mdx.files.local("Packages/").path());
+    public void zip(String path) {
+        File exportDir = new File(Mdx.files.external(System.getProperty("user.home")+"/.config/Leikr/Packages/").path());
         if (!exportDir.exists()) {
             exportDir.mkdirs();
         }
-        zipFolder(new File(Mdx.files.local("Programs/" + name).path()).toPath(), new File(Mdx.files.local("Packages/" + name).path() + ".lkr").toPath());
+        zipFolder(new File(Mdx.files.external(runtime.getProgramsPath() + path).path()).toPath(), new File(Mdx.files.external(System.getProperty("user.home")+"/.config/Leikr/Packages/" + path).path() + ".lkr").toPath());
     }
 
     public void deployPackage(String name) {
-        zipFolder(new File(Mdx.files.local("Deploy/" + name).path()).toPath(), new File(Mdx.files.local("Deploy/" + name).path() + ".zip").toPath());
+        zipFolder(new File(Mdx.files.external(runtime.getDeployPath() + name).path()).toPath(), new File(Mdx.files.external(runtime.getDeployPath() + name).path() + ".zip").toPath());
     }
 
     //https://www.quickprogrammingtips.com/java/how-to-zip-a-folder-in-java.html
@@ -101,7 +108,7 @@ public class ExportTool {
     }
 
     public void unzip(String zipName, String location) {
-        File outputDir = new File(Mdx.files.local(location + "/" + zipName).path());
+        File outputDir = new File(Mdx.files.external(location + "/" + zipName).path());
 
         if (!outputDir.exists()) {
             outputDir.mkdirs();
@@ -109,7 +116,7 @@ public class ExportTool {
 
         byte[] buffer = new byte[1024];
         int len;
-        File lkrPackage = new File(Mdx.files.local("Packages/" + zipName).path() + ".lkr");
+        File lkrPackage = new File(Mdx.files.external(System.getProperty("user.home")+"/.config/Leikr/Packages/" + zipName).path() + ".lkr");
 
         try ( FileInputStream fileInStream = new FileInputStream(lkrPackage);  ZipInputStream zipInStream = new ZipInputStream(fileInStream)) {
             ZipEntry zipEntry = zipInStream.getNextEntry();

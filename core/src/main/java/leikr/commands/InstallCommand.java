@@ -15,6 +15,7 @@
  */
 package leikr.commands;
 
+import leikr.GameRuntime;
 import leikr.utilities.ExportTool;
 
 /**
@@ -24,9 +25,11 @@ import leikr.utilities.ExportTool;
 public class InstallCommand extends Command {
 
     private final ExportTool exportTool;
+    private final GameRuntime runtime;
 
-    public InstallCommand(ExportTool exportTool) {
+    public InstallCommand(GameRuntime runtime, ExportTool exportTool) {
         super.name = "install";
+        this.runtime = runtime;
         this.exportTool = exportTool;
     }
 
@@ -38,7 +41,7 @@ public class InstallCommand extends Command {
         if (command.length == 3) {
             return exportTool.importProject(command[1], command[2]);
         } else {
-            return exportTool.importProject(command[1], "Programs");
+            return exportTool.importProject(command[1], runtime.getProgramsPath());
         }
     }
 

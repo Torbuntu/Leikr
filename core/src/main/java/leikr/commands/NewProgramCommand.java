@@ -18,6 +18,7 @@ package leikr.commands;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import leikr.GameRuntime;
 import leikr.managers.TerminalManager;
 import leikr.utilities.NewProgramGenerator;
 
@@ -30,10 +31,10 @@ public class NewProgramCommand extends Command {
     private final TerminalManager terminalManager;
     private final NewProgramGenerator newProgramGenerator;
 
-    public NewProgramCommand(TerminalManager terminalManager) {
+    public NewProgramCommand(GameRuntime runtime, TerminalManager terminalManager) {
         super.name = "new";
         this.terminalManager = terminalManager;
-        newProgramGenerator = new NewProgramGenerator();
+        newProgramGenerator = new NewProgramGenerator(runtime);
     }
 
     @Override

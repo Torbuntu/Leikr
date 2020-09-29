@@ -23,7 +23,7 @@ import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.audio.Music;
 import org.mini2Dx.core.audio.Sound;
-import org.mini2Dx.core.files.LocalFileHandleResolver;
+import org.mini2Dx.core.files.ExternalFileHandleResolver;
 
 /**
  *
@@ -40,7 +40,7 @@ public class AudioLoader {
     }
 
     public void resetAudioLoader(String path) {
-        assetManager = new AssetManager(new LocalFileHandleResolver());
+        assetManager = new AssetManager(new ExternalFileHandleResolver());
         musicRootPath = path + "/Audio/Music/";
         soundRootPath = path + "/Audio/Sound/";
 
@@ -49,7 +49,7 @@ public class AudioLoader {
 
     private void loadAudio() {
         try {
-            Arrays.asList(Mdx.files.local(soundRootPath).list()).stream()
+            Arrays.asList(Mdx.files.external(soundRootPath).list()).stream()
                     .filter(file -> !file.isDirectory()
                     && (file.extension().equalsIgnoreCase("wav")
                     || file.extension().equalsIgnoreCase("mp3")
@@ -60,7 +60,7 @@ public class AudioLoader {
         }
 
         try {
-            Arrays.asList(Mdx.files.local(musicRootPath).list()).stream()
+            Arrays.asList(Mdx.files.external(musicRootPath).list()).stream()
                     .filter(file -> !file.isDirectory()
                     && (file.extension().equalsIgnoreCase("wav")
                     || file.extension().equalsIgnoreCase("mp3")

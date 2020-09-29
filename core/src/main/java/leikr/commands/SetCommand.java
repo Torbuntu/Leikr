@@ -17,6 +17,7 @@ package leikr.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+import leikr.GameRuntime;
 import leikr.customProperties.CustomProgramProperties;
 
 /**
@@ -26,9 +27,11 @@ import leikr.customProperties.CustomProgramProperties;
 public class SetCommand extends Command {
 
     private final List<String> properties;
+    private final GameRuntime runtime;
 
-    public SetCommand() {
-        this.name = "set";
+    public SetCommand(GameRuntime runtime) {
+        super.name = "set";
+        this.runtime = runtime;
         properties = new ArrayList<>();
         properties.add("author");
         properties.add("use_compiled");
@@ -46,7 +49,7 @@ public class SetCommand extends Command {
         if (!properties.contains(args[2])) {
             return "[E] Property [" + args[2] + "] not found in Program [" + args[1] + "]";
         }
-        CustomProgramProperties props = new CustomProgramProperties("Programs/" + args[1]);
+        CustomProgramProperties props = new CustomProgramProperties(runtime.getProgramsPath() + args[1]);
         switch (args[2].toLowerCase()) {
             case "author" ->
                 props.AUTHOR = args[3];

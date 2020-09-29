@@ -18,7 +18,6 @@ package leikr.screens;
 import leikr.GameRuntime;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
-import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.game.GameContainer;
 import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
@@ -36,15 +35,11 @@ public class ErrorScreen extends BasicGameScreen {
 
     public static int ID = 3;
     private boolean MENU = false;
-    private final boolean RELOAD;
     private String errorMessage;
-    private final AssetManager assetManager;
     private final FitViewport viewport;
     private final GameRuntime runtime;
 
-    public ErrorScreen(AssetManager assetManager, FitViewport vp, GameRuntime runtime) {
-        this.RELOAD = false;
-        this.assetManager = assetManager;
+    public ErrorScreen(FitViewport vp, GameRuntime runtime) {
         viewport = vp;
         errorMessage = "";
         this.runtime = runtime;

@@ -73,8 +73,8 @@ public class MenuScreen extends BasicGameScreen {
         try {
             games = new ArrayList<>();
 
-            Arrays.asList(Mdx.files.local("/Programs").list()).stream().forEach(game -> {
-                games.add(new CustomProgramProperties("Programs/" + game.nameWithoutExtension()));
+            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream().forEach(game -> {
+                games.add(new CustomProgramProperties(runtime.getProgramsPath() + game.nameWithoutExtension()));
             });
 
         } catch (IOException ex) {
@@ -95,8 +95,8 @@ public class MenuScreen extends BasicGameScreen {
 
     private void loadIcon() {
         try {
-            icon = Mdx.graphics.newTexture(Mdx.files.internal("Programs/" + games.get(index).getTitle() + "/Art/icon.png"));
-            if (Mdx.files.local("Programs/" + games.get(index).getTitle() + "/Code/Compiled").exists()) {
+            icon = Mdx.graphics.newTexture(Mdx.files.external(runtime.getProgramsPath() + games.get(index).getTitle() + "/Art/icon.png"));
+            if (Mdx.files.external(runtime.getProgramsPath() + games.get(index).getTitle() + "/Code/Compiled").exists()) {
                 isCompiled = " *";
                 if (games.get(index).getUseCompiled()) {
                     isCompiled = " **";
@@ -105,7 +105,7 @@ public class MenuScreen extends BasicGameScreen {
                 isCompiled = "";
             }
         } catch (Exception ex) {
-            icon = Mdx.graphics.newTexture(Mdx.files.internal("Data/Logo/logo-32x32.png"));
+            icon = Mdx.graphics.newTexture(Mdx.files.external(runtime.getDataPath() + "Logo/logo-32x32.png"));
             Logger.getLogger(MenuScreen.class.getName()).log(Level.WARNING, "No icon file for: {0}", games.get(index).getTitle());
         }
     }
