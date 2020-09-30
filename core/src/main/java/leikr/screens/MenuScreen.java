@@ -67,9 +67,8 @@ public class MenuScreen extends BasicGameScreen {
         fitViewport = vp;
         stretchViewport = new StretchViewport(runtime.WIDTH, runtime.HEIGHT);
     }
-
-    @Override
-    public void initialise(GameContainer gc) {
+    
+    private void rebuildGamesList(){
         try {
             games = new ArrayList<>();
 
@@ -84,7 +83,13 @@ public class MenuScreen extends BasicGameScreen {
     }
 
     @Override
+    public void initialise(GameContainer gc) {
+        rebuildGamesList();
+    }
+
+    @Override
     public void preTransitionIn(Transition transition) {
+        rebuildGamesList();
         framebuffer = Mdx.graphics.newFrameBuffer(runtime.WIDTH, runtime.HEIGHT);
     }
 
