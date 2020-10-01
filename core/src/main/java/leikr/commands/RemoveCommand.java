@@ -57,7 +57,7 @@ public class RemoveCommand extends Command {
     private boolean containsName(String name) {
         try {
             ArrayList<String> names = new ArrayList<>();
-            Arrays.asList(Mdx.files.local("Programs").list()).stream().forEach(e -> names.add(e.nameWithoutExtension()));
+            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream().forEach(e -> names.add(e.nameWithoutExtension()));
             return names.contains(name);
         } catch (IOException ex) {
             Logger.getLogger(RemoveCommand.class.getName()).log(Level.SEVERE, null, ex);

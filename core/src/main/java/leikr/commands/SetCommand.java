@@ -64,7 +64,7 @@ public class SetCommand extends Command {
             case "compile_source" ->
                 props.COMPILE_SOURCE = Boolean.valueOf(args[3]);
         }
-        props.writeProperties("Programs/" + args[1]);
+        props.writeProperties(runtime.getProgramsPath() + args[1]);
         return "[I] Set property [" + args[2] + "] to [" + args[3] + "] for program [" + args[1] + "]";
     }
 

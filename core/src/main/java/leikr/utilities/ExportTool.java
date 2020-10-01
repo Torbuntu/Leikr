@@ -78,11 +78,11 @@ public class ExportTool {
     }
 
     public void zip(String path) {
-        File exportDir = new File(Mdx.files.external(System.getProperty("user.home")+"/.config/Leikr/Packages/").path());
+        File exportDir = new File(Mdx.files.external(runtime.getPackagePath()).path());
         if (!exportDir.exists()) {
             exportDir.mkdirs();
         }
-        zipFolder(new File(Mdx.files.external(runtime.getProgramsPath() + path).path()).toPath(), new File(Mdx.files.external(System.getProperty("user.home")+"/.config/Leikr/Packages/" + path).path() + ".lkr").toPath());
+        zipFolder(new File(Mdx.files.external(runtime.getProgramsPath() + path).path()).toPath(), new File(Mdx.files.external(runtime.getPackagePath() + path).path() + ".lkr").toPath());
     }
 
     public void deployPackage(String name) {
@@ -116,7 +116,7 @@ public class ExportTool {
 
         byte[] buffer = new byte[1024];
         int len;
-        File lkrPackage = new File(Mdx.files.external(System.getProperty("user.home")+"/.config/Leikr/Packages/" + zipName).path() + ".lkr");
+        File lkrPackage = new File(Mdx.files.external(runtime.getPackagePath() + zipName).path() + ".lkr");
 
         try ( FileInputStream fileInStream = new FileInputStream(lkrPackage);  ZipInputStream zipInStream = new ZipInputStream(fileInStream)) {
             ZipEntry zipEntry = zipInStream.getNextEntry();

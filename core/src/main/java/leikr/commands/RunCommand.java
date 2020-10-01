@@ -48,6 +48,7 @@ public class RunCommand extends Command {
             return "Missing - required program title.";
         }
         try {
+            System.out.println(runtime.getProgramsPath());
             ArrayList<String> names = new ArrayList<>();
             Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream().forEach(e -> names.add(e.nameWithoutExtension()));
             if (!names.contains(command[1])) {

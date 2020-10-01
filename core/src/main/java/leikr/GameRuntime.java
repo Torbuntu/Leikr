@@ -62,6 +62,7 @@ public class GameRuntime extends ScreenBasedGame {
     private final String basePath;
     private final String dataPath;
     private final String deployPath;
+    private final String packagePath;
 
     private final FitViewport viewport;
     private AssetManager assetManager;
@@ -95,10 +96,12 @@ public class GameRuntime extends ScreenBasedGame {
      * @param args
      */
     public GameRuntime(String[] args) {
-        basePath = System.getProperty("user.home") + "/.config/Leikr/";
-        programsPath = System.getProperty("user.home") + "/.config/Leikr/Programs/";
-        dataPath = System.getProperty("user.home") + "/.config/Leikr/Data/";
-        deployPath = System.getProperty("user.home") + "/.config/Leikr/Deploy/";
+        String userHome = System.getProperty("user.home");
+        basePath = userHome + "/Leikr/";
+        programsPath = userHome + "/Leikr/Programs/";
+        dataPath = userHome + "/Leikr/Data/";
+        deployPath = userHome + "/Leikr/Deploy/";
+        packagePath = userHome + "/Leikr/Packages/";
         System.out.println(programsPath + "\n" + dataPath);
         directLaunch = false;
         gameName = "";
@@ -116,7 +119,7 @@ public class GameRuntime extends ScreenBasedGame {
     }
 
     void checkFileSystem() throws IOException {
-        String leikrConfig = System.getProperty("user.home") + "/.config/Leikr/";
+        String leikrConfig = System.getProperty("user.home") + "/Leikr/";
         if (!Mdx.files.external(leikrConfig).exists()) {
             Mdx.files.external(leikrConfig).mkdirs();
             Mdx.files.external(programsPath).mkdirs();
@@ -260,6 +263,10 @@ public class GameRuntime extends ScreenBasedGame {
 
     public String getBasePath() {
         return basePath;
+    }
+    
+    public String getPackagePath() {
+        return packagePath;
     }
 
 }
