@@ -127,6 +127,15 @@ public class GameRuntime extends ScreenBasedGame {
             Mdx.files.local("Data").copyTo(Mdx.files.external(leikrConfig));
             Mdx.files.local("Programs").copyTo(Mdx.files.external(leikrConfig));
         }
+        if (!Mdx.files.external(programsPath).exists()) {
+            Mdx.files.external(programsPath).mkdirs();
+            Mdx.files.local("Programs").copyTo(Mdx.files.external(leikrConfig));
+        }
+        if (!Mdx.files.external(dataPath).exists()) {
+            Mdx.files.external(dataPath).mkdirs();
+            Mdx.files.local("Data").copyTo(Mdx.files.external(leikrConfig));
+        }
+
     }
 
     @Override
@@ -238,8 +247,8 @@ public class GameRuntime extends ScreenBasedGame {
     }
 
     /**
-     * Returns the full path to Leikr's Programs directory. NOTE: This includes a
-     * trailing `/`
+     * Returns the full path to Leikr's Programs directory. NOTE: This includes
+     * a trailing `/`
      *
      * @return programsPath
      */
@@ -264,7 +273,7 @@ public class GameRuntime extends ScreenBasedGame {
     public String getBasePath() {
         return basePath;
     }
-    
+
     public String getPackagePath() {
         return packagePath;
     }
