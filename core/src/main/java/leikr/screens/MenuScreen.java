@@ -120,7 +120,7 @@ public class MenuScreen extends BasicGameScreen {
         if (Mdx.input.isKeyJustPressed(Keys.ESCAPE)) {
             Mdx.platformUtils.exit(true);
         }
-        if (Mdx.input.isKeyDown(Keys.ALT_LEFT) && Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyDown(Keys.T)) {
+        if (Mdx.input.isKeyJustPressed(Keys.T)) {
             sm.enterGameScreen(TerminalScreen.ID, null, null);
         }
 
@@ -210,7 +210,7 @@ public class MenuScreen extends BasicGameScreen {
 
         g.setColor(Colors.YELLOW());
         g.drawString("[ENTER/START] - Play", 0, 152, 240, Align.LEFT);
-        g.drawString("[Ctl+Alt+T] - Enter Terminal", 0, 152, 240, Align.RIGHT);
+        g.drawString("[T] - Enter Terminal", 0, 152, 240, Align.RIGHT);
         g.flush();
         framebuffer.end();
 
