@@ -57,7 +57,7 @@ public class PrintDirectoryCommand extends Command {
             out = "";
             List<String> titles = new ArrayList<>();
 
-            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).forEach(e -> titles.add(e.nameWithoutExtension()));
+            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).forEach(e -> titles.add(e.name()));
 
             titles.stream().sorted().forEach(e -> {
                 if (Mdx.files.external(runtime.getProgramsPath() + e + "/Code/Compiled").exists()) {
@@ -77,7 +77,7 @@ public class PrintDirectoryCommand extends Command {
         try {
             out = "";
             List<String> titles = new ArrayList<>();
-            Arrays.asList(Mdx.files.external(dir).list()).forEach(e -> titles.add(e.nameWithoutExtension()));
+            Arrays.asList(Mdx.files.external(runtime.getProgramsPath() + dir).list()).forEach(e -> titles.add(e.name()));
 
             titles.stream().sorted().forEach(e -> out += e + "\n");
             return out;

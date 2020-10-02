@@ -33,7 +33,7 @@ public class ExportCommand extends Command {
     @Override
     public String execute(String[] command) {
         if (command.length <= 1) {
-            return "Missing - required name argument.";
+            return "[E] Missing - required name argument.";
         }
         if (command[1].equalsIgnoreCase("all")) {
             return exportTool.exportAll();

@@ -43,7 +43,7 @@ public class PrintWorkspaceCommand extends Command {
             return f.getAbsolutePath();
         } catch (IOException ex) {
             Logger.getLogger(PrintWorkspaceCommand.class.getName()).log(Level.SEVERE, null, ex);
-            return "Could not find workspace directory.";
+            return "[E] Could not find workspace directory.";
         }
     }
 

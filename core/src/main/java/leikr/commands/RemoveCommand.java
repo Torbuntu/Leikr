@@ -39,17 +39,17 @@ public class RemoveCommand extends Command {
     @Override
     public String execute(String[] command) {
         if (command.length <= 1) {
-            return "Missing - required program name.";
+            return "[E] Missing - required program name.";
         }
         if (!containsName(command[1])) {
-            return "Program [" + command[1] + "] does not exist in Programs directory.";
+            return "[E] Program [" + command[1] + "] does not exist in Programs directory.";
         }
         try {
             Mdx.files.external(runtime.getProgramsPath() + command[1]).deleteDirectory();
-            return "Program [" + command[1] + "] has been uninstalled.";
+            return "[I] Program [" + command[1] + "] has been uninstalled.";
         } catch (IOException ex) {
             Logger.getLogger(RemoveCommand.class.getName()).log(Level.SEVERE, null, ex);
-            return "Could not uninstall [" + command[1] + "]";
+            return "[E] Could not uninstall [" + command[1] + "]";
         }
 
     }

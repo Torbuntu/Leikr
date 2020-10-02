@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 See AUTHORS file.
+ * Copyright 2020 tor.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,39 +15,46 @@
  */
 package leikr.commands;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import leikr.GameRuntime;
-import leikr.utilities.ExportTool;
+import org.mini2Dx.core.Mdx;
 
 /**
  *
- * @author Torbuntu
+ * @author tor
  */
-public class InstallCommand extends Command {
+public class PrintCommand extends Command {
 
-    private final ExportTool exportTool;
     private final GameRuntime runtime;
 
-    public InstallCommand(GameRuntime runtime, ExportTool exportTool) {
-        super.name = "install";
+    public PrintCommand(GameRuntime runtime) {
+        super.name = "cat";
         this.runtime = runtime;
-        this.exportTool = exportTool;
     }
 
     @Override
     public String execute(String[] command) {
+        String adjustedPath = runtime.getProgramsPath() + command[1];
         if (command.length <= 1) {
             return "[E] Missing - required name argument.";
         }
-        if (command.length == 3) {
-            return exportTool.importProject(command[1], command[2]);
-        } else {
-            return exportTool.importProject(command[1], runtime.getProgramsPath());
+        if(!Mdx.files.external(adjustedPath).exists()){
+            return "[E] File [" + command[1] + "] not found.";
         }
+        try {
+            return Mdx.files.external(adjustedPath).readString();
+        } catch (IOException ex) {
+            Logger.getLogger(PrintCommand.class.getName()).log(Level.SEVERE, null, ex);
+            return "[E] Failed to print contents of file [" + command[1] + "]";
+        }
+
     }
 
     @Override
     public String help() {
-        return ">install [name] [option]\nInstalls a .lkr package from the Packages directory into the Programs directory. Can optionally direct where to install a project given a path.";
+        return ">cat [file] \nPrints the contents of a file to the terminal.\nTerminal does not currently scroll contents.";
     }
 
 }

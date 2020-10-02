@@ -45,14 +45,14 @@ public class RunCommand extends Command {
     @Override
     public String execute(String[] command) {
         if (command.length == 1) {
-            return "Missing - required program title.";
+            return "[E] Missing - required program title.";
         }
         try {
             System.out.println(runtime.getProgramsPath());
             ArrayList<String> names = new ArrayList<>();
             Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream().forEach(e -> names.add(e.nameWithoutExtension()));
             if (!names.contains(command[1])) {
-                return "Program [" + command[1] + "] does not exist in Programs directory.";
+                return "[E] Program [" + command[1] + "] does not exist in Programs directory.";
             }
             runtime.setGameName(command[1]);
             if (command.length > 2) {
@@ -60,10 +60,10 @@ public class RunCommand extends Command {
                 engineLoader.setEngineArgs(args);
             }
             terminalManager.setProgramRunning();
-            return "Loading...";
+            return "[I] Loading...";
         } catch (IOException ex) {
             Logger.getLogger(RunCommand.class.getName()).log(Level.WARNING, null, ex);
-            return "Failed to run program with name [ " + command[1] + " ]";
+            return "[E] Failed to run program with name [ " + command[1] + " ]";
         }
     }
 

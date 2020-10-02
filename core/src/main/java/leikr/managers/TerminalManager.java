@@ -35,6 +35,7 @@ import leikr.commands.GetCommand;
 import leikr.commands.InstallCommand;
 import leikr.commands.NewProgramCommand;
 import leikr.commands.PackageCommand;
+import leikr.commands.PrintCommand;
 import leikr.commands.PrintDirectoryCommand;
 import leikr.commands.PrintWorkspaceCommand;
 import leikr.commands.RemoveCommand;
@@ -102,6 +103,7 @@ public class TerminalManager implements InputProcessor {
             Logger.getLogger(TerminalManager.class.getName()).log(Level.SEVERE, null, ex);
         }
         commandList.put("about", new AboutCommand(runtime));
+        commandList.put("cat", new PrintCommand(runtime));
         commandList.put("ls", new PrintDirectoryCommand(runtime));
         commandList.put("new", new NewProgramCommand(runtime, this));
         commandList.put("exit", new ExitCommand());

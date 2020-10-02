@@ -44,7 +44,7 @@ public class FindCommand extends Command {
             return "[E] Missing - required program name.";
         }
         if (!containsName(command[1])) {
-            return "Program [" + command[1] + "] does not exist in Programs directory.";
+            return "[E] Program [" + command[1] + "] does not exist in Programs directory.";
         }
         try {
             File f = new File(runtime.getProgramsPath() + command[1]);
@@ -52,7 +52,7 @@ public class FindCommand extends Command {
             return f.getAbsolutePath();
         } catch (IOException ex) {
             Logger.getLogger(FindCommand.class.getName()).log(Level.SEVERE, null, ex);
-            return "Could not find program directory for [" + command[1] + "].";
+            return "[E] Could not find program directory for [" + command[1] + "].";
         }
     }
 

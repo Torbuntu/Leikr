@@ -50,19 +50,19 @@ public class ToolCommand extends Command {
                 return out;
             } catch (IOException ex) {
                 Logger.getLogger(ToolCommand.class.getName()).log(Level.WARNING, null, ex);
-                return "Failed to list tools.";
+                return "[E] Failed to list tools.";
             }
         } else {
             try {
                 if (!containsName(command[1])) {
-                    return "Tool [" + command[1] + "] does not exist in Data/Tools/ directory.";
+                    return "[E] Tool [" + command[1] + "] does not exist in Data/Tools/ directory.";
                 }
                 runtime.setGameName(command[1]);
                 terminalManager.setToolRunning();
-                return "Running tool [" + command[1] + "].";
+                return "[I] Running tool [" + command[1] + "].";
             } catch (Exception ex) {
                 Logger.getLogger(ToolCommand.class.getName()).log(Level.WARNING, null, ex);
-                return "Failed to run tool with name [ " + command[1] + " ]";
+                return "[E] Failed to run tool with name [ " + command[1] + " ]";
             }
 
         }

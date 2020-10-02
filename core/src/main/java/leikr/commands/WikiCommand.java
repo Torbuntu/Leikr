@@ -42,9 +42,9 @@ public class WikiCommand extends Command {
             Desktop.getDesktop().browse(new URI(wiki));
         } catch (IOException | URISyntaxException ex) {
             Logger.getLogger(WikiCommand.class.getName()).log(Level.WARNING, null, ex);
-            return "Host browser unaccessible.";
+            return "[E] Host browser unaccessible.";
         }
-        return "Opening [" + wiki + "] in host browser.";
+        return "[I] Opening [" + wiki + "] in host browser.";
     }
 
     @Override

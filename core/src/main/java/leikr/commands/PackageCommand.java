@@ -49,15 +49,14 @@ public class PackageCommand extends Command {
         try {
             Mdx.files.external(runtime.getDeployPath() + programName + "/Programs/").mkdirs();
             Mdx.files.external(runtime.getProgramsPath() + programName).copyTo(Mdx.files.external(runtime.getDeployPath() + programName + "/Programs/"));
-            Mdx.files.external(runtime.getDataPath()).copyTo(Mdx.files.external(runtime.getDeployPath() + programName));
-            Mdx.files.external(runtime.getBasePath() + "Sys").copyTo(Mdx.files.external(runtime.getDeployPath() + programName));
-            Mdx.files.external(runtime.getBasePath() + "Leikr").copyTo(Mdx.files.external(runtime.getDeployPath()+ programName));
-            Mdx.files.external(runtime.getBasePath() + "Leikr.bat").copyTo(Mdx.files.external(runtime.getDeployPath() + programName));
-            Mdx.files.external(runtime.getBasePath() + "gamecontrollerdb.txt").copyTo(Mdx.files.external(runtime.getDeployPath() + programName));
-            Mdx.files.external(runtime.getBasePath() + "Leikr.jar").copyTo(Mdx.files.external(runtime.getDeployPath()+ programName));
+            Mdx.files.local("Data").copyTo(Mdx.files.external(runtime.getDeployPath() + programName));
+            Mdx.files.local("Sys").copyTo(Mdx.files.external(runtime.getDeployPath() + programName));
+            Mdx.files.local("Leikr").copyTo(Mdx.files.external(runtime.getDeployPath()+ programName));
+            Mdx.files.local("Leikr.bat").copyTo(Mdx.files.external(runtime.getDeployPath() + programName));
+            Mdx.files.local("Leikr.jar").copyTo(Mdx.files.external(runtime.getDeployPath()+ programName));
         } catch (Exception ex) {
             Logger.getLogger(PackageCommand.class.getName()).log(Level.SEVERE, null, ex);
-            return "Failed to package and deploy project [" + programName + "]";
+            return "[E] Failed to package and deploy project [" + programName + "]";
         }
         Properties outProp = new Properties();
         outProp.setProperty("launch_title", programName);
@@ -83,11 +82,11 @@ public class PackageCommand extends Command {
             outProp.store(stream, "Packaged from Leikr.");
         } catch (Exception ex) {
             Logger.getLogger(PackageCommand.class.getName()).log(Level.SEVERE, null, ex);
-            return "Failed to package and deploy project [" + programName + "]";
+            return "[E] Failed to package and deploy project [" + programName + "]";
         }
 
         exportTool.deployPackage(programName);
-        return "Successfully packaged [" + programName + "]. Check the Deploy directory.";
+        return "[I] Successfully packaged [" + programName + "]. Check the Deploy directory.";
     }
 
     @Override

@@ -46,7 +46,7 @@ public class NewProgramCommand extends Command {
                 return message;
             } catch (IOException ex) {
                 Logger.getLogger(NewProgramCommand.class.getName()).log(Level.SEVERE, null, ex);
-                return "New program with name [" + command[1] + "] failed to generate.";
+                return "[E] New program with name [" + command[1] + "] failed to generate.";
             }
         }
         terminalManager.setNewProgramRunning();

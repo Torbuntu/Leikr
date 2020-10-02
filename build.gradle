@@ -15,7 +15,7 @@ allprojects {
         //Version = 1.0.0-SNAPSHOT //(silly versioning)
         appName = 'Leikr'
         mini2DxVersion = '2.0.0-alpha.32'
-        groovyVersion = '3.0.5'
+        groovyVersion = '4.0.0-alpha-1'
         gdxVersion = '1.9.12-SNAPSHOT'
         gdxControllersVersion = '2.0.0-SNAPSHOT'
         lwjglNatives32 = 'natives-linux-arm32'
@@ -26,6 +26,7 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+        jcenter()
         maven { url "https://jitpack.io" }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     }
@@ -50,7 +51,7 @@ project(":core") {
         
         implementation "org.mini2Dx:mini2Dx-core:$mini2DxVersion"
         implementation "org.mini2Dx:mini2Dx-tiled:$mini2DxVersion"
-        implementation "org.codehaus.groovy:groovy:$groovyVersion"
+        implementation "org.apache.groovy:groovy:$groovyVersion"
         
         // lwjgl3natives:
         implementation "org.lwjgl:lwjgl:$lwjglVersion"

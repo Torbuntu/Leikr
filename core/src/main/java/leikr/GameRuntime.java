@@ -212,11 +212,11 @@ public class GameRuntime extends ScreenBasedGame {
     }
 
     public String getGamePath() {
-        return "Programs/" + getGameName();
+        return programsPath + getGameName();
     }
 
     public String getToolPath() {
-        return "Data/Tools/" + getGameName();
+        return dataPath + "/Tools/" + getGameName();
     }
 
     public String getGameName() {
