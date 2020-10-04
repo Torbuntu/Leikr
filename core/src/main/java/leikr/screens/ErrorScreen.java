@@ -66,10 +66,14 @@ public class ErrorScreen extends BasicGameScreen {
     }
 
     @Override
-    public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
+    public void update(GameContainer gc, ScreenManager sm, float f) {
         if (MENU || Mdx.input.isKeyJustPressed(Keys.ESCAPE) || Mdx.input.isKeyJustPressed(Keys.ENTER) || Mdx.input.isKeyJustPressed(Keys.SPACE) || Mdx.input.isKeyJustPressed(Keys.Q)) {
             MENU = false;
-            sm.enterGameScreen(TerminalScreen.ID, null, null);
+            if (runtime.isDevMode()) {
+                sm.enterGameScreen(TerminalScreen.ID, null, null);
+            } else {
+                sm.enterGameScreen(MenuScreen.ID, null, null);
+            }
         }
 
         if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyJustPressed(Keys.R) || Mdx.input.isKeyJustPressed(Keys.F5)) {

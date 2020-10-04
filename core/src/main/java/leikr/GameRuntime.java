@@ -207,6 +207,14 @@ public class GameRuntime extends ScreenBasedGame {
         this.addScreen(new MenuScreen(customSystemProperties, viewport, this));//7
     }
 
+    public CustomSystemProperties getCustomSystemProperties() {
+        return customSystemProperties;
+    }
+
+    public boolean isDevMode() {
+        return customSystemProperties.isDevMode();
+    }
+
     public boolean checkDirectLaunch() {
         return directLaunch;
     }

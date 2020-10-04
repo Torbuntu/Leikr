@@ -54,7 +54,7 @@ public class ExportTool {
         } catch (IOException ex) {
             Logger.getLogger(ExportTool.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return "Failed to export all projects.";
+        return "[E] Failed to export all projects.";
     }
 
     public String export(String project) {

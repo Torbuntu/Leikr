@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 See AUTHORS.
+ * Copyright 2019 See AUTHORS file.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,83 +15,36 @@
  */
 package leikr.commands;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import leikr.GameRuntime;
 import leikr.utilities.ExportTool;
-import org.mini2Dx.core.Mdx;
 
 /**
  *
- * @author tor
+ * @author Torbuntu
  */
 public class PackageCommand extends Command {
 
     private final ExportTool exportTool;
-    private final GameRuntime runtime;
 
-    public PackageCommand(GameRuntime runtime, ExportTool exportTool) {
+    public PackageCommand(ExportTool exportTool) {
         super.name = "package";
-        this.runtime = runtime;
         this.exportTool = exportTool;
     }
 
     @Override
-    public String execute(String[] args) {
-        String programName = args[1];
-        File outputDir = new File(Mdx.files.external(runtime.getDeployPath()).path());
-        if (!outputDir.exists()) {
-            outputDir.mkdirs();
+    public String execute(String[] command) {
+        if (command.length <= 1) {
+            return "[E] Missing - required name argument.";
         }
-        try {
-            Mdx.files.external(runtime.getDeployPath() + programName + "/Programs/").mkdirs();
-            Mdx.files.external(runtime.getProgramsPath() + programName).copyTo(Mdx.files.external(runtime.getDeployPath() + programName + "/Programs/"));
-            Mdx.files.local("Data").copyTo(Mdx.files.external(runtime.getDeployPath() + programName));
-            Mdx.files.local("Sys").copyTo(Mdx.files.external(runtime.getDeployPath() + programName));
-            Mdx.files.local("Leikr").copyTo(Mdx.files.external(runtime.getDeployPath()+ programName));
-            Mdx.files.local("Leikr.bat").copyTo(Mdx.files.external(runtime.getDeployPath() + programName));
-            Mdx.files.local("Leikr.jar").copyTo(Mdx.files.external(runtime.getDeployPath()+ programName));
-        } catch (Exception ex) {
-            Logger.getLogger(PackageCommand.class.getName()).log(Level.SEVERE, null, ex);
-            return "[E] Failed to package and deploy project [" + programName + "]";
+        if (command[1].equalsIgnoreCase("all")) {
+            return exportTool.exportAll();
+        } else {
+            return exportTool.export(command[1]);
         }
-        Properties outProp = new Properties();
-        outProp.setProperty("launch_title", programName);
-
-        outProp.setProperty("btn_x", "3");
-        outProp.setProperty("btn_a", "1");
-        outProp.setProperty("btn_b", "0");
-        outProp.getProperty("btn_y", "2");
-
-        outProp.setProperty("btn_lbumper", "9");
-        outProp.setProperty("btn_rbumper", "10");
-
-        outProp.setProperty("btn_select", "4");
-        outProp.setProperty("btn_start", "6");
-
-        outProp.setProperty("btn_up", "-1");
-        outProp.setProperty("btn_down", "1");
-        outProp.setProperty("btn_left", "-1");
-        outProp.setProperty("btn_right", "1");
-        outProp.setProperty("axis_horizontal", "0");
-        outProp.setProperty("axis_vertical", "1");
-        try ( FileOutputStream stream = new FileOutputStream(new File(runtime.getDeployPath() + programName + "/Data/system.properties"))) {
-            outProp.store(stream, "Packaged from Leikr.");
-        } catch (Exception ex) {
-            Logger.getLogger(PackageCommand.class.getName()).log(Level.SEVERE, null, ex);
-            return "[E] Failed to package and deploy project [" + programName + "]";
-        }
-
-        exportTool.deployPackage(programName);
-        return "[I] Successfully packaged [" + programName + "]. Check the Deploy directory.";
     }
 
     @Override
     public String help() {
-        return ">package [project] \nPackages a project given the name and deploys it as a single launch project in the Deploy folder.";
+        return ">package [name] \nPackages a program by name into the Packages directory as .lkr package for sharing. Run with `all` argument to export all programs. See `install` command.";
     }
 
 }

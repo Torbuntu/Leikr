@@ -271,6 +271,8 @@ public class EngineScreen extends BasicGameScreen {
     }
 
     private void pause() {
+        Gdx.input.setCursorCatched(false);
+        runtime.getCursor().setVisible(false);
         engineState = EngineState.PAUSE;
         engine.lAudio.pauseAudio();
         engine.onPause();
@@ -280,6 +282,7 @@ public class EngineScreen extends BasicGameScreen {
         if (CONFIRM) {
             engineState = EngineState.BACK;
         } else {
+            Gdx.input.setCursorCatched(true);
             engineState = EngineState.RUNNING;
             //engine.lAudio.resumeAllAudio();
             engine.onResume();

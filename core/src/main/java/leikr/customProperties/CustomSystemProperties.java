@@ -49,12 +49,15 @@ public class CustomSystemProperties {
 
     private boolean DEBUG;
 
+    private boolean devMode;
+
     public CustomSystemProperties() {
         Properties prop = new Properties();
         try ( InputStream stream = new FileInputStream(new File("Data/system.properties"))) {
             prop.load(stream);
             launchTitle = (prop.getProperty("launch_title") != null) ? prop.getProperty("launch_title") : "";
             DEBUG = (prop.getProperty("debug_mode") != null) ? Boolean.valueOf(prop.getProperty("debug_mode")) : false;
+            devMode = (prop.getProperty("dev_mode") != null) ? Boolean.valueOf(prop.getProperty("dev_mode")) : false;
 
             x = (prop.getProperty("btn_x") != null) ? Integer.parseInt(prop.getProperty("btn_x")) : 3;
             A = (prop.getProperty("btn_a") != null) ? Integer.parseInt(prop.getProperty("btn_a")) : 1;
@@ -142,6 +145,10 @@ public class CustomSystemProperties {
 
     public boolean isDEBUG() {
         return DEBUG;
+    }
+
+    public boolean isDevMode() {
+        return devMode;
     }
 
 }
