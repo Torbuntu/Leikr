@@ -181,7 +181,7 @@ public class GameRuntime extends ScreenBasedGame {
         engineLoader = new EngineLoader(this);
         imageLoader = new ImageLoader();
         mapLoader = new MapLoader(customSystemProperties);
-        spriteLoader = new SpriteLoader();
+        spriteLoader = new SpriteLoader(this);
     }
 
     private void initializeManagers() {

@@ -17,6 +17,7 @@ package leikr.loaders;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import leikr.GameRuntime;
 import leikr.exceptions.RenderException;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
@@ -41,8 +42,10 @@ public class SpriteLoader {
     private SpriteSheet spriteBank16;
     private SpriteSheet spriteBank32;
     private SpriteSheet spriteBank64;
+    private final GameRuntime runtime;
 
-    public SpriteLoader() {
+    public SpriteLoader(GameRuntime runtime) {
+        this.runtime = runtime;
     }
 
     public void resetSpriteLoader(String path) {
@@ -107,22 +110,9 @@ public class SpriteLoader {
         }
     }
 
-    /*
-    TODO: Look into custom exceptions. 
-    public Sprite getSprite(int id, int size) {
-        return convertException(() -> (switch (size) {
-                case 1 -> spriteBank16;
-                case 2 -> spriteBank32;
-                case 3 -> spriteBank64;
-                default -> spriteBank;
-            }).getSprite(id), RenderException::new);
-    }
-}
-    
-     */
     public void loadManualSpritesheets(String programName) {
 //        resetSpriteLoader();
-        rootPath = "Programs/" + programName + "/Sprites/Sprites.png";
+        rootPath = runtime.getProgramsPath() + programName + "/Sprites/Sprites.png";
         if (!Mdx.files.local(rootPath).exists()) {
             Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "No sprites found for: {0}", rootPath);
             return;

@@ -53,8 +53,8 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
      */
     public LeikrController lControllerA;
     public LeikrController lControllerB;
-    public LeikrMouse lMouse;
     public LeikrKeyboard lKeyboard;
+    public LeikrMouse lMouse;
 
     /*
      * Managers
@@ -224,6 +224,14 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
 
     public void setFont(String path, int spacing, int width, int height) {
         lSystem.setCustomFont(path, spacing, width, height);
+    }
+
+    public String getProgramPath() {
+        return lSystem.getProgramPath();
+    }
+
+    public String getDataPath() {
+        return lSystem.getDataPath();
     }
     // </editor-fold>
 
@@ -787,6 +795,10 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
 
     public void pause(boolean shouldPause) {
         lSystem.pause(shouldPause);
+    }
+
+    public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal r1, BigDecimal x2, BigDecimal y2, BigDecimal r2) {
+        return lSystem.collides(x1, y1, r1, x2, y2, r2);
     }
 
     public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {

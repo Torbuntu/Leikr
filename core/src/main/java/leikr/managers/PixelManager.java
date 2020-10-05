@@ -32,8 +32,8 @@ import org.mini2Dx.core.graphics.SpriteSheet;
  */
 public class PixelManager {
 
-    SpriteSheet pixels;
-    List<Color> colorPalette;
+    private SpriteSheet pixels;
+    private List<Color> colorPalette;
 
     public PixelManager() {
         createPalette();

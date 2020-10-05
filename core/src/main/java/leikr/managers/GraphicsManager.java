@@ -156,7 +156,7 @@ public class GraphicsManager {
     }
     //end Image methods
 
-    //Map methods
+    // <editor-fold desc="Map methods" defaultstate="collapsed"> 
     public final void loadMap(String map) {
         mapLoader.loadMap(map);
     }
@@ -212,14 +212,9 @@ public class GraphicsManager {
     public final int getMapWidth() {
         return mapLoader.getMap().getWidth();
     }
-    //end Map methods
+    // </editor-fold>
 
     //start color methods
-    @Deprecated
-    private void setDrawColor(int color) {
-        g.setColor(pixelManager.getDrawColor(color));
-    }
-
     public final void bgColor(Color color) {
         bgColor = color;
     }
@@ -239,9 +234,9 @@ public class GraphicsManager {
     public final Color getColor(String color) {
         return Colors.rgbToColor(color);
     }
-
     //end color methods
-    //text methods
+
+    // <editor-fold desc="String drawing methods" defaultstate="collapsed"> 
     public final void drawString(Color color, String text, BigDecimal x, BigDecimal y) {
         g.setColor(color);
         g.drawString(text, x.floatValue(), y.floatValue());
@@ -280,9 +275,9 @@ public class GraphicsManager {
     public final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
         drawString(Colors.rgbToColor(color), text, x, y, width, align);
     }
+    // </editor-fold>
 
-    //end drawString methods
-    //sprite helper methods.
+    // <editor-fold desc="Sprite methods" defaultstate="collapsed"> 
     private void drawSpriteRotate(int id, BigDecimal x, BigDecimal y, BigDecimal degr, int size) {
         if (usedSprites >= maxSprites) {
             return;
@@ -564,7 +559,7 @@ public class GraphicsManager {
         t.setScale(1);
         usedSprites++;
     }
-    //END special sprite mode
+    // </editor-fold>
 
     //start shape drawing methods
     /**

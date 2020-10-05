@@ -60,6 +60,14 @@ public class SystemManager {
     }
 
     //START API
+    public String getProgramPath() {
+        return runtime.getProgramsPath();
+    }
+
+    public String getDataPath() {
+        return runtime.getDataPath();
+    }
+
     /**
      * resetFont
      *
@@ -87,7 +95,7 @@ public class SystemManager {
         pause = shouldPause;
     }
 
-    //START Math functions
+    // <editor-fold desc="Math api" defaultstate="collapsed"> 
     public float cos(BigDecimal radians) {
         return MathUtils.cos(radians.floatValue());
     }
@@ -131,8 +139,16 @@ public class SystemManager {
     public int round(BigDecimal number) {
         return MathUtils.round(number.floatValue());
     }
+    // </editor-fold>
 
-    //END Math functions
+    // <editor-fold desc="Built in collisions" defaultstate="collapsed"> 
+    public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal r1, BigDecimal x2, BigDecimal y2, BigDecimal r2) {
+        float vx = x1.floatValue() - x2.floatValue();
+        float vy = y1.floatValue() - y2.floatValue();
+        float vr = r1.floatValue() + r2.floatValue();
+        return Math.abs((vx) * (vx) + (vy) * (vy)) < (vr) * (vr);
+    }
+
     public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {
         return x1.floatValue() + w1.floatValue() >= x2.floatValue() && x2.floatValue() + w2.floatValue() >= x1.floatValue() && y1.floatValue() + h1.floatValue() >= y2.floatValue() && y2.floatValue() + h2.floatValue() >= y1.floatValue();
     }
@@ -144,8 +160,9 @@ public class SystemManager {
     public boolean point(BigDecimal x, BigDecimal y, BigDecimal x2, BigDecimal y2, BigDecimal w, BigDecimal h) {
         return x.floatValue() >= x2.floatValue() && x.floatValue() <= x2.floatValue() + w.floatValue() && y.floatValue() >= y2.floatValue() && y.floatValue() <= y2.floatValue() + h.floatValue();
     }
+    // </editor-fold>
 
-    //START EngineLoader API
+    // <editor-fold desc="Engine loader api" defaultstate="collapsed"> 
     public void loadSpriteSheet(String sheetName) {
         spriteLoader.loadManualSpritesheets(sheetName);
     }
@@ -173,10 +190,9 @@ public class SystemManager {
     public Object newInstance(String name) {
         return engineLoader.newInstance(name);
     }
-    //END EngineLoader API
+    // </editor-fold>
 
-    //END API
-    //START game loop methods on EngineScreen
+    // <editor-fold desc="Game loop methods ran from Engine Screen" defaultstate="collapsed"> 
     public final boolean update(ScreenManager sm) {
         if (loadProgram) {
             loadProgram = false;
@@ -198,5 +214,5 @@ public class SystemManager {
     public void setRunning(boolean run) {
         running = run;
     }
-    //END game loop methods on EngineScreen
+    // </editor-fold>
 }

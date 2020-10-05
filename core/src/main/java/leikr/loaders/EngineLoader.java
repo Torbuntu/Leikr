@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -138,14 +139,13 @@ public class EngineLoader implements Callable<Engine> {
         cc.setTargetDirectory(COMPILED);
         Compiler compiler = new Compiler(cc);
 
-        FileHandle[] list = Mdx.files.external(rootPath).list(".groovy");
         ArrayList<String> files = new ArrayList<>();
-        for (FileHandle f : list) {
-            files.add(f.path());
-        }
+        Arrays.asList(Mdx.files.external(rootPath).list(".groovy"))
+                .stream().forEach(f -> files.add(f.path()));
+        
         String[] out = new String[files.size()];
         out = files.toArray(out);
-
+        
         compiler.compile(out);
     }
 
@@ -158,9 +158,9 @@ public class EngineLoader implements Callable<Engine> {
     public void destroy() {
         if (null != gcl) {
             gcl.clearCache();
-            for (Class<?> c : gcl.getLoadedClasses()) {
+            Arrays.stream(gcl.getLoadedClasses()).forEach(c -> {
                 GroovySystem.getMetaClassRegistry().removeMetaClass(c);
-            }
+            });
         }
     }
 
