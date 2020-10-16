@@ -20,6 +20,7 @@
 	  	</screenshot>
 	  </screenshots>
 	  <releases>
+	  	<release version="1.0.2" date="2020-10-02"/>
 	  	<release version="1.0.1" date="2020-09-29"/>
 	  </releases>
 	  <content_rating type="oars-1.1" />

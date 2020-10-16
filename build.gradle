@@ -14,7 +14,7 @@ allprojects {
     ext {
         //Version = 1.0.0-SNAPSHOT //(silly versioning)
         appName = 'Leikr'
-        mini2DxVersion = '2.0.0-alpha.32'
+        mini2DxVersion = '2.0.0-alpha.34'
         groovyVersion = '4.0.0-alpha-1'
         gdxVersion = '1.9.12-SNAPSHOT'
         gdxControllersVersion = '2.0.0-SNAPSHOT'
@@ -47,10 +47,10 @@ project(":core") {
         //implementation "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
         
         implementation "com.badlogicgames.gdx:gdx-controllers-lwjgl3:$gdxVersion"
-        implementation "org.mini2Dx:mini2Dx-libgdx-desktop-lwjgl3:$mini2DxVersion"
+        implementation "org.mini2Dx:mini2dx-libgdx-desktop-lwjgl3:$mini2DxVersion"
         
-        implementation "org.mini2Dx:mini2Dx-core:$mini2DxVersion"
-        implementation "org.mini2Dx:mini2Dx-tiled:$mini2DxVersion"
+        implementation "org.mini2Dx:mini2dx-core:$mini2DxVersion"
+        implementation "org.mini2Dx:mini2dx-tiled:$mini2DxVersion"
         implementation "org.apache.groovy:groovy:$groovyVersion"
         
         // lwjgl3natives:
@@ -85,6 +85,6 @@ project(":desktop") {
         //implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
         
         implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        implementation "org.mini2Dx:mini2Dx-libgdx-desktop-lwjgl3:$mini2DxVersion"
+        implementation "org.mini2Dx:mini2dx-libgdx-desktop-lwjgl3:$mini2DxVersion"
     }
 }
