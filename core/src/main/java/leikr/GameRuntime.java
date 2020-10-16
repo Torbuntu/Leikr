@@ -117,7 +117,7 @@ public class GameRuntime extends ScreenBasedGame {
             System.out.println("Game Title: " + gameName);
         }
     }
-
+    
     void checkFileSystem() throws IOException {
         String leikrConfig = System.getProperty("user.home") + "/Leikr/";
         if (!Mdx.files.external(leikrConfig).exists()) {
@@ -287,3 +287,5 @@ public class GameRuntime extends ScreenBasedGame {
     }
 
 }
+
+//TODO: If LEIKR_HOME env variable set, create custom LeikrPolicy object with file path.
