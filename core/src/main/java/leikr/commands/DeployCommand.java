@@ -28,13 +28,12 @@ import org.mini2Dx.core.Mdx;
  *
  * @author tor
  */
-public class DeployCommand extends Command {
+public class DeployCommand implements Command {
 
     private final ExportTool exportTool;
     private final GameRuntime runtime;
 
     public DeployCommand(GameRuntime runtime, ExportTool exportTool) {
-        super.name = "deploy";
         this.runtime = runtime;
         this.exportTool = exportTool;
     }
@@ -93,6 +92,11 @@ public class DeployCommand extends Command {
     @Override
     public String help() {
         return ">deploy [project] \nPackages a project given the name and deploys it as a single launch project in the Deploy folder.";
+    }
+
+    @Override
+    public String getName() {
+        return "deploy";
     }
 
 }

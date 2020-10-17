@@ -19,11 +19,11 @@ package leikr.commands;
  *
  * @author tor
  */
-public abstract class Command {
+public interface Command {
 
-    public String name;
+    public String execute(String[] args);
 
-    public abstract String execute(String[] args);
-
-    public abstract String help();
+    public String help();
+    
+    public String getName();
 }

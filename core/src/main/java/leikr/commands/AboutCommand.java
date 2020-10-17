@@ -28,12 +28,11 @@ import org.mini2Dx.core.Mdx;
  *
  * @author tor
  */
-public class AboutCommand extends Command {
+public class AboutCommand implements Command {
 
     private final GameRuntime runtime;
 
     public AboutCommand(GameRuntime runtime) {
-        super.name = "about";
         this.runtime = runtime;
     }
 
@@ -68,6 +67,11 @@ public class AboutCommand extends Command {
     @Override
     public String help() {
         return ">about [name]\nReads the property file of the given program name.";
+    }
+
+    @Override
+    public String getName() {
+        return "about";
     }
 
 }

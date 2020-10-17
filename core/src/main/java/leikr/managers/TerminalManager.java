@@ -189,7 +189,7 @@ public class TerminalManager implements InputProcessor {
     String getAllHelp() {
         ArrayList<String> output = new ArrayList<>();
         commandList.keySet().forEach((h) -> {
-            output.add(commandList.get(h).name);
+            output.add(commandList.get(h).getName());
         });
         output.sort(String::compareToIgnoreCase);
         return output.stream().collect(Collectors.joining(", "));

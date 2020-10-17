@@ -24,13 +24,12 @@ import leikr.customProperties.CustomProgramProperties;
  *
  * @author tor
  */
-public class SetCommand extends Command {
+public class SetCommand implements Command {
 
     private final List<String> properties;
     private final GameRuntime runtime;
 
     public SetCommand(GameRuntime runtime) {
-        super.name = "set";
         this.runtime = runtime;
         properties = new ArrayList<>();
         properties.add("author");
@@ -71,6 +70,11 @@ public class SetCommand extends Command {
     @Override
     public String help() {
         return ">set [Program] [Property] [Value] \nSets the given program's property to the given value.";
+    }
+
+    @Override
+    public String getName() {
+        return "set";
     }
 
 }

@@ -29,14 +29,13 @@ import org.mini2Dx.core.Mdx;
  *
  * @author tor
  */
-public class RunCommand extends Command {
+public class RunCommand implements Command {
 
     private final GameRuntime runtime;
     private final TerminalManager terminalManager;
     private final EngineLoader engineLoader;
 
     public RunCommand(GameRuntime runtime, TerminalManager terminalManager, EngineLoader engineLoader) {
-        super.name = "run";
         this.runtime = runtime;
         this.terminalManager = terminalManager;
         this.engineLoader = engineLoader;
@@ -70,6 +69,11 @@ public class RunCommand extends Command {
     @Override
     public String help() {
         return ">run [option] [args...] \nLoads and Runs a program given a title. Optional args can be passed.";
+    }
+
+    @Override
+    public String getName() {
+        return "run";
     }
 
 }

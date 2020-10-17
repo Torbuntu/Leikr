@@ -28,7 +28,7 @@ import org.mini2Dx.core.Mdx;
  *
  * @author Torbuntu
  */
-public class ToolCommand extends Command {
+public class ToolCommand implements Command {
 
     private String out;
 
@@ -36,7 +36,6 @@ public class ToolCommand extends Command {
     private final TerminalManager terminalManager;
 
     public ToolCommand(GameRuntime runtime, TerminalManager terminalManager) {
-        super.name = "tool";
         this.runtime = runtime;
         this.terminalManager = terminalManager;
     }
@@ -82,6 +81,11 @@ public class ToolCommand extends Command {
     @Override
     public String help() {
         return ">tool [option] \nLoads and Runs a tool given a name. If no arguments given then will display all installed tools.";
+    }
+
+    @Override
+    public String getName() {
+        return "tool";
     }
 
 }

@@ -22,12 +22,11 @@ import leikr.customProperties.CustomProgramProperties;
  *
  * @author tor
  */
-public class GetCommand extends Command {
+public class GetCommand implements Command {
 
     private final GameRuntime runtime;
 
     public GetCommand(GameRuntime runtime) {
-        super.name = "get";
         this.runtime = runtime;
     }
 
@@ -60,6 +59,11 @@ public class GetCommand extends Command {
     @Override
     public String help() {
         return ">get [Program] [Property] \nGets the value of the given Program's property.";
+    }
+
+    @Override
+    public String getName() {
+        return "get";
     }
 
 }

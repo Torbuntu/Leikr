@@ -21,10 +21,9 @@ import org.mini2Dx.core.Mdx;
  *
  * @author tor
  */
-public class ExitCommand extends Command {
+public class ExitCommand implements Command {
 
     public ExitCommand() {
-        super.name = "exit";
     }
 
     @Override
@@ -36,6 +35,11 @@ public class ExitCommand extends Command {
     @Override
     public String help() {
         return ">exit \nExits the Leikr Game system.";
+    }
+
+    @Override
+    public String getName() {
+        return "exit";
     }
 
 }

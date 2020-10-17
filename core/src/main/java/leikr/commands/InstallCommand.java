@@ -22,13 +22,12 @@ import leikr.utilities.ExportTool;
  *
  * @author Torbuntu
  */
-public class InstallCommand extends Command {
+public class InstallCommand implements Command {
 
     private final ExportTool exportTool;
     private final GameRuntime runtime;
 
     public InstallCommand(GameRuntime runtime, ExportTool exportTool) {
-        super.name = "install";
         this.runtime = runtime;
         this.exportTool = exportTool;
     }
@@ -48,6 +47,11 @@ public class InstallCommand extends Command {
     @Override
     public String help() {
         return ">install [name] [option]\nInstalls a .lkr package from the Packages directory into the Programs directory. Can optionally direct where to install a project given a path.";
+    }
+
+    @Override
+    public String getName() {
+        return "install";
     }
 
 }

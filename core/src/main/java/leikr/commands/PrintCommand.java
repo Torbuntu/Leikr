@@ -25,12 +25,11 @@ import org.mini2Dx.core.Mdx;
  *
  * @author tor
  */
-public class PrintCommand extends Command {
+public class PrintCommand implements Command {
 
     private final GameRuntime runtime;
 
     public PrintCommand(GameRuntime runtime) {
-        super.name = "cat";
         this.runtime = runtime;
     }
 
@@ -55,6 +54,11 @@ public class PrintCommand extends Command {
     @Override
     public String help() {
         return ">cat [file] \nPrints the contents of a file to the terminal.\nTerminal does not currently scroll contents.";
+    }
+
+    @Override
+    public String getName() {
+        return "cat";
     }
 
 }

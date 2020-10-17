@@ -26,12 +26,11 @@ import leikr.GameRuntime;
  *
  * @author Torbuntu
  */
-public class PrintWorkspaceCommand extends Command {
+public class PrintWorkspaceCommand implements Command {
 
     private final GameRuntime runtime;
 
     public PrintWorkspaceCommand(GameRuntime runtime) {
-        super.name = "pwd";
         this.runtime = runtime;
     }
 
@@ -50,6 +49,11 @@ public class PrintWorkspaceCommand extends Command {
     @Override
     public String help() {
         return ">pwd \nPrints the location fo the Programs directory. Attempts to open the directory in the host file manager.";
+    }
+
+    @Override
+    public String getName() {
+        return "pwd";
     }
 
 }

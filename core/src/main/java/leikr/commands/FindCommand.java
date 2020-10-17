@@ -29,12 +29,11 @@ import org.mini2Dx.core.Mdx;
  *
  * @author Torbuntu
  */
-public class FindCommand extends Command {
+public class FindCommand implements Command {
 
     private final GameRuntime runtime;
 
     public FindCommand(GameRuntime runtime) {
-        super.name = "find";
         this.runtime = runtime;
     }
 
@@ -70,6 +69,11 @@ public class FindCommand extends Command {
     @Override
     public String help() {
         return ">find [option] \nPrints the location of the given program name. Attempts to open the directory in the host file manager.";
+    }
+
+    @Override
+    public String getName() {
+        return "find";
     }
 
 }

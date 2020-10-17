@@ -26,10 +26,9 @@ import java.util.logging.Logger;
  *
  * @author Torbuntu
  */
-public class WikiCommand extends Command {
+public class WikiCommand implements Command {
 
     public WikiCommand() {
-        super.name = "wiki";
     }
 
     @Override
@@ -50,6 +49,11 @@ public class WikiCommand extends Command {
     @Override
     public String help() {
         return ">wiki [option] \nOpens the Leikr wiki. Use an Option to open a specific wiki page.";
+    }
+
+    @Override
+    public String getName() {
+        return "wiki";
     }
 
 }

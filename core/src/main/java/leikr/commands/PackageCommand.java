@@ -21,12 +21,11 @@ import leikr.utilities.ExportTool;
  *
  * @author Torbuntu
  */
-public class PackageCommand extends Command {
+public class PackageCommand implements Command {
 
     private final ExportTool exportTool;
 
     public PackageCommand(ExportTool exportTool) {
-        super.name = "package";
         this.exportTool = exportTool;
     }
 
@@ -45,6 +44,11 @@ public class PackageCommand extends Command {
     @Override
     public String help() {
         return ">package [name] \nPackages a program by name into the Packages directory as .lkr package for sharing. Run with `all` argument to export all programs. See `install` command.";
+    }
+
+    @Override
+    public String getName() {
+        return "package";
     }
 
 }

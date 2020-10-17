@@ -23,13 +23,12 @@ import org.mini2Dx.core.Mdx;
  *
  * @author tor
  */
-public class CompileCommand extends Command {
+public class CompileCommand implements Command {
 
     private final GameRuntime runtime;
     private final EngineLoader engineLoader;
 
     public CompileCommand(GameRuntime runtime, EngineLoader engineLoader) {
-        this.name = "compile";
         this.runtime = runtime;
         this.engineLoader = engineLoader;
     }
@@ -52,6 +51,11 @@ public class CompileCommand extends Command {
     @Override
     public String help() {
         return ">compile [option] \nCompiles the source code of a given program into the corresponding /Code/Compiled directory";
+    }
+
+    @Override
+    public String getName() {
+        return "compile";
     }
 
 }

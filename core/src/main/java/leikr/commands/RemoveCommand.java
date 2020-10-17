@@ -27,12 +27,11 @@ import org.mini2Dx.core.Mdx;
  *
  * @author Torbuntu
  */
-public class RemoveCommand extends Command {
+public class RemoveCommand implements Command {
 
     private final GameRuntime runtime;
 
     public RemoveCommand(GameRuntime runtime) {
-        super.name = "uninstall";
         this.runtime = runtime;
     }
 
@@ -68,5 +67,10 @@ public class RemoveCommand extends Command {
     @Override
     public String help() {
         return ">uninstall [name] \nUninstalls a program in the Programs directory given the name.";
+    }
+
+    @Override
+    public String getName() {
+        return "uninstall";
     }
 }

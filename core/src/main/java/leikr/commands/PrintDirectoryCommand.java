@@ -28,13 +28,12 @@ import org.mini2Dx.core.Mdx;
  *
  * @author tor
  */
-public class PrintDirectoryCommand extends Command {
+public class PrintDirectoryCommand implements Command {
 
     private String out;
     private final GameRuntime runtime;
 
     public PrintDirectoryCommand(GameRuntime runtime) {
-        super.name = "ls";
         this.runtime = runtime;
     }
 
@@ -85,6 +84,11 @@ public class PrintDirectoryCommand extends Command {
             Logger.getLogger(PrintDirectoryCommand.class.getName()).log(Level.WARNING, null, ex);
             return "[E] Failed to execute command [ ls ]";
         }
+    }
+
+    @Override
+    public String getName() {
+        return "ls";
     }
 
 }

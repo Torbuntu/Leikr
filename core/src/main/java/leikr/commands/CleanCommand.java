@@ -24,10 +24,9 @@ import org.mini2Dx.core.Mdx;
  *
  * @author Torbuntu
  */
-public class CleanCommand extends Command {
+public class CleanCommand implements Command {
 
     public CleanCommand() {
-        super.name = "clean";
     }
 
     @Override
@@ -45,6 +44,11 @@ public class CleanCommand extends Command {
     @Override
     public String help() {
         return ">clean \nRemoves all lkr packages from the Packages directory.";
+    }
+
+    @Override
+    public String getName() {
+        return "clean";
     }
 
 }

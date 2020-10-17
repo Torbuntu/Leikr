@@ -26,13 +26,12 @@ import leikr.utilities.NewProgramGenerator;
  *
  * @author tor
  */
-public class NewProgramCommand extends Command {
+public class NewProgramCommand implements Command {
 
     private final TerminalManager terminalManager;
     private final NewProgramGenerator newProgramGenerator;
 
     public NewProgramCommand(GameRuntime runtime, TerminalManager terminalManager) {
-        super.name = "new";
         this.terminalManager = terminalManager;
         newProgramGenerator = new NewProgramGenerator(runtime);
     }
@@ -56,6 +55,11 @@ public class NewProgramCommand extends Command {
     @Override
     public String help() {
         return ">new [option]\nOpens a new project builder.\nIf run with option, will attempt to generate a project with the given name.";
+    }
+
+    @Override
+    public String getName() {
+        return "new";
     }
 
 }
