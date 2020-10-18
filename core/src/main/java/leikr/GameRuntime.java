@@ -97,11 +97,23 @@ public class GameRuntime extends ScreenBasedGame {
      */
     public GameRuntime(String[] args) {
         String userHome = System.getProperty("user.home");
-        basePath = userHome + "/Leikr/";
-        programsPath = userHome + "/Leikr/Programs/";
-        dataPath = userHome + "/Leikr/Data/";
-        deployPath = userHome + "/Leikr/Deploy/";
-        packagePath = userHome + "/Leikr/Packages/";
+        String leikrHome = System.getenv("LEIKR_HOME");
+        if (leikrHome != null) {
+            basePath = leikrHome + "/Leikr/";
+            programsPath = leikrHome + "/Leikr/Programs/";
+            dataPath = leikrHome + "/Leikr/Data/";
+            deployPath = leikrHome + "/Leikr/Deploy/";
+            packagePath = leikrHome + "/Leikr/Packages/";
+            Logger.getLogger(GameRuntime.class.getName()).log(Level.INFO, "Using custom Leikr home at: {0}", basePath);
+        } else {
+            basePath = userHome + "/Leikr/";
+            programsPath = userHome + "/Leikr/Programs/";
+            dataPath = userHome + "/Leikr/Data/";
+            deployPath = userHome + "/Leikr/Deploy/";
+            packagePath = userHome + "/Leikr/Packages/";
+            Logger.getLogger(GameRuntime.class.getName()).log(Level.INFO, "Using default Leikr home at: {0}", basePath);
+        }
+
         System.out.println(programsPath + "\n" + dataPath);
         directLaunch = false;
         gameName = "";
@@ -117,23 +129,22 @@ public class GameRuntime extends ScreenBasedGame {
             System.out.println("Game Title: " + gameName);
         }
     }
-    
+
     void checkFileSystem() throws IOException {
-        String leikrConfig = System.getProperty("user.home") + "/Leikr/";
-        if (!Mdx.files.external(leikrConfig).exists()) {
-            Mdx.files.external(leikrConfig).mkdirs();
+        if (!Mdx.files.external(basePath).exists()) {
+            Mdx.files.external(basePath).mkdirs();
             Mdx.files.external(programsPath).mkdirs();
             Mdx.files.external(dataPath).mkdirs();
-            Mdx.files.local("Data").copyTo(Mdx.files.external(leikrConfig));
-            Mdx.files.local("Programs").copyTo(Mdx.files.external(leikrConfig));
+            Mdx.files.local("Data").copyTo(Mdx.files.external(basePath));
+            Mdx.files.local("Programs").copyTo(Mdx.files.external(basePath));
         }
         if (!Mdx.files.external(programsPath).exists()) {
             Mdx.files.external(programsPath).mkdirs();
-            Mdx.files.local("Programs").copyTo(Mdx.files.external(leikrConfig));
+            Mdx.files.local("Programs").copyTo(Mdx.files.external(basePath));
         }
         if (!Mdx.files.external(dataPath).exists()) {
             Mdx.files.external(dataPath).mkdirs();
-            Mdx.files.local("Data").copyTo(Mdx.files.external(leikrConfig));
+            Mdx.files.local("Data").copyTo(Mdx.files.external(basePath));
         }
 
     }

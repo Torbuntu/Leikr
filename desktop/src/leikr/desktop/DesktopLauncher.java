@@ -34,13 +34,15 @@ public class DesktopLauncher {
 
         if (Arrays.asList(args).contains("insecure")) {
             Logger.getLogger(Security.class.getName()).log(Level.WARNING, "Leikr is running without security policy.");
-        } else {
+        } else if (System.getSecurityManager() == null) {
+            System.setProperty("leikr.home", System.getenv("LEIKR_HOME"));
             Logger.getLogger(Security.class.getName()).log(Level.INFO, "Setting Leikr security policy.");
+
             System.setProperty("java.security.policy", new File("Sys/mysecurity.policy").getAbsolutePath());
             System.setSecurityManager(new SecurityManager());
         }
         Lwjgl3Mini2DxConfig config = new Lwjgl3Mini2DxConfig(runtime.GAME_IDENTIFIER);
-        
+
         // Required to temp fix input lag on Linux
         config.targetFPS = 60;
         config.foregroundFPS = 60;
