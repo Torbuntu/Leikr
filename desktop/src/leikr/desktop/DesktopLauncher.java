@@ -35,7 +35,9 @@ public class DesktopLauncher {
         if (Arrays.asList(args).contains("insecure")) {
             Logger.getLogger(Security.class.getName()).log(Level.WARNING, "Leikr is running without security policy.");
         } else if (System.getSecurityManager() == null) {
-            System.setProperty("leikr.home", System.getenv("LEIKR_HOME"));
+            if (System.getenv("LEKR_HOME") != null) {
+                System.setProperty("leikr.home", System.getenv("LEIKR_HOME"));
+            }
             Logger.getLogger(Security.class.getName()).log(Level.INFO, "Setting Leikr security policy.");
 
             System.setProperty("java.security.policy", new File("Sys/mysecurity.policy").getAbsolutePath());

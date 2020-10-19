@@ -48,7 +48,7 @@ import org.mini2Dx.core.graphics.CustomCursor;
 import org.mini2Dx.core.graphics.Pixmap;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 
-public class GameRuntime extends ScreenBasedGame {
+public final class GameRuntime extends ScreenBasedGame {
 
     public final String GAME_IDENTIFIER = "torbuntu.leikr";
     public String fileDroppedTitle;
@@ -58,11 +58,11 @@ public class GameRuntime extends ScreenBasedGame {
     private boolean directLaunch;
     private String gameName;
 
-    private final String programsPath;
-    private final String basePath;
-    private final String dataPath;
-    private final String deployPath;
-    private final String packagePath;
+    private String programsPath;
+    private String basePath;
+    private String dataPath;
+    private String deployPath;
+    private String packagePath;
 
     private final FitViewport viewport;
     private AssetManager assetManager;
@@ -88,7 +88,7 @@ public class GameRuntime extends ScreenBasedGame {
 
     private CustomCursor cursor;
 
-    private final CustomSystemProperties customSystemProperties;
+    private CustomSystemProperties customSystemProperties;
 
     /**
      * Creates CustomSystemProperties for detecting launch title.
@@ -96,22 +96,10 @@ public class GameRuntime extends ScreenBasedGame {
      * @param args
      */
     public GameRuntime(String[] args) {
-        String userHome = System.getProperty("user.home");
-        String leikrHome = System.getenv("LEIKR_HOME");
-        if (leikrHome != null) {
-            basePath = leikrHome + "/Leikr/";
-            programsPath = leikrHome + "/Leikr/Programs/";
-            dataPath = leikrHome + "/Leikr/Data/";
-            deployPath = leikrHome + "/Leikr/Deploy/";
-            packagePath = leikrHome + "/Leikr/Packages/";
-            Logger.getLogger(GameRuntime.class.getName()).log(Level.INFO, "Using custom Leikr home at: {0}", basePath);
+        if (System.getenv("LEIKR_HOME") != null) {
+            customPathVariables();
         } else {
-            basePath = userHome + "/Leikr/";
-            programsPath = userHome + "/Leikr/Programs/";
-            dataPath = userHome + "/Leikr/Data/";
-            deployPath = userHome + "/Leikr/Deploy/";
-            packagePath = userHome + "/Leikr/Packages/";
-            Logger.getLogger(GameRuntime.class.getName()).log(Level.INFO, "Using default Leikr home at: {0}", basePath);
+            defaultPathVariables();
         }
 
         System.out.println(programsPath + "\n" + dataPath);
@@ -130,7 +118,44 @@ public class GameRuntime extends ScreenBasedGame {
         }
     }
 
-    void checkFileSystem() throws IOException {
+    public void setLeikrHome(String leikrHome) {
+        try {
+            basePath = leikrHome + "/Leikr/";
+            programsPath = leikrHome + "/Leikr/Programs/";
+            dataPath = leikrHome + "/Leikr/Data/";
+            deployPath = leikrHome + "/Leikr/Deploy/";
+            packagePath = leikrHome + "/Leikr/Packages/";
+
+            customSystemProperties = new CustomSystemProperties();
+            checkFileSystem();
+            Logger.getLogger(GameRuntime.class.getName()).log(Level.INFO, "Using custom Leikr home at: {0}", basePath);
+
+        } catch (IOException ex) {
+            Logger.getLogger(GameRuntime.class.getName()).log(Level.WARNING, "Unable to use custom Leikr home: {0}", basePath);
+        }
+    }
+
+    private void customPathVariables() {
+        String leikrHome = System.getenv("LEIKR_HOME");
+        basePath = leikrHome + "/Leikr/";
+        programsPath = leikrHome + "/Leikr/Programs/";
+        dataPath = leikrHome + "/Leikr/Data/";
+        deployPath = leikrHome + "/Leikr/Deploy/";
+        packagePath = leikrHome + "/Leikr/Packages/";
+        Logger.getLogger(GameRuntime.class.getName()).log(Level.INFO, "Using custom Leikr home at: {0}", basePath);
+    }
+
+    private void defaultPathVariables() {
+        String userHome = System.getProperty("user.home");
+        basePath = userHome + "/Leikr/";
+        programsPath = userHome + "/Leikr/Programs/";
+        dataPath = userHome + "/Leikr/Data/";
+        deployPath = userHome + "/Leikr/Deploy/";
+        packagePath = userHome + "/Leikr/Packages/";
+        Logger.getLogger(GameRuntime.class.getName()).log(Level.INFO, "Using default Leikr home at: {0}", basePath);
+    }
+
+    private void checkFileSystem() throws IOException {
         if (!Mdx.files.external(basePath).exists()) {
             Mdx.files.external(basePath).mkdirs();
             Mdx.files.external(programsPath).mkdirs();

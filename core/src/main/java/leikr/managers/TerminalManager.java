@@ -35,6 +35,7 @@ import leikr.commands.GetCommand;
 import leikr.commands.InstallCommand;
 import leikr.commands.NewProgramCommand;
 import leikr.commands.DeployCommand;
+import leikr.commands.HomeCommand;
 import leikr.commands.PrintCommand;
 import leikr.commands.PrintDirectoryCommand;
 import leikr.commands.PrintWorkspaceCommand;
@@ -120,7 +121,8 @@ public class TerminalManager implements InputProcessor {
         commandList.put("compile", new CompileCommand(runtime, engineLoader));
         commandList.put("get", new GetCommand(runtime));
         commandList.put("set", new SetCommand(runtime));
-
+        commandList.put("home", new HomeCommand(runtime));
+        
         this.runtime = runtime;
     }
 

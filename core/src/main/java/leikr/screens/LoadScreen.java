@@ -132,7 +132,13 @@ public class LoadScreen extends BasicGameScreen {
         viewport.apply(g);
         if (!engineGetter.isDone()) {
             // logo and loading
-            g.drawTexture(assetManager.get(runtime.getDataPath()+"Images/leikr-logo.png", Texture.class), 80, 64, 48, 16);
+            if (assetManager.isLoaded(runtime.getDataPath() + "Images/leikr-logo.png")) {
+                g.drawTexture(assetManager.get(runtime.getDataPath() + "Images/leikr-logo.png", Texture.class), 80, 64, 48, 16);
+            } else {
+                assetManager.load(runtime.getDataPath() + "Images/leikr-logo.png", Texture.class);
+                assetManager.finishLoading();
+            }
+
             g.setColor(Colors.WHITE());
             g.drawString("Loading", 96, 73);
 
