@@ -102,7 +102,6 @@ public final class GameRuntime extends ScreenBasedGame {
             defaultPathVariables();
         }
 
-        System.out.println(programsPath + "\n" + dataPath);
         directLaunch = false;
         gameName = "";
         viewport = new FitViewport(WIDTH, HEIGHT);

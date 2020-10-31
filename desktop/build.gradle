@@ -1,4 +1,7 @@
-apply plugin: 'com.github.johnrengelman.shadow'
+plugins {
+    id 'com.github.johnrengelman.shadow'
+    id "org.beryx.jlink" version "2.22.2"
+}
 
 targetCompatibility = 14
 sourceCompatibility = 14
@@ -49,4 +52,12 @@ task launchDesktop(dependsOn: classes, type: JavaExec) {
     workingDir = project.assetsDir
     ignoreExitValue = true
     args 'insecure'//Security is now an opt-out feature
+}
+
+
+jlink {
+    launcher {
+        options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+        name = 'Leikr'
+    }
 }

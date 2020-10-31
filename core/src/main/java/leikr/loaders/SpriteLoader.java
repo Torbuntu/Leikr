@@ -55,7 +55,7 @@ public class SpriteLoader {
         assetLoader = new TextureLoader();
         assetManager = new AssetManager(new ExternalFileHandleResolver());
         assetManager.setAssetLoader(Texture.class, assetLoader);
-        System.out.println("Loader set for sprites");
+        
         if (Mdx.files.external(path + "/Sprites/Sprites.png").exists()) {
             loadSpriteSheets();
             addSpritesToSpriteBank();
