@@ -74,6 +74,7 @@ project(":core") {
         testImplementation 'org.spockframework:spock-core:2.0-M3-groovy-3.0'
     }
     
+    // tests broken with Groovy 4
     test.finalizedBy jacocoTestReport
 }
 

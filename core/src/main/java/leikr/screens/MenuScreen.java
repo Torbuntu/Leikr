@@ -60,7 +60,7 @@ public class MenuScreen extends BasicGameScreen {
     private Texture icon;
     private FrameBuffer framebuffer;
     private final CustomSystemProperties customSystemProperties;
-
+    
     public MenuScreen(CustomSystemProperties customSystemProperties, FitViewport vp, GameRuntime runtime) {
         this.customSystemProperties = customSystemProperties;
         this.runtime = runtime;

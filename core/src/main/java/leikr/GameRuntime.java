@@ -48,10 +48,10 @@ import org.mini2Dx.core.graphics.CustomCursor;
 import org.mini2Dx.core.graphics.Pixmap;
 import org.mini2Dx.core.graphics.viewport.FitViewport;
 
-public final class GameRuntime extends ScreenBasedGame {
+public class GameRuntime extends ScreenBasedGame {
 
     public final String GAME_IDENTIFIER = "torbuntu.leikr";
-    public String fileDroppedTitle;
+    private String fileDroppedTitle;
 
     public final int WIDTH = 240;
     public final int HEIGHT = 160;
@@ -272,6 +272,10 @@ public final class GameRuntime extends ScreenBasedGame {
 
     public boolean checkFileDropped() {
         return (null != fileDroppedTitle && fileDroppedTitle.length() > 2);
+    }
+    
+    public void setFileDroppedTitle(String title){
+        this.fileDroppedTitle = title;
     }
 
     public String getFileDroppedTitle() {

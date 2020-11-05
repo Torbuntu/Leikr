@@ -712,6 +712,53 @@ public class GraphicsManager {
         }
     }
 
+    public final void drawLineSegment(Color c, int p0, int v0, int p1, int v1) {
+        int x0 = p0;
+        int x1 = p1;
+        int y0 = v0;
+        int y1 = v1;
+
+        if (y0 == y1) {
+            if (x0 < x1) {
+                drawHLine(c, x0, x1, y0);
+            } else {
+                drawHLine(c, x1, x0, y0);
+            }
+            return;
+        }
+        if (x0 == x1) {
+            if (y0 < y1) {
+                drawVLine(c, x0, y0, y1);
+            } else {
+                drawVLine(c, x0, y1, y0);
+            }
+            return;
+        }
+
+        int dx = Math.abs(x1 - x0);
+        int sx = x0 < x1 ? 1 : -1;
+        int dy = -Math.abs(y1 - y0);
+        int sy = y0 < y1 ? 1 : -1;
+
+        int err = dx + dy;
+        while (true) {
+            drawPixel(c, x0, y0);
+            if (x0 == x1 && y0 == y1) {
+                break;
+            }
+
+            int e2 = 2 * err;
+            if (e2 >= dy) {
+                err += dy;
+                x0 += sx;
+            }
+            if (e2 <= dx) {
+                err += dx;
+                y0 += sy;
+            }
+        }
+    }
+
     //https://www.geeksforgeeks.org/bresenhams-circle-drawing-algorithm/
     public final void drawCircle(Color color, BigDecimal x, BigDecimal y, BigDecimal r) {
         g.setColor(color);
@@ -719,7 +766,7 @@ public class GraphicsManager {
         int cx = x.intValue();
         int cy = y.intValue();
         int cr = r.intValue();
-        int d = 3 - 2 * cr;
+        int d = 3 - (2 * cr);
         int nx = 0;
         int ny = cr;
         while (nx <= ny) {
@@ -736,16 +783,45 @@ public class GraphicsManager {
             if (d <= 0) {
                 d += 4 * nx + 6;
             } else {
-                ny += -1;
+                ny--;
                 d += 4 * (nx - ny) + 10;
             }
             nx++;
         }
     }
 
+    public final void drawFillCircle(Color color, BigDecimal x, BigDecimal y, BigDecimal r) {
+        g.setColor(color);
+        //g.drawCircle(x.intValue(), y.intValue(), r.intValue());
+        int cx = x.intValue();
+        int cy = y.intValue();
+        int cr = r.intValue();
+        int d = 3 - (2 * cr);
+        int nx = 0;
+        int ny = cr;
+
+        while (ny >= nx) {
+
+            drawLineSegment(color, cx - nx, cy + ny, cx + nx+1, cy + ny);
+            drawLineSegment(color, cx - ny, cy + nx, cx + ny+1, cy + nx);
+            drawLineSegment(color, cx - nx, cy - ny, cx + nx+1, cy - ny);
+            drawLineSegment(color, cx - ny, cy - nx, cx + ny+1, cy - nx);
+
+            nx++;
+            if (d > 0) {
+                ny--;
+                d += 4 * (nx - ny) + 10;
+            } else {
+                d += 4 * nx + 6;
+            }
+        }
+        
+    }
+
     public final void fillCircle(Color color, BigDecimal x, BigDecimal y, BigDecimal r) {
         g.setColor(color);
-        g.fillCircle(x.intValue(), y.intValue(), r.intValue());
+//        g.fillCircle(x.intValue(), y.intValue(), r.intValue());
+        drawFillCircle(color, x, y, r);
     }
 
     public final void drawCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r) {
