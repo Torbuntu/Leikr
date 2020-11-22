@@ -14,7 +14,7 @@ allprojects {
     ext {
         //Version = 1.0.0-SNAPSHOT //(silly versioning)
         appName = 'Leikr'
-        mini2DxVersion = '2.0.0-alpha.34'
+        mini2DxVersion = '2.0.0-alpha.36'
         groovyVersion = '4.0.0-alpha-1'
         gdxVersion = '1.9.12'
         gdxControllersVersion = '2.0.0-SNAPSHOT'
