@@ -24,7 +24,6 @@ allprojects {
     }
 
     repositories {
-        mavenLocal()
         mavenCentral()
         jcenter()
         maven { url "https://jitpack.io" }
@@ -40,7 +39,7 @@ allprojects {
 
 project(":core") {
     apply plugin: 'java'
-    apply plugin: 'jacoco'
+    //apply plugin: 'jacoco'
     apply plugin: 'groovy'
 
     dependencies {
@@ -71,11 +70,11 @@ project(":core") {
         runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives64"
         runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives64"
         
-        testImplementation 'org.spockframework:spock-core:2.0-M3-groovy-3.0'
+        // tests broken with Groovy 4
+        //testImplementation 'org.spockframework:spock-core:2.0-M3-groovy-3.0'
     }
     
-    // tests broken with Groovy 4
-    test.finalizedBy jacocoTestReport
+    //test.finalizedBy jacocoTestReport
 }
 
 project(":desktop") {
