@@ -11,15 +11,17 @@ buildscript {
 allprojects {
 
     ext {
-        //Version = 1.0.0-SNAPSHOT //(silly versioning)
         appName = 'Leikr'
-        mini2DxVersion = '2.0.0-alpha.36'
-        groovyVersion = '4.0.0-alpha-1'
-        gdxVersion = '1.9.12'
-        gdxControllersVersion = '2.0.0-SNAPSHOT'
+        
+        mini2DxVersion = '2.0.0-alpha.38'
+        groovyVersion = '4.0.0-alpha-2'
+        gdxVersion = '1.9.13'
+        lwjglVersion = '3.2.3'
+        
+        // gdxControllersVersion = '2.0.0-SNAPSHOT'
         lwjglNatives32 = 'natives-linux-arm32'
         lwjglNatives64 = 'natives-linux-arm64'
-        lwjglVersion = '3.2.3'
+        
     }
 
     repositories {
