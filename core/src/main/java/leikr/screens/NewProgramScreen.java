@@ -146,7 +146,7 @@ public class NewProgramScreen extends BasicGameScreen {
             }
 
             @Override
-            public boolean scrolled(int amount) {
+            public boolean scrolled(float amount, float i) {
                 return false;
             }
         });
