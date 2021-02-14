@@ -40,35 +40,14 @@ import org.mini2Dx.gdx.InputProcessor;
 public class NewProgramScreen extends BasicGameScreen {
 
     public static int ID = 5;
+    private static GeneratorStep generatorStep;
     String prompt;
     String name;
     String template;
     String errorMessage;
-
     private String newLocation;
     private final FitViewport viewport;
-
     private final NewProgramGenerator generator;
-
-    protected enum GeneratorStep {
-        NAME,
-        TEMPLATE,
-        TITLE,
-        TYPE,
-        AUTHOR,
-        VERSION,
-        PLAYERS,
-        ABOUT,
-        MAX_SPRITES,
-        COMPILE_SOURCE,
-        USE_COMPILED,
-        CREATE,
-        FINISHED,
-        BACK,
-        ERROR
-    }
-
-    private static GeneratorStep generatorStep;
 
     public NewProgramScreen(FitViewport vp, GameRuntime runtime) {
         viewport = vp;
@@ -296,6 +275,23 @@ public class NewProgramScreen extends BasicGameScreen {
     @Override
     public int getId() {
         return ID;
+    }
+    protected enum GeneratorStep {
+        NAME,
+        TEMPLATE,
+        TITLE,
+        TYPE,
+        AUTHOR,
+        VERSION,
+        PLAYERS,
+        ABOUT,
+        MAX_SPRITES,
+        COMPILE_SOURCE,
+        USE_COMPILED,
+        CREATE,
+        FINISHED,
+        BACK,
+        ERROR
     }
 
 }
