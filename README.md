@@ -2,9 +2,11 @@
 [![GitHub tag](https://img.shields.io/github/tag/Torbuntu/Leikr)](https://GitHub.com/Torbuntu/Leikr/tags/)
 
 # Leikr Game System
-| [Wiki](https://github.com/torbuntu/leikr/wiki) | [itch.io](https://torbuntu.itch.io/leikr) | [Releases](https://github.com/torbuntu/leikr/releases) | [About](https://torbuntu.github.io/Leikr/docs/about) | [Discord Community](https://discord.gg/QycG8GF) |
+| [Wiki](https://github.com/torbuntu/leikr/wiki) | [itch.io](https://torbuntu.itch.io/leikr) | [Releases](https://github.com/torbuntu/leikr/releases) | [About](https://torbuntu.github.io/Leikr/docs/about) | 
 
 A Game System for making games and programs in Groovy. (A Fantasy Console idea)
+
+<a href='https://flathub.org/apps/details/io.github.torbuntu.Leikr'><img width='240' alt='Download on Flathub' src='https://flathub.org/assets/badges/flathub-badge-en.png'/></a>
 
 #### Why Groovy?
 
