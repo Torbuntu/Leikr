@@ -538,9 +538,9 @@ public class GraphicsManager {
         }
         Sprite t = spriteLoader.getSprite(id, size);
         t.setScale(scaleX.floatValue(), scaleY.floatValue());
-        t.flip(flipX, flipY);
+        t.setFlip(flipX, flipY);
         g.drawSprite(t, x.floatValue(), y.floatValue());
-        t.flip(!flipX, !flipY);
+        t.setFlip(false, false);
         t.setScale(1);
         usedSprites++;
     }
@@ -552,9 +552,9 @@ public class GraphicsManager {
         Sprite t = spriteLoader.getSprite(id, size);
         t.setScale(scaleX.floatValue(), scaleY.floatValue());
         t.rotate(degr.floatValue());
-        t.flip(flipX, flipY);
+        t.setFlip(flipX, flipY);
         g.drawSprite(t, x.floatValue(), y.floatValue());
-        t.flip(!flipX, !flipY);
+        t.setFlip(false, false);
         t.rotate(-degr.floatValue());
         t.setScale(1);
         usedSprites++;

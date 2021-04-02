@@ -43,7 +43,7 @@ public class SpriteLoader {
     private SpriteSheet spriteBank32;
     private SpriteSheet spriteBank64;
     private final GameRuntime runtime;
-
+    
     public SpriteLoader(GameRuntime runtime) {
         this.runtime = runtime;
     }
