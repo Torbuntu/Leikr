@@ -120,12 +120,12 @@ public class SystemManager {
         return MathUtils.floor(value.floatValue());
     }
 
-    public int randInt(int range) {
-        return MathUtils.random(range);
+    public int randInt(BigDecimal range) {
+        return MathUtils.random(range.intValue());
     }
 
-    public int randInt(int start, int end) {
-        return MathUtils.random(start, end);
+    public int randInt(BigDecimal start, BigDecimal end) {
+        return MathUtils.random(start.intValue(), end.intValue());
     }
 
     public float randFloat(BigDecimal range) {

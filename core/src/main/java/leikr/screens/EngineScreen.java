@@ -274,7 +274,7 @@ public class EngineScreen extends BasicGameScreen {
         Gdx.input.setCursorCatched(false);
         runtime.getCursor().setVisible(false);
         engineState = EngineState.PAUSE;
-        engine.lAudio.pauseAudio();
+        engine.pauseAudio();
         engine.onPause();
     }
 

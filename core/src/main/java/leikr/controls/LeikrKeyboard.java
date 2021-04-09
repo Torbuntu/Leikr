@@ -50,7 +50,7 @@ public class LeikrKeyboard {
      * Returns boolean of if the value of a key is just pressed. Will run once
      * when key is pressed, unlike key which will poll continuously.
      *
-     * @see key() Examples: "K", "Enter", "Left Shift"
+     * @see #key(java.lang.String) Examples: "K", "Enter", "Left Shift"
      * @param key
      * @return
      */

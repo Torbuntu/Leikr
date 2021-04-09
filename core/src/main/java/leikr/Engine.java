@@ -45,26 +45,95 @@ import org.mini2Dx.gdx.InputProcessor;
  */
 public abstract class Engine extends ControllerAdapter implements InputProcessor {
 
-    //used by the Engine Screen to determine if the game should be actively running.
+    /**
+     * used by {@link leikr.screens.EngineScreen} to determine if the game should be actively running.
+     */
     private boolean active;
 
-    /*
+    /**
      * Controllers and listeners for handling custom controller input
      */
-    public LeikrController lControllerA;
-    public LeikrController lControllerB;
-    public LeikrKeyboard lKeyboard;
-    public LeikrMouse lMouse;
+    private LeikrController lControllerA;
+    private LeikrController lControllerB;
+    private LeikrKeyboard lKeyboard;
+    private LeikrMouse lMouse;
+    
 
-    /*
-     * Managers
+    /**
+     * Managers 
      *
      * The managers are used to load the custom assets for a game at startup.
      */
-    public GraphicsManager lGraphics;
-    public SystemManager lSystem;
-    public AudioManager lAudio;
-    public DataManager lData;
+    private GraphicsManager lGraphics;
+    private SystemManager lSystem;
+    private AudioManager lAudio;
+    private DataManager lData;
+    
+    // <editor-fold desc="Field getters" defaultstate="collapsed">
+    /**
+     *
+     * @return the default controller lControllerA
+     */
+    public LeikrController getController(){
+        return getController(0);
+    }
+    /**
+     * 0 - lControllerA
+     * 1 - lControllerB
+     * @param id which controller to return.
+     * @return the controller given the id
+     */
+    public LeikrController getController(int id){
+        return (id == 0 ? lControllerA : lControllerB);
+    }
+    
+    /**
+     * 
+     * @return lKeyboard 
+     */
+    public LeikrKeyboard getKeyboard(){
+        return lKeyboard;
+    }
+    
+    /**
+     * @return lMouse
+     */
+    public LeikrMouse getMouse(){
+        return lMouse;
+    }
+    
+    /**
+     * 
+     * @return lGraphics
+     */
+    public GraphicsManager getGraphics(){
+        return lGraphics;
+    }
+    
+    /**
+     * 
+     * @return lSystem
+     */
+    public SystemManager getSystem(){
+        return lSystem;
+    }
+    
+    /**
+     * 
+     * @return lAudio
+     */
+    public AudioManager getAudio(){
+        return lAudio;
+    }
+    
+    /**
+     * 
+     * @return lData
+     */
+    public DataManager getData(){
+        return lData;
+    }
+    // </editor-fold>
 
     // <editor-fold desc="Pre game loop methods" defaultstate="collapsed"> 
     /**
@@ -146,26 +215,23 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     // </editor-fold>
 
     // <editor-fold desc="Override functions for game code" defaultstate="collapsed">
-    public void create() {
-    }
+    /**
+     * Default methods for game loop handling. 
+     * Purposely NOT abstract so that they are optional overrides.
+     */
+    public void create() {}
 
-    public void create(String[] args) {
-    }
+    public void create(String[] args) {}
 
-    public void update() {
-    }
+    public void update() {}
 
-    public void update(float delta) {
-    }
+    public void update(float delta) {}
 
-    public void render() {
-    }
+    public void render() {}
 
-    public void onPause() {
-    }
+    public void onPause() {}
 
-    public void onResume() {
-    }
+    public void onResume() {}
     // </editor-fold>
 
     // <editor-fold desc="Dispose" defaultstate="collapsed">
@@ -653,11 +719,11 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         return lSystem.floor(value);
     }
 
-    public int randInt(int range) {
+    public int randInt(BigDecimal range) {
         return lSystem.randInt(range);
     }
 
-    public int randInt(int start, int end) {
+    public int randInt(BigDecimal start, BigDecimal end) {
         return lSystem.randInt(start, end);
     }
 

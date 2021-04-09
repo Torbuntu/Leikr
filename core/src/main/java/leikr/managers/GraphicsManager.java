@@ -34,40 +34,45 @@ import org.mini2Dx.core.graphics.viewport.Viewport;
 import org.mini2Dx.gdx.math.MathUtils;
 
 /**
- * This class is used to manage the drawing API for the Engine. It also provides
- * a screen instance which can be passed to non Engine extending classes in the
- * game code.
+ * Manages the drawing API for {@link leikr.Engine }. 
  *
  * @author tor
  */
 public class GraphicsManager {
 
+    /**
+     * The path to the running programs local `Art` directory.
+     *
+     * @see #getPixel(java.lang.String, java.math.BigDecimal,
+     * java.math.BigDecimal)
+     * @see #getPixels(java.lang.String)
+     */
     private String path;
 
-    /*
+    /**
      * Properties set by Custom Properties
      *
-     * These can be overwritten for a more custom experience.
+     * @see #maxSprites can be overwritten in
+     * {@link leikr.customProperties.CustomProgramProperties} more custom
+     * experience.
      */
     private int maxSprites;
     private int usedSprites;
 
-
-    /*
-     Loaders
-     
-     The loaders are used to load the custom assets for a game at startup.
+    /**
+     * Loaders
+     *
+     * The loaders are used to load the custom assets for a game at startup.
      */
     private final SpriteLoader spriteLoader;
     private final ImageLoader imageLoader;
     private final MapLoader mapLoader;
 
-    /*
-    Color objects.
-    pixels are the indexed Color pixels which are used for the drawing functions.
-    colorPalette is List of all the available colors to use.
-    bgColor is what preRender uses to clear the backrgound.
-    
+    /**
+     * Color objects. pixels are the indexed Color pixels which are used for the
+     * drawing functions. colorPalette is a List of all the available colors to
+     * use. bgColor is what {@link #preRender} uses to clear the background.
+     *
      */
     private Color bgColor;
     private final PixelManager pixelManager;
@@ -77,7 +82,6 @@ public class GraphicsManager {
     private FrameBuffer frameBuffer;
 
     /**
-     * LeikrScreenManager constructor
      *
      * @param spriteLoader
      * @param imageLoader
@@ -106,14 +110,14 @@ public class GraphicsManager {
         bgColor = Colors.BLACK();
     }
 
-    //Engine methods
+    // <editor-fold desc="Engine methods" defaultstate="collapsed">
     public void preCreate(FrameBuffer f, StretchViewport v) {
         this.frameBuffer = f;
         this.viewport = v;
     }
 
     public void preRender(Graphics g) {
-        //set to 0 before drawing anything
+        // Reset used count to 0 
         usedSprites = 0;
         this.g = g;
         this.g.clearContext(bgColor);
@@ -130,7 +134,7 @@ public class GraphicsManager {
         imageLoader.disposeImages();
         mapLoader.disposeMap();
     }
-    //End Engine methods
+    // </editor-fold>
 
     //Helper methods
     public int getUsedSprites() {
@@ -561,7 +565,7 @@ public class GraphicsManager {
     }
     // </editor-fold>
 
-    //start shape drawing methods
+    // <editor-fold desc="Shape methods" defaultstate="collapsed">
     /**
      * Internal drawPixel with color .
      *
@@ -802,10 +806,10 @@ public class GraphicsManager {
 
         while (ny >= nx) {
 
-            drawLineSegment(color, cx - nx, cy + ny, cx + nx+1, cy + ny);
-            drawLineSegment(color, cx - ny, cy + nx, cx + ny+1, cy + nx);
-            drawLineSegment(color, cx - nx, cy - ny, cx + nx+1, cy - ny);
-            drawLineSegment(color, cx - ny, cy - nx, cx + ny+1, cy - nx);
+            drawLineSegment(color, cx - nx, cy + ny, cx + nx + 1, cy + ny);
+            drawLineSegment(color, cx - ny, cy + nx, cx + ny + 1, cy + nx);
+            drawLineSegment(color, cx - nx, cy - ny, cx + nx + 1, cy - ny);
+            drawLineSegment(color, cx - ny, cy - nx, cx + ny + 1, cy - nx);
 
             nx++;
             if (d > 0) {
@@ -815,7 +819,7 @@ public class GraphicsManager {
                 d += 4 * nx + 6;
             }
         }
-        
+
     }
 
     public final void fillCircle(Color color, BigDecimal x, BigDecimal y, BigDecimal r) {
@@ -839,7 +843,7 @@ public class GraphicsManager {
     public final void fillCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r) {
         fillCircle(Colors.rgbToColor(color), x, y, r);
     }
-//end shape drawing methods
+    // </editor-fold>
 
     public final void setClip(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
         g.setClip(x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue());
@@ -849,7 +853,7 @@ public class GraphicsManager {
         g.removeClip();
     }
 
-    //EXPERIMENTAL METHODS
+    // EXPERIMENTAL METHODS START HERE
     public void tint(Color color) {
         g.setTint(color);
     }
@@ -862,6 +866,14 @@ public class GraphicsManager {
         tint(Colors.rgbToColor(color));
     }
 
+    /**
+     * Removes the applied tint color from the previous tint methods:
+     * {@link #tint(org.mini2Dx.core.graphics.Color) }
+     * {@link #tint(int) }
+     * {@link #tint(java.lang.String) }
+     *
+     * This isn't very obvious.
+     */
     public void tint() {
         g.removeTint();
     }
@@ -870,11 +882,12 @@ public class GraphicsManager {
      * Convenience method to retrieve a color at a specified pixel coordinate of
      * the frame buffer.
      *
-     * note that the y coordinate must be -1 in order to get the correct pixel.
+     * note that the y coordinate parameter must be -1 in order to get the
+     * correct pixel.
      *
      * @param x
      * @param y
-     * @return The Color at the specified coordinate of the frame buffer
+     * @return The Color at the specified coordinate of the {@link #frameBuffer}
      */
     public Color getPixel(BigDecimal x, BigDecimal y) {
         int gx = MathUtils.ceil((viewport.getX() * viewport.getScaleX()) + (x.floatValue() * viewport.getScaleX()));
@@ -889,7 +902,6 @@ public class GraphicsManager {
         int gr = 0xFF & b[1];
         int bl = 0xFF & b[2];
         return Colors.rgbToColor(re + "," + gr + "," + bl);
-        //return (re + "," + gr + "," + bl);
     }
 
     public Color getPixel(String name, BigDecimal x, BigDecimal y) {
@@ -911,5 +923,4 @@ public class GraphicsManager {
         return colors;
     }
 
-//END EXPERIMENTAL
 }
