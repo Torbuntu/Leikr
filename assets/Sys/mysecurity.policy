@@ -29,13 +29,11 @@ grant{
 	
 	//Leikr default directories, sandboxed 
 	permission java.io.FilePermission "${user.home}${/}Leikr${/}Programs/-", "read,write";
-	permission java.io.FilePermission "${user.home}${/}Leikr${/}Programs", "read";
 	permission java.io.FilePermission "${user.home}${/}Leikr${/}Data/-", "read,write";	
 	permission java.io.FilePermission "${user.home}${/}Leikr${/}Data", "read";	
   
-  	//Leikr custom directories, sandboxed 
+	//Leikr custom directories, sandboxed 
 	permission java.io.FilePermission "${leikr.home}${/}Leikr${/}Programs/-", "read,write";
-	permission java.io.FilePermission "${leikr.home}${/}Leikr${/}Programs", "read";
 	permission java.io.FilePermission "${leikr.home}${/}Leikr${/}Data/-", "read,write";	
 	permission java.io.FilePermission "${leikr.home}${/}Leikr${/}Data", "read";	
 
