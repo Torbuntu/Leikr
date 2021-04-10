@@ -67,14 +67,6 @@ public class TerminalManager implements InputProcessor {
     private ArrayList<String> programList;
     private int programIndex;
 
-    public enum TerminalState {
-        INSTALLING,
-        PROCESSING,
-        RUN_PROGRAM,
-        NEW_PROGRAM,
-        RUN_UTILITY
-    }
-
     private TerminalState terminalState;
 
     private final GameRuntime runtime;
@@ -124,7 +116,7 @@ public class TerminalManager implements InputProcessor {
         commandList.put("set", new SetCommand(runtime));
         commandList.put("home", new HomeCommand(runtime));
         commandList.put("version", new VersionCommand());
-        
+
         this.runtime = runtime;
     }
 
@@ -289,7 +281,7 @@ public class TerminalManager implements InputProcessor {
             return true;
         }
         if ((int) c >= 32 && (int) c <= 126) {
-            prompt = prompt + c;
+            prompt += c;
             return true;
         }
         if ((int) c == 8 && prompt.length() > 0) {
@@ -321,5 +313,13 @@ public class TerminalManager implements InputProcessor {
     @Override
     public boolean scrolled(float amount, float i) {
         return false;
+    }
+
+    public enum TerminalState {
+        INSTALLING,
+        PROCESSING,
+        RUN_PROGRAM,
+        NEW_PROGRAM,
+        RUN_UTILITY
     }
 }
