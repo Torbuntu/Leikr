@@ -43,6 +43,7 @@ import leikr.commands.RemoveCommand;
 import leikr.commands.RunCommand;
 import leikr.commands.SetCommand;
 import leikr.commands.ToolCommand;
+import leikr.commands.VersionCommand;
 import leikr.commands.WikiCommand;
 import leikr.loaders.EngineLoader;
 import leikr.utilities.ExportTool;
@@ -122,6 +123,7 @@ public class TerminalManager implements InputProcessor {
         commandList.put("get", new GetCommand(runtime));
         commandList.put("set", new SetCommand(runtime));
         commandList.put("home", new HomeCommand(runtime));
+        commandList.put("version", new VersionCommand());
         
         this.runtime = runtime;
     }
