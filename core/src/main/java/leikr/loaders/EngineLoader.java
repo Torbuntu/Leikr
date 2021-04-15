@@ -26,6 +26,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,41 +45,30 @@ import org.mini2Dx.core.files.FileHandle;
  */
 public class EngineLoader implements Callable<Engine> {
 
-    private String rootPath;
     private boolean runTool = false;
+    private String rootPath;
     private String[] engineArgs;
 
-    private GroovyClassLoader gcl;
     private CustomProgramProperties cp;
-    private GroovyShell sh;
+    private final SandboxClassLoader gcl;
+    private final GroovyShell sh;
     private final GameRuntime runtime;
 
     public EngineLoader(GameRuntime runtime) {
         this.runtime = runtime;
-    }
-
-    public void reset(String path) {
-        destroy();
-        rootPath = path + "/Code/";
-        cp = new CustomProgramProperties(path);
-        gcl = new GroovyClassLoader(ClassLoader.getSystemClassLoader());
+        gcl = new SandboxClassLoader();
         sh = new GroovyShell(gcl);
     }
 
-    public void setEngineArgs(String[] args) {
-        engineArgs = args;
-    }
-
-    public String[] getEngineArgs() {
-        return engineArgs;
-    }
-
-    public void setRunTool() {
-        runTool = true;
-    }
-
-    public int getMaxSprite() {
-        return cp.MAX_SPRITES;
+    /**
+     * Spawns a new thread to load the Engine async on the loading screen.
+     *
+     * @return The Engine object for running the loaded Leikr program
+     * @throws Exception
+     */
+    @Override
+    public Engine call() throws Exception {
+        return getEngine();
     }
 
     /**
@@ -142,16 +132,36 @@ public class EngineLoader implements Callable<Engine> {
         ArrayList<String> files = new ArrayList<>();
         Arrays.asList(Mdx.files.external(rootPath).list(".groovy"))
                 .stream().forEach(f -> files.add(f.path()));
-        
+
         String[] out = new String[files.size()];
         out = files.toArray(out);
-        
+
         compiler.compile(out);
     }
 
+    public void reset(String path) {
+        destroy();
+        rootPath = path + "/Code/";
+        cp = new CustomProgramProperties(path);
+    }
+
+    public void setEngineArgs(String[] args) {
+        engineArgs = args;
+    }
+
+    public String[] getEngineArgs() {
+        return engineArgs;
+    }
+
+    public void setRunTool() {
+        runTool = true;
+    }
+
+    public int getMaxSprite() {
+        return cp.MAX_SPRITES;
+    }
+
     /**
-     * destroy
-     *
      * Clears the class loader cache and attempts to clear the
      * metaClassRegistry. This is a testing method and may be removed.
      */
@@ -164,7 +174,7 @@ public class EngineLoader implements Callable<Engine> {
         }
     }
 
-    //START API
+    // <editor-fold desc="Engine loader api" defaultstate="collapsed"> 
     /**
      * compiles a groovy class file and tries to return an object instance
      *
@@ -231,6 +241,7 @@ public class EngineLoader implements Callable<Engine> {
      * @param path
      */
     public void loadLib(String path) {
+        if(path.contains("..")) throw new RuntimeException(String.format("Attempt to exit project denied: %s",path));
         String COMPILED = runtime.getGamePath() + "/" + path + "/";
         gcl.addClasspath(Mdx.files.external(COMPILED).path());
     }
@@ -273,19 +284,55 @@ public class EngineLoader implements Callable<Engine> {
         }
         return -1;
     }
+    // </editor-fold>
 
-    //END API
     /**
-     * call()
-     *
-     * This method is used by the ExecutorService to spawn a new thread to load
-     * the Engine object async.
-     *
-     * @return The Engine object for running the loaded Leikr program
-     * @throws Exception
+     * Custom ClassLoader for verifying the use of Classes
+     * 
+     * This is not a true sandbox, but it is more security than none, and easier
+     * to control and maintain than a policy file. 
+     * 
+     * disallowedClasses: A collection of classes to check.
+     * For example java.io.File is not an allowed class in Leikr
+     * so we make sure to refuse loading that class when attempt to use it.
+     * 
+     * disallowedPackages: A collection of packages to restrict use to. This is
+     * a wider net for catching classes in an entire package. Example being the
+     * classes within java.net.*, we refuse to load network access classes.
      */
-    @Override
-    public Engine call() throws Exception {
-        return getEngine();
+    private class SandboxClassLoader extends GroovyClassLoader {
+
+        private final ArrayList<String> disallowedClasses;
+        private final ArrayList<String> disallowedPackages;
+
+        SandboxClassLoader() {
+            disallowedClasses = new ArrayList<>(
+                    List.of(
+                            "java.io.File",
+                            "java.lang.System",
+                            "java.lang.ClassLoader",
+                            "groovy.lang.GroovyClassLoader",
+                            "groovy.lang.GroovyShell"
+                            
+                    ));
+            disallowedPackages = new ArrayList<>(
+                    List.of(
+                            "java.net"
+                    ));
+        }
+
+        @Override
+        public Class<?> loadClass(String name) throws ClassNotFoundException {
+
+            if (disallowedClasses.contains(name)) {
+                throw new RuntimeException(String.format("Leikr does not allow use of %s", name));
+            }
+            disallowedPackages.forEach(pk -> {
+                if (name.startsWith(pk)) {
+                    throw new RuntimeException(String.format("Leikr does not allow use of %s", name));
+                }
+            });
+            return super.loadClass(name);
+        }
     }
 }
