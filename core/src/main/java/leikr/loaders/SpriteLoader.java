@@ -113,7 +113,7 @@ public class SpriteLoader {
     public void loadManualSpritesheets(String programName) {
 //        resetSpriteLoader();
         rootPath = runtime.getProgramsPath() + programName + "/Sprites/Sprites.png";
-        if (!Mdx.files.local(rootPath).exists()) {
+        if (!Mdx.files.external(rootPath).exists()) {
             Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "No sprites found for: {0}", rootPath);
             return;
         }
@@ -121,8 +121,8 @@ public class SpriteLoader {
             loadSpriteSheets();
             addSpritesToSpriteBank();
         } catch (Exception ex) {
-            Logger.getLogger(SpriteLoader.class.getName()).log(Level.SEVERE, "Manual Sprite sheet not loadable for: {0}", rootPath);
-            Logger.getLogger(SpriteLoader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "Manual Sprite sheet not loadable for: {0}", rootPath);
+            Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "Sprite sheet load failure: ", ex);
         }
     }
 
