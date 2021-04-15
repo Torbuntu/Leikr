@@ -13,7 +13,7 @@ jobs:
         distribution: 'adopt'
         java-version: '15'
     - name: Build with Gradle
-      run: ./gradlew clean build desktop:deployLeikr
+      run: ./gradlew clean build desktop:deployLeikr -x test
       
     - name: Upload Leikr deploy
       uses: actions/upload-artifact@v2
