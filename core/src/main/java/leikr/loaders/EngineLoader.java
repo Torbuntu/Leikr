@@ -50,13 +50,17 @@ public class EngineLoader implements Callable<Engine> {
     private String[] engineArgs;
 
     private CustomProgramProperties cp;
-    private final SandboxClassLoader gcl;
+    private final GroovyClassLoader gcl;
     private final GroovyShell sh;
     private final GameRuntime runtime;
 
     public EngineLoader(GameRuntime runtime) {
         this.runtime = runtime;
-        gcl = new SandboxClassLoader();
+        if (runtime.isSecure()) {
+            gcl = new SandboxClassLoader();
+        } else {
+            gcl = new GroovyClassLoader();
+        }
         sh = new GroovyShell(gcl);
     }
 
@@ -241,7 +245,9 @@ public class EngineLoader implements Callable<Engine> {
      * @param path
      */
     public void loadLib(String path) {
-        if(path.contains("..")) throw new RuntimeException(String.format("Attempt to exit project denied: %s",path));
+        if (path.contains("..")) {
+            throw new RuntimeException(String.format("Attempt to exit project denied: %s", path));
+        }
         String COMPILED = runtime.getGamePath() + "/" + path + "/";
         gcl.addClasspath(Mdx.files.external(COMPILED).path());
     }
@@ -288,14 +294,14 @@ public class EngineLoader implements Callable<Engine> {
 
     /**
      * Custom ClassLoader for verifying the use of Classes
-     * 
+     *
      * This is not a true sandbox, but it is more security than none, and easier
-     * to control and maintain than a policy file. 
-     * 
-     * disallowedClasses: A collection of classes to check.
-     * For example java.io.File is not an allowed class in Leikr
-     * so we make sure to refuse loading that class when attempt to use it.
-     * 
+     * to control and maintain than a policy file.
+     *
+     * disallowedClasses: A collection of classes to check. For example
+     * java.io.File is not an allowed class in Leikr so we make sure to refuse
+     * loading that class when attempt to use it.
+     *
      * disallowedPackages: A collection of packages to restrict use to. This is
      * a wider net for catching classes in an entire package. Example being the
      * classes within java.net.*, we refuse to load network access classes.
@@ -313,7 +319,6 @@ public class EngineLoader implements Callable<Engine> {
                             "java.lang.ClassLoader",
                             "groovy.lang.GroovyClassLoader",
                             "groovy.lang.GroovyShell"
-                            
                     ));
             disallowedPackages = new ArrayList<>(
                     List.of(
