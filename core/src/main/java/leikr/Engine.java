@@ -46,91 +46,90 @@ import org.mini2Dx.gdx.InputProcessor;
 public abstract class Engine extends ControllerAdapter implements InputProcessor {
 
     /**
-     * used by {@link leikr.screens.EngineScreen} to determine if the game should be actively running.
+     * Used by {@link leikr.screens.EngineScreen} to determine if the game
+     * should be actively running.
      */
     private boolean active;
 
     /**
-     * Controllers and listeners for handling custom controller input
+     * Controllers and listeners for handling custom controller input.
      */
     private LeikrController lControllerA;
     private LeikrController lControllerB;
     private LeikrKeyboard lKeyboard;
     private LeikrMouse lMouse;
-    
 
     /**
-     * Managers 
-     *
-     * The managers are used to load the custom assets for a game at startup.
+     * Managers are used to load the custom assets for a game at startup.
      */
     private GraphicsManager lGraphics;
     private SystemManager lSystem;
     private AudioManager lAudio;
     private DataManager lData;
-    
+
     // <editor-fold desc="Field getters" defaultstate="collapsed">
     /**
      *
      * @return the default controller lControllerA
      */
-    public LeikrController getController(){
+    public LeikrController getController() {
         return getController(0);
     }
+
     /**
-     * 0 - lControllerA
-     * 1 - lControllerB
+     * 0 - lControllerA 1 - lControllerB
+     *
      * @param id which controller to return.
      * @return the controller given the id
      */
-    public LeikrController getController(int id){
+    public LeikrController getController(int id) {
         return (id == 0 ? lControllerA : lControllerB);
     }
-    
+
     /**
-     * 
-     * @return lKeyboard 
+     *
+     * @return lKeyboard
      */
-    public LeikrKeyboard getKeyboard(){
+    public LeikrKeyboard getKeyboard() {
         return lKeyboard;
     }
-    
+
     /**
      * @return lMouse
      */
-    public LeikrMouse getMouse(){
+    public LeikrMouse getMouse() {
         return lMouse;
     }
-    
+
     /**
-     * 
+     *
      * @return lGraphics
      */
-    public GraphicsManager getGraphics(){
+    public GraphicsManager getGraphics() {
         return lGraphics;
     }
-    
+
     /**
-     * 
+     *
      * @return lSystem
      */
-    public SystemManager getSystem(){
+    public SystemManager getSystem() {
         return lSystem;
     }
-    
+
     /**
-     * 
+     *
      * @return lAudio
      */
-    public AudioManager getAudio(){
+    public AudioManager getAudio() {
         return lAudio;
     }
-    
+
     /**
-     * 
+     *
      * @return lData
      */
-    public DataManager getData(){
+    public DataManager getData() {
         return lData;
     }
     // </editor-fold>
@@ -172,7 +171,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
             if (Controllers.getControllers().size > 1) {
                 Controllers.getControllers().get(1).addListener(lControllerB);
             }
-        } catch (Exception ex) {
+        } catch (RuntimeException ex) {
             Logger.getLogger(Engine.class.getName()).log(Level.WARNING, "Controllers not active: {0}", ex.getMessage());
         }
         lMouse = managerDTO.getInputManager().getMouse();
@@ -216,22 +215,29 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
 
     // <editor-fold desc="Override functions for game code" defaultstate="collapsed">
     /**
-     * Default methods for game loop handling. 
-     * Purposely NOT abstract so that they are optional overrides.
+     * Default methods for game loop handling. Purposely NOT abstract so that
+     * they are optional overrides.
      */
-    public void create() {}
+    public void create() {
+    }
 
-    public void create(String[] args) {}
+    public void create(String[] args) {
+    }
 
-    public void update() {}
+    public void update() {
+    }
 
-    public void update(float delta) {}
+    public void update(float delta) {
+    }
 
-    public void render() {}
+    public void render() {
+    }
 
-    public void onPause() {}
+    public void onPause() {
+    }
 
-    public void onResume() {}
+    public void onResume() {
+    }
     // </editor-fold>
 
     // <editor-fold desc="Dispose" defaultstate="collapsed">
@@ -260,7 +266,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
 
     // <editor-fold desc="Helper and System api" defaultstate="collapsed">
     /**
-     * Returns the FPS as an int
+     * Returns the FPS as an int.
      *
      * @return the FPS as an int
      */
@@ -298,6 +304,22 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
 
     public String getDataPath() {
         return lSystem.getDataPath();
+    }
+
+    /**
+     * Pauses the running program.
+     */
+    public void pause() {
+        lSystem.pause();
+    }
+
+    /**
+     * Uses a variable to determine if Leikr should pause.
+     * 
+     * @param shouldPause if we should pause Leikr
+     */
+    public void pause(boolean shouldPause) {
+        lSystem.pause(shouldPause);
     }
     // </editor-fold>
 
@@ -855,14 +877,6 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     // </editor-fold>
 
     // <editor-fold desc="Experimental" defaultstate="collapsed"> 
-    public void pause() {
-        lSystem.pause();
-    }
-
-    public void pause(boolean shouldPause) {
-        lSystem.pause(shouldPause);
-    }
-
     public boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal r1, BigDecimal x2, BigDecimal y2, BigDecimal r2) {
         return lSystem.collides(x1, y1, r1, x2, y2, r2);
     }

@@ -26,8 +26,11 @@ import org.mini2Dx.gdx.Input.Keys;
 public class LeikrKeyboard {
 
     /**
-     * Returns boolean of if the value of a key is pressed. Examples: "K",
-     * "Enter", "Left Shift"
+     * Checks if given value is pressed.
+     * 
+     * Examples: Z, X, Escape, Space, Left 
+     * 
+     * Notice values are Title cases.
      *
      * @param key
      * @return
@@ -37,7 +40,7 @@ public class LeikrKeyboard {
     }
 
     /**
-     * Returns boolean of if the value of a key is NOT pressed.
+     * Checks if given key is not pressed
      *
      * @param key
      * @return
@@ -47,8 +50,8 @@ public class LeikrKeyboard {
     }
 
     /**
-     * Returns boolean of if the value of a key is just pressed. Will run once
-     * when key is pressed, unlike key which will poll continuously.
+     * Checks if the given value has been pressed once.
+     * For checking if a key is pressed and held, @see #key(java.lang.String)
      *
      * @see #key(java.lang.String) Examples: "K", "Enter", "Left Shift"
      * @param key

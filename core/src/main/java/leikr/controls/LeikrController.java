@@ -100,7 +100,11 @@ public class LeikrController implements ControllerListener {
         debug = customSystemProperties.isDEBUG();
     }
 
-    //engine api for returning boolean status of button presses on snes style controller
+    /**
+     * Check status of button presses on snes style controller
+     * @param button
+     * @return if the given button is pressed
+     */ 
     public boolean button(String button) {
         return (boolean) buttons.get(button.toUpperCase());
     }
@@ -115,12 +119,12 @@ public class LeikrController implements ControllerListener {
 
     @Override
     public void connected(Controller controller) {
-        Logger.getLogger(LeikrController.class.getName()).log(Level.WARNING, "ID: " + ID + ", New Connection: {0}", controller.getName());
+        Logger.getLogger(LeikrController.class.getName()).log(Level.INFO, "ID: " + ID + ", New Connection: {0}", controller.getName());
     }
 
     @Override
     public void disconnected(Controller controller) {
-        Logger.getLogger(LeikrController.class.getName()).log(Level.WARNING, "ID: " + ID + ", Disconnected: {0}", controller.getName());
+        Logger.getLogger(LeikrController.class.getName()).log(Level.INFO, "ID: " + ID + ", Disconnected: {0}", controller.getName());
     }
 
     @Override

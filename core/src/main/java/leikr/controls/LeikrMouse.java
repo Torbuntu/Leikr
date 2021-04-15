@@ -53,18 +53,29 @@ public class LeikrMouse {
 
     /**
      * Detects a mouse click event.
+     * 
+     * Note: this does not check which button was pressed. Assume Leikr only
+     * has one mouse button.
      *
-     * @return
+     * @return if the mouse was just clicked. 
      */
     public boolean mouseClick() {
         return Mdx.input.justTouched();
     }
 
+    /**
+     * Gets the mouse X coordinate after updating position relative to game world
+     * @return the mouse X coordinate
+     */
     public float mouseX() {
         updateMouse();
         return leikrMouse.x;
     }
 
+    /**
+     * Gets the mouse Y coordinate after updating position relative to game world
+     * @return the mouse Y coordinate
+     */
     public float mouseY() {
         updateMouse();
         return leikrMouse.y;

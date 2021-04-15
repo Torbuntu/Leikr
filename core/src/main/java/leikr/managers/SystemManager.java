@@ -69,9 +69,7 @@ public class SystemManager {
     }
 
     /**
-     * resetFont
-     *
-     * after a program is finished running, this should be called to reset the
+     * After a program is finished running, this should be called to reset the
      * font to the default loaded system font.
      */
     public void resetFont() {
