@@ -1,30 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop-application">
-	<id>io.github.torbuntu.Leikr</id>
-	<launchable type="desktop-id">io.github.torbuntu.Leikr.desktop</launchable>
-	<name>Leikr</name>
-	<project_license>Apache-2.0</project_license>
-	<developer_name>Torrey Sorensen</developer_name>
-	<summary>A Game System for making games and programs in Groovy. (A Fantasy Console idea)</summary>
-	<metadata_license>CC0-1.0</metadata_license>
-	<url type="homepage">https://torbuntu.github.io/Leikr/</url>
-	  <description>
-	    	<p>Leikr Game System</p>
-	      	<p>The word Leikr is Old Norse for Game.</p>
-	      	<p>It is a play on the name Lego, from the Danish “Leg Godt”, meaning “Play Well”.</p>
-	  </description>
-	  <screenshots>
-	  	<screenshot type="default">
-	  		<caption>Leikr header image</caption>
-	  		<image type="source">https://raw.githubusercontent.com/Torbuntu/Leikr/master/HeaderImage.png</image>
-	  	</screenshot>
-	  </screenshots>
-	  <releases>
-	  	<release version="1.0.5" date="2021-04-10"/>
-		<release version="1.0.4" date="2021-04-02"/>
-	  	<release version="1.0.3" date="2020-10-18"/>
-	  	<release version="1.0.2" date="2020-10-02"/>
-	  	<release version="1.0.1" date="2020-09-29"/>
-	  </releases>
-	  <content_rating type="oars-1.1" />
+    <id>io.github.torbuntu.Leikr</id>
+    <launchable type="desktop-id">io.github.torbuntu.Leikr.desktop</launchable>
+    <name>Leikr</name>
+    <project_license>Apache-2.0</project_license>
+    <metadata_license>CC0-1.0</metadata_license>
+    <developer_name>Torrey Sorensen</developer_name>
+    <summary>A Game System for making games and programs in Groovy. (A Fantasy Console idea)</summary>
+    
+    <description>
+        <p>Leikr Game System</p>
+        <p>The word Leikr is Old Norse for Game.</p>
+        <p>It is a play on the name Lego, from the Danish “Leg Godt”, meaning “Play Well”.</p>
+    </description>
+    <screenshots>
+        <screenshot type="default">
+            <caption>Leikr header image</caption>
+            <image type="source">https://raw.githubusercontent.com/Torbuntu/Leikr/master/HeaderImage.png</image>
+        </screenshot>
+    </screenshots>
+    <url type="homepage">https://torbuntu.github.io/Leikr/</url>
+    <url type="bugtracker">https://github.com/Torbuntu/Leikr/issues</url>
+    <url type="help">https://github.com/Torbuntu/Leikr/wiki</url>
+    <releases>
+        <release version="1.0.6" date="2021-04-15"/>
+            <description>
+              <p>
+                <ul>
+                  <li>New approach to security using a custom ClassLoader</li>
+                  <li>Remove old buggy java security policy</li>
+                  <li>Leikr still takes a launch parameter `insecure` for running without security</li>
+                  <li>Fixed SpriteLoader's lookup for loadSpriteSheet(String project) loading external sheets</li>
+                  <li>Added more javadocs</li>
+                </ul>
+              </p>
+            </description>
+        <release version="1.0.5" date="2021-04-10"/>
+        <release version="1.0.4" date="2021-04-02"/>
+        <release version="1.0.3" date="2020-10-18"/>
+        <release version="1.0.2" date="2020-10-02"/>
+        <release version="1.0.1" date="2020-09-29"/>
+    </releases>
+    <content_rating type="oars-1.1" />
 </component>
