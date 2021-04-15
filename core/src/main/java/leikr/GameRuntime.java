@@ -20,26 +20,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import leikr.managers.ManagerDTO;
 import leikr.customProperties.CustomSystemProperties;
-import leikr.loaders.AudioLoader;
-import leikr.loaders.EngineLoader;
-import leikr.loaders.FontLoader;
-import leikr.loaders.ImageLoader;
-import leikr.loaders.MapLoader;
-import leikr.loaders.SpriteLoader;
-import leikr.managers.AudioManager;
-import leikr.managers.DataManager;
-import leikr.managers.PixelManager;
-import leikr.managers.GraphicsManager;
-import leikr.managers.InputManager;
-import leikr.managers.SystemManager;
-import leikr.managers.TerminalManager;
-import leikr.screens.EngineScreen;
-import leikr.screens.ErrorScreen;
-import leikr.screens.LoadScreen;
-import leikr.screens.MenuScreen;
-import leikr.screens.NewProgramScreen;
-import leikr.screens.TerminalScreen;
-import leikr.screens.TitleScreen;
+import leikr.loaders.*;
+import leikr.managers.*;
+import leikr.screens.*;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.assets.AssetManager;
 import org.mini2Dx.core.files.ExternalFileHandleResolver;
@@ -76,7 +59,7 @@ public class GameRuntime extends ScreenBasedGame {
     private SpriteLoader spriteLoader;
     private TerminalManager terminalManager;
 
-    //Managers
+    // Managers
     private AudioManager audioManager;
     private DataManager dataManager;
     private PixelManager pixelManager;
@@ -84,18 +67,24 @@ public class GameRuntime extends ScreenBasedGame {
     private InputManager inputManager;
     private SystemManager systemManager;
 
+    /**
+     * DTO for passing managers to lower systems
+     */
     private ManagerDTO managerDTO;
 
     private CustomCursor cursor;
 
     private CustomSystemProperties customSystemProperties;
+    private final boolean secure;
 
     /**
      * Creates CustomSystemProperties for detecting launch title.
      *
      * @param args
+     * @param secure
      */
-    public GameRuntime(String[] args) {
+    public GameRuntime(String[] args, boolean secure) {
+        this.secure = secure;
         if (System.getenv("LEIKR_HOME") != null) {
             customPathVariables();
         } else {
@@ -228,7 +217,6 @@ public class GameRuntime extends ScreenBasedGame {
         systemManager = new SystemManager(engineLoader, primaryFontLoader, spriteLoader, this);
         terminalManager = new TerminalManager(this, engineLoader);
 
-        // DTO for passing managers to lower systems
         managerDTO = new ManagerDTO(audioManager, dataManager, pixelManager, graphicsManager, inputManager, systemManager);
     }
 
@@ -254,6 +242,10 @@ public class GameRuntime extends ScreenBasedGame {
         return directLaunch;
     }
 
+    public boolean isSecure() {
+        return secure;
+    }
+
     public String getGamePath() {
         return programsPath + getGameName();
     }
@@ -270,19 +262,16 @@ public class GameRuntime extends ScreenBasedGame {
         this.gameName = GAME_NAME;
     }
 
-    public boolean checkFileDropped() {
-        return (null != fileDroppedTitle && fileDroppedTitle.length() > 2);
-    }
-    
-    public void setFileDroppedTitle(String title){
+    public void setFileDroppedTitle(String title) {
         this.fileDroppedTitle = title;
     }
 
+    public boolean checkFileDropped() {
+        return (null != fileDroppedTitle && fileDroppedTitle.length() > 2);
+    }
+
     public String getFileDroppedTitle() {
-        if (checkFileDropped()) {
-            return fileDroppedTitle;
-        }
-        return "";
+        return checkFileDropped() ? fileDroppedTitle : "";
     }
 
     public void clearFileDropped() {
@@ -294,8 +283,9 @@ public class GameRuntime extends ScreenBasedGame {
     }
 
     /**
-     * Returns the full path to Leikr's Programs directory. NOTE: This includes
-     * a trailing `/`
+     * Returns the full path to Leikr's Programs directory. 
+     * 
+     * Note: This includes a trailing `/`
      *
      * @return programsPath
      */
@@ -304,8 +294,9 @@ public class GameRuntime extends ScreenBasedGame {
     }
 
     /**
-     * Returns the full path to Leikr's Data directory. NOTE: This includes a
-     * trailing `/`
+     * Returns the full path to Leikr's Data directory. 
+     * 
+     * Note: This includes a trailing `/`
      *
      * @return dataPath
      */
@@ -326,5 +317,3 @@ public class GameRuntime extends ScreenBasedGame {
     }
 
 }
-
-//TODO: If LEIKR_HOME env variable set, create custom LeikrPolicy object with file path.
