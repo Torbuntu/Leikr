@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 import leikr.GameRuntime;
 import leikr.customProperties.CustomProgramProperties;
 import leikr.customProperties.CustomSystemProperties;
+import leikr.transitions.EnterTransition;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
 import org.mini2Dx.core.game.GameContainer;
@@ -39,6 +40,7 @@ import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
+import org.mini2Dx.core.screen.transition.FadeInTransition;
 import org.mini2Dx.core.util.Align;
 import org.mini2Dx.gdx.Input.Keys;
 
@@ -136,7 +138,7 @@ public class MenuScreen extends BasicGameScreen {
             LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID);
             ls.setGameName(games.get(index).getTitle());
             runtime.setGameName(games.get(index).getTitle());
-            sm.enterGameScreen(LoadScreen.ID, null, null);
+            sm.enterGameScreen(LoadScreen.ID, new EnterTransition(runtime), null);
         }
 
         if (runtime.checkFileDropped()) {
@@ -144,7 +146,7 @@ public class MenuScreen extends BasicGameScreen {
             ls.setGameName(runtime.getFileDroppedTitle());
             runtime.setGameName(runtime.getFileDroppedTitle());
             runtime.clearFileDropped();
-            sm.enterGameScreen(LoadScreen.ID, null, null);
+            sm.enterGameScreen(LoadScreen.ID, new EnterTransition(runtime), null);
         }
 
         Controllers.addListener(new ControllerAdapter() {
@@ -206,6 +208,10 @@ public class MenuScreen extends BasicGameScreen {
         }
         if (index < games.size() - 1) {
             g.drawString("->", -10, 3, 240, Align.RIGHT);
+        }
+        if(!runtime.isSecure()){
+            g.setColor(Colors.RED());
+            g.drawString("!NO SANDBOX!", 0, 16, 240, Align.CENTER);
         }
 
         g.setColor(Colors.YELLOW());

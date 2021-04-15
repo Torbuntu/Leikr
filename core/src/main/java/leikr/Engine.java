@@ -15,7 +15,6 @@
  */
 package leikr;
 
-import leikr.managers.ManagerDTO;
 import com.badlogic.gdx.controllers.ControllerAdapter;
 import com.badlogic.gdx.controllers.Controllers;
 import java.math.BigDecimal;
@@ -23,12 +22,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import leikr.controls.LeikrController;
-import leikr.controls.LeikrKeyboard;
-import leikr.controls.LeikrMouse;
+import leikr.controls.*;
 import leikr.managers.AudioManager;
 import leikr.managers.DataManager;
 import leikr.managers.GraphicsManager;
+import leikr.managers.ManagerDTO;
 import leikr.managers.SystemManager;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;

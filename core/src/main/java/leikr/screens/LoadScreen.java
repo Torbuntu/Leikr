@@ -67,8 +67,6 @@ public class LoadScreen extends BasicGameScreen {
         assetManager.load(runtime.getDataPath() + "Images/leikr-logo.png", Texture.class);
         assetManager.finishLoading();
 
-        service = Executors.newFixedThreadPool(1);
-
         barItems = new ArrayList<>();
         barItems.add(12);
         barItems.add(-56);
@@ -88,6 +86,7 @@ public class LoadScreen extends BasicGameScreen {
 
     @Override
     public void initialise(GameContainer gc) {
+        service = Executors.newFixedThreadPool(1);
     }
 
     @Override
@@ -121,10 +120,6 @@ public class LoadScreen extends BasicGameScreen {
         }
         translateArrayPositions();
         ++frame;
-    }
-
-    @Override
-    public void interpolate(GameContainer gc, float f) {
     }
 
     @Override
