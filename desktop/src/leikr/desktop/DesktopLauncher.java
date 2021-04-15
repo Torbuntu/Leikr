@@ -19,8 +19,6 @@ import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl3.DesktopMini2DxGame;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Mini2DxConfig;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Mini2DxWindowListener;
-import java.io.File;
-import java.security.Policy;
 import java.security.Security;
 import java.util.Arrays;
 import java.util.logging.Level;
@@ -30,7 +28,7 @@ import leikr.GameRuntime;
 public class DesktopLauncher {
 
     public static void main(String[] args) {
-        GameRuntime runtime = new GameRuntime(args, Arrays.asList(args).contains("insecure"));
+        GameRuntime runtime = new GameRuntime(args, !Arrays.asList(args).contains("insecure"));
 
         if (Arrays.asList(args).contains("insecure")) {
             Logger.getLogger(Security.class.getName()).log(Level.WARNING, "Leikr is running without security.");
