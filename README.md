@@ -53,7 +53,7 @@ Depending on your system, you can either launch the system through the `Leikr` s
 
 ###### `>` is the terminal icon, don't type this.
 
-###### Java is required to run this program. Best used with AdoptOpenJDK. Version 0.0.18+ requires Java 14 at a minimum
+###### Java is required to run this program. Best used with AdoptOpenJDK. Version 1.0.0 is tested with Java 15 at a minimum
 
 
 1. git clone the project. Then enter the `leikr` directory.

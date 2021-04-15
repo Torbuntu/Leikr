@@ -10,8 +10,9 @@
     
     <description>
         <p>Leikr Game System</p>
-        <p>The word Leikr is Old Norse for Game.</p>
-        <p>It is a play on the name Lego, from the Danish “Leg Godt”, meaning “Play Well”.</p>
+        <p>A Game System for making games and programs in the Groovy programming language. (A Fantasy Console idea)</p>
+        <p>The word Leikr is Old Norse for Game and is a play on the name Lego, from the Danish “Leg Godt”, meaning “Play Well”.</p>
+        
     </description>
     <screenshots>
         <screenshot type="default">
