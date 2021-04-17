@@ -10,20 +10,37 @@
     
     <description>
         <p>Leikr Game System</p>
-		<p>Use the editors you are most comfortable with to create games or programs in Groovy code, maps in Tiled the popular map editor, make sprites using a simple single png file. See the github wiki for more help and tutorials.</p>
+	<p>Use the editors you are most comfortable with to create games or programs in Groovy code, maps in Tiled the popular map editor, make sprites using a simple single png file. See the github wiki for more help and tutorials.</p>
         <p>The word Leikr is Old Norse for Game and is a play on the name Lego, from the Danish “Leg Godt”, meaning “Play Well”.</p>
 	        
     </description>
     <screenshots>
         <screenshot type="default">
-            <caption>Leikr header image</caption>
-            <image type="source">https://raw.githubusercontent.com/Torbuntu/Leikr/master/HeaderImage.png</image>
+            <caption>Booting Leikr</caption>
+            <image type="source">https://raw.githubusercontent.com/Torbuntu/Leikr/master/showcase/boot.png</image>
         </screenshot>
+        <screenshot>
+            <caption>Generic application</caption>
+            <image type="source">https://raw.githubusercontent.com/Torbuntu/Leikr/master/showcase/generic.png</image>
+        </screenshot>
+        <screenshot>
+            <caption>WizRobo Game</caption>
+            <image type="source">https://raw.githubusercontent.com/Torbuntu/Leikr/master/showcase/wizrobo.png</image>
+        </screenshot>
+        <screenshot>
+            <caption>Terminal</caption>
+            <image type="source">https://raw.githubusercontent.com/Torbuntu/Leikr/master/showcase/terminal.png</image>
+        </screenshot>
+        
     </screenshots>
     <url type="homepage">https://torbuntu.github.io/Leikr/</url>
     <url type="bugtracker">https://github.com/Torbuntu/Leikr/issues</url>
     <url type="help">https://github.com/Torbuntu/Leikr/wiki</url>
     <releases>
+        <release version="1.0.7" date="2021-04-17"/>
+            <description>
+                <p>Bug fixes</p>
+            </description>
         <release version="1.0.6" date="2021-04-15"/>
             <description>
               <p>
