@@ -67,7 +67,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
 
     // <editor-fold desc="Field getters" defaultstate="collapsed">
     /**
-     *
+     *Gets the first available Controller plugged in.
      * @return the default controller lControllerA
      */
     public LeikrController getController() {
@@ -75,7 +75,8 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     }
 
     /**
-     * 0 - lControllerA 1 - lControllerB
+     * 0 - lControllerA 
+     * 1 - lControllerB
      *
      * @param id which controller to return.
      * @return the controller given the id

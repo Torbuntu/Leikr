@@ -81,7 +81,7 @@ public class SystemManager {
     }
 
     public void loadProgram(String name) {
-        runtime.setGameName(name);
+        runtime.setFileDroppedTitle(name);
         loadProgram = true;
     }
 
