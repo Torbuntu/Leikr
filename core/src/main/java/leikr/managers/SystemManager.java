@@ -59,7 +59,7 @@ public class SystemManager {
         manager.clearAssetLoaders();
     }
 
-    //START API
+    // <editor-fold desc="Helper methods" defaultstate="collapsed"> 
     public String getProgramPath() {
         return runtime.getProgramsPath();
     }
@@ -85,6 +85,10 @@ public class SystemManager {
         loadProgram = true;
     }
 
+    public void loadSpriteSheet(String sheetName) {
+        spriteLoader.loadManualSpritesheets(sheetName);
+    }
+
     public void pause() {
         pause = true;
     }
@@ -92,6 +96,7 @@ public class SystemManager {
     public void pause(boolean shouldPause) {
         pause = shouldPause;
     }
+    // </editor-fold>
 
     // <editor-fold desc="Math api" defaultstate="collapsed"> 
     public float cos(BigDecimal radians) {
@@ -161,10 +166,6 @@ public class SystemManager {
     // </editor-fold>
 
     // <editor-fold desc="Engine loader api" defaultstate="collapsed"> 
-    public void loadSpriteSheet(String sheetName) {
-        spriteLoader.loadManualSpritesheets(sheetName);
-    }
-
     public Object compile(String path) {
         return engineLoader.compile(path);
     }

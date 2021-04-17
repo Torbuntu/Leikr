@@ -24,6 +24,7 @@ import leikr.loaders.MapLoader;
 import leikr.loaders.SpriteLoader;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
+import org.mini2Dx.core.geom.Shape;
 import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.FrameBuffer;
@@ -853,7 +854,7 @@ public class GraphicsManager {
         g.removeClip();
     }
 
-    // EXPERIMENTAL METHODS START HERE
+    // <editor-fold desc="Experimental methods" defaultstate="collapsed">
     public void tint(Color color) {
         g.setTint(color);
     }
@@ -905,7 +906,7 @@ public class GraphicsManager {
     }
 
     public Color getPixel(String name, BigDecimal x, BigDecimal y) {
-        Pixmap pm = Mdx.graphics.newPixmap(Mdx.files.local(path + "/Art/" + name));
+        Pixmap pm = Mdx.graphics.newPixmap(Mdx.files.external(path + "/Art/" + name));
         Color c = Mdx.graphics.newColor(pm.getPixel(x.intValue(), y.intValue()));
         pm.dispose();
         return c;
@@ -922,5 +923,6 @@ public class GraphicsManager {
         pm.dispose();
         return colors;
     }
+    // </editor-fold>
 
 }

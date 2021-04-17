@@ -22,7 +22,7 @@ package leikr.commands;
 public class VersionCommand implements Command {
 
     //TODO: Make sure to update prior to release
-    private final String version = "Leikr-1.0.6";
+    private final String version = "Leikr-1.0.7";
 
     @Override
     public String execute(String[] command) {
