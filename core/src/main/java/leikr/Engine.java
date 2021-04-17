@@ -152,6 +152,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
 
         // reset the settings to apply to new game assets
         lAudio.resetAudioManager(path);
+        lData.resetData(path);
         lGraphics.resetScreenManager(path, maxSprites);
         lGraphics.preCreate(framebuffer, viewport);
 

@@ -40,7 +40,11 @@ public class DataManager {
         data = new HashMap<>();
     }
 
-    public void setGamePath(String path) {
+    public void resetData(String path) {
+        setGamePath(path);
+    }
+
+    private void setGamePath(String path) {
         gamePath = path;
     }
 
@@ -64,7 +68,7 @@ public class DataManager {
             }
             Mdx.files.external(dir).writeString(Mdx.json.toJson(data), false);
         } catch (IOException | SerializationException ex) {
-            Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, String.format("Failed saving data to %s", gamePath + "/" + path), ex);
         }
     }
 

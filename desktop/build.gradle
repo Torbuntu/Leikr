@@ -28,6 +28,7 @@ task deployLeikr {
         copy {
             from "$projectDir/build/libs"
             into "$projectDir/../deploy"
+            exclude "desktop.jar"
         }
         copy {
             from "$projectDir/../assets"
