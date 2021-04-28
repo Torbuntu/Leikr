@@ -30,7 +30,7 @@ public class LeikrMouse {
 
     private final Vector2 realMouse;
     private final Vector2 leikrMouse;
-
+    
     public LeikrMouse() {
         realMouse = new Vector2();
         leikrMouse = new Vector2();
@@ -62,7 +62,7 @@ public class LeikrMouse {
     public boolean mouseClick() {
         return Mdx.input.justTouched();
     }
-
+    
     /**
      * Gets the mouse X coordinate after updating position relative to game world
      * @return the mouse X coordinate

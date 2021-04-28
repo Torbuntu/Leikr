@@ -99,6 +99,10 @@ public class SystemManager {
     // </editor-fold>
 
     // <editor-fold desc="Math api" defaultstate="collapsed"> 
+    public float abs(BigDecimal value) {
+        return Math.abs(value.floatValue());
+    }
+
     public float cos(BigDecimal radians) {
         return MathUtils.cos(radians.floatValue());
     }

@@ -717,6 +717,9 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     // </editor-fold>
 
     // <editor-fold desc="Math api" defaultstate="collapsed">
+    public float abs(BigDecimal value){
+        return lSystem.abs(value);
+    }
     public float cos(BigDecimal radians) {
         return lSystem.cos(radians);
     }

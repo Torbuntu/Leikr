@@ -1,7 +1,8 @@
 buildscript {
     repositories {
         mavenCentral()
-        jcenter()
+        //jcenter()
+        gradlePluginPortal()
     }
     dependencies {
         classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
@@ -13,9 +14,9 @@ allprojects {
     ext {
         appName = 'Leikr'
         
-        mini2DxVersion = '2.0.0-alpha.48'
+        mini2DxVersion = '2.0.0-alpha.49'
         groovyVersion = '4.0.0-alpha-3'
-        gdxVersion = '1.9.13'
+        gdxVersion = '1.10.0'
         lwjglVersion = '3.2.3'
         
         // gdxControllersVersion = '2.0.0-SNAPSHOT'
@@ -26,7 +27,8 @@ allprojects {
 
     repositories {
         mavenCentral()
-        jcenter()
+        //jcenter()
+        gradlePluginPortal()
         maven { url "https://jitpack.io" }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
@@ -48,12 +50,13 @@ project(":core") {
     dependencies {
         //implementation "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
         
-        implementation "com.badlogicgames.gdx:gdx-controllers-lwjgl3:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-controllers-lwjgl3:1.9.13"
         implementation "org.mini2Dx:mini2dx-libgdx-desktop-lwjgl3:$mini2DxVersion"
         
         implementation "org.mini2Dx:mini2dx-core:$mini2DxVersion"
         implementation "org.mini2Dx:mini2dx-tiled:$mini2DxVersion"
         implementation "org.apache.groovy:groovy:$groovyVersion"
+        implementation "org.apache.groovy:groovy-json:$groovyVersion"
         
         // lwjgl3natives:
         implementation "org.lwjgl:lwjgl:$lwjglVersion"
