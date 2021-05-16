@@ -82,11 +82,13 @@ public class ExportTool {
         if (!exportDir.exists()) {
             exportDir.mkdirs();
         }
-        zipFolder(new File(Mdx.files.external(runtime.getProgramsPath() + path).path()).toPath(), new File(Mdx.files.external(runtime.getPackagePath() + path).path() + ".lkr").toPath());
+        zipFolder(new File(Mdx.files.external(runtime.getProgramsPath() + path).path()).toPath(),
+				new File(Mdx.files.external(runtime.getPackagePath() + path).path() + ".lkr").toPath());
     }
 
     public void deployPackage(String name) {
-        zipFolder(new File(Mdx.files.external(runtime.getDeployPath() + name).path()).toPath(), new File(Mdx.files.external(runtime.getDeployPath() + name).path() + ".zip").toPath());
+        zipFolder(new File(Mdx.files.external(runtime.getDeployPath() + name).path()).toPath(),
+				new File(Mdx.files.external(runtime.getDeployPath() + name).path() + ".zip").toPath());
     }
 
     //https://www.quickprogrammingtips.com/java/how-to-zip-a-folder-in-java.html

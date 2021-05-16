@@ -24,7 +24,6 @@ import leikr.loaders.MapLoader;
 import leikr.loaders.SpriteLoader;
 import org.mini2Dx.core.Graphics;
 import org.mini2Dx.core.Mdx;
-import org.mini2Dx.core.geom.Shape;
 import org.mini2Dx.core.graphics.Color;
 import org.mini2Dx.core.graphics.Colors;
 import org.mini2Dx.core.graphics.FrameBuffer;
