@@ -28,6 +28,7 @@ jobs:
         git config user.name "actions"
         git config user.email "actions@github.com"
         cp ../../../README.md .
+        cp ../../../_config.yml .
         cp -R ../../../site/ .
         git add .
         git commit -am "Update javadoc and site"
