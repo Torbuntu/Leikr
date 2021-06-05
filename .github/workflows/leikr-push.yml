@@ -30,4 +30,4 @@ jobs:
         mv core/build/docs/javadoc docs/
         git add .
         git commit -am "Update javadocs ${{github.sha}}"
-        git push origin gh=pages --force
+        git push origin gh-pages --force
