@@ -30,5 +30,6 @@ jobs:
         cp ../../../README.md .
         cp -R ../../../site/ .
         git add .
+        git commit -am "Update javadoc and site"
         git remote add origin https://${{github.repository_owner}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}
         git push origin gh-pages --force
