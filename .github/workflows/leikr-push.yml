@@ -20,3 +20,14 @@ jobs:
       with:
         name: Leikr
         path: deploy
+    - name: Update Docs
+      run: |
+        git checkout -B gh-pages
+        git config user.name "actions"
+        git config user.email "actions@github.com"
+        ./gradlew javadoc
+        rm -rf docs/javadoc
+        mv core/build/docs/javadoc docs/
+        git add .
+        git commit -am "Update javadocs ${{github.sha}}"
+        git push origin gh=pages --force
