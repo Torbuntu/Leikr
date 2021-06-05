@@ -14,6 +14,7 @@ jobs:
         java-version: '15'
     - name: Build with Gradle
       run: ./gradlew clean build desktop:deployLeikr -x test
+      run: ./gradlew javadoc
       
     - name: Upload Leikr deploy
       uses: actions/upload-artifact@v2
@@ -21,13 +22,14 @@ jobs:
         name: Leikr
         path: deploy
     - name: Update Docs
+      working-directory: ./core/build/docs
       run: |
+        git init .
         git checkout -B gh-pages
         git config user.name "actions"
         git config user.email "actions@github.com"
-        ./gradlew javadoc
-        rm -rf docs/javadoc
-        mv core/build/docs/javadoc docs/
+        cp ../../../README.md .
+        cp -R ../../../site/ .
         git add .
-        git commit -am "Update javadocs ${{github.sha}}"
+        git remote add origin https://${{github.repository_owner}}:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}
         git push origin gh-pages --force
