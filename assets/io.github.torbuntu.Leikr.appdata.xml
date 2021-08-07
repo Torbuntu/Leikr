@@ -12,7 +12,7 @@
         <p>Leikr Game System</p>
 	<p>Use the editors you are most comfortable with to create games or programs in Groovy code, maps in Tiled the popular map editor, make sprites using a simple single png file. See the github wiki for more help and tutorials.</p>
         <p>The word Leikr is Old Norse for Game and is a play on the name Lego, from the Danish “Leg Godt”, meaning “Play Well”.</p>
-	        
+	<p>Press ESC to exit the system.</p>
     </description>
     <screenshots>
         <screenshot type="default">
