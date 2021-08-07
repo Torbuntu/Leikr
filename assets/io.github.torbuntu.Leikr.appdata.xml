@@ -37,6 +37,10 @@
     <url type="bugtracker">https://github.com/Torbuntu/Leikr/issues</url>
     <url type="help">https://github.com/Torbuntu/Leikr/wiki</url>
     <releases>
+		<release version="1.0.8" date="2021-08-07"/>
+			<description>
+				<p>Version bump</p>
+			</description>
         <release version="1.0.7" date="2021-04-17"/>
             <description>
                 <p>Bug fixes</p>
