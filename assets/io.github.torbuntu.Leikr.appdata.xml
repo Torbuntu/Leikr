@@ -37,15 +37,25 @@
     <url type="bugtracker">https://github.com/Torbuntu/Leikr/issues</url>
     <url type="help">https://github.com/Torbuntu/Leikr/wiki</url>
     <releases>
-		<release version="1.0.8" date="2021-08-07"/>
-			<description>
-				<p>Version bump</p>
-			</description>
-        <release version="1.0.7" date="2021-04-17"/>
+        <release version="1.0.9" date="2021-08-08">
+			    <description>
+				    <ul>
+				      <li>Remove Controller input to work on later.</li>
+				      <li>Remove Tools/Utilities as separate programs. They now live with Programs.</li>  
+				    </ul>
+			    </description>
+        </release>
+		    <release version="1.0.8" date="2021-08-07">
+			    <description>
+				    <p>Version bump</p>
+			    </description>
+		    </release>
+        <release version="1.0.7" date="2021-04-17">
             <description>
                 <p>Bug fixes</p>
             </description>
-        <release version="1.0.6" date="2021-04-15"/>
+        </release>
+        <release version="1.0.6" date="2021-04-15">
             <description>
               <p>
                 <ul>
@@ -57,6 +67,7 @@
                 </ul>
               </p>
             </description>
+        </release>
         <release version="1.0.5" date="2021-04-10"/>
         <release version="1.0.4" date="2021-04-02"/>
         <release version="1.0.3" date="2020-10-18"/>
