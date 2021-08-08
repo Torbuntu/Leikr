@@ -15,9 +15,6 @@
  */
 package leikr.screens;
 
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.ControllerAdapter;
-import com.badlogic.gdx.controllers.Controllers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,7 +37,6 @@ import org.mini2Dx.core.screen.BasicGameScreen;
 import org.mini2Dx.core.screen.GameScreen;
 import org.mini2Dx.core.screen.ScreenManager;
 import org.mini2Dx.core.screen.Transition;
-import org.mini2Dx.core.screen.transition.FadeInTransition;
 import org.mini2Dx.core.util.Align;
 import org.mini2Dx.gdx.Input.Keys;
 
@@ -61,10 +57,8 @@ public class MenuScreen extends BasicGameScreen {
     private final GameRuntime runtime;
     private Texture icon;
     private FrameBuffer framebuffer;
-    private final CustomSystemProperties customSystemProperties;
     
-    public MenuScreen(CustomSystemProperties customSystemProperties, FitViewport vp, GameRuntime runtime) {
-        this.customSystemProperties = customSystemProperties;
+    public MenuScreen(FitViewport vp, GameRuntime runtime) {
         this.runtime = runtime;
         fitViewport = vp;
         stretchViewport = new StretchViewport(runtime.WIDTH, runtime.HEIGHT);
@@ -148,41 +142,6 @@ public class MenuScreen extends BasicGameScreen {
             runtime.clearFileDropped();
             sm.enterGameScreen(LoadScreen.ID, new EnterTransition(runtime), null);
         }
-
-        Controllers.addListener(new ControllerAdapter() {
-            @Override
-            public boolean buttonDown(Controller controller, int buttonIndex) {
-
-                if (buttonIndex == customSystemProperties.getStart() || buttonIndex == customSystemProperties.getA()) {
-                    System.out.println(buttonIndex);
-
-                    LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID);
-                    ls.setGameName(games.get(index).getTitle());
-                    runtime.setGameName(games.get(index).getTitle());
-                    Controllers.clearListeners();
-                    sm.enterGameScreen(LoadScreen.ID, null, null);
-                    return true;
-                }
-                return false;
-            }
-
-            @Override
-            public boolean axisMoved(Controller controller, int axisIndex, float value) {
-                if (axisIndex == customSystemProperties.getHorizontalAxis()) {
-                    if ((int) value == customSystemProperties.getRight() && index < games.size() - 1) {
-                        index++;
-                        return true;
-                    }
-                    if ((int) value == customSystemProperties.getLeft() && index > 0) {
-                        index--;
-                        return true;
-                    }
-                }
-                return false;
-            }
-
-        });
-
     }
 
     @Override

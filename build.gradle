@@ -14,12 +14,10 @@ allprojects {
     ext {
         appName = 'Leikr'
         
-        mini2DxVersion = '2.0.0-alpha.71'
+        mini2DxVersion = '2.0.0-alpha.72'
         groovyVersion = '4.0.0-alpha-3'
         gdxVersion = '1.10.0'
         lwjglVersion = '3.2.3'
-        
-        // gdxControllersVersion = '2.0.0-SNAPSHOT'
         lwjglNatives32 = 'natives-linux-arm32'
         lwjglNatives64 = 'natives-linux-arm64'
         
@@ -44,13 +42,10 @@ allprojects {
 
 project(":core") {
     apply plugin: 'java'
-    //apply plugin: 'jacoco'
     apply plugin: 'groovy'
 
     dependencies {
-        //implementation "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
         
-        implementation "com.badlogicgames.gdx:gdx-controllers-lwjgl3:1.9.13"
         implementation "org.mini2Dx:mini2dx-libgdx-desktop-lwjgl3:$mini2DxVersion"
         
         implementation "org.mini2Dx:mini2dx-core:$mini2DxVersion"
@@ -75,12 +70,8 @@ project(":core") {
         runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives64"
         runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives64"
         runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives64"
-        
-        // tests broken with Groovy 4
-        //testImplementation 'org.spockframework:spock-core:2.0-M3-groovy-3.0'
     }
     
-    //test.finalizedBy jacocoTestReport
 }
 
 project(":desktop") {
@@ -88,8 +79,6 @@ project(":desktop") {
 
     dependencies {
         implementation project(":core")
-        //implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
-        
         implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         implementation "org.mini2Dx:mini2dx-libgdx-desktop-lwjgl3:$mini2DxVersion"
     }

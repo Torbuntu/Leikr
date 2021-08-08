@@ -45,7 +45,6 @@ import org.mini2Dx.core.files.FileHandle;
  */
 public class EngineLoader implements Callable<Engine> {
 
-    private boolean runTool = false;
     private String rootPath;
     private String[] engineArgs;
 
@@ -96,17 +95,8 @@ public class EngineLoader implements Callable<Engine> {
         if (cp.USE_COMPILED) {
             return getCompiledEngine();
         }
-        if (runTool) {
-            runTool = false;
-            return getToolEngine();
-        }
-        return getSourceEngine();
-    }
 
-    private Engine getToolEngine() throws CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        gcl.clearCache();
-        gcl.addClasspath(runtime.getToolPath() + "/Code/");
-        return (Engine) gcl.parseClass(new File(Mdx.files.external(runtime.getToolPath() + "/Code/" + runtime.getGameName() + ".groovy").path())).getDeclaredConstructors()[0].newInstance();
+        return getSourceEngine();
     }
 
     private Engine getSourceEngine() throws MalformedURLException, CompilationFailedException, IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -155,10 +145,6 @@ public class EngineLoader implements Callable<Engine> {
 
     public String[] getEngineArgs() {
         return engineArgs;
-    }
-
-    public void setRunTool() {
-        runTool = true;
     }
 
     public int getMaxSprite() {

@@ -62,28 +62,28 @@ class DrawDemo extends leikr.Engine {
     }
 
     void update(float delta){
-        if ((key("Up") || button("Up")) && keyTimer == 0) {
+        if (key("Up") && keyTimer == 0) {
             keyTimer++
             prgState = prgState.next()
             mouseP = []
         }
-        if ((key("Down") || button("Down")) && keyTimer == 0) {
+        if (key("Down") && keyTimer == 0) {
             keyTimer++
             prgState = prgState.previous()
             mouseP = []
         }
-        if (!key("Up") && !button("Up") && !key("Down") && !button("Down")) {
+        if (!key("Up") && !key("Down") ) {
             keyTimer = 0
         }
 
-        if (button("A") || key("X") && btnTimer == 0) {
+        if ( key("X") && btnTimer == 0) {
             if (prgState == state.START) {
                 prgState = prgState.next()
             }
             btnTimer++
             mouseTrails = !mouseTrails
         }
-        if (!key("X") && !button("A")) {
+        if (!key("X") ) {
             btnTimer = 0
         }
 
@@ -99,7 +99,7 @@ class DrawDemo extends leikr.Engine {
         switch(prgState) {
             case state.START:
                 drawString(1, "Press up/down to change test mode", 52, 80)
-                drawString(1, "Press X key or A button to toggle mouse trails", 30, 88)
+                drawString(1, "Press X key to toggle mouse trails", 30, 88)
 
                 break
             case state.SPRITE:

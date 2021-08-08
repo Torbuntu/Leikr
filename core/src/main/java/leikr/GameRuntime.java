@@ -226,8 +226,8 @@ public class GameRuntime extends ScreenBasedGame {
         this.addScreen(new ErrorScreen(viewport, this));//3
         this.addScreen(new LoadScreen(this, assetManager, viewport, engineLoader, gameName));//4
         this.addScreen(new NewProgramScreen(viewport, this));//5
-        this.addScreen(new TerminalScreen(viewport, terminalManager, engineLoader, this));//6
-        this.addScreen(new MenuScreen(customSystemProperties, viewport, this));//7
+        this.addScreen(new TerminalScreen(viewport, terminalManager, this));//6
+        this.addScreen(new MenuScreen(viewport, this));//7
     }
 
     public CustomSystemProperties getCustomSystemProperties() {

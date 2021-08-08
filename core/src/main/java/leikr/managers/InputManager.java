@@ -15,10 +15,6 @@
  */
 package leikr.managers;
 
-import com.badlogic.gdx.controllers.Controllers;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import leikr.controls.LeikrController;
 import leikr.controls.LeikrKeyboard;
 import leikr.controls.LeikrMouse;
 import leikr.customProperties.CustomSystemProperties;
@@ -30,14 +26,10 @@ import org.mini2Dx.core.graphics.viewport.StretchViewport;
  */
 public class InputManager {
 
-    private final LeikrController controllerA;
-    private final LeikrController controllerB;
     private final LeikrKeyboard keyboard;
     private final LeikrMouse mouse;
 
     public InputManager(CustomSystemProperties customSystemProperties) {
-        controllerA = new LeikrController(customSystemProperties, 1);
-        controllerB = new LeikrController(customSystemProperties, 2);
         keyboard = new LeikrKeyboard();
         mouse = new LeikrMouse();
     }
@@ -46,30 +38,12 @@ public class InputManager {
         mouse.setViewport(viewport);
     }
 
-    public LeikrController getControllerA() {
-        return controllerA;
-    }
-
-    public LeikrController getControllerB() {
-        return controllerB;
-    }
-
     public LeikrKeyboard getKeyboard() {
         return keyboard;
     }
 
     public LeikrMouse getMouse() {
         return mouse;
-    }
-
-    public void dispose() {
-        try {
-            Controllers.clearListeners();
-            Controllers.removeListener(controllerA);
-            Controllers.removeListener(controllerB);
-        }catch(Exception ex){
-            Logger.getLogger(InputManager.class.getName()).log(Level.WARNING, "No active controllers to dispose");
-        }
     }
 
 }

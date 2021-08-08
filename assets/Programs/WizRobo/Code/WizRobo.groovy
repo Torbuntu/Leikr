@@ -41,7 +41,7 @@ class WizRobo extends leikr.Engine {
     }
     
     void movep(){        
-        wizard.updateWizard(getGraphics(), getKeyboard(), getController(), getAudio(), bolt)
+        wizard.updateWizard(getGraphics(), getKeyboard(), getAudio(), bolt)
 		
        
         if(bolt.attack){
@@ -426,14 +426,14 @@ class WizRobo extends leikr.Engine {
         if(keyPress("F1")) DEBUG = !DEBUG
         debuglvl()       
         if(gameOver){
-            if(keyPress("Enter") || button("SELECT")){
+            if(keyPress("Enter")){
                 title = true
                 gameOver = false
                 return
             }
         }
     	if(title){
-            if(keyPress("Enter") || button("SELECT")){
+            if(keyPress("Enter")){
                 title = false
                 init()
             }

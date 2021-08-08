@@ -42,14 +42,12 @@ public class TerminalScreen extends BasicGameScreen {
 
     private final TerminalManager terminalManager;
     private final FitViewport viewport;
-    private final EngineLoader engineLoader;
     private final GameRuntime runtime;
     private final ExportTool exportTool;
 
-    public TerminalScreen(FitViewport vp, TerminalManager terminalManager, EngineLoader engineLoader, GameRuntime runtime) {
+    public TerminalScreen(FitViewport vp, TerminalManager terminalManager, GameRuntime runtime) {
         this.runtime = runtime;
         this.terminalManager = terminalManager;
-        this.engineLoader = engineLoader;
         viewport = vp;
         exportTool = new ExportTool(runtime);
     }
@@ -105,10 +103,6 @@ public class TerminalScreen extends BasicGameScreen {
             }
             case NEW_PROGRAM ->
                 sm.enterGameScreen(NewProgramScreen.ID, null, null);
-            case RUN_UTILITY -> {
-                engineLoader.setRunTool();
-                sm.enterGameScreen(LoadScreen.ID, null, null);
-            }
         }
 
         blink++;

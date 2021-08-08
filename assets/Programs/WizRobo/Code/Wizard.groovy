@@ -67,17 +67,17 @@ class Wizard{
         return lsm.getMapTile(mx,my)
     }
     
-    void updateWizard(lsm, lk, contrl, audio, bolt){
+    void updateWizard(lsm, lk, audio, bolt){
     	waTime++
         vx = 0
         spid = 0
         //check left or right moving
-        if((lk.key(left) || (contrl != null && contrl.button("LEFT"))) && !solid(lsm, x-1, y) && !solid(lsm, x-1, y+7)){		
+        if(lk.key(left) && !solid(lsm, x-1, y) && !solid(lsm, x-1, y+7)){		
             vx =-1           
             f = true
             walking = true
         }
-        if((lk.key(right) || (contrl != null && contrl.button("RIGHT"))) && !solid(lsm, x+8,y) && !solid(lsm, x+8,y+7)){
+        if(lk.key(right) && !solid(lsm, x+8,y) && !solid(lsm, x+8,y+7)){
             vx = 1         
             f = false
             walking = true
@@ -98,7 +98,7 @@ class Wizard{
         }
 	
         //check jumping.
-        if(((lk.key(up) || (contrl != null && contrl.button("B"))) || lk.key("Up")) && vy==0){        	
+        if((lk.key(up) || lk.key("Up")) && vy==0){        	
             vy=-3.5            
             g = false 
         }	
@@ -133,19 +133,19 @@ class Wizard{
     	}
     	
         //action buttons
-    	if(lk.key("X") || (contrl != null && contrl.button("A"))){
+    	if(lk.key("X") ){
             chargep(bolt)
     	}
-    	if(lk.key("Z") || (contrl != null && contrl.button("Y"))){
+    	if(lk.key("Z") ){
             attackp(bolt, audio)
     	}
     	
     	if(ladder(lsm)){
             vy = 0
-            if(lk.key(down) || (contrl != null && contrl.button("DOWN") )|| lk.key("Down") ){
+            if(lk.key(down) || lk.key("Down") ){
                 vy = 0.6
             }
-            if(lk.key(up) || (contrl != null && contrl.button("UP") )|| lk.key("Up")){
+            if(lk.key(up) || lk.key("Up")){
                 vy = -0.6
             }            
         }	

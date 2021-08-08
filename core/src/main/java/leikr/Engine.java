@@ -15,8 +15,6 @@
  */
 package leikr;
 
-import com.badlogic.gdx.controllers.ControllerAdapter;
-import com.badlogic.gdx.controllers.Controllers;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +39,7 @@ import org.mini2Dx.gdx.InputProcessor;
  *
  * @author tor
  */
-public abstract class Engine extends ControllerAdapter implements InputProcessor {
+public abstract class Engine implements InputProcessor {
 
     /**
      * Used by {@link leikr.screens.EngineScreen} to determine if the game
@@ -49,11 +47,6 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
      */
     private boolean active;
 
-    /**
-     * Controllers and listeners for handling custom controller input.
-     */
-    private LeikrController lControllerA;
-    private LeikrController lControllerB;
     private LeikrKeyboard lKeyboard;
     private LeikrMouse lMouse;
 
@@ -66,24 +59,6 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     private DataManager lData;
 
     // <editor-fold desc="Field getters" defaultstate="collapsed">
-    /**
-     *Gets the first available Controller plugged in.
-     * @return the default controller lControllerA
-     */
-    public LeikrController getController() {
-        return getController(0);
-    }
-
-    /**
-     * 0 - lControllerA 
-     * 1 - lControllerB
-     *
-     * @param id which controller to return.
-     * @return the controller given the id
-     */
-    public LeikrController getController(int id) {
-        return (id == 0 ? lControllerA : lControllerB);
-    }
 
     /**
      *
@@ -135,8 +110,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
 
     // <editor-fold desc="Pre game loop methods" defaultstate="collapsed"> 
     /**
-     * preCreate sets the audio, graphics, data, and system objects and sets up
-     * the controllers if there are any connected.
+     * preCreate sets the audio, graphics, data, and system objects
      *
      * @param path the path to the game assets
      * @param maxSprites maximum allowed sprites to draw at one time
@@ -157,23 +131,6 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
         lGraphics.resetScreenManager(path, maxSprites);
         lGraphics.preCreate(framebuffer, viewport);
 
-        // set the input processors
-        try {
-            lControllerA = managerDTO.getInputManager().getControllerA();
-            lControllerB = managerDTO.getInputManager().getControllerB();
-            if (Controllers.getControllers().size < 1) {
-                throw new RuntimeException("No controllers, continue as Keyboard + Mouse");
-            }
-
-            if (Controllers.getControllers().size > 0) {
-                Controllers.getControllers().get(0).addListener(lControllerA);
-            }
-            if (Controllers.getControllers().size > 1) {
-                Controllers.getControllers().get(1).addListener(lControllerB);
-            }
-        } catch (RuntimeException ex) {
-            Logger.getLogger(Engine.class.getName()).log(Level.WARNING, "Controllers not active: {0}", ex.getMessage());
-        }
         lMouse = managerDTO.getInputManager().getMouse();
         lMouse.setViewport(viewport);
         lKeyboard = managerDTO.getInputManager().getKeyboard();
@@ -248,18 +205,6 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
 
         if (lGraphics != null) {
             lGraphics.dispose();
-        }
-
-        //Debugging for ARM-GameShell
-        try {
-            if (Controllers.getControllers().size > 0) {
-                Controllers.getControllers().get(0).removeListener(lControllerA);
-            }
-            if (Controllers.getControllers().size > 1) {
-                Controllers.getControllers().get(1).removeListener(lControllerB);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(Engine.class.getName()).log(Level.WARNING, null, ex);
         }
     }
     // </editor-fold>
@@ -766,21 +711,7 @@ public abstract class Engine extends ControllerAdapter implements InputProcessor
     // </editor-fold>
 
     // <editor-fold desc="Input api" defaultstate="collapsed"> 
-    public final boolean button(String button) {
-        return (null != lControllerA) ? lControllerA.button(button) : false;
-    }
-
-    public final boolean button(String button, int player) {
-        if (null != lControllerA && player == 0) {
-            return lControllerA.button(button);
-        }
-        if (null != lControllerB && player == 1) {
-            return lControllerB.button(button);
-        }
-        //default search is false, in case there are no controllers.
-        return false;
-    }
-
+   
     //detect Keyboard key presses (polling continuously)
     public final boolean key(String key) {
         return lKeyboard.key(key);
