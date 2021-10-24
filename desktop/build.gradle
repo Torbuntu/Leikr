@@ -3,8 +3,8 @@ plugins {
     id "org.beryx.jlink" version "2.22.2"
 }
 
-targetCompatibility = 14
-sourceCompatibility = 14
+targetCompatibility = 16
+sourceCompatibility = 16
 
 shadowJar {
     // minimize() //I'd like to minimize, but it is too aggressive currently and requires older JDK
@@ -39,7 +39,7 @@ task deployLeikr {
     }
 }
 
-sourceSets.main.java.srcDirs = [ "src/" ]
+sourceSets.main.groovy.srcDirs = [ "src/main/groovy" ]
 
 mainClassName = "leikr.desktop.DesktopLauncher"
 project.ext.assetsDir = new File("$projectDir/../assets");
@@ -47,7 +47,7 @@ project.ext.assetsDir = new File("$projectDir/../assets");
 sourceSets.main.resources.srcDirs = [project.ext.assetsDir.getAbsolutePath()]
 
 task launchDesktop(dependsOn: classes, type: JavaExec) {
-    main = project.mainClassName
+    mainClass = project.mainClassName
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in
     workingDir = project.assetsDir

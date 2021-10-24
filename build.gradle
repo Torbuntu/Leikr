@@ -14,8 +14,8 @@ allprojects {
     ext {
         appName = 'Leikr'
         
-        mini2DxVersion = '2.0.0-alpha.72'
-        groovyVersion = '4.0.0-alpha-3'
+        mini2DxVersion = '2.0.0-alpha.82'
+        groovyVersion = '4.0.0-beta-1'
         gdxVersion = '1.10.0'
         lwjglVersion = '3.2.3'
         lwjglNatives32 = 'natives-linux-arm32'
@@ -76,9 +76,11 @@ project(":core") {
 
 project(":desktop") {
     apply plugin: "application"
+	apply plugin: "groovy"
 
     dependencies {
         implementation project(":core")
+		implementation "org.apache.groovy:groovy:$groovyVersion"
         implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         implementation "org.mini2Dx:mini2dx-libgdx-desktop-lwjgl3:$mini2DxVersion"
     }
