@@ -13,7 +13,7 @@ jobs:
         distribution: 'temurin'
         java-version: '16'
     - name: Build with Gradle
-      run: ./gradlew clean build desktop:deployLeikr -x test && ./gradlew javadoc
+      run: ./gradlew clean build desktop:deployLeikr -x test && ./gradlew groovydoc
       
     - name: Upload Leikr deploy
       uses: actions/upload-artifact@v2
