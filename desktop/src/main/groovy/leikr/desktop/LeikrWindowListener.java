@@ -26,7 +26,7 @@ import leikr.GameRuntime;
  *
  * @author tor
  */
-class LeikrWindowListener implements Lwjgl3Mini2DxWindowListener {
+public class LeikrWindowListener implements Lwjgl3Mini2DxWindowListener {
 
     private final GameRuntime runtime;
 

@@ -162,7 +162,7 @@ class EngineScreen extends BasicGameScreen {
 					}
                 } catch (Exception ex) {
                     engineState = EngineState.ERROR
-                    errorMessage = "Error in program `update` method. " + ex.getLocalizedMessage()
+                    errorMessage = "Error in program `update` method. ${ex.getLocalizedMessage()}"
                     Logger.getLogger(EngineScreen.class.getName()).log(Level.SEVERE, null, ex)
                 }
 				break
@@ -235,7 +235,7 @@ class EngineScreen extends BasicGameScreen {
             engine.render()
         } catch (Exception ex) {
             engineState = EngineState.ERROR
-            errorMessage = "Error in program `render` method. " + ex.getLocalizedMessage()
+            errorMessage = "Error in program `render` method. ${ex.getLocalizedMessage()}"
             Logger.getLogger(EngineScreen.class.getName()).log(Level.SEVERE, null, ex)
         }
     }

@@ -62,11 +62,13 @@ public class DataManager {
 
     public void saveData(String path) {
         try {
-            String dir = gamePath + "/" + path;
-            if (!Mdx.files.external(dir).exists()) {
-                Mdx.files.external(dir).delete();
-            }
-            Mdx.files.external(dir).writeString(Mdx.json.toJson(data), false);
+			Mdx.files.with{
+				String dir = "${gamePath}/${path}";
+				if (!external(dir).exists()) {
+					external(dir).delete();
+				}
+				external(dir).writeString(Mdx.json.toJson(data), false);
+			}
         } catch (IOException | SerializationException ex) {
             Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, String.format("Failed saving data to %s", gamePath + "/" + path), ex);
         }

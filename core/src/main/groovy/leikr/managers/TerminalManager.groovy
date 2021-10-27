@@ -24,27 +24,7 @@ import java.util.logging.Level
 import java.util.logging.Logger
 import java.util.stream.Collectors
 import leikr.GameRuntime
-import leikr.commands.AboutCommand
-import leikr.commands.CleanCommand
-import leikr.commands.Command
-import leikr.commands.CompileCommand
-import leikr.commands.ExitCommand
-import leikr.commands.PackageCommand
-import leikr.commands.FindCommand
-import leikr.commands.GetCommand
-import leikr.commands.InstallCommand
-import leikr.commands.NewProgramCommand
-import leikr.commands.DeployCommand
-import leikr.commands.HomeCommand
-import leikr.commands.PrintCommand
-import leikr.commands.PrintDirectoryCommand
-import leikr.commands.PrintWorkspaceCommand
-import leikr.commands.RemoveCommand
-import leikr.commands.RunCommand
-import leikr.commands.SetCommand
-import leikr.commands.ToolCommand
-import leikr.commands.VersionCommand
-import leikr.commands.WikiCommand
+import leikr.commands.*
 import leikr.loaders.EngineLoader
 import leikr.utilities.ExportTool
 import org.mini2Dx.core.Mdx
@@ -96,36 +76,36 @@ class TerminalManager implements InputProcessor {
         } catch (Exception ex) {
             Logger.getLogger(TerminalManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-        commandList.put("about", new AboutCommand(runtime));
-        commandList.put("cat", new PrintCommand(runtime));
-        commandList.put("ls", new PrintDirectoryCommand(runtime));
-        commandList.put("new", new NewProgramCommand(runtime, this));
-        commandList.put("exit", new ExitCommand());
-        commandList.put("run", new RunCommand(runtime, this, engineLoader));
-        commandList.put("find", new FindCommand(runtime));
-        commandList.put("clean", new CleanCommand());
-        commandList.put("pwd", new PrintWorkspaceCommand(runtime));
-        commandList.put("wiki", new WikiCommand());
-        commandList.put("package", new PackageCommand(exportTool));
-        commandList.put("install", new InstallCommand(runtime, exportTool));
-        commandList.put("tool", new ToolCommand(runtime, this));
-        commandList.put("uninstall", new RemoveCommand(runtime));
-        commandList.put("deploy", new DeployCommand(runtime, exportTool));
-        commandList.put("compile", new CompileCommand(runtime, engineLoader));
-        commandList.put("get", new GetCommand(runtime));
-        commandList.put("set", new SetCommand(runtime));
-        commandList.put("home", new HomeCommand(runtime));
-        commandList.put("version", new VersionCommand());
+        commandList["about"] = new AboutCommand(runtime)
+        commandList["cat"] = new PrintCommand(runtime)
+        commandList["ls"] = new PrintDirectoryCommand(runtime)
+        commandList["new"] = new NewProgramCommand(runtime, this)
+        commandList["exit"] = new ExitCommand()
+        commandList["run"] = new RunCommand(runtime, this, engineLoader)
+        commandList["find"] = new FindCommand(runtime)
+        commandList["clean"] = new CleanCommand()
+        commandList["pwd"] = new PrintWorkspaceCommand(runtime)
+        commandList["wiki"] = new WikiCommand()
+        commandList["package"] = new PackageCommand(exportTool)
+        commandList["install"] = new InstallCommand(runtime, exportTool)
+        commandList["tool"] = new ToolCommand(runtime, this)
+        commandList["uninstall"] = new RemoveCommand(runtime)
+        commandList["deploy"] = new DeployCommand(runtime, exportTool)
+        commandList["compile"] = new CompileCommand(runtime, engineLoader)
+        commandList["get"] = new GetCommand(runtime)
+        commandList["set"] = new SetCommand(runtime)
+        commandList["home"] = new HomeCommand(runtime)
+        commandList["version"] = new VersionCommand()
 
         this.runtime = runtime;
     }
 
     String getPrompt() {
-        return prompt;
+        prompt;
     }
 
     String getHistoryText() {
-        return historyText;
+        historyText;
     }
 
     void setToolRunning() {
@@ -145,7 +125,7 @@ class TerminalManager implements InputProcessor {
     }
 
     TerminalState getState() {
-        return terminalState;
+        terminalState;
     }
 
     void init() {

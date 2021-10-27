@@ -13,31 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.loaders;
+package leikr.loaders
 
-import groovy.lang.GroovyClassLoader;
-import groovy.lang.GroovyShell;
-import groovy.lang.GroovySystem;
-import groovy.util.ResourceException;
-import groovy.util.ScriptException;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import leikr.Engine;
-import leikr.GameRuntime;
-import leikr.customProperties.CustomProgramProperties;
-import org.codehaus.groovy.control.CompilationFailedException;
-import org.codehaus.groovy.control.CompilerConfiguration;
-import org.codehaus.groovy.tools.Compiler;
-import org.mini2Dx.core.Mdx;
-import org.mini2Dx.core.files.FileHandle;
+import groovy.lang.GroovyClassLoader
+import groovy.lang.GroovyShell
+import groovy.lang.GroovySystem
+import groovy.util.ResourceException
+import groovy.util.ScriptException
+import java.io.File
+import java.io.IOException
+import java.lang.reflect.InvocationTargetException
+import java.net.MalformedURLException
+import java.util.ArrayList
+import java.util.Arrays
+import java.util.List
+import java.util.concurrent.Callable
+import java.util.logging.Level
+import java.util.logging.Logger
+import leikr.Engine
+import leikr.GameRuntime
+import leikr.customProperties.CustomProgramProperties
+import org.codehaus.groovy.control.CompilationFailedException
+import org.codehaus.groovy.control.CompilerConfiguration
+import org.codehaus.groovy.tools.Compiler
+import org.mini2Dx.core.Mdx
+import org.mini2Dx.core.files.FileHandle
 
 /**
  *
@@ -49,17 +49,14 @@ public class EngineLoader implements Callable<Engine> {
     private String[] engineArgs;
 
     private CustomProgramProperties cp;
-    private final GroovyClassLoader gcl;
-    private final GroovyShell sh;
-    private final GameRuntime runtime;
+    private GroovyClassLoader gcl;
+    private GroovyShell sh;
+    private GameRuntime runtime;
 
     public EngineLoader(GameRuntime runtime) {
         this.runtime = runtime;
-        if (runtime.isSecure()) {
-            gcl = new SandboxClassLoader();
-        } else {
-            gcl = new GroovyClassLoader();
-        }
+		gcl = runtime.isSecure() ? new SandboxClassLoader() : new GroovyClassLoader();
+
         sh = new GroovyShell(gcl);
     }
 
@@ -234,7 +231,7 @@ public class EngineLoader implements Callable<Engine> {
         if (path.contains("..")) {
             throw new RuntimeException(String.format("Attempt to exit project denied: %s", path));
         }
-        String COMPILED = runtime.getGamePath() + "/" + path + "/";
+        String COMPILED = "${runtime.getGamePath()}/${path}/";
         gcl.addClasspath(Mdx.files.external(COMPILED).path());
     }
 
