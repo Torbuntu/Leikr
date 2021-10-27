@@ -52,7 +52,7 @@ task launchDesktop(dependsOn: classes, type: JavaExec) {
     standardInput = System.in
     workingDir = project.assetsDir
     ignoreExitValue = true
-    args 'insecure'//Security is now an opt-out feature
+    //args 'insecure'//Security is now an opt-out feature
 }
 
 

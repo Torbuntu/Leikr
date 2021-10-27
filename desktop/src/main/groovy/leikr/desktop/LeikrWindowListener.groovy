@@ -26,7 +26,7 @@ import leikr.GameRuntime;
  *
  * @author tor
  */
-public class LeikrWindowListener implements Lwjgl3Mini2DxWindowListener {
+class LeikrWindowListener implements Lwjgl3Mini2DxWindowListener {
 
     private final GameRuntime runtime;
 
@@ -35,7 +35,7 @@ public class LeikrWindowListener implements Lwjgl3Mini2DxWindowListener {
     }
 
     @Override
-    public void filesDropped(String[] files) {
+    void filesDropped(String[] files) {
         runtime.setFileDroppedTitle(files[0].substring(files[0].lastIndexOf('/') + 1, files[0].length()));
         log("New runtime title: " + runtime.getFileDroppedTitle());
         Arrays.asList(files).stream().forEach(message -> this.log("Found file: " + message));
@@ -46,38 +46,38 @@ public class LeikrWindowListener implements Lwjgl3Mini2DxWindowListener {
     }
 
     @Override
-    public boolean closeRequested() {
+    boolean closeRequested() {
         return true;
     }
 
     @Override
-    public void created(Lwjgl3Mini2DxWindow lmdw) {
+    void created(Lwjgl3Mini2DxWindow lmdw) {
     }
 
     @Override
-    public void resized(Lwjgl3Mini2DxWindow lmdw) {
+    void resized(Lwjgl3Mini2DxWindow lmdw) {
     }
 
     @Override
-    public void iconified(boolean bln) {
+    void iconified(boolean bln) {
     }
 
     @Override
-    public void maximized(boolean bln) {
+    void maximized(boolean bln) {
     }
 
     @Override
-    public void focusLost() {
+    void focusLost() {
         log("[I] Focus lost");
     }
 
     @Override
-    public void focusGained() {
+    void focusGained() {
         log("[I] Window focused");
     }
 
     @Override
-    public void refreshRequested() {
+    void refreshRequested() {
     }
 
 }
