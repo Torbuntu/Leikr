@@ -15,24 +15,23 @@
  */
 package leikr.screens
 
-import java.io.IOException
-import java.util.logging.Level
-import java.util.logging.Logger
 import leikr.GameRuntime
 import leikr.utilities.NewProgramGenerator
-import org.mini2Dx.core.game.GameContainer
 import org.mini2Dx.core.Graphics
 import org.mini2Dx.core.Mdx
 import org.mini2Dx.core.files.FileHandle
+import org.mini2Dx.core.game.GameContainer
 import org.mini2Dx.core.graphics.Colors
+import org.mini2Dx.core.graphics.viewport.FitViewport
 import org.mini2Dx.core.screen.BasicGameScreen
 import org.mini2Dx.core.screen.GameScreen
 import org.mini2Dx.core.screen.ScreenManager
 import org.mini2Dx.core.screen.Transition
-import org.mini2Dx.core.graphics.viewport.FitViewport
 import org.mini2Dx.gdx.Input.Keys
 import org.mini2Dx.gdx.InputProcessor
 
+import java.util.logging.Level
+import java.util.logging.Logger
 /**
  *
  * @author tor
@@ -69,7 +68,7 @@ class NewProgramScreen extends BasicGameScreen {
         Mdx.input.setInputProcessor(new InputProcessor() {
             @Override
             boolean keyDown(int i) {
-                if (generatorStep.equals(GeneratorStep.FINISHED)) {
+                if (generatorStep == GeneratorStep.FINISHED) {
                     if (i == Keys.Q || i == Keys.SPACE) {
                         generatorStep = GeneratorStep.BACK
                     }
@@ -283,7 +282,7 @@ class NewProgramScreen extends BasicGameScreen {
 
     @Override
     int getId() {
-        return ID
+        ID
     }
     protected enum GeneratorStep {
         NAME,

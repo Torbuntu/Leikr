@@ -13,42 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.commands;
+package leikr.commands
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.mini2Dx.core.Mdx;
+import org.mini2Dx.core.Mdx
 
+import java.util.logging.Level
+import java.util.logging.Logger
 /**
  *
  * @author Torbuntu
  */
-public class CleanCommand implements Command {
+class CleanCommand implements Command {
 
-    public CleanCommand() {
+    CleanCommand() {
     }
 
     @Override
-    public String execute(String[] args) {
+    String execute(String[] args) {
         try {
-            Mdx.files.external(System.getProperty("user.home") + "/Leikr/Packages/").deleteDirectory();
-            Mdx.files.external(System.getProperty("user.home") + "/Leikr/Packages").mkdirs();
-            return "Package directory cleaned.";
+            Mdx.files.external(System.getProperty("user.home") + "/Leikr/Packages/").deleteDirectory()
+            Mdx.files.external(System.getProperty("user.home") + "/Leikr/Packages").mkdirs()
+            return "Package directory cleaned."
         } catch (IOException ex) {
-            Logger.getLogger(CleanCommand.class.getName()).log(Level.SEVERE, null, ex);
-            return "Failed to clean package directory. Please check logs.";
+            Logger.getLogger(CleanCommand.class.getName()).log(Level.SEVERE, null, ex)
+            return "Failed to clean package directory. Please check logs."
         }
     }
 
     @Override
-    public String help() {
-        return ">clean \nRemoves all lkr packages from the Packages directory.";
+    String help() {
+        ">clean \nRemoves all lkr packages from the Packages directory."
     }
 
     @Override
-    public String getName() {
-        return "clean";
+    String getName() {
+        "clean"
     }
 
 }

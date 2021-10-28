@@ -13,54 +13,51 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.commands;
+package leikr.commands
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import leikr.GameRuntime;
-import leikr.customProperties.CustomProgramProperties;
-import org.mini2Dx.core.Mdx;
+import leikr.GameRuntime
+import leikr.customProperties.CustomProgramProperties
+import org.mini2Dx.core.Mdx
 
+import java.util.logging.Level
+import java.util.logging.Logger
 /**
  *
  * @author tor
  */
-public class AboutCommand implements Command {
+class AboutCommand implements Command {
 
-    private final GameRuntime runtime;
+    private final GameRuntime runtime
 
-    public AboutCommand(GameRuntime runtime) {
-        this.runtime = runtime;
+    AboutCommand(GameRuntime runtime) {
+        this.runtime = runtime
     }
 
     @Override
-    public String execute(String[] command) {
+    String execute(String[] command) {
         if (command.length <= 1) {
-            return "Pass a program name to get the program's about info.";
+            return "Pass a program name to get the program's about info."
         }
         if (!containsName(command[1])) {
-            return "Program [${command[1]}] does not exist in Programs directory.";
+            return "Program [${command[1]}] does not exist in Programs directory."
         }
         try {
-            CustomProgramProperties cpp = new CustomProgramProperties(runtime.getProgramsPath() + command[1]);
-            return "Title: " + cpp.TITLE + "\nType: " + cpp.TYPE + "\nPlayers: " + cpp.PLAYERS + "\nAuthor: " + cpp.AUTHOR + "\nAbout: " + cpp.ABOUT;
+            CustomProgramProperties cpp = new CustomProgramProperties(runtime.getProgramsPath() + command[1])
+            return "Title: " + cpp.TITLE + "\nType: " + cpp.TYPE + "\nPlayers: " + cpp.PLAYERS + "\nAuthor: " + cpp.AUTHOR + "\nAbout: " + cpp.ABOUT
         } catch (Exception ex) {
-            Logger.getLogger(AboutCommand.class.getName()).log(Level.SEVERE, null, ex);
-            return "Failed to load property file for [${command[1]}].";
+            Logger.getLogger(AboutCommand.class.getName()).log(Level.SEVERE, null, ex)
+            return "Failed to load property file for [${command[1]}]."
         }
     }
 
     boolean containsName(String name) {
         try {
-            ArrayList<String> names = new ArrayList<>();
-            Arrays.asList(Mdx.files.external(runtime.getProgramsPath() ).list()).stream().forEach(e -> names.add(e.nameWithoutExtension()));
-            return names.contains(name);
+            ArrayList<String> names = new ArrayList<>()
+            Arrays.asList(Mdx.files.external(runtime.getProgramsPath() ).list()).stream().forEach(e -> names.add(e.nameWithoutExtension()))
+            return names.contains(name)
         } catch (IOException ex) {
-            Logger.getLogger(AboutCommand.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+            Logger.getLogger(AboutCommand.class.getName()).log(Level.SEVERE, null, ex)
+            return false
         }
     }
 

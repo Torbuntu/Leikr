@@ -13,45 +13,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.commands;
+package leikr.commands
 
-import leikr.GameRuntime;
-import leikr.utilities.ExportTool;
+import leikr.GameRuntime
+import leikr.utilities.ExportTool
 
 /**
  *
  * @author Torbuntu
  */
-public class InstallCommand implements Command {
+class InstallCommand implements Command {
 
-    private final ExportTool exportTool;
-    private final GameRuntime runtime;
+    private final ExportTool exportTool
+    private final GameRuntime runtime
 
-    public InstallCommand(GameRuntime runtime, ExportTool exportTool) {
-        this.runtime = runtime;
-        this.exportTool = exportTool;
+    InstallCommand(GameRuntime runtime, ExportTool exportTool) {
+        this.runtime = runtime
+        this.exportTool = exportTool
     }
 
     @Override
-    public String execute(String[] command) {
+    String execute(String[] command) {
         if (command.length <= 1) {
-            return "[E] Missing - required name argument.";
+            return "[E] Missing - required name argument."
         }
         if (command.length == 3) {
-            return exportTool.importProject(command[1], command[2]);
+            return exportTool.importProject(command[1], command[2])
         } else {
-            return exportTool.importProject(command[1], runtime.getProgramsPath());
+            return exportTool.importProject(command[1], runtime.getProgramsPath())
         }
     }
 
     @Override
-    public String help() {
-        return ">install [name] [option]\nInstalls a .lkr package from the Packages directory into the Programs directory. Can optionally direct where to install a project given a path.";
+    String help() {
+        ">install [name] [option]\nInstalls a .lkr package from the Packages directory into the Programs directory. Can optionally direct where to install a project given a path."
     }
 
     @Override
-    public String getName() {
-        return "install";
+    String getName() {
+        "install"
     }
 
 }

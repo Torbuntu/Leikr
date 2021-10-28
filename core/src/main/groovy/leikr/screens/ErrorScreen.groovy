@@ -13,94 +13,92 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.screens;
+package leikr.screens
 
-import leikr.GameRuntime;
-import org.mini2Dx.core.Graphics;
-import org.mini2Dx.core.Mdx;
-import org.mini2Dx.core.game.GameContainer;
-import org.mini2Dx.core.graphics.Colors;
-import org.mini2Dx.core.graphics.viewport.FitViewport;
-import org.mini2Dx.core.screen.BasicGameScreen;
-import org.mini2Dx.core.screen.GameScreen;
-import org.mini2Dx.core.screen.ScreenManager;
-import org.mini2Dx.core.screen.Transition;
-import org.mini2Dx.gdx.Input.Keys;
-
+import leikr.GameRuntime
+import org.mini2Dx.core.Graphics
+import org.mini2Dx.core.Mdx
+import org.mini2Dx.core.game.GameContainer
+import org.mini2Dx.core.graphics.Colors
+import org.mini2Dx.core.graphics.viewport.FitViewport
+import org.mini2Dx.core.screen.BasicGameScreen
+import org.mini2Dx.core.screen.ScreenManager
+import org.mini2Dx.core.screen.Transition
+import org.mini2Dx.gdx.Input.Keys
 /**
  *
  * @author tor
  */
-public class ErrorScreen extends BasicGameScreen {
+class ErrorScreen extends BasicGameScreen {
 
-    public static int ID = 3;
-    private boolean MENU = false;
-    private String errorMessage;
-    private final FitViewport viewport;
-    private final GameRuntime runtime;
+    public static int ID = 3
+    private boolean MENU = false
+    private String errorMessage
+    private final FitViewport viewport
+    private final GameRuntime runtime
 
-    public ErrorScreen(FitViewport vp, GameRuntime runtime) {
-        viewport = vp;
-        errorMessage = "";
-        this.runtime = runtime;
+    ErrorScreen(FitViewport vp, GameRuntime runtime) {
+        viewport = vp
+        errorMessage = ""
+        this.runtime = runtime
     }
 
-    public void setErrorMessage(String message) {
-        errorMessage = message;
+    void setErrorMessage(String message) {
+        errorMessage = message
     }
 
-    void reloadEngine(ScreenManager sm) {
-        sm.enterGameScreen(LoadScreen.ID, null, null);
-    }
-
-    @Override
-    public void preTransitionIn(Transition transitionIn) {
+    static void reloadEngine(ScreenManager sm) {
+        sm.enterGameScreen(LoadScreen.ID, null, null)
     }
 
     @Override
-    public void preTransitionOut(Transition transitionOut) {
+    void preTransitionIn(Transition transitionIn) {
     }
 
     @Override
-    public void initialise(GameContainer gc) {
+    void preTransitionOut(Transition transitionOut) {
     }
 
     @Override
-    public void update(GameContainer gc, ScreenManager sm, float f) {
+    void initialise(GameContainer gc) {
+    }
+
+    @Override
+    void update(GameContainer gc, ScreenManager sm, float f) {
         if (MENU || Mdx.input.isKeyJustPressed(Keys.ESCAPE) || Mdx.input.isKeyJustPressed(Keys.ENTER) || Mdx.input.isKeyJustPressed(Keys.SPACE) || Mdx.input.isKeyJustPressed(Keys.Q)) {
-            MENU = false;
+            MENU = false
             if (runtime.isDevMode()) {
-                sm.enterGameScreen(TerminalScreen.ID, null, null);
+                sm.enterGameScreen(TerminalScreen.ID, null, null)
             } else {
-                sm.enterGameScreen(MenuScreen.ID, null, null);
+                sm.enterGameScreen(MenuScreen.ID, null, null)
             }
         }
 
         if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyJustPressed(Keys.R) || Mdx.input.isKeyJustPressed(Keys.F5)) {
-            reloadEngine(sm);
+            reloadEngine(sm)
         }
 
     }
 
     @Override
-    public void interpolate(GameContainer gc, float f) {
+    void interpolate(GameContainer gc, float f) {
     }
 
     @Override
-    public void render(GameContainer gc, Graphics g) {
-        viewport.apply(g);
-		g.with{
-			setColor(Colors.RED());
-			drawString("Message:  " + errorMessage, 0, 0, 232);
-			setColor(Colors.BLACK());
-			drawRect(0, 152, runtime.WIDTH, 8);
-			setColor(Colors.GREEN());
-			drawString(":q to quit", 0, 152);
-		}
+    void render(GameContainer gc, Graphics g) {
+        viewport.apply(g)
+        g.with{
+			setColor(Colors.RED())
+            drawString("Message:  " + errorMessage, 0, 0, 232)
+            setColor(Colors.BLACK())
+            drawRect(0, 152, runtime.WIDTH, 8)
+            setColor(Colors.GREEN())
+            drawString(":q to quit", 0, 152)
+        }
     }
 
     @Override
     int getId() {
-        ID;
+        ID
     }
 }

@@ -127,7 +127,7 @@ class EngineScreen extends BasicGameScreen {
         // Checking for pause. We pause on keyboard ESCAPE, or if a pause was triggered in the game's code.
         if (Mdx.input.isKeyJustPressed(Keys.ESCAPE) || systemManager.checkShouldPause()) {
             systemManager.pause(false)
-            if (engineState.equals(EngineState.PAUSE)) {
+            if (engineState == EngineState.PAUSE) {
                 resume()
             } else {
                 pause()
@@ -311,7 +311,7 @@ class EngineScreen extends BasicGameScreen {
         }
     }
 
-    void reloadEngine(ScreenManager sm) {
+    static void reloadEngine(ScreenManager sm) {
         sm.enterGameScreen(LoadScreen.ID, null, null)
     }
 

@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.commands;
+package leikr.commands
 
-import leikr.GameRuntime;
-import leikr.customProperties.CustomProgramProperties;
+import leikr.GameRuntime
+import leikr.customProperties.CustomProgramProperties
 
 /**
  *
  * @author tor
  */
-public class GetCommand implements Command {
+class GetCommand implements Command {
 
     private final GameRuntime runtime
 
@@ -33,9 +33,9 @@ public class GetCommand implements Command {
     @Override
     String execute(String[] args) {
         if (args.length < 2) {
-            return "[E] Not enough arguments.";
+            return "[E] Not enough arguments."
         }
-        CustomProgramProperties props = new CustomProgramProperties(runtime.getProgramsPath() + args[1]);
+        CustomProgramProperties props = new CustomProgramProperties(runtime.getProgramsPath() + args[1])
         return switch (args[2].toLowerCase()) {
             case "author" -> "author - " + props.AUTHOR
             case "use_compiled" -> "use_compiled - " + String.valueOf(props.USE_COMPILED)

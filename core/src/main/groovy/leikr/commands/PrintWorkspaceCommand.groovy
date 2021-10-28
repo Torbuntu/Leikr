@@ -13,47 +13,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.commands;
+package leikr.commands
 
-import java.awt.Desktop;
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import leikr.GameRuntime;
+import leikr.GameRuntime
 
+import java.awt.Desktop
+import java.util.logging.Level
+import java.util.logging.Logger
 /**
  *
  * @author Torbuntu
  */
-public class PrintWorkspaceCommand implements Command {
+class PrintWorkspaceCommand implements Command {
 
-    private final GameRuntime runtime;
+    private final GameRuntime runtime
 
-    public PrintWorkspaceCommand(GameRuntime runtime) {
-        this.runtime = runtime;
+    PrintWorkspaceCommand(GameRuntime runtime) {
+        this.runtime = runtime
     }
 
     @Override
-    public String execute(String[] args) {
+    String execute(String[] args) {
         try {
-            File f = new File(runtime.getProgramsPath());
-            Desktop.getDesktop().open(f);
-            return f.getAbsolutePath();
+            File f = new File(runtime.getProgramsPath())
+            Desktop.getDesktop().open(f)
+            return f.getAbsolutePath()
         } catch (IOException ex) {
-            Logger.getLogger(PrintWorkspaceCommand.class.getName()).log(Level.SEVERE, null, ex);
-            return "[E] Could not find workspace directory.";
+            Logger.getLogger(PrintWorkspaceCommand.class.getName()).log(Level.SEVERE, null, ex)
+            return "[E] Could not find workspace directory."
         }
     }
 
     @Override
-    public String help() {
-        return ">pwd \nPrints the location fo the Programs directory. Attempts to open the directory in the host file manager.";
+    String help() {
+        ">pwd \nPrints the location fo the Programs directory. Attempts to open the directory in the host file manager."
     }
 
     @Override
-    public String getName() {
-        return "pwd";
+    String getName() {
+        "pwd"
     }
 
 }

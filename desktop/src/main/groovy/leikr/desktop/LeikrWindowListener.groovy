@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.desktop;
+package leikr.desktop
 
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Mini2DxWindow;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Mini2DxWindowListener;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import leikr.GameRuntime;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Mini2DxWindow
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Mini2DxWindowListener
+import java.util.logging.Level
+import java.util.logging.Logger
+import leikr.GameRuntime
 
 /**
  *
@@ -28,26 +27,26 @@ import leikr.GameRuntime;
  */
 class LeikrWindowListener implements Lwjgl3Mini2DxWindowListener {
 
-    private final GameRuntime runtime;
+    private final GameRuntime runtime
 
     LeikrWindowListener(GameRuntime runtime) {
-        this.runtime = runtime;
+        this.runtime = runtime
     }
 
     @Override
     void filesDropped(String[] files) {
-        runtime.setFileDroppedTitle(files[0].substring(files[0].lastIndexOf('/') + 1, files[0].length()));
-        log("New runtime title: " + runtime.getFileDroppedTitle());
-        Arrays.asList(files).stream().forEach(message -> this.log("Found file: " + message));
+        runtime.setFileDroppedTitle(files[0].substring(files[0].lastIndexOf('/') + 1, files[0].length()))
+        log("New runtime title: " + runtime.getFileDroppedTitle())
+        Arrays.asList(files).stream().forEach(message -> log("Found file: $message"))
     }
 
-    private void log(String message) {
-        Logger.getLogger(LeikrWindowListener.class.getName()).log(Level.INFO, message);
+    private static void log(String message) {
+        Logger.getLogger(LeikrWindowListener.class.getName()).log(Level.INFO, message)
     }
 
     @Override
     boolean closeRequested() {
-        return true;
+        return true
     }
 
     @Override
@@ -68,12 +67,12 @@ class LeikrWindowListener implements Lwjgl3Mini2DxWindowListener {
 
     @Override
     void focusLost() {
-        log("[I] Focus lost");
+        log("[I] Focus lost")
     }
 
     @Override
     void focusGained() {
-        log("[I] Window focused");
+        log("[I] Window focused")
     }
 
     @Override

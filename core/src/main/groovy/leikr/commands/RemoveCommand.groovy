@@ -13,64 +13,61 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.commands;
+package leikr.commands
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import leikr.GameRuntime;
-import org.mini2Dx.core.Mdx;
+import leikr.GameRuntime
+import org.mini2Dx.core.Mdx
 
+import java.util.logging.Level
+import java.util.logging.Logger
 /**
  *
  * @author Torbuntu
  */
-public class RemoveCommand implements Command {
+class RemoveCommand implements Command {
 
-    private final GameRuntime runtime;
+    private final GameRuntime runtime
 
-    public RemoveCommand(GameRuntime runtime) {
-        this.runtime = runtime;
+    RemoveCommand(GameRuntime runtime) {
+        this.runtime = runtime
     }
 
     @Override
-    public String execute(String[] command) {
+    String execute(String[] command) {
         if (command.length <= 1) {
-            return "[E] Missing - required program name.";
+            return "[E] Missing - required program name."
         }
         if (!containsName(command[1])) {
-            return "[E] Program [" + command[1] + "] does not exist in Programs directory.";
+            return "[E] Program [" + command[1] + "] does not exist in Programs directory."
         }
         try {
-            Mdx.files.external(runtime.getProgramsPath() + command[1]).deleteDirectory();
-            return "[I] Program [" + command[1] + "] has been uninstalled.";
+            Mdx.files.external(runtime.getProgramsPath() + command[1]).deleteDirectory()
+            return "[I] Program [" + command[1] + "] has been uninstalled."
         } catch (IOException ex) {
-            Logger.getLogger(RemoveCommand.class.getName()).log(Level.SEVERE, null, ex);
-            return "[E] Could not uninstall [" + command[1] + "]";
+            Logger.getLogger(RemoveCommand.class.getName()).log(Level.SEVERE, null, ex)
+            return "[E] Could not uninstall [" + command[1] + "]"
         }
 
     }
 
     private boolean containsName(String name) {
         try {
-            ArrayList<String> names = new ArrayList<>();
-            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream().forEach(e -> names.add(e.nameWithoutExtension()));
-            return names.contains(name);
+            ArrayList<String> names = new ArrayList<>()
+            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream().forEach(e -> names.add(e.nameWithoutExtension()))
+            return names.contains(name)
         } catch (IOException ex) {
-            Logger.getLogger(RemoveCommand.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+            Logger.getLogger(RemoveCommand.class.getName()).log(Level.SEVERE, null, ex)
+            return false
         }
     }
 
     @Override
-    public String help() {
-        return ">uninstall [name] \nUninstalls a program in the Programs directory given the name.";
+    String help() {
+        ">uninstall [name] \nUninstalls a program in the Programs directory given the name."
     }
 
     @Override
-    public String getName() {
-        return "uninstall";
+    String getName() {
+        "uninstall"
     }
 }

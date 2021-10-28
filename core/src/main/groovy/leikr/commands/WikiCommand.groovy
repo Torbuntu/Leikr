@@ -13,47 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.commands;
+package leikr.commands
 
-import java.awt.Desktop;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import java.awt.Desktop
+import java.util.logging.Level
+import java.util.logging.Logger
 /**
  *
  * @author Torbuntu
  */
-public class WikiCommand implements Command {
+class WikiCommand implements Command {
 
-    public WikiCommand() {
+    WikiCommand() {
     }
 
     @Override
-    public String execute(String[] command) {
-        String wiki = "https://github.com/Torbuntu/Leikr/wiki";
+    String execute(String[] command) {
+        String wiki = "https://github.com/Torbuntu/Leikr/wiki"
         if (command.length == 2) {
-            wiki += "/" + command[1];
+            wiki += "/" + command[1]
         }
         try {
-            Desktop.getDesktop().browse(new URI(wiki));
+            Desktop.getDesktop().browse(new URI(wiki))
         } catch (IOException | URISyntaxException ex) {
-            Logger.getLogger(WikiCommand.class.getName()).log(Level.WARNING, null, ex);
-            return "[E] Host browser unaccessible.";
+            Logger.getLogger(WikiCommand.class.getName()).log(Level.WARNING, null, ex)
+            return "[E] Host browser unaccessible."
         }
-        return "[I] Opening [" + wiki + "] in host browser.";
+        return "[I] Opening [$wiki] in host browser."
     }
 
     @Override
-    public String help() {
-        return ">wiki [option] \nOpens the Leikr wiki. Use an Option to open a specific wiki page.";
+    String help() {
+        return ">wiki [option] \nOpens the Leikr wiki. Use an Option to open a specific wiki page."
     }
 
     @Override
-    public String getName() {
-        return "wiki";
+    String getName() {
+        "wiki"
     }
 
 }

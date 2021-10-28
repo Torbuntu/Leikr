@@ -13,52 +13,51 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.commands;
+package leikr.commands
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import leikr.GameRuntime;
-import org.mini2Dx.core.Mdx;
+import leikr.GameRuntime
+import org.mini2Dx.core.Mdx
 
+import java.util.logging.Level
+import java.util.logging.Logger
 /**
  *
  * @author tor
  */
-public class PrintCommand implements Command {
+class PrintCommand implements Command {
 
-    private final GameRuntime runtime;
+    private final GameRuntime runtime
 
-    public PrintCommand(GameRuntime runtime) {
-        this.runtime = runtime;
+    PrintCommand(GameRuntime runtime) {
+        this.runtime = runtime
     }
 
     @Override
-    public String execute(String[] command) {
-        String adjustedPath = runtime.getProgramsPath() + command[1];
+    String execute(String[] command) {
+        String adjustedPath = runtime.getProgramsPath() + command[1]
         if (command.length <= 1) {
-            return "[E] Missing - required name argument.";
+            return "[E] Missing - required name argument."
         }
         if(!Mdx.files.external(adjustedPath).exists()){
-            return "[E] File [" + command[1] + "] not found.";
+            return "[E] File [" + command[1] + "] not found."
         }
         try {
-            return Mdx.files.external(adjustedPath).readString();
+            return Mdx.files.external(adjustedPath).readString()
         } catch (IOException ex) {
-            Logger.getLogger(PrintCommand.class.getName()).log(Level.SEVERE, null, ex);
-            return "[E] Failed to print contents of file [" + command[1] + "]";
+            Logger.getLogger(PrintCommand.class.getName()).log(Level.SEVERE, null, ex)
+            return "[E] Failed to print contents of file [" + command[1] + "]"
         }
 
     }
 
     @Override
-    public String help() {
-        return ">cat [file] \nPrints the contents of a file to the terminal.\nTerminal does not currently scroll contents.";
+    String help() {
+        ">cat [file] \nPrints the contents of a file to the terminal.\nTerminal does not currently scroll contents."
     }
 
     @Override
-    public String getName() {
-        return "cat";
+    String getName() {
+        "cat"
     }
 
 }

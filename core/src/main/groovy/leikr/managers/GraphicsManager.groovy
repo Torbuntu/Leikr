@@ -17,22 +17,15 @@ package leikr.managers
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.ScreenUtils
-import java.math.BigDecimal
-import java.util.ArrayList
 import leikr.loaders.ImageLoader
 import leikr.loaders.MapLoader
 import leikr.loaders.SpriteLoader
 import org.mini2Dx.core.Graphics
 import org.mini2Dx.core.Mdx
-import org.mini2Dx.core.graphics.Color
-import org.mini2Dx.core.graphics.Colors
-import org.mini2Dx.core.graphics.FrameBuffer
-import org.mini2Dx.core.graphics.Pixmap
-import org.mini2Dx.core.graphics.Sprite
+import org.mini2Dx.core.graphics.*
 import org.mini2Dx.core.graphics.viewport.StretchViewport
 import org.mini2Dx.core.graphics.viewport.Viewport
 import org.mini2Dx.gdx.math.MathUtils
-
 /**
  * Manages the drawing API for {@link leikr.Engine }. 
  *
@@ -43,8 +36,7 @@ class GraphicsManager {
     /**
      * The path to the running programs local `Art` directory.
      *
-     * @see #getPixel(java.lang.String, java.math.BigDecimal,
-     * java.math.BigDecimal)
+     * @see #getPixel(java.lang.String, java.math.BigDecimal, java.math.BigDecimal)
      * @see #getPixels(java.lang.String)
      */
     private String path
@@ -235,7 +227,7 @@ class GraphicsManager {
         return pixelManager.getDrawColor(color)
     }
 
-    final Color getColor(String color) {
+    static final Color getColor(String color) {
         return Colors.rgbToColor(color)
     }
     //end color methods
@@ -505,7 +497,7 @@ class GraphicsManager {
     }
 
     final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, BigDecimal degr) {
-        spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, 0)
+        spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, degr,0)
     }
 
     final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale, int size) {

@@ -13,30 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.commands;
+package leikr.commands
 
 /**
  *
  * @author tor
  */
-public class VersionCommand implements Command {
+class VersionCommand implements Command {
 
-    //TODO: Make sure to update prior to release
-    private final String version = "Leikr-1.0.7";
+    //TODO: Make sure to update prior to releases
+    private final String version = "Leikr-1.10.0"
 
     @Override
-    public String execute(String[] command) {
-        return version;
+    String execute(String[] command) {
+        version
     }
 
     @Override
-    public String help() {
-        return ">version\nDisplays the current version of Leikr.";
+    String help() {
+        ">version\nDisplays the current version of Leikr."
     }
 
     @Override
-    public String getName() {
-        return "version";
+    String getName() {
+        "version"
     }
 
 }

@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.loaders;
+package leikr.loaders
 
-import org.mini2Dx.core.assets.AssetManager;
-import org.mini2Dx.core.font.MonospaceGameFont;
-import org.mini2Dx.core.font.MonospaceGameFont.FontParameters;
-import org.mini2Dx.core.graphics.Texture;
+import org.mini2Dx.core.assets.AssetManager
+import org.mini2Dx.core.font.MonospaceGameFont
+import org.mini2Dx.core.font.MonospaceGameFont.FontParameters
+import org.mini2Dx.core.graphics.Texture
 
 /**
  *
@@ -26,35 +26,35 @@ import org.mini2Dx.core.graphics.Texture;
  *
  * Font loading class
  */
-public class FontLoader {
+class FontLoader {
 
-    private final MonospaceGameFont defaultFont;
+    private final MonospaceGameFont defaultFont
 
-    public FontLoader(AssetManager manager) {
-        manager.load("./Data/Images/Fonts/ultra_compact_6x4.png", Texture.class);
-        manager.finishLoading();
+    FontLoader(AssetManager manager) {
+        manager.load("./Data/Images/Fonts/ultra_compact_6x4.png", Texture.class)
+        manager.finishLoading()
         FontParameters params = new FontParameters(
 			texturePath: "./Data/Images/Fonts/ultra_compact_6x4.png",
 			spacing: 0,
 			frameWidth: 4,
 			frameHeight: 6
 		)
-        defaultFont = new MonospaceGameFont(params);
+        defaultFont = new MonospaceGameFont(params)
     }
 
-    public MonospaceGameFont getDefaultFont() {
-        return defaultFont;
+    MonospaceGameFont getDefaultFont() {
+        return defaultFont
     }
 
-    public MonospaceGameFont getCustomFont(AssetManager manager, String fontPath, int spacing, int width, int height) {
-        manager.load(fontPath, Texture.class);
-        manager.finishLoading();
+    static MonospaceGameFont getCustomFont(AssetManager manager, String fontPath, int spacing, int width, int height) {
+        manager.load(fontPath, Texture.class)
+        manager.finishLoading()
         FontParameters params = new FontParameters(
 			texturePath: fontPath,
 			spacing: spacing,
 			frameWidth: width,
 			frameHeight: height
 		)
-        return new MonospaceGameFont(params);
+        return new MonospaceGameFont(params)
     }
 }

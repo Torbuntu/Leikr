@@ -16,7 +16,6 @@
 package leikr.screens
 
 import leikr.GameRuntime
-import leikr.loaders.EngineLoader
 import leikr.managers.TerminalManager
 import leikr.managers.TerminalManager.TerminalState
 import leikr.utilities.ExportTool
@@ -29,7 +28,6 @@ import org.mini2Dx.core.screen.BasicGameScreen
 import org.mini2Dx.core.screen.ScreenManager
 import org.mini2Dx.core.screen.Transition
 import org.mini2Dx.gdx.Input.Keys
-
 /**
  *
  * @author Torbuntu
@@ -118,14 +116,14 @@ class TerminalScreen extends BasicGameScreen {
         g.setColor(Colors.GREEN())
 
         if(terminalManager.getState()==TerminalState.INSTALLING){
-			g.drawString("Install and run program [" + runtime.getFileDroppedTitle() + "]? [Y/N]", 0, 60, runtime.WIDTH, 1)
+			g.drawString("Install and run program [${runtime.getFileDroppedTitle()}]? [Y/N]", 0, 60, runtime.WIDTH, 1)
 		}else{
 			g.with{
 				drawString(terminalManager.getHistoryText(), 0, 0, 240)
 				setColor(Colors.BLACK())
 				fillRect(0, 152, runtime.WIDTH, runtime.HEIGHT)
 				setColor(Colors.GREEN())
-				drawString(">" + terminalManager.getPrompt() + ((blink > 30) ? (char) 131 : ""), 0, 152, runtime.WIDTH)
+				drawString(">" + terminalManager.getPrompt() + ((blink > 30) ? 130 as char : ""), 0, 152, runtime.WIDTH)
 
 				if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT)) {
 					setColor(Colors.RED())

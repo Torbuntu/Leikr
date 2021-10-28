@@ -13,53 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.commands;
+package leikr.commands
 
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import leikr.GameRuntime;
-import leikr.managers.TerminalManager;
-import leikr.utilities.NewProgramGenerator;
+import leikr.GameRuntime
+import leikr.managers.TerminalManager
+import leikr.utilities.NewProgramGenerator
 
+import java.util.logging.Level
+import java.util.logging.Logger
 /**
  *
  * @author tor
  */
-public class NewProgramCommand implements Command {
+class NewProgramCommand implements Command {
 
-    private final TerminalManager terminalManager;
-    private final NewProgramGenerator newProgramGenerator;
+    private final TerminalManager terminalManager
+    private final NewProgramGenerator newProgramGenerator
 
-    public NewProgramCommand(GameRuntime runtime, TerminalManager terminalManager) {
-        this.terminalManager = terminalManager;
-        newProgramGenerator = new NewProgramGenerator(runtime);
+    NewProgramCommand(GameRuntime runtime, TerminalManager terminalManager) {
+        this.terminalManager = terminalManager
+        newProgramGenerator = new NewProgramGenerator(runtime)
     }
 
     @Override
-    public String execute(String[] command) {
+    String execute(String[] command) {
         if (command.length == 2) {
             try {
-                String message = newProgramGenerator.setNewProgramFileName(command[1], "Default");
-                newProgramGenerator.writePropertyName(command[1]);
-                return message;
+                String message = newProgramGenerator.setNewProgramFileName(command[1], "Default")
+                newProgramGenerator.writePropertyName(command[1])
+                return message
             } catch (IOException ex) {
-                Logger.getLogger(NewProgramCommand.class.getName()).log(Level.SEVERE, null, ex);
-                return "[E] New program with name [" + command[1] + "] failed to generate.";
+                Logger.getLogger(NewProgramCommand.class.getName()).log(Level.SEVERE, null, ex)
+                return "[E] New program with name [" + command[1] + "] failed to generate."
             }
         }
-        terminalManager.setNewProgramRunning();
-        return "Create a new program.";
+        terminalManager.setNewProgramRunning()
+        return "Create a new program."
     }
 
     @Override
-    public String help() {
-        return ">new [option]\nOpens a new project builder.\nIf run with option, will attempt to generate a project with the given name.";
+    String help() {
+        ">new [option]\nOpens a new project builder.\nIf run with option, will attempt to generate a project with the given name."
     }
 
     @Override
-    public String getName() {
-        return "new";
+    String getName() {
+        "new"
     }
 
 }

@@ -13,134 +13,133 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.screens;
+package leikr.screens
 
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import leikr.GameRuntime;
-import leikr.managers.PixelManager;
-import org.mini2Dx.core.Graphics;
-import org.mini2Dx.core.Mdx;
-import org.mini2Dx.core.assets.AssetManager;
-import org.mini2Dx.core.game.GameContainer;
-import org.mini2Dx.core.graphics.Colors;
-import org.mini2Dx.core.graphics.Texture;
-import org.mini2Dx.core.graphics.viewport.FitViewport;
-import org.mini2Dx.core.screen.BasicGameScreen;
-import org.mini2Dx.core.screen.GameScreen;
-import org.mini2Dx.core.screen.ScreenManager;
-import org.mini2Dx.core.screen.Transition;
-import org.mini2Dx.gdx.Input.Keys;
+import leikr.GameRuntime
+import leikr.managers.PixelManager
+import org.mini2Dx.core.Graphics
+import org.mini2Dx.core.Mdx
+import org.mini2Dx.core.assets.AssetManager
+import org.mini2Dx.core.game.GameContainer
+import org.mini2Dx.core.graphics.Colors
+import org.mini2Dx.core.graphics.Texture
+import org.mini2Dx.core.graphics.viewport.FitViewport
+import org.mini2Dx.core.screen.BasicGameScreen
+import org.mini2Dx.core.screen.GameScreen
+import org.mini2Dx.core.screen.ScreenManager
+import org.mini2Dx.core.screen.Transition
+import org.mini2Dx.gdx.Input.Keys
 
+import java.util.logging.Level
+import java.util.logging.Logger
 /**
  *
  * @author tor
  */
-public class TitleScreen extends BasicGameScreen {
+class TitleScreen extends BasicGameScreen {
 
-    public static final int ID = 2;
+    public static final int ID = 2
 
-    boolean CREDITS = false;
-    private double red, blue, green;
+    boolean CREDITS = false
+    private double red, blue, green
 
-    private int timer = 0;
-    private final int pixCount = 75;
-    private final int cycleLength = 25;
+    private int timer = 0
+    private final int pixCount = 75
+    private final int cycleLength = 25
 
-    private ArrayList<TitleScreenPixel> pixels;
+    private ArrayList<TitleScreenPixel> pixels
 
-    private final AssetManager assetManager;
-    private final FitViewport viewport;
-    private final PixelManager pixelManager;
-    private final GameRuntime runtime;
+    private final AssetManager assetManager
+    private final FitViewport viewport
+    private final PixelManager pixelManager
+    private final GameRuntime runtime
 
-    public TitleScreen(AssetManager assetManager, FitViewport vp, PixelManager pixelManager, GameRuntime runtime) {
-        this.assetManager = assetManager;
-        this.runtime = runtime;
-        assetManager.load(runtime.getDataPath() + "Images/leikr-logo.png", Texture.class);
-        assetManager.finishLoading();
+    TitleScreen(AssetManager assetManager, FitViewport vp, PixelManager pixelManager, GameRuntime runtime) {
+        this.assetManager = assetManager
+        this.runtime = runtime
+        assetManager.load(runtime.getDataPath() + "Images/leikr-logo.png", Texture.class)
+        assetManager.finishLoading()
 
-        viewport = new FitViewport(runtime.WIDTH, runtime.HEIGHT);
-        this.pixelManager = pixelManager;
+        viewport = vp
+        this.pixelManager = pixelManager
     }
 
     void checkInput(ScreenManager sm) {
         if (Mdx.input.isKeyJustPressed(Keys.SPACE) || Mdx.input.isKeyJustPressed(Keys.ENTER) || CREDITS) {
-            CREDITS = false;
-            sm.enterGameScreen(MenuScreen.ID, null, null);
+            CREDITS = false
+            sm.enterGameScreen(MenuScreen.ID, null, null)
         }
         if (Mdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-            Logger.getLogger(TitleScreen.class.getName()).log(Level.INFO, "Goodbye!");
-            Mdx.platformUtils.exit(true);
+            Logger.getLogger(TitleScreen.class.getName()).log(Level.INFO, "Goodbye!")
+            Mdx.platformUtils.exit(true)
         }
     }
 
     @Override
-    public void preTransitionOut(Transition out) {
+    void preTransitionOut(Transition out) {
     }
 
     @Override
-    public void initialise(GameContainer gc) {
-        pixels = new ArrayList<>();
+    void initialise(GameContainer gc) {
+        pixels = new ArrayList<>()
 
         pixCount.times{i->
-            int x = (int) Math.floor(Math.random() * 8) + 91;
-            int height = (int) Math.floor(Math.random() * 7) + 4;
-            pixels.add(new TitleScreenPixel(x, 64, (i % 3) + 8, height, i * 5));
+            int x = (int) Math.floor(Math.random() * 8) + 91
+            int height = (int) Math.floor(Math.random() * 7) + 4
+            pixels.add(new TitleScreenPixel(x, 64, (i % 3) + 8, height, i * 5))
         }
     }
 
     @Override
-    public void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
-        checkInput(sm);
+    void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
+        checkInput(sm)
         if (Mdx.input.justTouched() || timer > 300) {
-            CREDITS = true;
+            CREDITS = true
         }
-        timer++;
+        timer++
     }
 
     @Override
-    public void interpolate(GameContainer gc, float f) {
+    void interpolate(GameContainer gc, float f) {
     }
 
     @Override
-    public void render(GameContainer gc, Graphics g) {
-        viewport.apply(g);
-        renderExtraText(g, "Game System", 106, 73, (int) (timer / 2));
-        g.drawTexture(assetManager.get(runtime.getDataPath() + "Images/leikr-logo.png", Texture.class), 90, 64, 48, 16);
-        drawLogoSteam(pixelManager, g);
+    void render(GameContainer gc, Graphics g) {
+        viewport.apply(g)
+        renderExtraText(g, "Game System", 106, 73, (int) (timer / 2))
+        g.drawTexture(assetManager.get(runtime.getDataPath() + "Images/leikr-logo.png", Texture.class), 90, 64, 48, 16)
+        drawLogoSteam(pixelManager, g)
     }
 
     private void renderExtraText(Graphics graphics, String text, int x, int y, int step) {
         for (int i = 0; i < text.length(); i++) {
-            red = 255 * (0.5 + 0.5 * Math.sin((step / 3) + 0 - i));
-            green = 255 * (0.5 + 0.5 * Math.sin((step / 3) + 2 - i));
-            blue = 255 * (0.5 + 0.5 * Math.sin((step / 3) + 4 - i));
+            red = 255 * (0.5 + 0.5 * Math.sin((step / 3) + 0 - i))
+            green = 255 * (0.5 + 0.5 * Math.sin((step / 3) + 2 - i))
+            blue = 255 * (0.5 + 0.5 * Math.sin((step / 3) + 4 - i))
 
-            char c = text.charAt(i);
-            int yPos = (int) (Math.sin(i + 1 + step) * (3.0 / ((step / 2) + 1)) * 3);
+            char c = text.charAt(i)
+            int yPos = (int) (Math.sin(i + 1 + step) * (3.0 / ((step / 2) + 1)) * 3)
 
             if (step > cycleLength) {
                 if ((step - cycleLength) / 2 > i) {
-                    red = blue = green = 255;
+                    red = blue = green = 255
                 }
             }
 
-            graphics.setColor(Colors.rgbToColor("$red,$blue,$green"));
-            graphics.drawString(Character.toString(c), i * 4 + x, yPos + y);
+            graphics.setColor(Colors.rgbToColor("$red,$blue,$green"))
+            graphics.drawString(Character.toString(c), i * 4 + x, yPos + y)
         }
     }
 
     private void drawLogoSteam(PixelManager screen, Graphics g) {
         for (int p = 0; p < pixCount; p++) {
-            TitleScreenPixel pix = pixels.get(p);
+            TitleScreenPixel pix = pixels.get(p)
             switch (timer - pix.delay) {
                 case 0: screen.drawPixel(g, pix.color, pix.x, pix.y);break
                 case 1: screen.drawPixel(g, pix.color, pix.x, pix.y - 1);break
                 case 2:
                     for (int i = 2; i < pix.height - 1; i++) {
-                        screen.drawPixel(g, pix.color, pix.x, pix.y - i);
+                        screen.drawPixel(g, pix.color, pix.x, pix.y - i)
                     }
 					break
                 case 3: screen.drawPixel(g, pix.color, pix.x, pix.y - pix.height + 1);break
@@ -151,6 +150,6 @@ public class TitleScreen extends BasicGameScreen {
 
     @Override
     int getId() {
-        ID;
+        ID
     }
 }

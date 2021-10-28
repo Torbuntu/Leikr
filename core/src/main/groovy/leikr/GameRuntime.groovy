@@ -15,10 +15,6 @@
  */
 package leikr
 
-import java.io.IOException
-import java.util.logging.Level
-import java.util.logging.Logger
-import leikr.managers.ManagerDTO
 import leikr.customProperties.CustomSystemProperties
 import leikr.loaders.*
 import leikr.managers.*
@@ -30,6 +26,9 @@ import org.mini2Dx.core.game.ScreenBasedGame
 import org.mini2Dx.core.graphics.CustomCursor
 import org.mini2Dx.core.graphics.Pixmap
 import org.mini2Dx.core.graphics.viewport.FitViewport
+
+import java.util.logging.Level
+import java.util.logging.Logger 
 
 class GameRuntime extends ScreenBasedGame {
 
@@ -106,19 +105,19 @@ class GameRuntime extends ScreenBasedGame {
         }
     }
 
-    public void setLeikrHome(String leikrHome) {
+    void setLeikrHome(String leikrHome) {
         try {
-            basePath = leikrHome + "/Leikr/"
-            programsPath = leikrHome + "/Leikr/Programs/"
-            dataPath = leikrHome + "/Leikr/Data/"
-            deployPath = leikrHome + "/Leikr/Deploy/"
-            packagePath = leikrHome + "/Leikr/Packages/"
+            basePath = "$leikrHome/Leikr/"
+            programsPath = "$leikrHome/Leikr/Programs/"
+            dataPath = "$leikrHome/Leikr/Data/"
+            deployPath = "$leikrHome/Leikr/Deploy/"
+            packagePath = "$leikrHome/Leikr/Packages/"
 
             customSystemProperties = new CustomSystemProperties()
             checkFileSystem()
             Logger.getLogger(GameRuntime.class.getName()).log(Level.INFO, "Using custom Leikr home at: {0}", basePath)
 
-        } catch (IOException ex) {
+        } catch (IOException ignored) {
             Logger.getLogger(GameRuntime.class.getName()).log(Level.WARNING, "Unable to use custom Leikr home: {0}", basePath)
         }
     }
@@ -165,7 +164,7 @@ class GameRuntime extends ScreenBasedGame {
     }
 
     @Override
-    public void initialise() {
+    void initialise() {
         try {
             checkFileSystem()
         } catch (IOException ex) {
@@ -191,7 +190,7 @@ class GameRuntime extends ScreenBasedGame {
     }
 
     @Override
-    public int getInitialScreenId() {
+    int getInitialScreenId() {
         if (directLaunch) {
             return LoadScreen.ID
         }
@@ -236,55 +235,47 @@ class GameRuntime extends ScreenBasedGame {
 
     }
 
-    public CustomSystemProperties getCustomSystemProperties() {
-        return customSystemProperties
-    }
-
-    public boolean isDevMode() {
+    boolean isDevMode() {
         return customSystemProperties.isDevMode()
     }
 
-    public boolean checkDirectLaunch() {
+    boolean checkDirectLaunch() {
         return directLaunch
     }
 
-    public boolean isSecure() {
+    boolean isSecure() {
         return secure
     }
 
-    public String getGamePath() {
+    String getGamePath() {
         return programsPath + getGameName()
     }
 
-    public String getToolPath() {
-        return dataPath + "/Tools/" + getGameName()
-    }
-
-    public String getGameName() {
+    String getGameName() {
         return gameName
     }
 
-    public void setGameName(String GAME_NAME) {
+    void setGameName(String GAME_NAME) {
         this.gameName = GAME_NAME
     }
 
-    public void setFileDroppedTitle(String title) {
+    void setFileDroppedTitle(String title) {
         this.fileDroppedTitle = title
     }
 
-    public boolean checkFileDropped() {
+    boolean checkFileDropped() {
         return (null != fileDroppedTitle && fileDroppedTitle.length() > 2)
     }
 
-    public String getFileDroppedTitle() {
+    String getFileDroppedTitle() {
         return checkFileDropped() ? fileDroppedTitle : ""
     }
 
-    public void clearFileDropped() {
+    void clearFileDropped() {
         fileDroppedTitle = ""
     }
 
-    public CustomCursor getCursor() {
+    CustomCursor getCursor() {
         return cursor
     }
 
@@ -295,7 +286,7 @@ class GameRuntime extends ScreenBasedGame {
      *
      * @return programsPath
      */
-    public String getProgramsPath() {
+    String getProgramsPath() {
         return programsPath
     }
 
@@ -306,19 +297,19 @@ class GameRuntime extends ScreenBasedGame {
      *
      * @return dataPath
      */
-    public String getDataPath() {
+    String getDataPath() {
         return dataPath
     }
 
-    public String getDeployPath() {
+    String getDeployPath() {
         return deployPath
     }
 
-    public String getBasePath() {
+    String getBasePath() {
         return basePath
     }
 
-    public String getPackagePath() {
+    String getPackagePath() {
         return packagePath
     }
 

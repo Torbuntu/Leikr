@@ -13,42 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.commands;
+package leikr.commands
 
-import leikr.utilities.ExportTool;
+import leikr.utilities.ExportTool
 
 /**
  *
  * @author Torbuntu
  */
-public class PackageCommand implements Command {
+class PackageCommand implements Command {
 
-    private final ExportTool exportTool;
+    private final ExportTool exportTool
 
-    public PackageCommand(ExportTool exportTool) {
-        this.exportTool = exportTool;
+    PackageCommand(ExportTool exportTool) {
+        this.exportTool = exportTool
     }
 
     @Override
-    public String execute(String[] command) {
+    String execute(String[] command) {
         if (command.length <= 1) {
-            return "[E] Missing - required name argument.";
+            return "[E] Missing - required name argument."
         }
         if (command[1].equalsIgnoreCase("all")) {
-            return exportTool.exportAll();
+            return exportTool.exportAll()
         } else {
-            return exportTool.export(command[1]);
+            return exportTool.export(command[1])
         }
     }
 
     @Override
-    public String help() {
-        return ">package [name] \nPackages a program by name into the Packages directory as .lkr package for sharing. Run with `all` argument to export all programs. See `install` command.";
+    String help() {
+        ">package [name] \nPackages a program by name into the Packages directory as .lkr package for sharing. Run with `all` argument to export all programs. See `install` command."
     }
 
     @Override
-    public String getName() {
-        return "package";
+    String getName() {
+        "package"
     }
 
 }

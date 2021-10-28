@@ -13,82 +13,78 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.commands;
+package leikr.commands
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import leikr.GameRuntime;
-import org.mini2Dx.core.Mdx;
+import leikr.GameRuntime
+import org.mini2Dx.core.Mdx
 
+import java.util.logging.Level
+import java.util.logging.Logger
 /**
  *
  * @author tor
  */
-public class PrintDirectoryCommand implements Command {
+class PrintDirectoryCommand implements Command {
 
-    private String out;
-    private final GameRuntime runtime;
+    private String out
+    private final GameRuntime runtime
 
-    public PrintDirectoryCommand(GameRuntime runtime) {
-        this.runtime = runtime;
+    PrintDirectoryCommand(GameRuntime runtime) {
+        this.runtime = runtime
     }
 
     @Override
-    public String execute(String[] param) {
+    String execute(String[] param) {
         if (param.length > 1) {
-            return runLs(param[1]);
+            return runLs(param[1])
         } else {
-            return runLsPrograms();
+            return runLsPrograms()
         }
     }
 
     @Override
-    public String help() {
-        return ">ls [Directory] \nDisplays the contents of a given directory or the default directory Programs.";
+    String help() {
+        ">ls [Directory] \nDisplays the contents of a given directory or the default directory Programs."
     }
 
     private String runLsPrograms() {
         try {
-            out = "";
-            List<String> titles = new ArrayList<>();
+            out = ""
+            List<String> titles = new ArrayList<>()
 
-            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).forEach(e -> titles.add(e.name()));
+            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).forEach(e -> titles.add(e.name()))
 
             titles.stream().sorted().forEach(e -> {
                 if (Mdx.files.external(runtime.getProgramsPath() + e + "/Code/Compiled").exists()) {
-                    out += e + " *\n";
+                    out += e + " *\n"
                 } else {
-                    out += e + "\n";
+                    out += e + "\n"
                 }
-            });
-            return out;
+            })
+            return out
         } catch (IOException ex) {
-            Logger.getLogger(PrintDirectoryCommand.class.getName()).log(Level.WARNING, null, ex);
-            return "[E] Failed to execute command [ ls ]";
+            Logger.getLogger(PrintDirectoryCommand.class.getName()).log(Level.WARNING, null, ex)
+            return "[E] Failed to execute command [ ls ]"
         }
     }
 
     private String runLs(String dir) {
         try {
-            out = "";
-            List<String> titles = new ArrayList<>();
-            Arrays.asList(Mdx.files.external(runtime.getProgramsPath() + dir).list()).forEach(e -> titles.add(e.name()));
+            out = ""
+            List<String> titles = new ArrayList<>()
+            Arrays.asList(Mdx.files.external(runtime.getProgramsPath() + dir).list()).forEach(e -> titles.add(e.name()))
 
-            titles.stream().sorted().forEach(e -> out += e + "\n");
-            return out;
+            titles.stream().sorted().forEach(e -> out += e + "\n")
+            return out
         } catch (IOException ex) {
-            Logger.getLogger(PrintDirectoryCommand.class.getName()).log(Level.WARNING, null, ex);
-            return "[E] Failed to execute command [ ls ]";
+            Logger.getLogger(PrintDirectoryCommand.class.getName()).log(Level.WARNING, null, ex)
+            return "[E] Failed to execute command [ ls ]"
         }
     }
 
     @Override
-    public String getName() {
-        return "ls";
+    String getName() {
+        "ls"
     }
 
 }

@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.desktop;
+package leikr.desktop
 
-import com.badlogic.gdx.Files;
-import com.badlogic.gdx.backends.lwjgl3.DesktopMini2DxGame;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Mini2DxConfig;
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Mini2DxWindowListener;
-import java.security.Security;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import leikr.GameRuntime;
+import com.badlogic.gdx.Files
+import com.badlogic.gdx.backends.lwjgl3.DesktopMini2DxGame
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Mini2DxConfig
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Mini2DxWindowListener
+import java.security.Security
+import java.util.Arrays
+import java.util.logging.Level
+import java.util.logging.Logger
+import leikr.GameRuntime
 
 /**
  *
@@ -32,22 +32,21 @@ import leikr.GameRuntime;
 class DesktopLauncher {
 
     static void main(String[] args) {
-        GameRuntime runtime = new GameRuntime(args, !Arrays.asList(args).contains("insecure"));
+        GameRuntime runtime = new GameRuntime(args, !Arrays.asList(args).contains("insecure"))
 
         if (Arrays.asList(args).contains("insecure")) {
-            Logger.getLogger(Security.class.getName()).log(Level.WARNING, "Leikr is running without security.");
+            Logger.getLogger(Security.class.getName()).log(Level.WARNING, "Leikr is running without security.")
         }
 
-        def config = new Lwjgl3Mini2DxConfig(runtime.getGAME_IDENTIFIER());
+        def config = new Lwjgl3Mini2DxConfig(runtime.getGAME_IDENTIFIER())
 
         config.with {
-            targetFPS = 60;
-            setTitle("Leikr");
-            setWindowedMode(720, 480);
-            useVsync(true);
-            setWindowIcon(Files.FileType.Internal, "Data/Logo/logo-16x16.png", "Data/Logo/logo-32x32.png");
+            setTitle("Leikr")
+            setWindowedMode(720, 480)
+            useVsync(true)
+            setWindowIcon(Files.FileType.Internal, "Data/Logo/logo-16x16.png", "Data/Logo/logo-32x32.png")
         }
-
+        config.@targetFPS = 60
         config.@foregroundFPS = 60
 
         // Custom window listener to detect file drag and drop operations
