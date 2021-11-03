@@ -13,15 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.exceptions;
+package leikr.exceptions
 
 /**
  *
  * @author tor
  */
-public class RenderException extends RuntimeException {
+class RenderException extends RuntimeException {
 
-    public RenderException(String message) {
-        super(message);
+    RenderException(String message) {
+        super(message)
     }
 }

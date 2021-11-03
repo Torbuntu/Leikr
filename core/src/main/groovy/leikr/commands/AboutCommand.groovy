@@ -43,7 +43,7 @@ class AboutCommand implements Command {
         }
         try {
             CustomProgramProperties cpp = new CustomProgramProperties(runtime.getProgramsPath() + command[1])
-            return "Title: " + cpp.TITLE + "\nType: " + cpp.TYPE + "\nPlayers: " + cpp.PLAYERS + "\nAuthor: " + cpp.AUTHOR + "\nAbout: " + cpp.ABOUT
+            return "Title: ${cpp.TITLE} \nType: ${cpp.TYPE} \nPlayers: ${cpp.PLAYERS} \nAuthor: ${cpp.AUTHOR} \nAbout: ${cpp.ABOUT}"
         } catch (Exception ex) {
             Logger.getLogger(AboutCommand.class.getName()).log(Level.SEVERE, null, ex)
             return "Failed to load property file for [${command[1]}]."
@@ -52,8 +52,8 @@ class AboutCommand implements Command {
 
     boolean containsName(String name) {
         try {
-            ArrayList<String> names = new ArrayList<>()
-            Arrays.asList(Mdx.files.external(runtime.getProgramsPath() ).list()).stream().forEach(e -> names.add(e.nameWithoutExtension()))
+            def names = []
+            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream().forEach(e -> names.add(e.nameWithoutExtension()))
             return names.contains(name)
         } catch (IOException ex) {
             Logger.getLogger(AboutCommand.class.getName()).log(Level.SEVERE, null, ex)

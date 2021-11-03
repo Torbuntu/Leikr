@@ -45,10 +45,11 @@ class RunCommand implements Command {
         }
         try {
             System.out.println(runtime.getProgramsPath())
-            ArrayList<String> names = new ArrayList<>()
-            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream().forEach(e -> names.add(e.nameWithoutExtension()))
+            def names = []
+            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream()
+                    .forEach(e -> names.add(e.nameWithoutExtension()))
             if (!names.contains(command[1])) {
-                return "[E] Program [" + command[1] + "] does not exist in Programs directory."
+                return "[E] Program [${command[1]}] does not exist in Programs directory."
             }
             runtime.setGameName(command[1])
             if (command.length > 2) {
@@ -59,7 +60,7 @@ class RunCommand implements Command {
             return "[I] Loading..."
         } catch (IOException ex) {
             Logger.getLogger(RunCommand.class.getName()).log(Level.WARNING, null, ex)
-            return "[E] Failed to run program with name [ " + command[1] + " ]"
+            return "[E] Failed to run program with name [${command[1]}]"
         }
     }
 

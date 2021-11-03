@@ -15,7 +15,7 @@
  */
 package leikr.managers
 
-import java.math.BigDecimal
+
 import leikr.GameRuntime
 import leikr.loaders.EngineLoader
 import leikr.loaders.FontLoader
@@ -86,7 +86,7 @@ class SystemManager {
     }
 
     void loadSpriteSheet(String sheetName) {
-        spriteLoader.loadManualSpritesheets(sheetName)
+        spriteLoader.loadManualSpriteSheets(sheetName)
     }
 
     void pause() {

@@ -60,21 +60,21 @@ class SpriteLoader {
             loadSpriteSheets()
             addSpritesToSpriteBank()
         } else {
-            Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "No sprites found for: {0}", path);
+            Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "No sprites found for: {0}", path)
         }
 
     }
 
     private void loadSpriteSheets() {
-        assetManager.load(rootPath, Texture.class);
-        assetManager.finishLoading();
+        assetManager.load(rootPath, Texture.class)
+        assetManager.finishLoading()
     }
 
     private void addSpritesToSpriteBank() {
-        spriteBank = new SpriteSheet(assetManager.get(rootPath, Texture.class), 8, 8);
-        spriteBank16 = new SpriteSheet(assetManager.get(rootPath, Texture.class), 16, 16);
-        spriteBank32 = new SpriteSheet(assetManager.get(rootPath, Texture.class), 32, 32);
-        spriteBank64 = new SpriteSheet(assetManager.get(rootPath, Texture.class), 64, 64);
+        spriteBank = new SpriteSheet(assetManager.get(rootPath, Texture.class), 8, 8)
+        spriteBank16 = new SpriteSheet(assetManager.get(rootPath, Texture.class), 16, 16)
+        spriteBank32 = new SpriteSheet(assetManager.get(rootPath, Texture.class), 32, 32)
+        spriteBank64 = new SpriteSheet(assetManager.get(rootPath, Texture.class), 64, 64)
     }
 
     /**
@@ -94,19 +94,14 @@ class SpriteLoader {
      */
     Sprite getSprite(int id, int size) {
         try {
-            return (switch (size) {
-                case 1 -> spriteBank16;
-                case 2 -> spriteBank32;
-                case 3 -> spriteBank64;
-                default -> spriteBank;
-            }).getSprite(id);
+            return [spriteBank, spriteBank16, spriteBank32, spriteBank64][size].getSprite(id)
         } catch (Exception ex) {
-            Logger.getLogger(SpriteLoader.class.getName()).log(Level.SEVERE, null, ex);
-            throw new RenderException("Error in program `render` method. Sprite index out of bounds. " + (ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : ""));
+            Logger.getLogger(SpriteLoader.class.getName()).log(Level.SEVERE, null, ex)
+            throw new RenderException("Error in program `render` method. Sprite index out of bounds. " + (ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : ""))
         }
     }
 
-    void loadManualSpritesheets(String programName) {
+    void loadManualSpriteSheets(String programName) {
 //        resetSpriteLoader();
         rootPath = runtime.getProgramsPath() + "${programName}/Sprites/Sprites.png"
         if (!Mdx.files.external(rootPath).exists()) {
@@ -114,18 +109,18 @@ class SpriteLoader {
             return
         }
         try {
-            loadSpriteSheets();
-            addSpritesToSpriteBank();
+            loadSpriteSheets()
+            addSpritesToSpriteBank()
         } catch (Exception ex) {
-            Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "Manual Sprite sheet not loadable for: {0}", rootPath);
-            Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "Sprite sheet load failure: ", ex);
+            Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "Manual Sprite sheet not loadable for: {0}", rootPath)
+            Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "Sprite sheet load failure: ", ex)
         }
     }
 
     void disposeSprites() {
         if (null != assetManager) {
-            assetManager.clearAssetLoaders();
-            assetManager.dispose();
+            assetManager.clearAssetLoaders()
+            assetManager.dispose()
         }
     }
 

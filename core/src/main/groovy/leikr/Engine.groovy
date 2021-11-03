@@ -15,9 +15,6 @@
  */
 package leikr
 
-import java.math.BigDecimal
-import java.util.ArrayList
-import java.util.HashMap
 import java.util.logging.Level
 import java.util.logging.Logger
 import leikr.controls.*
@@ -376,7 +373,7 @@ abstract class Engine implements InputProcessor {
     }
     // </editor-fold>
 
-    // <editor-fold desc="String api" defaultstate="collapsed"> 
+    // <editor-fold desc="String api" defaultstate="collapsed">
     final void drawString(Color color, String text, BigDecimal x, BigDecimal y) {
         lGraphics.drawString(color, text, x, y)
     }
@@ -414,41 +411,30 @@ abstract class Engine implements InputProcessor {
     }
     // </editor-fold>
 
-    // <editor-fold desc="Sprite api" defaultstate="collapsed"> 
+    // <editor-fold desc="Sprite api" defaultstate="collapsed">
     final void sprite(int id, BigDecimal x, BigDecimal y) {
         lGraphics.sprite(id, x, y)
     }
 
-    final void sprite(int id, BigDecimal x, BigDecimal y, BigDecimal degr) {
-        lGraphics.sprite(id, x, y, degr)
+    final void sprite(int id, BigDecimal x, BigDecimal y, int size) {
+        lGraphics.sprite(id, x, y, size)
+    }
+
+    final void sprite(int id, BigDecimal x, BigDecimal y, int size, BigDecimal degrees) {
+        lGraphics.sprite(id, x, y, size, degrees)
     }
 
     final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY) {
         lGraphics.sprite(id, x, y, flipX, flipY)
     }
 
-    final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, BigDecimal degr) {
-        lGraphics.sprite(id, x, y, flipX, flipY, degr)
-    }
-    //end 8x8 sprites
-
-    //start sizable sprites
-    final void sprite(int id, BigDecimal x, BigDecimal y, int size) {
-        lGraphics.sprite(id, x, y, size)
+    final void sprite(int id, BigDecimal x, BigDecimal y, int size, boolean flipX, boolean flipY) {
+        lGraphics.sprite(id, x, y, size, flipX, flipY)
     }
 
-    final void sprite(int id, BigDecimal degr, BigDecimal x, BigDecimal y, int size) {
-        lGraphics.sprite(id, degr, x, y, size)
+    final void sprite(int id, BigDecimal x, BigDecimal y, int size, BigDecimal degrees, boolean flipX, boolean flipY) {
+        lGraphics.sprite(id, x, y, size, degrees, flipX, flipY)
     }
-
-    final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, int size) {
-        lGraphics.sprite(id, x, y, flipX, flipY, size)
-    }
-
-    final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, BigDecimal degr, int size) {
-        lGraphics.sprite(id, x, y, flipX, flipY, degr, size)
-    }
-    //end sizable sprites
 
     final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph) {
         lGraphics.sprite(ids, px, py, pw, ph)
@@ -462,54 +448,45 @@ abstract class Engine implements InputProcessor {
         lGraphics.sprite(ids, px, py, pw, ph, flipX, flipY)
     }
 
-    final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, boolean flipX, boolean flipY, int size) {
-        lGraphics.sprite(ids, px, py, pw, ph, flipX, flipY, size)
+    final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, int size, boolean flipX, boolean flipY) {
+        lGraphics.sprite(ids, px, py, pw, ph, size, flipX, flipY)
     }
 
     //start scaled sprites
-    void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale) {
+    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale) {
         lGraphics.spriteSc(id, x, y, scale)
     }
 
-    void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY) {
-        lGraphics.spriteSc(id, x, y, scaleX, scaleY)
-    }
-
-    void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, BigDecimal degr) {
-        lGraphics.spriteSc(id, x, y, scaleX, scaleY, degr)
-    }
-
-    void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY) {
-        lGraphics.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY)
-    }
-
-    void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, BigDecimal degr) {
-        lGraphics.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, degr)
-    }
-
-    //Scaled sprites with size
-    void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale, int size) {
+    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale, int size) {
         lGraphics.spriteSc(id, x, y, scale, size)
     }
 
-    void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size) {
+    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY) {
+        lGraphics.spriteSc(id, x, y, scaleX, scaleY)
+    }
+
+    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size) {
         lGraphics.spriteSc(id, x, y, scaleX, scaleY, size)
     }
 
-    void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, BigDecimal degr, int size) {
-        lGraphics.spriteSc(id, x, y, scaleX, scaleY, degr, size)
+    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size, BigDecimal degrees) {
+        lGraphics.spriteSc(id, x, y, scaleX, scaleY, size, degrees)
     }
 
-    void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, int size) {
-        lGraphics.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, size)
+    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY) {
+        lGraphics.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY)
     }
 
-    void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, BigDecimal degr, int size) {
-        lGraphics.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, degr, size)
+    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size, boolean flipX, boolean flipY) {
+        lGraphics.spriteSc(id, x, y, scaleX, scaleY, size, flipX, flipY)
+    }
+
+    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size, BigDecimal degrees, boolean flipX, boolean flipY) {
+        lGraphics.spriteSc(id, x, y, scaleX, scaleY, size, degrees, flipX, flipY)
     }
     // </editor-fold>
 
-    // <editor-fold desc="Shape drawing api" defaultstate="collapsed"> 
+    // <editor-fold desc="Shape drawing api" defaultstate="collapsed">
     final void drawPixel(Color color, BigDecimal x, BigDecimal y) {
         lGraphics.drawPixel(color, x, y)
     }
@@ -710,8 +687,8 @@ abstract class Engine implements InputProcessor {
     }
     // </editor-fold>
 
-    // <editor-fold desc="Input api" defaultstate="collapsed"> 
-   
+    // <editor-fold desc="Input api" defaultstate="collapsed">
+
     //detect Keyboard key presses (polling continuously)
     final boolean key(String key) {
         return lKeyboard.key(key)
@@ -784,7 +761,7 @@ abstract class Engine implements InputProcessor {
     }
     // </editor-fold>
 
-    // <editor-fold desc="Data api" defaultstate="collapsed"> 
+    // <editor-fold desc="Data api" defaultstate="collapsed">
     void addData(String key, Object value) {
         lData.addData(key, value)
     }
@@ -801,16 +778,16 @@ abstract class Engine implements InputProcessor {
         lData.saveData(path)
     }
 
-    void saveData(String path, HashMap<String, Object> dat) {
+    void saveData(String path, Map<String, Object> dat) {
         lData.saveData(path, dat)
     }
 
-    HashMap<String, Object> readData(String path) {
-        return lData.readData(path)
+    Map<String, Object> readData(String path) {
+        lData.readData(path)
     }
     // </editor-fold>
 
-    // <editor-fold desc="Experimental" defaultstate="collapsed"> 
+    // <editor-fold desc="Experimental" defaultstate="collapsed">
     boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal r1, BigDecimal x2, BigDecimal y2, BigDecimal r2) {
         return lSystem.collides(x1, y1, r1, x2, y2, r2)
     }

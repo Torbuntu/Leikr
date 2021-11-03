@@ -13,62 +13,58 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.loaders;
+package leikr.loaders
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.mini2Dx.core.Mdx;
-import org.mini2Dx.core.assets.AssetManager;
-import org.mini2Dx.core.files.ExternalFileHandleResolver;
-import org.mini2Dx.core.graphics.Texture;
+import org.mini2Dx.core.Mdx
+import org.mini2Dx.core.assets.AssetManager
+import org.mini2Dx.core.files.ExternalFileHandleResolver
+import org.mini2Dx.core.graphics.Texture
 
+import java.util.logging.Level
+import java.util.logging.Logger
 /**
  *
  * @author tor
  */
-public class ImageLoader {
+class ImageLoader {
 
-    private String rootPath;
+    private String rootPath
 
-    private AssetManager assetManager;
+    private AssetManager assetManager
 
-    public ImageLoader() {
+    ImageLoader() {
     }
 
-    public void reloadImageLoader(String path) {
-        disposeImages();
-        assetManager = new AssetManager(new ExternalFileHandleResolver());
-        rootPath = path + "/Art/";
+    void reloadImageLoader(String path) {
+        disposeImages()
+        assetManager = new AssetManager(new ExternalFileHandleResolver())
+        rootPath = "$path/Art/"
         try {
             Arrays.asList(Mdx.files.external(rootPath).list()).stream()
-                    .filter(file -> !file.isDirectory()
-                    && (file.extension().equalsIgnoreCase("png")
-                    || file.extension().equalsIgnoreCase("jpg")
-                    || file.extension().equalsIgnoreCase("bmp")))
+                    .filter(file -> !file.isDirectory() && (file.extension().toLowerCase() in ["png", "jpg", "bmp"]))
                     .forEach(p -> {
-                        assetManager.load(rootPath + p.name(), Texture.class);
-                    });
-            assetManager.finishLoading();
+                        assetManager.load(rootPath + p.name(), Texture.class)
+                    })
+            assetManager.finishLoading()
         } catch (IOException ex) {
-            Logger.getLogger(ImageLoader.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ImageLoader.class.getName()).log(Level.SEVERE, null, ex)
         }
     }
 
-    public void load() {
-        assetManager.finishLoading();//just to make sure we are done before calling getImage
+    void load() {
+        //just to make sure we are done before calling getImage
+        assetManager.finishLoading()
     }
 
-    public Texture getImage(String fileName) {
-        return assetManager.get(rootPath + fileName, Texture.class);
+    Texture getImage(String fileName) {
+        return assetManager.get(rootPath + fileName, Texture.class)
 
     }
 
-    public void disposeImages() {
+    void disposeImages() {
         if (null != assetManager) {
-            assetManager.clearAssetLoaders();
-            assetManager.dispose();
+            assetManager.clearAssetLoaders()
+            assetManager.dispose()
         }
     }
 

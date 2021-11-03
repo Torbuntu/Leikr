@@ -13,16 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.customProperties;
+package leikr.customProperties
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.Level
+import java.util.logging.Logger
 
 /**
  *
@@ -42,14 +36,14 @@ class CustomProgramProperties {
     private String GAME_TITLE = ""
 
     CustomProgramProperties(String gamePath) {
-        GAME_TITLE = gamePath.substring(gamePath.lastIndexOf("/") + 1);
-        Properties prop = new Properties();
+        GAME_TITLE = gamePath.substring(gamePath.lastIndexOf("/") + 1)
+        Properties prop = new Properties()
         try ( InputStream stream = new FileInputStream(new File(gamePath + "/program.properties"))) {
-            prop.load(stream);
+            prop.load(stream)
 
             MAX_SPRITES = Integer.parseInt(prop.getProperty("max_sprites")) ?: 128
             if (MAX_SPRITES > 128) {
-                MAX_SPRITES = 128;
+                MAX_SPRITES = 128
             }
             USE_COMPILED = Boolean.valueOf(prop.getProperty("use_compiled")) ?: false
             COMPILE_SOURCE = Boolean.valueOf(prop.getProperty("compile_source")) ?: false
@@ -65,21 +59,22 @@ class CustomProgramProperties {
         }
     }
 
-    void writeProperties(String gamePath) {
+    static void writeProperties(String gamePath) {
         try ( FileOutputStream stream = new FileOutputStream(new File(gamePath + "/program.properties"))) {
-            Properties prop = new Properties();
+            Properties prop = new Properties()
+            prop.with {
+                setProperty("max_sprites", String.valueOf(MAX_SPRITES))
+                setProperty("use_compiled", String.valueOf(USE_COMPILED))
+                setProperty("compile_source", String.valueOf(COMPILE_SOURCE))
+                setProperty("title", TITLE)
+                setProperty("type", TYPE)
+                setProperty("author", AUTHOR)
+                setProperty("version", VERSION)
+                setProperty("players", String.valueOf(PLAYERS))
+                setProperty("about", ABOUT)
 
-            prop.setProperty("max_sprites", String.valueOf(MAX_SPRITES))
-            prop.setProperty("use_compiled", String.valueOf(USE_COMPILED))
-            prop.setProperty("compile_source", String.valueOf(COMPILE_SOURCE))
-            prop.setProperty("title", TITLE)
-            prop.setProperty("type", TYPE)
-            prop.setProperty("author", AUTHOR)
-            prop.setProperty("version", VERSION)
-            prop.setProperty("players", String.valueOf(PLAYERS))
-            prop.setProperty("about", ABOUT)
-
-            prop.store(stream, null);
+                store(stream, null)
+            }
 
         } catch (IOException | NumberFormatException ex) {
             Logger.getLogger(CustomProgramProperties.class.getName()).log(Level.SEVERE, ex.getMessage())
@@ -87,11 +82,11 @@ class CustomProgramProperties {
     }
 
     boolean getUseCompiled() {
-        return USE_COMPILED;
+        USE_COMPILED
     }
 
     String getTitle() {
-        return GAME_TITLE;
+        GAME_TITLE
     }
 
 }

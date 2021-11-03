@@ -13,30 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.controls;
+package leikr.controls
 
-import org.mini2Dx.core.Mdx;
-import org.mini2Dx.gdx.Input.Keys;
+import org.mini2Dx.core.Mdx
+import org.mini2Dx.gdx.Input.Keys
 
 /**
  * The class to handle keyboard interactions within Leikr programs
  *
  * @author Torbuntu
  */
-public class LeikrKeyboard {
+class LeikrKeyboard {
 
     /**
      * Checks if given value is pressed.
-     * 
+     *
      * Examples: Z, X, Escape, Space, Left 
-     * 
+     *
      * Notice values are Title cases.
      *
      * @param key
      * @return
      */
-    public boolean key(String key) {
-        return Mdx.input.isKeyDown(Keys.valueOf(key));
+    static boolean key(String key) {
+        Mdx.input.isKeyDown(Keys.valueOf(key))
     }
 
     /**
@@ -45,8 +45,8 @@ public class LeikrKeyboard {
      * @param key
      * @return
      */
-    public boolean keyUp(String key) {
-        return Mdx.input.isKeyUp(Keys.valueOf(key));
+    static boolean keyUp(String key) {
+        Mdx.input.isKeyUp(Keys.valueOf(key))
     }
 
     /**
@@ -57,7 +57,7 @@ public class LeikrKeyboard {
      * @param key
      * @return
      */
-    public boolean keyPress(String key) {
-        return Mdx.input.isKeyJustPressed(Keys.valueOf(key));
+    static boolean keyPress(String key) {
+        Mdx.input.isKeyJustPressed(Keys.valueOf(key))
     }
 }

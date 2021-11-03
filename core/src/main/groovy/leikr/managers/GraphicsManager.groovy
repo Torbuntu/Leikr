@@ -152,7 +152,7 @@ class GraphicsManager {
     }
     //end Image methods
 
-    // <editor-fold desc="Map methods" defaultstate="collapsed"> 
+    // <editor-fold desc="Map methods" defaultstate="collapsed">
     final void loadMap(String map) {
         mapLoader.loadMap(map)
     }
@@ -232,7 +232,7 @@ class GraphicsManager {
     }
     //end color methods
 
-    // <editor-fold desc="String drawing methods" defaultstate="collapsed"> 
+    // <editor-fold desc="String drawing methods" defaultstate="collapsed">
     final void drawString(Color color, String text, BigDecimal x, BigDecimal y) {
         g.setColor(color)
         g.drawString(text, x.floatValue(), y.floatValue())
@@ -273,19 +273,19 @@ class GraphicsManager {
     }
     // </editor-fold>
 
-    // <editor-fold desc="Sprite methods" defaultstate="collapsed"> 
-    private void drawSpriteRotate(int id, BigDecimal x, BigDecimal y, BigDecimal degr, int size) {
+    // <editor-fold desc="Sprite methods" defaultstate="collapsed">
+    private void drawSpriteRotate(int id, BigDecimal x, BigDecimal y, int size, BigDecimal degrees) {
         if (usedSprites >= maxSprites) {
             return
         }
         Sprite t = spriteLoader.getSprite(id, size)
-        t.rotate(degr.floatValue())
+        t.rotate(degrees.floatValue())
         g.drawSprite(t, x.floatValue(), y.floatValue())
-        t.rotate(-degr.floatValue())
+        t.rotate(-degrees.floatValue())
         usedSprites++
     }
 
-    private void drawSpriteFlip(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, int size) {
+    private void drawSpriteFlip(int id, BigDecimal x, BigDecimal y, int size, boolean flipX, boolean flipY) {
         if (usedSprites >= maxSprites) {
             return
         }
@@ -296,7 +296,6 @@ class GraphicsManager {
         usedSprites++
     }
 
-    //start 8x8 sprites. Default size 0 (8x8)
     final void sprite(int id, BigDecimal x, BigDecimal y) {
         if (usedSprites >= maxSprites) {
             return
@@ -305,21 +304,7 @@ class GraphicsManager {
         usedSprites++
     }
 
-    final void sprite(int id, BigDecimal x, BigDecimal y, BigDecimal degr) {
-        sprite(id, x, y, degr, 0)
-    }
-
-    final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY) {
-        sprite(id, x, y, flipX, flipY, 0)
-    }
-
-    final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, BigDecimal degr) {
-        sprite(id, x, y, flipX, flipY, degr, 0)
-    }
-    //end 8x8 sprites
-
-    //start sizable sprites
-    final void sprite(int id, BigDecimal x, BigDecimal y, int size) {
+    final void sprite(int id, BigDecimal x, BigDecimal y, int size){
         if (usedSprites >= maxSprites) {
             return
         }
@@ -327,24 +312,28 @@ class GraphicsManager {
         usedSprites++
     }
 
-    final void sprite(int id, BigDecimal x, BigDecimal y, BigDecimal degr, int size) {
-        drawSpriteRotate(id, x, y, degr, size)
+    final void sprite(int id, BigDecimal x, BigDecimal y, int size, BigDecimal degrees){
+        drawSpriteRotate(id, x, y, size, degrees)
     }
 
-    final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, int size) {
-        drawSpriteFlip(id, x, y, flipX, flipY, size)
+    final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY) {
+        sprite(id, x, y, 0, flipX, flipY)
     }
 
-    final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY, BigDecimal degr, int size) {
+    final void sprite(int id, BigDecimal x, BigDecimal y, int size, boolean flipX, boolean flipY) {
+        drawSpriteFlip(id, x, y, size, flipX, flipY)
+    }
+
+    final void sprite(int id, BigDecimal x, BigDecimal y, int size, BigDecimal degrees, boolean flipX, boolean flipY) {
         if (usedSprites >= maxSprites) {
             return
         }
         Sprite t = spriteLoader.getSprite(id, size)
-        t.rotate(degr.floatValue())
+        t.rotate(degrees.floatValue())
         t.setFlip(flipX, flipY)
         g.drawSprite(t, x.floatValue(), y.floatValue())
         t.setFlip(false, false)
-        t.rotate(-degr.floatValue())
+        t.rotate(-degrees.floatValue())
         usedSprites++
     }
     //end sizable sprites
@@ -378,10 +367,10 @@ class GraphicsManager {
     }
 
     final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, boolean flipX, boolean flipY) {
-        sprite(ids, px, py, pw, ph, flipX, flipY, 0)
+        sprite(ids, px, py, pw, ph, 0, flipX, flipY)
     }
 
-    final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, boolean flipX, boolean flipY, int size) {
+    final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, int size, boolean flipX, boolean flipY) {
         if (usedSprites >= maxSprites) {
             return
         }
@@ -484,24 +473,12 @@ class GraphicsManager {
         spriteSc(id, x, y, scale, 0)
     }
 
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY) {
-        spriteSc(id, x, y, scaleX, scaleY, 0)
-    }
-
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, BigDecimal degr) {
-        spriteSc(id, x, y, scaleX, scaleY, degr, 0)
-    }
-
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY) {
-        spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, 0)
-    }
-
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, BigDecimal degr) {
-        spriteSc(id, x, y, scaleX, scaleY, flipX, flipY, degr,0)
-    }
-
     final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale, int size) {
         spriteSc(id, x, y, scale, scale, size)
+    }
+
+    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY) {
+        spriteSc(id, x, y, scaleX, scaleY, 0)
     }
 
     final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size) {
@@ -515,20 +492,24 @@ class GraphicsManager {
         usedSprites++
     }
 
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, BigDecimal degr, int size) {
+    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size, BigDecimal degrees) {
         if (usedSprites >= maxSprites) {
             return
         }
         Sprite t = spriteLoader.getSprite(id, size)
         t.setScale(scaleX.floatValue(), scaleY.floatValue())
-        t.rotate(degr.floatValue())
+        t.rotate(degrees.floatValue())
         g.drawSprite(t, x.floatValue(), y.floatValue())
-        t.rotate(-degr.floatValue())
+        t.rotate(-degrees.floatValue())
         t.setScale(1)
         usedSprites++
     }
 
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, int size) {
+    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY) {
+        spriteSc(id, x, y, scaleX, scaleY, 0, flipX, flipY)
+    }
+
+    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size, boolean flipX, boolean flipY) {
         if (usedSprites >= maxSprites) {
             return
         }
@@ -541,22 +522,23 @@ class GraphicsManager {
         usedSprites++
     }
 
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY, BigDecimal degr, int size) {
+    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size, BigDecimal degrees, boolean flipX, boolean flipY) {
         if (usedSprites >= maxSprites) {
             return
         }
         Sprite t = spriteLoader.getSprite(id, size)
-		t.with{
-			setScale(scaleX.floatValue(), scaleY.floatValue())
-			rotate(degr.floatValue())
-			setFlip(flipX, flipY)
-			g.drawSprite(t, x.floatValue(), y.floatValue())
-			setFlip(false, false)
-			rotate(-degr.floatValue())
-			setScale(1)
-		}
+        t.with{
+            setScale(scaleX.floatValue(), scaleY.floatValue())
+            rotate(degrees.floatValue())
+            setFlip(flipX, flipY)
+            g.drawSprite(t, x.floatValue(), y.floatValue())
+            setFlip(false, false)
+            rotate(-degrees.floatValue())
+            setScale(1)
+        }
         usedSprites++
     }
+
     // </editor-fold>
 
     // <editor-fold desc="Shape methods" defaultstate="collapsed">
@@ -895,7 +877,7 @@ class GraphicsManager {
         int re = 0xFF & b[0]
         int gr = 0xFF & b[1]
         int bl = 0xFF & b[2]
-        return Colors.rgbToColor(re + "," + gr + "," + bl)
+        return Colors.rgbToColor("$re,$gr,$bl")
     }
 
     Color getPixel(String name, BigDecimal x, BigDecimal y) {

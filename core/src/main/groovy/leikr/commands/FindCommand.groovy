@@ -15,16 +15,12 @@
  */
 package leikr.commands
 
-import java.awt.Desktop
-import java.io.File
-import java.io.IOException
-import java.util.ArrayList
-import java.util.Arrays
-import java.util.logging.Level
-import java.util.logging.Logger
 import leikr.GameRuntime
 import org.mini2Dx.core.Mdx
 
+import java.awt.*
+import java.util.logging.Level
+import java.util.logging.Logger
 /**
  *
  * @author Torbuntu
@@ -43,7 +39,7 @@ class FindCommand implements Command {
             return "[E] Missing - required program name."
         }
         if (!containsName(command[1])) {
-            return "[E] Program [" + command[1] + "] does not exist in Programs directory."
+            return "[E] Program [${command[1]}] does not exist in Programs directory."
         }
         try {
             File f = new File(runtime.getProgramsPath() + command[1])
@@ -51,14 +47,15 @@ class FindCommand implements Command {
             return f.getAbsolutePath()
         } catch (IOException ex) {
             Logger.getLogger(FindCommand.class.getName()).log(Level.SEVERE, null, ex)
-            return "[E] Could not find program directory for [" + command[1] + "]."
+            return "[E] Could not find program directory for [${command[1]}]."
         }
     }
 
     private boolean containsName(String name) {
         try {
-            ArrayList<String> names = new ArrayList<>()
-            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream().forEach(e -> names.add(e.nameWithoutExtension()))
+            def names = []
+            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream()
+                    .forEach(e -> names.add(e.nameWithoutExtension()))
             return names.contains(name)
         } catch (IOException ex) {
             Logger.getLogger(FindCommand.class.getName()).log(Level.SEVERE, null, ex)

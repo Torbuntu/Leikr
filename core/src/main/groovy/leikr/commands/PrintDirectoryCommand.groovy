@@ -35,11 +35,7 @@ class PrintDirectoryCommand implements Command {
 
     @Override
     String execute(String[] param) {
-        if (param.length > 1) {
-            return runLs(param[1])
-        } else {
-            return runLsPrograms()
-        }
+        return param.length > 1 ? runLs(param[1]) : runLsPrograms()
     }
 
     @Override
@@ -55,11 +51,8 @@ class PrintDirectoryCommand implements Command {
             Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).forEach(e -> titles.add(e.name()))
 
             titles.stream().sorted().forEach(e -> {
-                if (Mdx.files.external(runtime.getProgramsPath() + e + "/Code/Compiled").exists()) {
-                    out += e + " *\n"
-                } else {
-                    out += e + "\n"
-                }
+                out = Mdx.files.external(runtime.getProgramsPath() + "$e/Code/Compiled").exists()
+                        ? e + " *\n" : e + "\n"
             })
             return out
         } catch (IOException ex) {
@@ -71,14 +64,14 @@ class PrintDirectoryCommand implements Command {
     private String runLs(String dir) {
         try {
             out = ""
-            List<String> titles = new ArrayList<>()
+            def titles = []
             Arrays.asList(Mdx.files.external(runtime.getProgramsPath() + dir).list()).forEach(e -> titles.add(e.name()))
 
             titles.stream().sorted().forEach(e -> out += e + "\n")
             return out
         } catch (IOException ex) {
             Logger.getLogger(PrintDirectoryCommand.class.getName()).log(Level.WARNING, null, ex)
-            return "[E] Failed to execute command [ ls ]"
+            return "[E] Failed to execute command [ls]"
         }
     }
 

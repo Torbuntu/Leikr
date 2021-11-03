@@ -38,14 +38,14 @@ class RemoveCommand implements Command {
             return "[E] Missing - required program name."
         }
         if (!containsName(command[1])) {
-            return "[E] Program [" + command[1] + "] does not exist in Programs directory."
+            return "[E] Program [${command[1]}] does not exist in Programs directory."
         }
         try {
             Mdx.files.external(runtime.getProgramsPath() + command[1]).deleteDirectory()
-            return "[I] Program [" + command[1] + "] has been uninstalled."
+            return "[I] Program [${command[1]}] has been uninstalled."
         } catch (IOException ex) {
             Logger.getLogger(RemoveCommand.class.getName()).log(Level.SEVERE, null, ex)
-            return "[E] Could not uninstall [" + command[1] + "]"
+            return "[E] Could not uninstall [${command[1]}]"
         }
 
     }

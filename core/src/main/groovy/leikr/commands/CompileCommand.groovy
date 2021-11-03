@@ -39,13 +39,13 @@ class CompileCommand implements Command {
             return "[E] Missing - required program name."
         }
         if (!Mdx.files.external(runtime.getProgramsPath() + args[1]).exists()) {
-            return "[E] Program name [" + args[1] + "] not in [Programs] directory."
+            return "[E] Program name [${args[1]}] not in [Programs] directory."
         }
         runtime.setGameName(args[1])
         engineLoader.reset(runtime.getProgramsPath() + args[1])
         // Assumes the Programs/GameTitle/ root directory, so Code is all we need to set the compiler class path
         engineLoader.compile("Code", "/Code/Compiled")
-        return "[I] Compiled project [" + args[1] + "]"
+        return "[I] Compiled project [${args[1]}]"
     }
 
     @Override

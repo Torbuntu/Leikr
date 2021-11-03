@@ -39,13 +39,13 @@ class PrintCommand implements Command {
             return "[E] Missing - required name argument."
         }
         if(!Mdx.files.external(adjustedPath).exists()){
-            return "[E] File [" + command[1] + "] not found."
+            return "[E] File [${command[1]}] not found."
         }
         try {
             return Mdx.files.external(adjustedPath).readString()
         } catch (IOException ex) {
             Logger.getLogger(PrintCommand.class.getName()).log(Level.SEVERE, null, ex)
-            return "[E] Failed to print contents of file [" + command[1] + "]"
+            return "[E] Failed to print contents of file [${command[1]}]"
         }
 
     }

@@ -13,81 +13,80 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.managers;
+package leikr.managers
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import org.mini2Dx.core.Mdx;
-import org.mini2Dx.core.exception.SerializationException;
-import org.mini2Dx.core.serialization.annotation.Field;
+import org.mini2Dx.core.Mdx
+import org.mini2Dx.core.exception.SerializationException
+import org.mini2Dx.core.serialization.annotation.Field
 
+import java.util.logging.Level
+import java.util.logging.Logger
+import java.util.stream.Collectors
 /**
  *
  * @author tor
  */
-public class DataManager {
+class DataManager {
 
-    private String gamePath;
+    private String gamePath
 
     @Field
-    public HashMap<String, Object> data;
+    public def data
 
-    public DataManager() {
-        data = new HashMap<>();
+    DataManager() {
+        data = [:]
     }
 
-    public void resetData(String path) {
-        setGamePath(path);
+    void resetData(String path) {
+        setGamePath(path)
     }
 
     private void setGamePath(String path) {
-        gamePath = path;
+        gamePath = path
     }
 
-    public void addData(String key, Object value) {
-        data.put(key, value);
+    void addData(String key, Object value) {
+        data.put(key, value)
     }
 
-    public void deleteData(String key) {
-        data.remove(key);
+    void deleteData(String key) {
+        data.remove(key)
     }
 
-    public void clearData() {
-        data.clear();
+    void clearData() {
+        data.clear()
     }
 
-    public void saveData(String path) {
+    void saveData(String path) {
         try {
 			Mdx.files.with{
-				String dir = "${gamePath}/${path}";
+				String dir = "${gamePath}/${path}"
 				if (!external(dir).exists()) {
-					external(dir).delete();
-				}
-				external(dir).writeString(Mdx.json.toJson(data), false);
-			}
+					external(dir).delete()
+                }
+				external(dir).writeString(Mdx.json.toJson(data), false)
+            }
         } catch (IOException | SerializationException ex) {
-            Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, String.format("Failed saving data to %s", gamePath + "/" + path), ex);
+            Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, String.format("Failed saving data to %s", "$gamePath/$path"), ex)
         }
     }
 
-    public void saveData(String path, HashMap<String, Object> data) {
-        this.data = data;
-        saveData(path);
+    void saveData(String path, Map<String, Object> data) {
+        this.data = data
+        saveData(path)
     }
 
-    public HashMap<String, Object> readData(String path) {
+    Map<String, Object> readData(String path) {
         try {
-            String json = Mdx.files.external(gamePath + "/" + path).readString();
-            json = json.replaceAll("[{\"}]", "");
-            data = (HashMap<String, Object>) Arrays.asList(json.split(",")).stream().map(s -> s.split(":")).collect(Collectors.toMap(e -> e[0], e -> (Object) e[1]));
+            String json = Mdx.files.external( "$gamePath/$path").readString()
+            json = json.replaceAll("[{\"}]", "")
+            data = Arrays.asList(json.split(",")).stream()
+                    .map(s -> s.split(":"))
+                    .collect(Collectors.toMap(e -> e[0], e -> (Object) e[1]))
         } catch (IOException ex) {
-            Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, null, ex)
         }
-        return data;
+        return data
     }
 
 }

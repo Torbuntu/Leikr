@@ -55,7 +55,7 @@ class TerminalScreen extends BasicGameScreen {
     }
 
     @Override
-    void preTransitionIn(Transition trns) {
+    void preTransitionIn(Transition transition) {
         terminalManager.init()
         Mdx.input.setInputProcessor(terminalManager)
     }

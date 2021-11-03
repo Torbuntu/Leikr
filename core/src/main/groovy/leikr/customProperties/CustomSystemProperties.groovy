@@ -13,48 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.customProperties;
+package leikr.customProperties
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.Level
+import java.util.logging.Logger
 
 /**
  *
  * @author tor
  */
-public class CustomSystemProperties {
+class CustomSystemProperties {
 
-    private static String launchTitle;
+    private static String launchTitle
 
-    private int x;
-    private int A;
-    private int B;
-    private int Y;
-    private int leftBumper;
-    private int rightBumper;
-    private int select;
-    private int start;
-    private int up;
-    private int down;
-    private int right;
-    private int left;
+    private int x
+    private int A
+    private int B
+    private int Y
+    private int leftBumper
+    private int rightBumper
+    private int select
+    private int start
+    private int up
+    private int down
+    private int right
+    private int left
 
-    private int horizontalAxis;
-    private int verticalAxis;
+    private int horizontalAxis
+    private int verticalAxis
 
-    private boolean DEBUG;
+    private boolean DEBUG
 
-    private boolean devMode;
+    private boolean devMode
 
-    public CustomSystemProperties() {
-        Properties prop = new Properties();
+    CustomSystemProperties() {
+        Properties prop = new Properties()
         try ( InputStream stream = new FileInputStream(new File("Data/system.properties"))) {
-            prop.load(stream);
+            prop.load(stream)
             launchTitle = prop.getProperty("launch_title") ?: ""
             DEBUG = Boolean.valueOf(prop.getProperty("debug_mode")) ?: false
             devMode = Boolean.valueOf(prop.getProperty("dev_mode")) ?: false
@@ -79,76 +74,76 @@ public class CustomSystemProperties {
             verticalAxis = Integer.parseInt(prop.getProperty("axis_vertical")) ?: 1
 
         } catch (IOException | NumberFormatException ex) {
-            Logger.getLogger(CustomSystemProperties.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CustomSystemProperties.class.getName()).log(Level.SEVERE, null, ex)
         }
     }
 
-    public String getLaunchTitle() {
-        return launchTitle;
+    static String getLaunchTitle() {
+        launchTitle
     }
 
-    public int getX() {
-        return x;
+    int getX() {
+        x
     }
 
-    public int getA() {
-        return A;
+    int getA() {
+        A
     }
 
-    public int getB() {
-        return B;
+    int getB() {
+        B
     }
 
-    public int getY() {
-        return Y;
+    int getY() {
+        Y
     }
 
-    public int getLeftBumper() {
-        return leftBumper;
+    int getLeftBumper() {
+        leftBumper
     }
 
-    public int getRightBumper() {
-        return rightBumper;
+    int getRightBumper() {
+        rightBumper
     }
 
-    public int getSelect() {
-        return select;
+    int getSelect() {
+        select
     }
 
-    public int getStart() {
-        return start;
+    int getStart() {
+        start
     }
 
-    public int getUp() {
-        return up;
+    int getUp() {
+        up
     }
 
-    public int getDown() {
-        return down;
+    int getDown() {
+        down
     }
 
-    public int getRight() {
-        return right;
+    int getRight() {
+        right
     }
 
-    public int getLeft() {
-        return left;
+    int getLeft() {
+        left
     }
 
-    public int getHorizontalAxis() {
-        return horizontalAxis;
+    int getHorizontalAxis() {
+        horizontalAxis
     }
 
-    public int getVerticalAxis() {
-        return verticalAxis;
+    int getVerticalAxis() {
+        verticalAxis
     }
 
-    public boolean isDEBUG() {
-        return DEBUG;
+    boolean isDEBUG() {
+        DEBUG
     }
 
-    public boolean isDevMode() {
-        return devMode;
+    boolean isDevMode() {
+        devMode
     }
 
 }

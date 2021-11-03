@@ -13,27 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.controls;
+package leikr.controls
 
-import org.mini2Dx.core.Mdx;
-import org.mini2Dx.core.graphics.viewport.StretchViewport;
-import org.mini2Dx.gdx.math.Vector2;
+import org.mini2Dx.core.Mdx
+import org.mini2Dx.core.graphics.viewport.StretchViewport
+import org.mini2Dx.gdx.math.Vector2
 
 /**
  * The class to handle mouse interactions within Leikr programs
  *
  * @author Torbuntu
  */
-public class LeikrMouse {
+class LeikrMouse {
 
-    private StretchViewport viewport;
+    private StretchViewport viewport
 
-    private final Vector2 realMouse;
-    private final Vector2 leikrMouse;
-    
-    public LeikrMouse() {
-        realMouse = new Vector2();
-        leikrMouse = new Vector2();
+    private final Vector2 realMouse
+    private final Vector2 leikrMouse
+
+    LeikrMouse() {
+        realMouse = new Vector2()
+        leikrMouse = new Vector2()
     }
 
     /**
@@ -42,13 +42,13 @@ public class LeikrMouse {
      *
      */
     private void updateMouse() {
-        realMouse.x = Mdx.input.getX();
-        realMouse.y = Mdx.input.getY();
-        viewport.toWorldCoordinates(leikrMouse, realMouse.x, realMouse.y);
+        realMouse.x = Mdx.input.getX()
+        realMouse.y = Mdx.input.getY()
+        viewport.toWorldCoordinates(leikrMouse, realMouse.x, realMouse.y)
     }
 
-    public void setViewport(StretchViewport view) {
-        viewport = view;
+    void setViewport(StretchViewport view) {
+        viewport = view
     }
 
     /**
@@ -59,26 +59,26 @@ public class LeikrMouse {
      *
      * @return if the mouse was just clicked. 
      */
-    public boolean mouseClick() {
-        return Mdx.input.justTouched();
+    static boolean mouseClick() {
+        Mdx.input.justTouched()
     }
     
     /**
      * Gets the mouse X coordinate after updating position relative to game world
      * @return the mouse X coordinate
      */
-    public float mouseX() {
-        updateMouse();
-        return leikrMouse.x;
+    float mouseX() {
+        updateMouse()
+        return leikrMouse.x
     }
 
     /**
      * Gets the mouse Y coordinate after updating position relative to game world
      * @return the mouse Y coordinate
      */
-    public float mouseY() {
-        updateMouse();
-        return leikrMouse.y;
+    float mouseY() {
+        updateMouse()
+        return leikrMouse.y
     }
 
 }

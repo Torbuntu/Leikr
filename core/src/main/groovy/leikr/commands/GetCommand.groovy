@@ -36,15 +36,16 @@ class GetCommand implements Command {
             return "[E] Not enough arguments."
         }
         CustomProgramProperties props = new CustomProgramProperties(runtime.getProgramsPath() + args[1])
-        return switch (args[2].toLowerCase()) {
-            case "author" -> "author - " + props.AUTHOR
-            case "use_compiled" -> "use_compiled - " + String.valueOf(props.USE_COMPILED)
-            case "about" -> "about - " + props.ABOUT
-            case "ver", "version" -> "version - " + props.VERSION
-            case "compile_source" -> "compile_source - " + String.valueOf(props.COMPILE_SOURCE)
-            case "players" -> String.valueOf(props.PLAYERS)
-            case "type" -> props.TYPE
-            default -> "[W] Property [" + args[2] + "] not found in Program [" + args[1] + "]"
+        switch (args[2].toLowerCase()) {
+            case "author": return "author - ${props.AUTHOR}"
+            case "use_compiled": return "use_compiled - ${String.valueOf(props.USE_COMPILED)}"
+            case "about": return "about - ${props.ABOUT}"
+            case "ver":
+            case "version": return "version - ${props.VERSION}"
+            case "compile_source": return "compile_source - ${String.valueOf(props.COMPILE_SOURCE)}"
+            case "players": return "players - ${String.valueOf(props.PLAYERS)}"
+            case "type": return "type - ${props.TYPE}"
+            default: return "[W] Property [${args[2]}] not found in Program [${args[1]}]"
         }
     }
 

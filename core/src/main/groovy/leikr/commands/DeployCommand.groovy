@@ -44,8 +44,8 @@ class DeployCommand implements Command {
         }
         try {
             Mdx.files.with {
-                external(runtime.getDeployPath() + programName + "/Programs/").mkdirs()
-                external(runtime.getProgramsPath() + programName).copyTo(external(runtime.getDeployPath() + programName + "/Programs/"))
+                external(runtime.getDeployPath() + "$programName/Programs/").mkdirs()
+                external(runtime.getProgramsPath() + programName).copyTo(external(runtime.getDeployPath() + "$programName/Programs/"))
                 local("Data").copyTo(external(runtime.getDeployPath() + programName))
                 local("Leikr").copyTo(external(runtime.getDeployPath() + programName))
                 local("Leikr.bat").copyTo(external(runtime.getDeployPath() + programName))
@@ -58,7 +58,7 @@ class DeployCommand implements Command {
             }
         } catch (Exception ex) {
             Logger.getLogger(DeployCommand.class.getName()).log(Level.SEVERE, null, ex)
-            return "[E] Failed to package and deploy project [" + programName + "]"
+            return "[E] Failed to package and deploy project [$programName]"
         }
         Properties outProp = new Properties()
         outProp.with{
@@ -97,12 +97,12 @@ class DeployCommand implements Command {
 
     @Override
     String help() {
-        return ">deploy [project] \nPackages a project given the name and deploys it as a single launch project in the Deploy folder."
+        ">deploy [project] \nPackages a project given the name and deploys it as a single launch project in the Deploy folder."
     }
 
     @Override
     String getName() {
-        return "deploy"
+        "deploy"
     }
 
 }

@@ -40,7 +40,7 @@ class HomeCommand implements Command {
             Logger.getLogger(HomeCommand.class.getName()).log(Level.SEVERE, null, ex)
             return "[E] Unable to set LEIKR_HOME: "
         }
-        return "[I] Set LEIKR_HOME to [" + args[1] + "]"
+        return "[I] Set LEIKR_HOME to [${args[1]}]"
     }
 
     @Override

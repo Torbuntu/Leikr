@@ -15,17 +15,9 @@
  */
 package leikr.managers
 
-import java.util.Arrays
-import java.util.List
 import org.mini2Dx.core.Graphics
 import org.mini2Dx.core.Mdx
-import org.mini2Dx.core.graphics.Color
-import org.mini2Dx.core.graphics.Colors
-import org.mini2Dx.core.graphics.Pixmap
-import org.mini2Dx.core.graphics.PixmapFormat
-import org.mini2Dx.core.graphics.Sprite
-import org.mini2Dx.core.graphics.SpriteSheet
-
+import org.mini2Dx.core.graphics.*
 /**
  *
  * @author tor
@@ -42,13 +34,13 @@ class PixelManager {
 
     Color getDrawColor(int color) {
         if (color > colorPalette.size() || color < 0) {
-            return Colors.BLACK();
+            return Colors.BLACK()
         }
-        return colorPalette.get(color);
+        return colorPalette.get(color)
     }
 
     Sprite getSprite(int id) {
-        return pixels.getSprite(id);
+        return pixels.getSprite(id)
     }
 
     private void createPalette() {
@@ -56,20 +48,20 @@ class PixelManager {
                 Colors.DARK_GRAY(), Colors.BLACK_P1(), Colors.BLACK(), Colors.RED(), Colors.GREEN(), Colors.BLUE(), Colors.MAROON(),
                 Colors.CORAL(), Colors.SALMON(), Colors.PINK(), Colors.LIME(), Colors.FOREST(), Colors.OLIVE(), Colors.NAVY(), Colors.ROYAL(), Colors.SKY(),
                 Colors.CYAN(), Colors.TEAL(), Colors.YELLOW(), Colors.GOLD(), Colors.GOLDENROD(), Colors.ORANGE(),
-                Colors.BROWN(), Colors.TAN(), Colors.FIREBRICK(), Colors.PURPLE(), Colors.VIOLET(), Colors.MAGENTA());
+                Colors.BROWN(), Colors.TAN(), Colors.FIREBRICK(), Colors.PURPLE(), Colors.VIOLET(), Colors.MAGENTA())
     }
 
     private void createPixmap() {
-        Pixmap pm = Mdx.graphics.newPixmap(colorPalette.size(), 1, PixmapFormat.RGBA8888);
+        Pixmap pm = Mdx.graphics.newPixmap(colorPalette.size(), 1, PixmapFormat.RGBA8888)
 		colorPalette.size().times{i->
-            pm.setColor(getDrawColor(i));
-            pm.drawPixel(i, 0);
+            pm.setColor(getDrawColor(i))
+            pm.drawPixel(i, 0)
         }
-        pixels = new SpriteSheet(Mdx.graphics.newTexture(pm), 1, 1);
-        pm.dispose();
+        pixels = new SpriteSheet(Mdx.graphics.newTexture(pm), 1, 1)
+        pm.dispose()
     }
 
     void drawPixel(Graphics g, int id, int x, int y) {
-        g.drawSprite(getSprite(id), x, y);
+        g.drawSprite(getSprite(id), x, y)
     }
 }

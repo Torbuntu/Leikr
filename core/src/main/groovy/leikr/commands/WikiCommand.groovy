@@ -31,20 +31,20 @@ class WikiCommand implements Command {
     String execute(String[] command) {
         String wiki = "https://github.com/Torbuntu/Leikr/wiki"
         if (command.length == 2) {
-            wiki += "/" + command[1]
+            wiki += "/${command[1]}"
         }
         try {
             Desktop.getDesktop().browse(new URI(wiki))
         } catch (IOException | URISyntaxException ex) {
             Logger.getLogger(WikiCommand.class.getName()).log(Level.WARNING, null, ex)
-            return "[E] Host browser unaccessible."
+            return "[E] Host browser inaccessible."
         }
         return "[I] Opening [$wiki] in host browser."
     }
 
     @Override
     String help() {
-        return ">wiki [option] \nOpens the Leikr wiki. Use an Option to open a specific wiki page."
+        ">wiki [option] \nOpens the Leikr wiki. Use an Option to open a specific wiki page."
     }
 
     @Override

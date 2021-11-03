@@ -58,12 +58,12 @@ class EnterTransition implements Transition {
     }
 
     @Override
-    void preRender(GameContainer gc, Graphics grphcs) {
+    void preRender(GameContainer gc, Graphics graphics) {
     }
 
     @Override
-    void postRender(GameContainer gc, Graphics grphcs) {
-        grphcs.drawTexture(assetManager.get(runtime.getDataPath()+"Images/EnterCart.png", Texture.class), 100, box)
+    void postRender(GameContainer gc, Graphics graphics) {
+        graphics.drawTexture(assetManager.get(runtime.getDataPath()+"Images/EnterCart.png", Texture.class), 100, box)
     }
 
     @Override

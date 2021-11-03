@@ -154,7 +154,7 @@ class LoadScreen extends BasicGameScreen {
 
     @Override
     int getId() {
-        return ID
+        ID
     }
 
     private void translateArrayPositions() {

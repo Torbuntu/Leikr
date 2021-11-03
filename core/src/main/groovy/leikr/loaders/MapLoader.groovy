@@ -13,86 +13,86 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.loaders;
+package leikr.loaders
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import leikr.customProperties.CustomSystemProperties;
-import leikr.exceptions.RenderException;
-import org.mini2Dx.core.Graphics;
-import org.mini2Dx.core.Mdx;
-import org.mini2Dx.tiled.TiledMap;
+import java.util.logging.Level
+import java.util.logging.Logger
+import leikr.customProperties.CustomSystemProperties
+import leikr.exceptions.RenderException
+import org.mini2Dx.core.Graphics
+import org.mini2Dx.core.Mdx
+import org.mini2Dx.tiled.TiledMap
 
 /**
  *
  * @author tor
  */
-public class MapLoader {
+class MapLoader {
 
     //TODO: Add handlers for object layers and collisions.  
-    private String rootPath;
+    private String rootPath
 
-    private TiledMap tiledMap;
+    private TiledMap tiledMap
 
-    private final CustomSystemProperties customSystemProperties;
+    private final CustomSystemProperties customSystemProperties
 
-    public MapLoader(CustomSystemProperties customSystemProperties) {
-        this.customSystemProperties = customSystemProperties;
+    MapLoader(CustomSystemProperties customSystemProperties) {
+        this.customSystemProperties = customSystemProperties
     }
 
-    public void loadMap(String name) {
+    void loadMap(String name) {
         if (null != tiledMap) {
-            tiledMap.dispose();
+            tiledMap.dispose()
         }
-        tiledMap = new TiledMap(Mdx.files.external(rootPath + name + ".tmx"));
-        tiledMap.loadTilesetTextures();
+        tiledMap = new TiledMap(Mdx.files.external(rootPath + name + ".tmx"))
+        tiledMap.loadTilesetTextures()
     }
 
-    public void resetMapLoader(String path) {
-        disposeMap();
-        rootPath = path + "/Maps/";
+    void resetMapLoader(String path) {
+        disposeMap()
+        rootPath = "$path/Maps/"
     }
 
-    public TiledMap getMap() {
-        return tiledMap;
+    TiledMap getMap() {
+        return tiledMap
     }
 
     private boolean checkMap() {
         if (tiledMap == null) {
-            throw new RenderException("Error in program `render` method. `drawMap()` called with null map. Load a map with `loadMap(String name)`");
+            throw new RenderException("Error in program `render` method. `drawMap()` called with null map. Load a map with `loadMap(String name)`")
         }
         if (tiledMap.isTilesetTexturesLoaded(true)) {
-            return true;
+            return true
         } else {
-            throw new RenderException("Error in program `render` method. `drawMap()` called before tileset loaded.");
+            throw new RenderException("Error in program `render` method. `drawMap()` called before tileset loaded.")
         }
     }
 
-    public void drawMap(Graphics g) {
-        drawMap(g, 0, 0);
+    void drawMap(Graphics g) {
+        drawMap(g, 0, 0)
     }
 
-    public void drawMap(Graphics g, int x, int y) {
+    void drawMap(Graphics g, int x, int y) {
         if (checkMap()) {
-            tiledMap.draw(g, x, y);
+            tiledMap.draw(g, x, y)
         }
     }
 
-    public void drawMap(Graphics g, int x, int y, int layer) {
+    void drawMap(Graphics g, int x, int y, int layer) {
         if (checkMap()) {
-            tiledMap.draw(g, x, y, layer);
+            tiledMap.draw(g, x, y, layer)
         }
     }
 
-    public void drawMap(Graphics g, int x, int y, int sx, int sy, int w, int h) {
+    void drawMap(Graphics g, int x, int y, int sx, int sy, int w, int h) {
         if (checkMap()) {
-            tiledMap.draw(g, x, y, sx, sy, w, h);
+            tiledMap.draw(g, x, y, sx, sy, w, h)
         }
     }
 
-    public void drawMap(Graphics g, int x, int y, int sx, int sy, int w, int h, int layer) {
+    void drawMap(Graphics g, int x, int y, int sx, int sy, int w, int h, int layer) {
         if (checkMap()) {
-            tiledMap.draw(g, x, y, sx, sy, w, h, layer);
+            tiledMap.draw(g, x, y, sx, sy, w, h, layer)
         }
     }
 
@@ -103,52 +103,52 @@ public class MapLoader {
      * @param y
      * @return the tileId of the tile at x,y
      */
-    public int getMapTile(int x, int y) {
-        return getMapTile(x, y, 0);
+    int getMapTile(int x, int y) {
+        return getMapTile(x, y, 0)
     }
 
-    public int getMapTile(int x, int y, int layer) {
+    int getMapTile(int x, int y, int layer) {
         try {
-            return tiledMap.getTile(x, y, layer).getTileId(1);
+            return tiledMap.getTile(x, y, layer).getTileId(1)
         } catch (Exception ex) {
             if (customSystemProperties.isDEBUG()) {
-                Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex);
+                Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex)
             }
-            return -1;
+            return -1
         }
     }
 
-    public void setMapTile(int id, int x, int y) {
-        setMapTile(id, x, y, 0);
+    void setMapTile(int id, int x, int y) {
+        setMapTile(id, x, y, 0)
     }
 
-    public void setMapTile(int id, int x, int y, int layer) {
+    void setMapTile(int id, int x, int y, int layer) {
         try {
-            tiledMap.getTileLayer(layer).setTileId(x, y, id);
+            tiledMap.getTileLayer(layer).setTileId(x, y, id)
         } catch (Exception ex) {
             if (customSystemProperties.isDEBUG()) {
-                Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex);
-            }
-        }
-    }
-
-    public void removeMapTile(int x, int y) {
-        removeMapTile(x, y, 0);
-    }
-
-    public void removeMapTile(int x, int y, int layer) {
-        try {
-            tiledMap.getTileLayer(layer).setTileId(x, y, -1);
-        } catch (Exception ex) {
-            if (customSystemProperties.isDEBUG()) {
-                Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex);
+                Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex)
             }
         }
     }
 
-    public void disposeMap() {
+    void removeMapTile(int x, int y) {
+        removeMapTile(x, y, 0)
+    }
+
+    void removeMapTile(int x, int y, int layer) {
+        try {
+            tiledMap.getTileLayer(layer).setTileId(x, y, -1)
+        } catch (Exception ex) {
+            if (customSystemProperties.isDEBUG()) {
+                Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex)
+            }
+        }
+    }
+
+    void disposeMap() {
         if (null != tiledMap) {
-            tiledMap.dispose();
+            tiledMap.dispose()
         }
     }
 

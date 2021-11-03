@@ -67,11 +67,7 @@ class ErrorScreen extends BasicGameScreen {
     void update(GameContainer gc, ScreenManager sm, float f) {
         if (MENU || Mdx.input.isKeyJustPressed(Keys.ESCAPE) || Mdx.input.isKeyJustPressed(Keys.ENTER) || Mdx.input.isKeyJustPressed(Keys.SPACE) || Mdx.input.isKeyJustPressed(Keys.Q)) {
             MENU = false
-            if (runtime.isDevMode()) {
-                sm.enterGameScreen(TerminalScreen.ID, null, null)
-            } else {
-                sm.enterGameScreen(MenuScreen.ID, null, null)
-            }
+            sm.enterGameScreen(runtime.isDevMode() ? TerminalScreen.ID : MenuScreen.ID, null, null)
         }
 
         if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyJustPressed(Keys.R) || Mdx.input.isKeyJustPressed(Keys.F5)) {
@@ -89,7 +85,7 @@ class ErrorScreen extends BasicGameScreen {
         viewport.apply(g)
         g.with{
 			setColor(Colors.RED())
-            drawString("Message:  " + errorMessage, 0, 0, 232)
+            drawString("Message:  $errorMessage", 0, 0, 232)
             setColor(Colors.BLACK())
             drawRect(0, 152, runtime.WIDTH, 8)
             setColor(Colors.GREEN())

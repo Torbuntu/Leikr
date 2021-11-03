@@ -13,37 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.managers;
+package leikr.managers
 
-import leikr.controls.LeikrKeyboard;
-import leikr.controls.LeikrMouse;
-import leikr.customProperties.CustomSystemProperties;
-import org.mini2Dx.core.graphics.viewport.StretchViewport;
+import leikr.controls.LeikrKeyboard
+import leikr.controls.LeikrMouse
+import leikr.customProperties.CustomSystemProperties
+import org.mini2Dx.core.graphics.viewport.StretchViewport
 
 /**
  *
  * @author tor
  */
-public class InputManager {
+class InputManager {
 
-    private final LeikrKeyboard keyboard;
-    private final LeikrMouse mouse;
+    private final LeikrKeyboard keyboard
+    private final LeikrMouse mouse
 
-    public InputManager(CustomSystemProperties customSystemProperties) {
-        keyboard = new LeikrKeyboard();
-        mouse = new LeikrMouse();
+    InputManager(CustomSystemProperties customSystemProperties) {
+        keyboard = new LeikrKeyboard()
+        mouse = new LeikrMouse()
     }
 
-    public void setMouseViewport(StretchViewport viewport) {
-        mouse.setViewport(viewport);
+    void setMouseViewport(StretchViewport viewport) {
+        mouse.setViewport(viewport)
     }
 
-    public LeikrKeyboard getKeyboard() {
-        return keyboard;
+    LeikrKeyboard getKeyboard() {
+        return keyboard
     }
 
-    public LeikrMouse getMouse() {
-        return mouse;
+    LeikrMouse getMouse() {
+        return mouse
     }
 
 }

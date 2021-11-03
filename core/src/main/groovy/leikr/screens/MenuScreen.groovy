@@ -169,9 +169,14 @@ class MenuScreen extends BasicGameScreen {
                 drawString("!NO SANDBOX!", 0, 16, 240, Align.CENTER)
             }
 
+            setColor(Colors.BLACK())
+            fillRect(0, 150, 240, 10)
+            setColor(Colors.GREEN())
+            drawLineSegment(0, 150, 240, 150)
+
 			setColor(Colors.YELLOW())
-            drawString("[ENTER/START] - Play", 0, 152, 240, Align.LEFT)
-            drawString("[T] - Enter Terminal", 0, 152, 240, Align.RIGHT)
+            drawString("[ENTER/START] - Play", 0, 154, 240, Align.LEFT)
+            drawString("[T] - Enter Terminal", 0, 154, 240, Align.RIGHT)
             flush()
         }
         framebuffer.end()
