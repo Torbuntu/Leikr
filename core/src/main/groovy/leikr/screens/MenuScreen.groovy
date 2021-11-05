@@ -61,7 +61,7 @@ class MenuScreen extends BasicGameScreen {
     
     private void rebuildGamesList(){
         try {
-            games = new ArrayList<>()
+            games = []
 
             Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream().forEach(game -> {
                 games.add(new CustomProgramProperties(runtime.getProgramsPath() + game.nameWithoutExtension()))
@@ -91,8 +91,8 @@ class MenuScreen extends BasicGameScreen {
 
     private void loadIcon() {
         try {
-            icon = Mdx.graphics.newTexture(Mdx.files.external(runtime.getProgramsPath() + games.get(index).getTitle() + "/Art/icon.png"))
-            if (Mdx.files.external(runtime.getProgramsPath() + games.get(index).getTitle() + "/Code/Compiled").exists()) {
+            icon = Mdx.graphics.newTexture(Mdx.files.external(runtime.getProgramsPath() + "${games.get(index).getTitle()}/Art/icon.png"))
+            if (Mdx.files.external(runtime.getProgramsPath() + "${games.get(index).getTitle()}/Code/Compiled").exists()) {
                 isCompiled = " *"
                 if (games.get(index).getUseCompiled()) {
                     isCompiled = " **"
@@ -145,9 +145,10 @@ class MenuScreen extends BasicGameScreen {
         framebuffer.begin()
         g.with{
 			clearContext()
-            // draw texture in background
-			drawTexture(icon, 0, 0, 240, 160)
+            // Icon
+            drawTexture(icon, 120-icon.width/2, 80-icon.height/2)
 
+            // Top bar
             setColor(Colors.BLACK())
             fillRect(0, 0, 240, 10)
 
@@ -169,6 +170,7 @@ class MenuScreen extends BasicGameScreen {
                 drawString("!NO SANDBOX!", 0, 16, 240, Align.CENTER)
             }
 
+            // Bottom Bar
             setColor(Colors.BLACK())
             fillRect(0, 150, 240, 10)
             setColor(Colors.GREEN())
