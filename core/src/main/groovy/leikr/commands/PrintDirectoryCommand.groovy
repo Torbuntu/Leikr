@@ -46,12 +46,13 @@ class PrintDirectoryCommand implements Command {
     private String runLsPrograms() {
         try {
             out = ""
-            List<String> titles = new ArrayList<>()
+            List<String> titles = []
 
-            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).forEach(e -> titles.add(e.name()))
+            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list())
+                    .forEach(e -> titles.add(e.name()))
 
             titles.stream().sorted().forEach(e -> {
-                out = Mdx.files.external(runtime.getProgramsPath() + "$e/Code/Compiled").exists()
+                out += Mdx.files.external(runtime.getProgramsPath() + "$e/Code/Compiled").exists()
                         ? e + " *\n" : e + "\n"
             })
             return out
@@ -65,7 +66,8 @@ class PrintDirectoryCommand implements Command {
         try {
             out = ""
             def titles = []
-            Arrays.asList(Mdx.files.external(runtime.getProgramsPath() + dir).list()).forEach(e -> titles.add(e.name()))
+            Arrays.asList(Mdx.files.external(runtime.getProgramsPath() + dir).list())
+                    .forEach(e -> titles.add(e.name()))
 
             titles.stream().sorted().forEach(e -> out += e + "\n")
             return out
