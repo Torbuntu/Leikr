@@ -123,7 +123,7 @@ class TerminalScreen extends BasicGameScreen {
 				setColor(Colors.BLACK())
 				fillRect(0, 152, runtime.WIDTH, runtime.HEIGHT)
 				setColor(Colors.GREEN())
-				drawString(">" + terminalManager.getPrompt() + ((blink > 30) ? 130 as char : ""), 0, 152, runtime.WIDTH)
+				drawString(">" + terminalManager.getPrompt() + ((blink > 30) ? "|" : ""), 0, 152, runtime.WIDTH)
 
 				if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT)) {
 					setColor(Colors.RED())
