@@ -37,6 +37,7 @@
     <url type="bugtracker">https://github.com/Torbuntu/Leikr/issues</url>
     <url type="help">https://github.com/Torbuntu/Leikr/wiki</url>
     <releases>
+        <release version="1.10.1" date="TBD"/>
         <release version="1.10.0" date="2021-11-12">
 			    <description>
 				    <ul>

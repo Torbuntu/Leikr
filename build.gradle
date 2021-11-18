@@ -15,7 +15,7 @@ allprojects {
         appName = 'Leikr'
         
         mini2DxVersion = '2.0.0-alpha.85'
-        groovyVersion = '4.0.0-beta-1'
+        groovyVersion = '4.0.0-beta-2'
         gdxVersion = '1.10.0'
         lwjglVersion = '3.2.3'
         lwjglNatives32 = 'natives-linux-arm32'
