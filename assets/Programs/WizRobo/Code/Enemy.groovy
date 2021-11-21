@@ -15,13 +15,13 @@ class Enemy{
 	def vs
 	def l
 	def r
-	def health
+	def health = 5
 	
-	def Enemy(){
+	Enemy(){
 	
 	}
 	
-	def Enemy(def x, def y, def vs, def l, def r, def keyA, def keyB){
+	Enemy(def x, def y, def vs, def l, def r, def keyA, def keyB){
 		this.x = x
 		this.y = y
 		this.vs = vs

@@ -13,82 +13,80 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.managers;
+package leikr.managers
 
-import java.math.BigDecimal;
-import leikr.loaders.AudioLoader;
-import org.mini2Dx.core.audio.Sound;
-import org.mini2Dx.core.audio.Music;
-
+import leikr.loaders.AudioLoader
+import org.mini2Dx.core.audio.Music
+import org.mini2Dx.core.audio.Sound
 /**
  *
  * @author tor
  */
-public class AudioManager {
+class AudioManager {
 
-    private final AudioLoader audioLoader;
+    private final AudioLoader audioLoader
 
-    public AudioManager(AudioLoader audioLoader) {
-        this.audioLoader = audioLoader;
+    AudioManager(AudioLoader audioLoader) {
+        this.audioLoader = audioLoader
     }
 
-    public void resetAudioManager(String path) {
-        audioLoader.resetAudioLoader(path);
+    void resetAudioManager(String path) {
+        audioLoader.resetAudioLoader(path)
     }
 
     //START loaded audio methods
-    public final Sound getSound(String fileName) {
-        return audioLoader.getSound(fileName);
+    final Sound getSound(String fileName) {
+        return audioLoader.getSound(fileName)
     }
 
-    public final void playSound(String name) {
-        audioLoader.playSound(name);
+    final void playSound(String name) {
+        audioLoader.playSound(name)
     }
 
-    public final void playSound(String name, BigDecimal vol, BigDecimal pit, BigDecimal pan) {
-        audioLoader.playSound(name, vol, pit, pan);
+    final void playSound(String name, Number vol, Number pit, Number pan) {
+        audioLoader.playSound(name, vol, pit, pan)
     }
 
-    public final void stopSound() {
-        audioLoader.stopSound();
+    final void stopSound() {
+        audioLoader.stopSound()
     }
 
-    public final void stopSound(String fileName) {
-        audioLoader.stopSound(fileName);
+    final void stopSound(String fileName) {
+        audioLoader.stopSound(fileName)
     }
 
-    public final Music getMusic(String fileName) {
-        return audioLoader.getMusic(fileName);
+    final Music getMusic(String fileName) {
+        return audioLoader.getMusic(fileName)
     }
 
-    public final void playMusic(String name) {
-        audioLoader.playMusic(name);
+    final void playMusic(String name) {
+        audioLoader.playMusic(name)
     }
 
-    public final void playMusic(String name, boolean loop) {
-        audioLoader.playMusic(name, loop);
+    final void playMusic(String name, boolean loop) {
+        audioLoader.playMusic(name, loop)
     }
 
-    public final void stopMusic() {
-        audioLoader.stopMusic();
+    final void stopMusic() {
+        audioLoader.stopMusic()
     }
 
-    public final void stopMusic(String fileName) {
-        audioLoader.stopMusic(fileName);
+    final void stopMusic(String fileName) {
+        audioLoader.stopMusic(fileName)
     }
 
-    public void pauseAudio() {
-        audioLoader.pauseAudio();
+    void pauseAudio() {
+        audioLoader.pauseAudio()
     }
 
-    public void resumeAudio() {
-        audioLoader.resumeAudio();
+    void resumeAudio() {
+        audioLoader.resumeAudio()
     }
     //END loaded audio methods
 
     //Engine methods
-    public void dispose() {
-        audioLoader.disposeAudioLoader();
+    void dispose() {
+        audioLoader.disposeAudioLoader()
     }
 
 }

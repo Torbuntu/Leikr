@@ -94,7 +94,7 @@ class AudioLoader {
      * @param pitch the pitch shift value, between 0.5 and 2.0
      * @param pan the left/right pan value, between -1.0 and 1.0
      */
-    void playSound(String fileName, BigDecimal volume, BigDecimal pitch, BigDecimal pan) {
+    void playSound(String fileName, Number volume, Number pitch, Number pan) {
         assetManager.get(soundRootPath + fileName, Sound.class).play(volume.floatValue(), pitch.floatValue(), pan.floatValue())
     }
 

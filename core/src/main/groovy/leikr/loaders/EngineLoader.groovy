@@ -142,11 +142,10 @@ class EngineLoader implements Callable<Engine> {
      * metaClassRegistry. This is a testing method and may be removed.
      */
     void destroy() {
-        if (null != gcl) {
+        if (gcl) {
             gcl.clearCache()
-            Arrays.stream(gcl.getLoadedClasses()).forEach(c -> {
-                GroovySystem.getMetaClassRegistry().removeMetaClass(c)
-            })
+            // Get a new ClassLoader. Without this, we could be loading old classes from the previous game.
+            gcl = runtime.isSecure() ? new SandboxClassLoader() : new GroovyClassLoader()
         }
     }
 

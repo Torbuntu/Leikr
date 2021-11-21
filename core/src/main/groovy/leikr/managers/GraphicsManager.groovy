@@ -26,8 +26,9 @@ import org.mini2Dx.core.graphics.*
 import org.mini2Dx.core.graphics.viewport.StretchViewport
 import org.mini2Dx.core.graphics.viewport.Viewport
 import org.mini2Dx.gdx.math.MathUtils
+
 /**
- * Manages the drawing API for {@link leikr.Engine }. 
+ * Manages the drawing API for {@link leikr.Engine}.
  *
  * @author tor
  */
@@ -36,7 +37,6 @@ class GraphicsManager {
     /**
      * The path to the running programs local `Art` directory.
      *
-     * @see #getPixel(java.lang.String, java.math.BigDecimal, java.math.BigDecimal)
      * @see #getPixels(java.lang.String)
      */
     private String path
@@ -130,7 +130,7 @@ class GraphicsManager {
 
     //Helper methods
     int getUsedSprites() {
-        return usedSprites
+        usedSprites
     }
     //End helper methods
 
@@ -139,16 +139,16 @@ class GraphicsManager {
         imageLoader.load()
     }
 
-    final void drawTexture(String name, BigDecimal x, BigDecimal y) {
+    final void drawTexture(String name, Number x, Number y) {
         g.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue())
     }
 
-    final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+    final void drawTexture(String name, Number x, Number y, Number w, Number h) {
         g.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue())
     }
 
-    final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h, boolean flipv) {
-        g.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue(), flipv)
+    final void drawTexture(String name, Number x, Number y, Number w, Number h, boolean flipVertical) {
+        g.drawTexture(imageLoader.getImage(name), x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue(), flipVertical)
     }
     //end Image methods
 
@@ -157,47 +157,31 @@ class GraphicsManager {
         mapLoader.loadMap(map)
     }
 
-    final void drawMap() {
-        mapLoader.drawMap(g)
-    }
-
-    final void drawMap(BigDecimal x, BigDecimal y) {
+    final void drawMap(Number x = 0, Number y = 0) {
         mapLoader.drawMap(g, x.intValue(), y.intValue())
     }
 
-    final void drawMap(BigDecimal x, BigDecimal y, int layer) {
+    final void drawMap(Number x, Number y, int layer) {
         mapLoader.drawMap(g, x.intValue(), y.intValue(), layer)
     }
 
-    final void drawMap(BigDecimal x, BigDecimal y, BigDecimal sx, BigDecimal sy, BigDecimal w, BigDecimal h) {
+    final void drawMap(Number x, Number y, Number sx, Number sy, Number w, Number h) {
         mapLoader.drawMap(g, x.intValue(), y.intValue(), sx.intValue(), sy.intValue(), w.intValue(), h.intValue())
     }
 
-    final void drawMap(BigDecimal x, BigDecimal y, BigDecimal sx, BigDecimal sy, BigDecimal w, BigDecimal h, int layer) {
+    final void drawMap(Number x, Number y, Number sx, Number sy, Number w, Number h, int layer) {
         mapLoader.drawMap(g, x.intValue(), y.intValue(), sx.intValue(), sy.intValue(), w.intValue(), h.intValue(), layer)
     }
 
-    final int getMapTile(BigDecimal x, BigDecimal y) {
-        return mapLoader.getMapTile(x.intValue(), y.intValue())
-    }
-
-    final int getMapTile(BigDecimal x, BigDecimal y, int layer) {
+    final int getMapTile(Number x, Number y, int layer = 0) {
         return mapLoader.getMapTile(x.intValue(), y.intValue(), layer)
     }
 
-    final void setMapTile(int id, BigDecimal x, BigDecimal y) {
-        mapLoader.setMapTile(id, x.intValue(), y.intValue())
-    }
-
-    final void setMapTile(int id, BigDecimal x, BigDecimal y, int layer) {
+    final void setMapTile(int id, Number x, Number y, int layer = 0) {
         mapLoader.setMapTile(id, x.intValue(), y.intValue(), layer)
     }
 
-    final void removeMapTile(BigDecimal x, BigDecimal y) {
-        mapLoader.removeMapTile(x.intValue(), y.intValue())
-    }
-
-    final void removeMapTile(BigDecimal x, BigDecimal y, int layer) {
+    final void removeMapTile(Number x, Number y, int layer = 0) {
         mapLoader.removeMapTile(x.intValue(), y.intValue(), layer)
     }
 
@@ -233,48 +217,48 @@ class GraphicsManager {
     //end color methods
 
     // <editor-fold desc="String drawing methods" defaultstate="collapsed">
-    final void drawString(Color color, String text, BigDecimal x, BigDecimal y) {
+    final void drawString(Color color, String text, Number x, Number y) {
         g.setColor(color)
         g.drawString(text, x.floatValue(), y.floatValue())
     }
 
-    final void drawString(Color color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
+    final void drawString(Color color, String text, Number x, Number y, Number width) {
         g.setColor(color)
         g.drawString(text, x.floatValue(), y.floatValue(), width.floatValue())
     }
 
-    final void drawString(Color color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
+    final void drawString(Color color, String text, Number x, Number y, Number width, int align) {
         g.setColor(color)
         g.drawString(text, x.floatValue(), y.floatValue(), width.floatValue(), align)
     }
 
-    final void drawString(int color, String text, BigDecimal x, BigDecimal y) {
+    final void drawString(int color, String text, Number x, Number y) {
         drawString(pixelManager.getDrawColor(color), text, x, y)
     }
 
-    final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
+    final void drawString(int color, String text, Number x, Number y, Number width) {
         drawString(pixelManager.getDrawColor(color), text, x, y, width)
     }
 
-    final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
+    final void drawString(int color, String text, Number x, Number y, Number width, int align) {
         drawString(pixelManager.getDrawColor(color), text, x, y, width, align)
     }
 
-    final void drawString(String color, String text, BigDecimal x, BigDecimal y) {
+    final void drawString(String color, String text, Number x, Number y) {
         drawString(Colors.rgbToColor(color), text, x, y)
     }
 
-    final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
+    final void drawString(String color, String text, Number x, Number y, Number width) {
         drawString(Colors.rgbToColor(color), text, x, y, width)
     }
 
-    final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
+    final void drawString(String color, String text, Number x, Number y, Number width, int align) {
         drawString(Colors.rgbToColor(color), text, x, y, width, align)
     }
     // </editor-fold>
 
     // <editor-fold desc="Sprite methods" defaultstate="collapsed">
-    private void drawSpriteRotate(int id, BigDecimal x, BigDecimal y, int size, BigDecimal degrees) {
+    private void drawSpriteRotate(int id, Number x, Number y, int size, Number degrees) {
         if (usedSprites >= maxSprites) {
             return
         }
@@ -285,7 +269,7 @@ class GraphicsManager {
         usedSprites++
     }
 
-    private void drawSpriteFlip(int id, BigDecimal x, BigDecimal y, int size, boolean flipX, boolean flipY) {
+    private void drawSpriteFlip(int id, Number x, Number y, int size, boolean flipX, boolean flipY) {
         if (usedSprites >= maxSprites) {
             return
         }
@@ -296,15 +280,7 @@ class GraphicsManager {
         usedSprites++
     }
 
-    final void sprite(int id, BigDecimal x, BigDecimal y) {
-        if (usedSprites >= maxSprites) {
-            return
-        }
-        g.drawSprite(spriteLoader.getSprite(id, 0), x.floatValue(), y.floatValue())
-        usedSprites++
-    }
-
-    final void sprite(int id, BigDecimal x, BigDecimal y, int size){
+    final void sprite(int id, Number x, Number y, int size = 0) {
         if (usedSprites >= maxSprites) {
             return
         }
@@ -312,19 +288,19 @@ class GraphicsManager {
         usedSprites++
     }
 
-    final void sprite(int id, BigDecimal x, BigDecimal y, int size, BigDecimal degrees){
+    final void sprite(int id, Number x, Number y, int size, Number degrees) {
         drawSpriteRotate(id, x, y, size, degrees)
     }
 
-    final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY) {
+    final void sprite(int id, Number x, Number y, boolean flipX, boolean flipY) {
         sprite(id, x, y, 0, flipX, flipY)
     }
 
-    final void sprite(int id, BigDecimal x, BigDecimal y, int size, boolean flipX, boolean flipY) {
+    final void sprite(int id, Number x, Number y, int size, boolean flipX, boolean flipY) {
         drawSpriteFlip(id, x, y, size, flipX, flipY)
     }
 
-    final void sprite(int id, BigDecimal x, BigDecimal y, int size, BigDecimal degrees, boolean flipX, boolean flipY) {
+    final void sprite(int id, Number x, Number y, int size, Number degrees, boolean flipX, boolean flipY) {
         if (usedSprites >= maxSprites) {
             return
         }
@@ -339,11 +315,11 @@ class GraphicsManager {
     //end sizable sprites
 
     //START special sprite mode
-    final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph) {
+    final void sprite(ArrayList<Integer> ids, Number px, Number py, Number pw, Number ph) {
         sprite(ids, px, py, pw, ph, 0)
     }
 
-    final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, int size) {
+    final void sprite(ArrayList<Integer> ids, Number px, Number py, Number pw, Number ph, int size) {
         if (usedSprites >= maxSprites) {
             return
         }
@@ -366,11 +342,11 @@ class GraphicsManager {
         }
     }
 
-    final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, boolean flipX, boolean flipY) {
+    final void sprite(ArrayList<Integer> ids, Number px, Number py, Number pw, Number ph, boolean flipX, boolean flipY) {
         sprite(ids, px, py, pw, ph, 0, flipX, flipY)
     }
 
-    final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, int size, boolean flipX, boolean flipY) {
+    final void sprite(ArrayList<Integer> ids, Number px, Number py, Number pw, Number ph, int size, boolean flipX, boolean flipY) {
         if (usedSprites >= maxSprites) {
             return
         }
@@ -387,7 +363,7 @@ class GraphicsManager {
         }
     }
 
-    private void spriteArrayFlipBoth(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, int size) {
+    private void spriteArrayFlipBoth(ArrayList<Integer> ids, Number px, Number py, Number pw, Number ph, int size) {
         int inc = (size + 1) * 8
         int startX = px.intValue() + (pw.intValue() * inc) - inc
         int y = py.intValue() + (ph.intValue() * inc) - inc
@@ -411,7 +387,7 @@ class GraphicsManager {
         }
     }
 
-    private void spriteArrayFlipY(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, int size) {
+    private void spriteArrayFlipY(ArrayList<Integer> ids, Number px, Number py, Number pw, Number ph, int size) {
         int inc = (size + 1) * 8
         int y = py.intValue() + (ph.intValue() * inc) - inc
         int x = px.intValue()
@@ -434,7 +410,7 @@ class GraphicsManager {
         }
     }
 
-    private void spriteArrayFlipX(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, int size) {
+    private void spriteArrayFlipX(ArrayList<Integer> ids, Number px, Number py, Number pw, Number ph, int size) {
         int inc = (size + 1) * 8
         int start = px.intValue() + (pw.intValue() * inc) - inc
         int y = py.intValue()
@@ -469,19 +445,11 @@ class GraphicsManager {
      * @param y
      * @param scale
      */
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale) {
-        spriteSc(id, x, y, scale, 0)
-    }
-
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale, int size) {
+    final void spriteSc(int id, Number x, Number y, Number scale, int size = 0) {
         spriteSc(id, x, y, scale, scale, size)
     }
 
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY) {
-        spriteSc(id, x, y, scaleX, scaleY, 0)
-    }
-
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size) {
+    final void spriteSc(int id, Number x, Number y, Number scaleX, Number scaleY, int size = 0) {
         if (usedSprites >= maxSprites) {
             return
         }
@@ -492,7 +460,7 @@ class GraphicsManager {
         usedSprites++
     }
 
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size, BigDecimal degrees) {
+    final void spriteSc(int id, Number x, Number y, Number scaleX, Number scaleY, int size, Number degrees) {
         if (usedSprites >= maxSprites) {
             return
         }
@@ -505,11 +473,11 @@ class GraphicsManager {
         usedSprites++
     }
 
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY) {
+    final void spriteSc(int id, Number x, Number y, Number scaleX, Number scaleY, boolean flipX, boolean flipY) {
         spriteSc(id, x, y, scaleX, scaleY, 0, flipX, flipY)
     }
 
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size, boolean flipX, boolean flipY) {
+    final void spriteSc(int id, Number x, Number y, Number scaleX, Number scaleY, int size, boolean flipX, boolean flipY) {
         if (usedSprites >= maxSprites) {
             return
         }
@@ -522,12 +490,12 @@ class GraphicsManager {
         usedSprites++
     }
 
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size, BigDecimal degrees, boolean flipX, boolean flipY) {
+    final void spriteSc(int id, Number x, Number y, Number scaleX, Number scaleY, int size, Number degrees, boolean flipX, boolean flipY) {
         if (usedSprites >= maxSprites) {
             return
         }
         Sprite t = spriteLoader.getSprite(id, size)
-        t.with{
+        t.with {
             setScale(scaleX.floatValue(), scaleY.floatValue())
             rotate(degrees.floatValue())
             setFlip(flipX, flipY)
@@ -549,21 +517,21 @@ class GraphicsManager {
      * @param x
      * @param y
      */
-    private void drawPixelInternal(Color color, int x, int y) {
+    private final void drawPixelInternal(Color color, int x, int y) {
         tint(color)
         g.drawSprite(pixelManager.getSprite(1), x, y)
         g.removeTint()
     }
 
     /**
-     * Basic drawPixel taking Integer colord ID and a BigDecimal x,y coordinate
+     * Basic drawPixel taking Integer colord ID and a Number x,y coordinate
      * value.
      *
      * @param color
      * @param x
      * @param y
      */
-    final void drawPixel(int color, BigDecimal x, BigDecimal y) {
+    final void drawPixel(int color, Number x, Number y) {
         g.drawSprite(pixelManager.getSprite(color), x.intValue(), y.intValue())
     }
 
@@ -575,7 +543,7 @@ class GraphicsManager {
      * @param x
      * @param y
      */
-    final void drawPixel(String color, BigDecimal x, BigDecimal y) {
+    final void drawPixel(String color, Number x, Number y) {
         drawPixelInternal(Colors.rgbToColor(color), x.intValue(), y.intValue())
     }
 
@@ -587,13 +555,13 @@ class GraphicsManager {
      * @param x
      * @param y
      */
-    final void drawPixel(Color color, BigDecimal x, BigDecimal y) {
+    final void drawPixel(Color color, Number x, Number y) {
         tint(color)
         g.drawSprite(pixelManager.getSprite(1), x.intValue(), y.intValue())
         g.removeTint()
     }
 
-    final void drawRect(Color c, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+    final void drawRect(Color c, Number x, Number y, Number w, Number h) {
         for (int i = x.intValue(); i < x.intValue() + w.intValue(); i++) {
             drawPixelInternal(c, i, y.intValue())
             drawPixelInternal(c, i, y.intValue() + h.intValue() - 1)
@@ -604,24 +572,24 @@ class GraphicsManager {
         }
     }
 
-    final void drawRect(int c, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+    final void drawRect(int c, Number x, Number y, Number w, Number h) {
         drawRect(pixelManager.getDrawColor(c), x, y, w, h)
     }
 
-    final void drawRect(String c, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+    final void drawRect(String c, Number x, Number y, Number w, Number h) {
         drawRect(Colors.rgbToColor(c), x, y, w, h)
     }
 
-    final void fillRect(Color color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+    final void fillRect(Color color, Number x, Number y, Number w, Number h) {
         g.setColor(color)
         g.fillRect(x.intValue(), y.intValue(), w.intValue(), h.intValue())
     }
 
-    final void fillRect(int color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+    final void fillRect(int color, Number x, Number y, Number w, Number h) {
         fillRect(pixelManager.getDrawColor(color), x, y, w, h)
     }
 
-    final void fillRect(String color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+    final void fillRect(String color, Number x, Number y, Number w, Number h) {
         fillRect(Colors.rgbToColor(color), x, y, w, h)
     }
 
@@ -637,15 +605,15 @@ class GraphicsManager {
         }
     }
 
-    final void drawLineSegment(int c, BigDecimal x0, BigDecimal y0, BigDecimal x1, BigDecimal y1) {
+    final void drawLineSegment(int c, Number x0, Number y0, Number x1, Number y1) {
         drawLineSegment(pixelManager.getDrawColor(c), x0, y0, x1, y1)
     }
 
-    final void drawLineSegment(String c, BigDecimal x0, BigDecimal y0, BigDecimal x1, BigDecimal y1) {
+    final void drawLineSegment(String c, Number x0, Number y0, Number x1, Number y1) {
         drawLineSegment(Colors.rgbToColor(c), x0, y0, x1, y1)
     }
 
-    final void drawLineSegment(Color c, BigDecimal p0, BigDecimal v0, BigDecimal p1, BigDecimal v1) {
+    final void drawLineSegment(Color c, Number p0, Number v0, Number p1, Number v1) {
         int x0 = p0.intValue()
         int x1 = p1.intValue()
         int y0 = v0.intValue()
@@ -740,7 +708,7 @@ class GraphicsManager {
     }
 
     //https://www.geeksforgeeks.org/bresenhams-circle-drawing-algorithm/
-    final void drawCircle(Color color, BigDecimal x, BigDecimal y, BigDecimal r) {
+    final void drawCircle(Color color, Number x, Number y, Number r) {
         g.setColor(color)
         //g.drawCircle(x.intValue(), y.intValue(), r.intValue())
         int cx = x.intValue()
@@ -770,7 +738,7 @@ class GraphicsManager {
         }
     }
 
-    final void drawFillCircle(Color color, BigDecimal x, BigDecimal y, BigDecimal r) {
+    final void drawFillCircle(Color color, Number x, Number y, Number r) {
         g.setColor(color)
         //g.drawCircle(x.intValue(), y.intValue(), r.intValue())
         int cx = x.intValue()
@@ -798,31 +766,31 @@ class GraphicsManager {
 
     }
 
-    final void fillCircle(Color color, BigDecimal x, BigDecimal y, BigDecimal r) {
+    final void fillCircle(Color color, Number x, Number y, Number r) {
         g.setColor(color)
 //        g.fillCircle(x.intValue(), y.intValue(), r.intValue())
         drawFillCircle(color, x, y, r)
     }
 
-    final void drawCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r) {
+    final void drawCircle(int color, Number x, Number y, Number r) {
         drawCircle(pixelManager.getDrawColor(color), x, y, r)
     }
 
-    final void fillCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r) {
+    final void fillCircle(int color, Number x, Number y, Number r) {
         fillCircle(pixelManager.getDrawColor(color), x, y, r)
     }
 
-    final void drawCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r) {
+    final void drawCircle(String color, Number x, Number y, Number r) {
         drawCircle(Colors.rgbToColor(color), x, y, r)
     }
 
-    final void fillCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r) {
+    final void fillCircle(String color, Number x, Number y, Number r) {
         fillCircle(Colors.rgbToColor(color), x, y, r)
     }
     // </editor-fold>
 
-    final void setClip(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
-        g.setClip(x.floatValue(), y.floatValue(), w.floatValue(), h.floatValue())
+    final void setClip(Number x, Number y, Number w, Number h) {
+        g.setClip(x.intValue(), y.intValue(), w.intValue(), h.intValue())
     }
 
     final void removeClip() {
@@ -844,9 +812,9 @@ class GraphicsManager {
 
     /**
      * Removes the applied tint color from the previous tint methods:
-     * {@link #tint(org.mini2Dx.core.graphics.Color) }
-     * {@link #tint(int) }
-     * {@link #tint(java.lang.String) }
+     * {@link #tint(org.mini2Dx.core.graphics.Color)}
+     * {@link #tint(int)}
+     * {@link #tint(java.lang.String)}
      *
      * This isn't very obvious.
      */
@@ -865,9 +833,9 @@ class GraphicsManager {
      * @param y
      * @return The Color at the specified coordinate of the {@link #frameBuffer}
      */
-    Color getPixel(BigDecimal x, BigDecimal y) {
-        int gx = MathUtils.ceil((viewport.getX() * viewport.getScaleX()) + (x.floatValue() * viewport.getScaleX()))
-        int gy = MathUtils.ceil((viewport.getY() * viewport.getScaleY()) + (y.floatValue() * viewport.getScaleY()))
+    Color getPixel(Number x, Number y) {
+        int gx = MathUtils.ceil((viewport.getX() * viewport.getScaleX()) + (x.floatValue() * viewport.getScaleX()) as float)
+        int gy = MathUtils.ceil((viewport.getY() * viewport.getScaleY()) + (y.floatValue() * viewport.getScaleY()) as float)
         gy = Gdx.graphics.getHeight() - gy
         frameBuffer.end()
 
@@ -880,13 +848,27 @@ class GraphicsManager {
         return Colors.rgbToColor("$re,$gr,$bl")
     }
 
-    Color getPixel(String name, BigDecimal x, BigDecimal y) {
+    /**
+     * Collects the pixel color from a given texture in the running program's Art directory
+     *
+     * @param name - The texture to collect the pixel color from
+     * @param x - the x coordinate
+     * @param y - the y coordinate
+     * @return - the Color of the pixel of the given texture, x, y
+     */
+    Color getPixel(String name, Number x, Number y) {
         Pixmap pm = Mdx.graphics.newPixmap(Mdx.files.external("${path}/Art/${name}"))
         Color c = Mdx.graphics.newColor(pm.getPixel(x.intValue(), y.intValue()))
         pm.dispose()
         return c
     }
 
+    /**
+     * Collects every color of a texture from the running Program's Art directory and
+     * returns them as a list of Color
+     * @param name - the Texture to load from the Art directory
+     * @return - the list of colors from top left to bottom right
+     */
     ArrayList<Color> getPixels(String name) {
         Pixmap pm = Mdx.graphics.newPixmap(Mdx.files.local("${path}/Art/${name}"))
         ArrayList<Color> colors = new ArrayList<>()

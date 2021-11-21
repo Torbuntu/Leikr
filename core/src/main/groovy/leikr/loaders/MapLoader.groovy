@@ -68,11 +68,7 @@ class MapLoader {
         }
     }
 
-    void drawMap(Graphics g) {
-        drawMap(g, 0, 0)
-    }
-
-    void drawMap(Graphics g, int x, int y) {
+    void drawMap(Graphics g, int x = 0, int y = 0) {
         if (checkMap()) {
             tiledMap.draw(g, x, y)
         }
@@ -103,11 +99,7 @@ class MapLoader {
      * @param y
      * @return the tileId of the tile at x,y
      */
-    int getMapTile(int x, int y) {
-        return getMapTile(x, y, 0)
-    }
-
-    int getMapTile(int x, int y, int layer) {
+    int getMapTile(int x, int y, int layer = 0) {
         try {
             return tiledMap.getTile(x, y, layer).getTileId(1)
         } catch (Exception ex) {
@@ -132,11 +124,7 @@ class MapLoader {
         }
     }
 
-    void removeMapTile(int x, int y) {
-        removeMapTile(x, y, 0)
-    }
-
-    void removeMapTile(int x, int y, int layer) {
+    void removeMapTile(int x, int y, int layer = 0) {
         try {
             tiledMap.getTileLayer(layer).setTileId(x, y, -1)
         } catch (Exception ex) {
@@ -147,7 +135,7 @@ class MapLoader {
     }
 
     void disposeMap() {
-        if (null != tiledMap) {
+        if (tiledMap) {
             tiledMap.dispose()
         }
     }

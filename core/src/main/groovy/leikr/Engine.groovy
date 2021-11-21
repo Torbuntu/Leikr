@@ -44,16 +44,16 @@ abstract class Engine implements InputProcessor {
      */
     private boolean active
 
-    private LeikrKeyboard lKeyboard
-    private LeikrMouse lMouse
+    LeikrKeyboard lKeyboard
+    LeikrMouse lMouse
 
     /**
      * Managers are used to load the custom assets for a game at startup.
      */
-    private GraphicsManager lGraphics
-    private SystemManager lSystem
-    private AudioManager lAudio
-    private DataManager lData
+    GraphicsManager lGraphics
+    SystemManager lSystem
+    AudioManager lAudio
+    DataManager lData
 
     // <editor-fold desc="Field getters" defaultstate="collapsed">
 
@@ -196,11 +196,11 @@ abstract class Engine implements InputProcessor {
 
     // <editor-fold desc="Dispose" defaultstate="collapsed">
     final void dispose() {
-        if (lAudio != null) {
+        if (lAudio) {
             lAudio.dispose()
         }
 
-        if (lGraphics != null) {
+        if (lGraphics) {
             lGraphics.dispose()
         }
     }
@@ -212,24 +212,24 @@ abstract class Engine implements InputProcessor {
      *
      * @return the FPS as an int
      */
-    final int FPS() {
+    static final int FPS() {
         return Mdx.platformUtils.getFramesPerSecond()
     }
 
     int getUsedSprites() {
-        return lGraphics.getUsedSprites()
+        lGraphics.getUsedSprites()
     }
 
     final boolean getActive() {
-        return active
+        active
     }
 
     final void setActive(boolean state) {
         this.active = state
     }
 
-    final void loadSpriteSheet(String progName) {
-        lSystem.loadSpriteSheet(progName)
+    final void loadSpriteSheet(String programName) {
+        lSystem.loadSpriteSheet(programName)
     }
 
     void loadProgram(String name) {
@@ -241,11 +241,11 @@ abstract class Engine implements InputProcessor {
     }
 
     String getProgramPath() {
-        return lSystem.getProgramPath()
+        lSystem.getProgramPath()
     }
 
     String getDataPath() {
-        return lSystem.getDataPath()
+        lSystem.getDataPath()
     }
 
     /**
@@ -270,16 +270,16 @@ abstract class Engine implements InputProcessor {
         lGraphics.loadImages()
     }
 
-    final void drawTexture(String name, BigDecimal x, BigDecimal y) {
+    final void drawTexture(String name, Number x, Number y) {
         lGraphics.drawTexture(name, x, y)
     }
 
-    final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+    final void drawTexture(String name, Number x, Number y, Number w, Number h) {
         lGraphics.drawTexture(name, x, y, w, h)
     }
 
-    final void drawTexture(String name, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h, boolean flipv) {
-        lGraphics.drawTexture(name, x, y, w, h, flipv)
+    final void drawTexture(String name, Number x, Number y, Number w, Number h, boolean flipVertical) {
+        lGraphics.drawTexture(name, x, y, w, h, flipVertical)
     }
     // </editor-fold>
 
@@ -292,52 +292,36 @@ abstract class Engine implements InputProcessor {
         lGraphics.drawMap()
     }
 
-    final void drawMap(BigDecimal x, BigDecimal y) {
-        lGraphics.drawMap(x, y)
-    }
-
-    final void drawMap(BigDecimal x, BigDecimal y, int layer) {
+    final void drawMap(Number x, Number y, int layer = 0) {
         lGraphics.drawMap(x, y, layer)
     }
 
-    final void drawMap(BigDecimal x, BigDecimal y, BigDecimal sx, BigDecimal sy, BigDecimal w, BigDecimal h) {
+    final void drawMap(Number x, Number y, Number sx, Number sy, Number w, Number h) {
         lGraphics.drawMap(x, y, sx, sy, w, h)
     }
 
-    final void drawMap(BigDecimal x, BigDecimal y, BigDecimal sx, BigDecimal sy, BigDecimal w, BigDecimal h, int layer) {
+    final void drawMap(Number x, Number y, Number sx, Number sy, Number w, Number h, int layer) {
         lGraphics.drawMap(x, y, sx, sy, w, h, layer)
     }
 
-    final int getMapTile(BigDecimal x, BigDecimal y) {
-        return lGraphics.getMapTile(x, y)
-    }
-
-    final int getMapTile(BigDecimal x, BigDecimal y, int layer) {
+    final int getMapTile(Number x, Number y, int layer = 0) {
         return lGraphics.getMapTile(x, y, layer)
     }
 
-    final void setMapTile(int id, BigDecimal x, BigDecimal y) {
-        lGraphics.setMapTile(id, x, y)
-    }
-
-    final void setMapTile(int id, BigDecimal x, BigDecimal y, int layer) {
+    final void setMapTile(int id, Number x, Number y, int layer = 0) {
         lGraphics.setMapTile(id, x, y, layer)
     }
 
-    final void removeMapTile(BigDecimal x, BigDecimal y) {
-        lGraphics.removeMapTile(x, y)
-    }
-
-    final void removeMapTile(BigDecimal x, BigDecimal y, int layer) {
+    final void removeMapTile(Number x, Number y, int layer = 0) {
         lGraphics.removeMapTile(x, y, layer)
     }
 
     final int getMapHeight() {
-        return lGraphics.getMapHeight()
+        lGraphics.getMapHeight()
     }
 
     final int getMapWidth() {
-        return lGraphics.getMapWidth()
+        lGraphics.getMapWidth()
     }
     // </editor-fold>
 
@@ -364,7 +348,7 @@ abstract class Engine implements InputProcessor {
     // </editor-fold>
 
     // <editor-fold desc="Graphics helper api" defaultstate="collapsed">
-    final void setClip(BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+    final void setClip(Number x, Number y, Number w, Number h) {
         lGraphics.setClip(x, y, w, h)
     }
 
@@ -374,188 +358,172 @@ abstract class Engine implements InputProcessor {
     // </editor-fold>
 
     // <editor-fold desc="String api" defaultstate="collapsed">
-    final void drawString(Color color, String text, BigDecimal x, BigDecimal y) {
+    final void drawString(Color color, String text, Number x, Number y) {
         lGraphics.drawString(color, text, x, y)
     }
 
-    final void drawString(Color color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
+    final void drawString(Color color, String text, Number x, Number y, Number width) {
         lGraphics.drawString(color, text, x, y, width)
     }
 
-    final void drawString(Color color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
+    final void drawString(Color color, String text, Number x, Number y, Number width, int align) {
         lGraphics.drawString(color, text, x, y, width, align)
     }
 
-    final void drawString(int color, String text, BigDecimal x, BigDecimal y) {
+    final void drawString(int color, String text, Number x, Number y) {
         lGraphics.drawString(color, text, x, y)
     }
 
-    final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
+    final void drawString(int color, String text, Number x, Number y, Number width) {
         lGraphics.drawString(color, text, x, y, width)
     }
 
-    final void drawString(int color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
+    final void drawString(int color, String text, Number x, Number y, Number width, int align) {
         lGraphics.drawString(color, text, x, y, width, align)
     }
 
-    final void drawString(String color, String text, BigDecimal x, BigDecimal y) {
+    final void drawString(String color, String text, Number x, Number y) {
         lGraphics.drawString(color, text, x, y)
     }
 
-    final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width) {
+    final void drawString(String color, String text, Number x, Number y, Number width) {
         lGraphics.drawString(color, text, x, y, width)
     }
 
-    final void drawString(String color, String text, BigDecimal x, BigDecimal y, BigDecimal width, int align) {
+    final void drawString(String color, String text, Number x, Number y, Number width, int align) {
         lGraphics.drawString(color, text, x, y, width, align)
     }
     // </editor-fold>
 
     // <editor-fold desc="Sprite api" defaultstate="collapsed">
-    final void sprite(int id, BigDecimal x, BigDecimal y) {
-        lGraphics.sprite(id, x, y)
-    }
-
-    final void sprite(int id, BigDecimal x, BigDecimal y, int size) {
+    final void sprite(int id, Number x, Number y, int size = 0) {
         lGraphics.sprite(id, x, y, size)
     }
 
-    final void sprite(int id, BigDecimal x, BigDecimal y, int size, BigDecimal degrees) {
+    final void sprite(int id, Number x, Number y, int size, Number degrees) {
         lGraphics.sprite(id, x, y, size, degrees)
     }
 
-    final void sprite(int id, BigDecimal x, BigDecimal y, boolean flipX, boolean flipY) {
+    final void sprite(int id, Number x, Number y, boolean flipX, boolean flipY) {
         lGraphics.sprite(id, x, y, flipX, flipY)
     }
 
-    final void sprite(int id, BigDecimal x, BigDecimal y, int size, boolean flipX, boolean flipY) {
+    final void sprite(int id, Number x, Number y, int size, boolean flipX, boolean flipY) {
         lGraphics.sprite(id, x, y, size, flipX, flipY)
     }
 
-    final void sprite(int id, BigDecimal x, BigDecimal y, int size, BigDecimal degrees, boolean flipX, boolean flipY) {
+    final void sprite(int id, Number x, Number y, int size, Number degrees, boolean flipX, boolean flipY) {
         lGraphics.sprite(id, x, y, size, degrees, flipX, flipY)
     }
 
-    final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph) {
-        lGraphics.sprite(ids, px, py, pw, ph)
-    }
-
-    final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, int size) {
+    final void sprite(ArrayList<Integer> ids, Number px, Number py, Number pw, Number ph, int size = 0) {
         lGraphics.sprite(ids, px, py, pw, ph, size)
     }
 
-    final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, boolean flipX, boolean flipY) {
+    final void sprite(ArrayList<Integer> ids, Number px, Number py, Number pw, Number ph, boolean flipX, boolean flipY) {
         lGraphics.sprite(ids, px, py, pw, ph, flipX, flipY)
     }
 
-    final void sprite(ArrayList<Integer> ids, BigDecimal px, BigDecimal py, BigDecimal pw, BigDecimal ph, int size, boolean flipX, boolean flipY) {
+    final void sprite(ArrayList<Integer> ids, Number px, Number py, Number pw, Number ph, int size, boolean flipX, boolean flipY) {
         lGraphics.sprite(ids, px, py, pw, ph, size, flipX, flipY)
     }
 
     //start scaled sprites
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale) {
-        lGraphics.spriteSc(id, x, y, scale)
-    }
-
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scale, int size) {
+    final void spriteSc(int id, Number x, Number y, Number scale, int size = 0) {
         lGraphics.spriteSc(id, x, y, scale, size)
     }
 
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY) {
-        lGraphics.spriteSc(id, x, y, scaleX, scaleY)
-    }
-
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size) {
+    final void spriteSc(int id, Number x, Number y, Number scaleX, Number scaleY, int size = 0) {
         lGraphics.spriteSc(id, x, y, scaleX, scaleY, size)
     }
 
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size, BigDecimal degrees) {
+    final void spriteSc(int id, Number x, Number y, Number scaleX, Number scaleY, int size, Number degrees) {
         lGraphics.spriteSc(id, x, y, scaleX, scaleY, size, degrees)
     }
 
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, boolean flipX, boolean flipY) {
+    final void spriteSc(int id, Number x, Number y, Number scaleX, Number scaleY, boolean flipX, boolean flipY) {
         lGraphics.spriteSc(id, x, y, scaleX, scaleY, flipX, flipY)
     }
 
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size, boolean flipX, boolean flipY) {
+    final void spriteSc(int id, Number x, Number y, Number scaleX, Number scaleY, int size, boolean flipX, boolean flipY) {
         lGraphics.spriteSc(id, x, y, scaleX, scaleY, size, flipX, flipY)
     }
 
-    final void spriteSc(int id, BigDecimal x, BigDecimal y, BigDecimal scaleX, BigDecimal scaleY, int size, BigDecimal degrees, boolean flipX, boolean flipY) {
+    final void spriteSc(int id, Number x, Number y, Number scaleX, Number scaleY, int size, Number degrees, boolean flipX, boolean flipY) {
         lGraphics.spriteSc(id, x, y, scaleX, scaleY, size, degrees, flipX, flipY)
     }
     // </editor-fold>
 
     // <editor-fold desc="Shape drawing api" defaultstate="collapsed">
-    final void drawPixel(Color color, BigDecimal x, BigDecimal y) {
+    final void drawPixel(Color color, Number x, Number y) {
         lGraphics.drawPixel(color, x, y)
     }
 
-    final void drawPixel(int color, BigDecimal x, BigDecimal y) {
+    final void drawPixel(int color, Number x, Number y) {
         lGraphics.drawPixel(color, x, y)
     }
 
-    final void drawPixel(String color, BigDecimal x, BigDecimal y) {
+    final void drawPixel(String color, Number x, Number y) {
         lGraphics.drawPixel(color, x, y)
     }
 
-    final void drawRect(Color color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+    final void drawRect(Color color, Number x, Number y, Number w, Number h) {
         lGraphics.drawRect(color, x, y, w, h)
     }
 
-    final void drawRect(int color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+    final void drawRect(int color, Number x, Number y, Number w, Number h) {
         lGraphics.drawRect(color, x, y, w, h)
     }
 
-    final void drawRect(String color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+    final void drawRect(String color, Number x, Number y, Number w, Number h) {
         lGraphics.drawRect(color, x, y, w, h)
     }
 
-    final void fillRect(Color color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+    final void fillRect(Color color, Number x, Number y, Number w, Number h) {
         lGraphics.fillRect(color, x, y, w, h)
     }
 
-    final void fillRect(int color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+    final void fillRect(int color, Number x, Number y, Number w, Number h) {
         lGraphics.fillRect(color, x, y, w, h)
     }
 
-    final void fillRect(String color, BigDecimal x, BigDecimal y, BigDecimal w, BigDecimal h) {
+    final void fillRect(String color, Number x, Number y, Number w, Number h) {
         lGraphics.fillRect(color, x, y, w, h)
     }
 
-    final void drawLineSegment(Color color, BigDecimal x0, BigDecimal y0, BigDecimal x1, BigDecimal y1) {
+    final void drawLineSegment(Color color, Number x0, Number y0, Number x1, Number y1) {
         lGraphics.drawLineSegment(color, x0, y0, x1, y1)
     }
 
-    final void drawLineSegment(int color, BigDecimal x1, BigDecimal y1, BigDecimal x2, BigDecimal y2) {
+    final void drawLineSegment(int color, Number x1, Number y1, Number x2, Number y2) {
         lGraphics.drawLineSegment(color, x1, y1, x2, y2)
     }
 
-    final void drawLineSegment(String color, BigDecimal x0, BigDecimal y0, BigDecimal x1, BigDecimal y1) {
+    final void drawLineSegment(String color, Number x0, Number y0, Number x1, Number y1) {
         lGraphics.drawLineSegment(color, x0, y0, x1, y1)
     }
 
-    final void drawCircle(Color color, BigDecimal x, BigDecimal y, BigDecimal r) {
+    final void drawCircle(Color color, Number x, Number y, Number r) {
         lGraphics.drawCircle(color, x, y, r)
     }
 
-    final void drawCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r) {
+    final void drawCircle(int color, Number x, Number y, Number r) {
         lGraphics.drawCircle(color, x, y, r)
     }
 
-    final void drawCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r) {
+    final void drawCircle(String color, Number x, Number y, Number r) {
         lGraphics.drawCircle(color, x, y, r)
     }
 
-    final void fillCircle(Color color, BigDecimal x, BigDecimal y, BigDecimal r) {
+    final void fillCircle(Color color, Number x, Number y, Number r) {
         lGraphics.fillCircle(color, x, y, r)
     }
 
-    final void fillCircle(int color, BigDecimal x, BigDecimal y, BigDecimal r) {
+    final void fillCircle(int color, Number x, Number y, Number r) {
         lGraphics.fillCircle(color, x, y, r)
     }
 
-    final void fillCircle(String color, BigDecimal x, BigDecimal y, BigDecimal r) {
+    final void fillCircle(String color, Number x, Number y, Number r) {
         lGraphics.fillCircle(color, x, y, r)
     }
 
@@ -575,29 +543,29 @@ abstract class Engine implements InputProcessor {
         lGraphics.tint()
     }
 
-    Color getPixel(BigDecimal x, BigDecimal y) {
-        return lGraphics.getPixel(x, y)
+    Color getPixel(Number x, Number y) {
+        lGraphics.getPixel(x, y)
     }
 
-    Color getPixel(String name, BigDecimal x, BigDecimal y) {
-        return lGraphics.getPixel(name, x, y)
+    Color getPixel(String name, Number x, Number y) {
+        lGraphics.getPixel(name, x, y)
     }
 
     ArrayList<Color> getPixels(String name) {
-        return lGraphics.getPixels(name)
+        lGraphics.getPixels(name)
     }
     // </editor-fold>
 
     // <editor-fold desc="Audio api" defaultstate="collapsed">
     final Sound getSound(String fileName) {
-        return lAudio.getSound(fileName)
+        lAudio.getSound(fileName)
     }
 
     final void playSound(String name) {
         lAudio.playSound(name)
     }
 
-    final void playSound(String name, BigDecimal vol, BigDecimal pit, BigDecimal pan) {
+    final void playSound(String name, Number vol, Number pit, Number pan) {
         lAudio.playSound(name, vol, pit, pan)
     }
 
@@ -610,7 +578,7 @@ abstract class Engine implements InputProcessor {
     }
 
     final Music getMusic(String fileName) {
-        return lAudio.getMusic(fileName)
+        lAudio.getMusic(fileName)
     }
 
     final void playMusic(String name) {
@@ -639,51 +607,51 @@ abstract class Engine implements InputProcessor {
     // </editor-fold>
 
     // <editor-fold desc="Math api" defaultstate="collapsed">
-    float abs(BigDecimal value){
-        return lSystem.abs(value)
+    float abs(Number value){
+        lSystem.abs(value)
     }
-    float cos(BigDecimal radians) {
-        return lSystem.cos(radians)
-    }
-
-    float cosDeg(BigDecimal deg) {
-        return lSystem.cosDeg(deg)
+    float cos(Number radians) {
+        lSystem.cos(radians)
     }
 
-    float sin(BigDecimal radians) {
-        return lSystem.sin(radians)
+    float cosDeg(Number deg) {
+        lSystem.cosDeg(deg)
     }
 
-    float sinDeg(BigDecimal deg) {
-        return lSystem.sinDeg(deg)
+    float sin(Number radians) {
+        lSystem.sin(radians)
     }
 
-    int ceil(BigDecimal value) {
-        return lSystem.ceil(value)
+    float sinDeg(Number deg) {
+        lSystem.sinDeg(deg)
     }
 
-    int floor(BigDecimal value) {
-        return lSystem.floor(value)
+    int ceil(Number value) {
+        lSystem.ceil(value)
     }
 
-    int randInt(BigDecimal range) {
-        return lSystem.randInt(range)
+    int floor(Number value) {
+        lSystem.floor(value)
     }
 
-    int randInt(BigDecimal start, BigDecimal end) {
-        return lSystem.randInt(start, end)
+    int randInt(Number range) {
+        lSystem.randInt(range)
     }
 
-    float randFloat(BigDecimal range) {
-        return lSystem.randFloat(range)
+    int randInt(Number start, Number end) {
+        lSystem.randInt(start, end)
     }
 
-    float randFloat(BigDecimal start, BigDecimal end) {
-        return lSystem.randFloat(start, end)
+    float randFloat(Number range) {
+        lSystem.randFloat(range)
     }
 
-    int round(BigDecimal number) {
-        return lSystem.round(number)
+    float randFloat(Number start, Number end) {
+        lSystem.randFloat(start, end)
+    }
+
+    int round(Number number) {
+        lSystem.round(number)
     }
     // </editor-fold>
 
@@ -788,24 +756,8 @@ abstract class Engine implements InputProcessor {
     // </editor-fold>
 
     // <editor-fold desc="Experimental" defaultstate="collapsed">
-    boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal r1, BigDecimal x2, BigDecimal y2, BigDecimal r2) {
-        return lSystem.collides(x1, y1, r1, x2, y2, r2)
-    }
-
-    boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {
-        return lSystem.collides(x1, y1, w1, h1, x2, y2, w2, h2)
-    }
-
-    boolean collides(BigDecimal[] a, BigDecimal[] b) {
-        return lSystem.collides(a, b)
-    }
-
-    boolean point(BigDecimal x, BigDecimal y, BigDecimal x2, BigDecimal y2, BigDecimal w, BigDecimal h) {
-        return lSystem.point(x, y, x2, y2, w, h)
-    }
-
     Object compile(String path) {
-        return lSystem.compile(path)
+        lSystem.compile(path)
     }
 
     void compile(String path, String out) {
@@ -813,11 +765,11 @@ abstract class Engine implements InputProcessor {
     }
 
     Object eval(String code) {
-        return lSystem.eval(code)
+        lSystem.eval(code)
     }
 
     Object parse(String code) {
-        return lSystem.parse(code)
+        lSystem.parse(code)
     }
 
     void loadLib(String path) {
@@ -825,7 +777,7 @@ abstract class Engine implements InputProcessor {
     }
 
     Object newInstance(String name) {
-        return lSystem.newInstance(name)
+        lSystem.newInstance(name)
     }
     // </editor-fold>
 }

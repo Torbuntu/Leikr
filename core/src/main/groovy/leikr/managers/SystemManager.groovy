@@ -99,79 +99,58 @@ class SystemManager {
     // </editor-fold>
 
     // <editor-fold desc="Math api" defaultstate="collapsed"> 
-    float abs(BigDecimal value) {
+    static float abs(Number value) {
         Math.abs(value.floatValue())
     }
 
-    float cos(BigDecimal radians) {
+    static float cos(Number radians) {
         MathUtils.cos(radians.floatValue())
     }
 
-    float cosDeg(BigDecimal deg) {
+    static float cosDeg(Number deg) {
         MathUtils.cosDeg(deg.floatValue())
     }
 
-    float sin(BigDecimal radians) {
+    static float sin(Number radians) {
         MathUtils.sin(radians.floatValue())
     }
 
-    float sinDeg(BigDecimal deg) {
+    static float sinDeg(Number deg) {
         MathUtils.sinDeg(deg.floatValue())
     }
 
-    int ceil(BigDecimal value) {
+    static int ceil(Number value) {
         MathUtils.ceil(value.floatValue())
     }
 
-    int floor(BigDecimal value) {
+    static int floor(Number value) {
         MathUtils.floor(value.floatValue())
     }
 
-    int randInt(BigDecimal range) {
+    static int randInt(Number range) {
         MathUtils.random(range.intValue())
     }
 
-    int randInt(BigDecimal start, BigDecimal end) {
+    static int randInt(Number start, Number end) {
         MathUtils.random(start.intValue(), end.intValue())
     }
 
-    float randFloat(BigDecimal range) {
+    static float randFloat(Number range) {
         MathUtils.random(range.floatValue())
     }
 
-    float randFloat(BigDecimal start, BigDecimal end) {
+    static float randFloat(Number start, Number end) {
         MathUtils.random(start.floatValue(), end.floatValue())
     }
 
-    int round(BigDecimal number) {
+    static int round(Number number) {
         MathUtils.round(number.floatValue())
-    }
-    // </editor-fold>
-
-    // <editor-fold desc="Built in collisions" defaultstate="collapsed"> 
-    boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal r1, BigDecimal x2, BigDecimal y2, BigDecimal r2) {
-        float vx = x1.floatValue() - x2.floatValue()
-        float vy = y1.floatValue() - y2.floatValue()
-        float vr = r1.floatValue() + r2.floatValue()
-        return Math.abs(vx * vx + vy * vy) < vr * vr
-    }
-
-    boolean collides(BigDecimal x1, BigDecimal y1, BigDecimal w1, BigDecimal h1, BigDecimal x2, BigDecimal y2, BigDecimal w2, BigDecimal h2) {
-        x1.floatValue() + w1.floatValue() >= x2.floatValue() && x2.floatValue() + w2.floatValue() >= x1.floatValue() && y1.floatValue() + h1.floatValue() >= y2.floatValue() && y2.floatValue() + h2.floatValue() >= y1.floatValue()
-    }
-
-    boolean collides(BigDecimal[] a, BigDecimal[] b) {
-        return a[0].floatValue() + a[2].floatValue() >= b[0].floatValue() && b[0].floatValue() + b[2].floatValue() >= a[0].floatValue() && a[1].floatValue() + a[3].floatValue() >= b[1].floatValue() && b[1].floatValue() + b[3].floatValue() >= a[1].floatValue()
-    }
-
-    boolean point(BigDecimal x, BigDecimal y, BigDecimal x2, BigDecimal y2, BigDecimal w, BigDecimal h) {
-        return x.floatValue() >= x2.floatValue() && x.floatValue() <= x2.floatValue() + w.floatValue() && y.floatValue() >= y2.floatValue() && y.floatValue() <= y2.floatValue() + h.floatValue()
     }
     // </editor-fold>
 
     // <editor-fold desc="Engine loader api" defaultstate="collapsed"> 
     Object compile(String path) {
-        return engineLoader.compile(path)
+        engineLoader.compile(path)
     }
 
     void compile(String path, String out) {
@@ -179,11 +158,11 @@ class SystemManager {
     }
 
     Object eval(String code) {
-        return engineLoader.eval(code)
+        engineLoader.eval(code)
     }
 
     Object parse(String code) {
-        return engineLoader.parse(code)
+        engineLoader.parse(code)
     }
 
     void loadLib(String path) {
@@ -191,7 +170,7 @@ class SystemManager {
     }
 
     Object newInstance(String name) {
-        return engineLoader.newInstance(name)
+        engineLoader.newInstance(name)
     }
     // </editor-fold>
 
@@ -207,7 +186,7 @@ class SystemManager {
     }
 
     final boolean checkShouldPause() {
-        return pause
+        pause
     }
 
     final void preRender(Graphics g) {
