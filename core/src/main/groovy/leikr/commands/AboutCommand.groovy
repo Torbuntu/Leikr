@@ -16,7 +16,7 @@
 package leikr.commands
 
 import leikr.GameRuntime
-import leikr.customProperties.CustomProgramProperties
+import leikr.properties.ProgramProperties
 import org.mini2Dx.core.Mdx
 
 import java.util.logging.Level
@@ -42,7 +42,7 @@ class AboutCommand implements Command {
             return "Program [${command[1]}] does not exist in Programs directory."
         }
         try {
-            CustomProgramProperties cpp = new CustomProgramProperties(runtime.getProgramsPath() + command[1])
+            ProgramProperties cpp = new ProgramProperties(runtime.getProgramsPath() + command[1])
             return "Title: ${cpp.TITLE} \nType: ${cpp.TYPE} \nPlayers: ${cpp.PLAYERS} \nAuthor: ${cpp.AUTHOR} \nAbout: ${cpp.ABOUT}"
         } catch (Exception ex) {
             Logger.getLogger(AboutCommand.class.getName()).log(Level.SEVERE, null, ex)

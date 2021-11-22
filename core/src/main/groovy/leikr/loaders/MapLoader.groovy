@@ -17,7 +17,7 @@ package leikr.loaders
 
 import java.util.logging.Level
 import java.util.logging.Logger
-import leikr.customProperties.CustomSystemProperties
+import leikr.properties.SystemProperties
 import leikr.exceptions.RenderException
 import org.mini2Dx.core.Graphics
 import org.mini2Dx.core.Mdx
@@ -34,10 +34,10 @@ class MapLoader {
 
     private TiledMap tiledMap
 
-    private final CustomSystemProperties customSystemProperties
+    private final SystemProperties systemProperties
 
-    MapLoader(CustomSystemProperties customSystemProperties) {
-        this.customSystemProperties = customSystemProperties
+    MapLoader(SystemProperties systemProperties) {
+        this.systemProperties = systemProperties
     }
 
     void loadMap(String name) {
@@ -103,7 +103,7 @@ class MapLoader {
         try {
             return tiledMap.getTile(x, y, layer).getTileId(1)
         } catch (Exception ex) {
-            if (customSystemProperties.isDEBUG()) {
+            if (systemProperties.isDebug()) {
                 Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex)
             }
             return -1
@@ -118,7 +118,7 @@ class MapLoader {
         try {
             tiledMap.getTileLayer(layer).setTileId(x, y, id)
         } catch (Exception ex) {
-            if (customSystemProperties.isDEBUG()) {
+            if (systemProperties.isDebug()) {
                 Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex)
             }
         }
@@ -128,7 +128,7 @@ class MapLoader {
         try {
             tiledMap.getTileLayer(layer).setTileId(x, y, -1)
         } catch (Exception ex) {
-            if (customSystemProperties.isDEBUG()) {
+            if (systemProperties.isDebug()) {
                 Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex)
             }
         }

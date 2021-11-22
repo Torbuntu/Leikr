@@ -16,7 +16,7 @@
 package leikr.commands
 
 import leikr.GameRuntime
-import leikr.customProperties.CustomProgramProperties
+import leikr.properties.ProgramProperties
 
 /**
  *
@@ -35,7 +35,7 @@ class GetCommand implements Command {
         if (args.length < 2) {
             return "[E] Not enough arguments."
         }
-        CustomProgramProperties props = new CustomProgramProperties(runtime.getProgramsPath() + args[1])
+        ProgramProperties props = new ProgramProperties(runtime.getProgramsPath() + args[1])
         switch (args[2].toLowerCase()) {
             case "author": return "author - ${props.AUTHOR}"
             case "use_compiled": return "use_compiled - ${String.valueOf(props.USE_COMPILED)}"

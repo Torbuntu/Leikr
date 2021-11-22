@@ -16,7 +16,7 @@
 package leikr.commands
 
 import leikr.GameRuntime
-import leikr.customProperties.CustomProgramProperties
+import leikr.properties.ProgramProperties
 
 /**
  *
@@ -47,7 +47,7 @@ class SetCommand implements Command {
         if (!properties.contains(args[2])) {
             return "[E] Property [${args[2]}] not found in Program [${args[1]}]"
         }
-        CustomProgramProperties props = new CustomProgramProperties(runtime.getProgramsPath() + args[1])
+        ProgramProperties props = new ProgramProperties(runtime.getProgramsPath() + args[1])
         switch (args[2].toLowerCase()) {
             case "author": props.AUTHOR = args[3]; break
             case "use_compiled": props.USE_COMPILED = Boolean.valueOf(args[3]); break

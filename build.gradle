@@ -17,7 +17,6 @@ allprojects {
         mini2DxVersion = '2.0.0-alpha.85'
         groovyVersion = '4.0.0-beta-2'
         gdxVersion = '1.10.0'
-        gdxControllersVersion = '2.2.1'
         lwjglVersion = '3.2.3'
         lwjglNatives32 = 'natives-linux-arm32'
         lwjglNatives64 = 'natives-linux-arm64'
@@ -46,8 +45,6 @@ project(":core") {
     apply plugin: 'groovy'
 
     dependencies {
-
-        implementation "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
 
         implementation "org.mini2Dx:mini2dx-libgdx-desktop-lwjgl3:$mini2DxVersion"
 
@@ -83,8 +80,6 @@ project(":desktop") {
 
     dependencies {
         implementation project(":core")
-
-        implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
 
         implementation "org.apache.groovy:groovy:$groovyVersion"
         implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"

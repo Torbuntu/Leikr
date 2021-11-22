@@ -15,7 +15,6 @@
  */
 package leikr
 
-import com.badlogic.gdx.controllers.Controllers
 
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -38,7 +37,7 @@ import org.mini2Dx.gdx.InputProcessor
  *
  * @author tor
  */
-abstract class Engine implements InputProcessor {
+abstract class Engine implements InputProcessor{
 
     /**
      * Used by {@link leikr.screens.EngineScreen} to determine if the game
@@ -140,7 +139,6 @@ abstract class Engine implements InputProcessor {
 
         try {
             Mdx.input.setInputProcessor(this)
-            // TODO: set controller listeners
         } catch (Exception ex) {
             Logger.getLogger(Engine.class.getName()).log(Level.SEVERE, "Input processor not set: {0}", ex.getMessage())
         }
@@ -158,9 +156,6 @@ abstract class Engine implements InputProcessor {
      */
     final void preUpdate(float delta) {
         lGraphics.preUpdate(delta)
-        Controllers.getControllers().each {
-            println "Controller: ${it.getName()}"
-        }
     }
 
     /**
@@ -679,6 +674,15 @@ abstract class Engine implements InputProcessor {
     //detect single key press.
     final boolean keyPress(String key) {
         return lKeyboard.keyPress(key)
+    }
+
+    // Default to controller A if no index given
+    final boolean button(String key){
+        lControllerA.button(key)
+    }
+
+    final boolean button(String key, int playerIndex){
+        playerIndex == 1 ? lControllerA.button(key) : lControllerB.button(key)
     }
 
     /**

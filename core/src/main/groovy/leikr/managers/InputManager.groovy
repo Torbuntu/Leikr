@@ -18,7 +18,7 @@ package leikr.managers
 import leikr.controls.LeikrController
 import leikr.controls.LeikrKeyboard
 import leikr.controls.LeikrMouse
-import leikr.customProperties.CustomSystemProperties
+import org.mini2Dx.core.Mdx
 import org.mini2Dx.core.graphics.viewport.StretchViewport
 
 /**
@@ -29,14 +29,17 @@ class InputManager {
 
     private final LeikrKeyboard keyboard
     private final LeikrMouse mouse
-    private final LeikrController controllerA
-    private final LeikrController controllerB
+    private LeikrController controllerA
+    private LeikrController controllerB
 
-    InputManager(CustomSystemProperties customSystemProperties) {
+    InputManager() {
         keyboard = new LeikrKeyboard()
         mouse = new LeikrMouse()
-        controllerA = new LeikrController()
-        controllerB = new LeikrController()
+    }
+
+    void createControllers(){
+        controllerA = new LeikrController(0)
+        controllerB = new LeikrController(1)
     }
 
     void setMouseViewport(StretchViewport viewport) {
@@ -57,6 +60,14 @@ class InputManager {
 
     LeikrController getControllerB() {
         controllerB
+    }
+
+    boolean button(String key){
+        controllerA.button(key)
+    }
+
+    boolean button(String key, int playerId){
+        playerId == 1 ? controllerA.button(key) : controllerB.button(key)
     }
 
 }

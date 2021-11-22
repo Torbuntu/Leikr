@@ -95,7 +95,7 @@ class EngineScreen extends BasicGameScreen {
 
     @Override
     void postTransitionIn(Transition transition) {
-        if (engineState.equals(EngineState.ERROR)) {
+        if (engineState == EngineState.ERROR) {
             return
         }
         try {
@@ -201,6 +201,17 @@ class EngineScreen extends BasicGameScreen {
         }
     }
 
+    /**
+     * Rendering process:
+     * 1. Apply StretchViewport for the framebuffer to render on
+     * 2. Begin the frame buffer
+     * 3. Flush graphics object to frame buffer
+     * 4. End the frame buffer ops
+     * 5. Apply the FitViewport to the graphics object
+     * 6. Render the frame buffer's texture
+     * @param gc
+     * @param g
+     */
     @Override
     void render(GameContainer gc, Graphics g) {
         if (null != engine && !engine.getActive()) {
@@ -216,6 +227,8 @@ class EngineScreen extends BasicGameScreen {
             case EngineState.RUNNING: renderRunning(g); break
             case EngineState.PAUSE: renderPause(g); break
         }
+
+        // We have to flush to the framebuffer
         g.flush()
         frameBuffer.end()
 

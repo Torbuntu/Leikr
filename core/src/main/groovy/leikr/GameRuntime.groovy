@@ -15,7 +15,8 @@
  */
 package leikr
 
-import leikr.customProperties.CustomSystemProperties
+import leikr.properties.ControllerMapping
+import leikr.properties.SystemProperties
 import leikr.loaders.*
 import leikr.managers.*
 import leikr.screens.*
@@ -73,11 +74,11 @@ class GameRuntime extends ScreenBasedGame {
 
     private CustomCursor cursor
 
-    private CustomSystemProperties customSystemProperties
+    private SystemProperties systemProperties
     private boolean secure
 
     /**
-     * Creates CustomSystemProperties for detecting launch title.
+     * Creates SystemProperties for detecting launch title.
      *
      * @param args
      * @param secure
@@ -93,14 +94,14 @@ class GameRuntime extends ScreenBasedGame {
         directLaunch = false
         gameName = ""
         viewport = new FitViewport(WIDTH, HEIGHT)
-        customSystemProperties = new CustomSystemProperties()
+        systemProperties = new SystemProperties()
 
         if (args.length > 0 && args[0].length() > 3 && !args[0].equalsIgnoreCase("insecure")) {
             gameName = args[0]
             directLaunch = true
-        } else if (customSystemProperties.getLaunchTitle().length() > 3) {
+        } else if (systemProperties.getLaunchTitle().length() > 3) {
             directLaunch = true
-            gameName = customSystemProperties.getLaunchTitle()
+            gameName = systemProperties.getLaunchTitle()
             System.out.println("Game Title: " + gameName)
         }
     }
@@ -113,7 +114,7 @@ class GameRuntime extends ScreenBasedGame {
             deployPath = "$leikrHome/Leikr/Deploy/"
             packagePath = "$leikrHome/Leikr/Packages/"
 
-            customSystemProperties = new CustomSystemProperties()
+            systemProperties = new SystemProperties()
             checkFileSystem()
             Logger.getLogger(GameRuntime.class.getName()).log(Level.INFO, "Using custom Leikr home at: {0}", basePath)
 
@@ -194,7 +195,7 @@ class GameRuntime extends ScreenBasedGame {
         if (directLaunch) {
             return LoadScreen.ID
         }
-        return TitleScreen.ID//initial screen to begin on is the menu screen.
+        return ControllerMappingScreen.ID
     }
 
     private void initializeLoaders() {
@@ -205,7 +206,7 @@ class GameRuntime extends ScreenBasedGame {
         audioLoader = new AudioLoader()
         engineLoader = new EngineLoader(this)
         imageLoader = new ImageLoader()
-        mapLoader = new MapLoader(customSystemProperties)
+        mapLoader = new MapLoader(systemProperties)
         spriteLoader = new SpriteLoader(this)
     }
 
@@ -214,7 +215,7 @@ class GameRuntime extends ScreenBasedGame {
         dataManager = new DataManager()
         pixelManager = new PixelManager()
         graphicsManager = new GraphicsManager(spriteLoader, imageLoader, mapLoader, pixelManager)
-        inputManager = new InputManager(customSystemProperties)
+        inputManager = new InputManager()
         systemManager = new SystemManager(engineLoader, primaryFontLoader, spriteLoader, this)
         terminalManager = new TerminalManager(this, engineLoader)
 
@@ -231,12 +232,13 @@ class GameRuntime extends ScreenBasedGame {
 			addScreen(new NewProgramScreen(viewport, this))//5
 			addScreen(new TerminalScreen(viewport, terminalManager, this))//6
 			addScreen(new MenuScreen(viewport, this))//7
+            addScreen(new ControllerMappingScreen(managerDTO,viewport, this))//8
 		}
 
     }
 
     boolean isDevMode() {
-        return customSystemProperties.isDevMode()
+        return systemProperties.isDevMode()
     }
 
     boolean checkDirectLaunch() {
@@ -248,11 +250,11 @@ class GameRuntime extends ScreenBasedGame {
     }
 
     String getGamePath() {
-        return programsPath + getGameName()
+        programsPath + getGameName()
     }
 
     String getGameName() {
-        return gameName
+        gameName
     }
 
     void setGameName(String GAME_NAME) {
@@ -311,6 +313,10 @@ class GameRuntime extends ScreenBasedGame {
 
     String getPackagePath() {
         return packagePath
+    }
+
+    InputManager getInputManager(){
+        inputManager
     }
 
 }

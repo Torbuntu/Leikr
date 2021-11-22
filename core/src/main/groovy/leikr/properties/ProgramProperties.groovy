@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package leikr.customProperties
+package leikr.properties
 
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -22,7 +22,7 @@ import java.util.logging.Logger
  *
  * @author tor
  */
-class CustomProgramProperties {
+class ProgramProperties {
 
     int MAX_SPRITES = 128
     boolean USE_COMPILED = false
@@ -35,7 +35,7 @@ class CustomProgramProperties {
     String ABOUT = "A Leikr Program."
     private String GAME_TITLE = ""
 
-    CustomProgramProperties(String gamePath) {
+    ProgramProperties(String gamePath) {
         GAME_TITLE = gamePath.substring(gamePath.lastIndexOf("/") + 1)
         Properties prop = new Properties()
         try ( InputStream stream = new FileInputStream(new File(gamePath + "/program.properties"))) {
@@ -55,7 +55,7 @@ class CustomProgramProperties {
             PLAYERS = Integer.parseInt(prop.getProperty("players")) ?: 1
             ABOUT = prop.getProperty("about") ?: "A Leikr Program."
         } catch (IOException | NumberFormatException ex) {
-            Logger.getLogger(CustomProgramProperties.class.getName()).log(Level.SEVERE, ex.getMessage())
+            Logger.getLogger(ProgramProperties.class.getName()).log(Level.SEVERE, ex.getMessage())
         }
     }
 
@@ -77,7 +77,7 @@ class CustomProgramProperties {
             }
 
         } catch (IOException | NumberFormatException ex) {
-            Logger.getLogger(CustomProgramProperties.class.getName()).log(Level.SEVERE, ex.getMessage())
+            Logger.getLogger(ProgramProperties.class.getName()).log(Level.SEVERE, ex.getMessage())
         }
     }
 

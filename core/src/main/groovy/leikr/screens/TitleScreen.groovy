@@ -59,7 +59,6 @@ class TitleScreen extends BasicGameScreen {
         this.runtime = runtime
         assetManager.load(runtime.getDataPath() + "Images/leikr-logo.png", Texture.class)
         assetManager.finishLoading()
-
         viewport = vp
         this.pixelManager = pixelManager
     }
@@ -73,6 +72,11 @@ class TitleScreen extends BasicGameScreen {
             Logger.getLogger(TitleScreen.class.getName()).log(Level.INFO, "Goodbye!")
             Mdx.platformUtils.exit(true)
         }
+    }
+
+    @Override
+    void preTransitionIn(Transition transition){
+        runtime.getInputManager().createControllers()
     }
 
     @Override

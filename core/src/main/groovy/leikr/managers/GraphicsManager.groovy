@@ -45,7 +45,7 @@ class GraphicsManager {
      * Properties set by Custom Properties
      *
      * @see #maxSprites can be overwritten in
-     * {@link leikr.customProperties.CustomProgramProperties} more custom
+     * {@link leikr.properties.ProgramProperties} more custom
      * experience.
      */
     private int maxSprites

@@ -17,7 +17,7 @@ package leikr.loaders
 
 import leikr.Engine
 import leikr.GameRuntime
-import leikr.customProperties.CustomProgramProperties
+import leikr.properties.ProgramProperties
 import org.codehaus.groovy.control.CompilationFailedException
 import org.codehaus.groovy.control.CompilerConfiguration
 import org.codehaus.groovy.tools.Compiler
@@ -37,7 +37,7 @@ class EngineLoader implements Callable<Engine> {
     private String rootPath
     private String[] engineArgs
 
-    private CustomProgramProperties cp
+    private ProgramProperties cp
     private GroovyClassLoader gcl
     private GroovyShell sh
     private GameRuntime runtime
@@ -122,7 +122,7 @@ class EngineLoader implements Callable<Engine> {
     void reset(String path) {
         destroy()
         rootPath = "$path/Code/"
-        cp = new CustomProgramProperties(path)
+        cp = new ProgramProperties(path)
     }
 
     void setEngineArgs(String[] args) {

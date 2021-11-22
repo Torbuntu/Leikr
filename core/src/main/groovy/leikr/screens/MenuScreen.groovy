@@ -16,7 +16,7 @@
 package leikr.screens
 
 import leikr.GameRuntime
-import leikr.customProperties.CustomProgramProperties
+import leikr.properties.ProgramProperties
 import leikr.transitions.EnterTransition
 import org.mini2Dx.core.Graphics
 import org.mini2Dx.core.Mdx
@@ -45,7 +45,7 @@ class MenuScreen extends BasicGameScreen {
     private int index = 0
     private String isCompiled = ""
 
-    private List<CustomProgramProperties> games
+    private List<ProgramProperties> games
 
     private final FitViewport fitViewport
     private final StretchViewport stretchViewport
@@ -64,7 +64,7 @@ class MenuScreen extends BasicGameScreen {
             games = []
 
             Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream().forEach(game -> {
-                games.add(new CustomProgramProperties(runtime.getProgramsPath() + game.nameWithoutExtension()))
+                games.add(new ProgramProperties(runtime.getProgramsPath() + game.nameWithoutExtension()))
             })
 
         } catch (IOException ex) {
@@ -82,6 +82,19 @@ class MenuScreen extends BasicGameScreen {
     void preTransitionIn(Transition transition) {
         rebuildGamesList()
         framebuffer = Mdx.graphics.newFrameBuffer(runtime.WIDTH, runtime.HEIGHT)
+        if(Mdx.input.getGamePads().size() > 0){
+            println "Free listeners"
+            Mdx.input.getGamePads().each {
+                it.removeListener(runtime.getInputManager().getControllerA())
+                it.removeListener(runtime.getInputManager().getControllerB())
+            }
+            println "Adding Controller A"
+            Mdx.input.getGamePads().get(0).addListener(runtime.getInputManager().getControllerA())
+            if(Mdx.input.getGamePads().size() > 1){
+                println "Adding Controller B"
+                Mdx.input.getGamePads().get(1).addListener(runtime.getInputManager().getControllerB())
+            }
+        }
     }
 
     @Override
@@ -139,6 +152,11 @@ class MenuScreen extends BasicGameScreen {
         }
     }
 
+    /**
+     * See the EngineScreen for comments on why we use both the StretchViewport and the FitViewport.
+     * @param gc
+     * @param g
+     */
     @Override
     void render(GameContainer gc, Graphics g) {
         stretchViewport.apply(g)
