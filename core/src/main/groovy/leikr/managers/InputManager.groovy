@@ -15,6 +15,7 @@
  */
 package leikr.managers
 
+import leikr.controls.LeikrController
 import leikr.controls.LeikrKeyboard
 import leikr.controls.LeikrMouse
 import leikr.customProperties.CustomSystemProperties
@@ -28,10 +29,14 @@ class InputManager {
 
     private final LeikrKeyboard keyboard
     private final LeikrMouse mouse
+    private final LeikrController controllerA
+    private final LeikrController controllerB
 
     InputManager(CustomSystemProperties customSystemProperties) {
         keyboard = new LeikrKeyboard()
         mouse = new LeikrMouse()
+        controllerA = new LeikrController()
+        controllerB = new LeikrController()
     }
 
     void setMouseViewport(StretchViewport viewport) {
@@ -44,6 +49,14 @@ class InputManager {
 
     LeikrMouse getMouse() {
         return mouse
+    }
+
+    LeikrController getControllerA() {
+        controllerA
+    }
+
+    LeikrController getControllerB() {
+        controllerB
     }
 
 }

@@ -15,6 +15,8 @@
  */
 package leikr
 
+import com.badlogic.gdx.controllers.Controllers
+
 import java.util.logging.Level
 import java.util.logging.Logger
 import leikr.controls.*
@@ -46,6 +48,8 @@ abstract class Engine implements InputProcessor {
 
     LeikrKeyboard lKeyboard
     LeikrMouse lMouse
+    LeikrController lControllerA
+    LeikrController lControllerB
 
     /**
      * Managers are used to load the custom assets for a game at startup.
@@ -131,9 +135,12 @@ abstract class Engine implements InputProcessor {
         lMouse = managerDTO.inputManager.getMouse()
         lMouse.setViewport(viewport)
         lKeyboard = managerDTO.inputManager.getKeyboard()
+        lControllerA = managerDTO.inputManager.getControllerA()
+        lControllerB = managerDTO.inputManager.getControllerB()
 
         try {
             Mdx.input.setInputProcessor(this)
+            // TODO: set controller listeners
         } catch (Exception ex) {
             Logger.getLogger(Engine.class.getName()).log(Level.SEVERE, "Input processor not set: {0}", ex.getMessage())
         }
@@ -151,6 +158,9 @@ abstract class Engine implements InputProcessor {
      */
     final void preUpdate(float delta) {
         lGraphics.preUpdate(delta)
+        Controllers.getControllers().each {
+            println "Controller: ${it.getName()}"
+        }
     }
 
     /**
