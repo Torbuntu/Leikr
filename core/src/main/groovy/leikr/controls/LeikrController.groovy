@@ -7,7 +7,7 @@ import org.mini2Dx.gdx.math.Vector3
 
 
 class LeikrController implements GamePadListener {
-    def playerId
+    def playerId, instanceId
     def buttons = [
             "A"           : false,
             "B"           : false,
@@ -30,7 +30,26 @@ class LeikrController implements GamePadListener {
 
     LeikrController(int playerId) {
         this.playerId = playerId
+        instanceId = 0
         controllerMapping = new ControllerMapping(playerId)
+        buttonLookup = [
+                (controllerMapping.getA())          : "A",
+                (controllerMapping.getB())          : "B",
+                (controllerMapping.getX())          : "X",
+                (controllerMapping.getY())          : "Y",
+                (controllerMapping.getSelect())     : "SELECT",
+                (controllerMapping.getStart())      : "START",
+                (controllerMapping.getLeftBumper()) : "LEFT_BUMPER",
+                (controllerMapping.getRightBumper()): "RIGHT_BUMPER",
+        ]
+        horizontalAxis = controllerMapping.getHorizontalAxis()
+        verticalAxis = controllerMapping.getVerticalAxis()
+    }
+
+    LeikrController(int playerId, String model){
+        this.playerId = playerId
+        instanceId = 0
+        controllerMapping = new ControllerMapping(model)
         buttonLookup = [
                 (controllerMapping.getA())          : "A",
                 (controllerMapping.getB())          : "B",

@@ -195,7 +195,7 @@ class GameRuntime extends ScreenBasedGame {
         if (directLaunch) {
             return LoadScreen.ID
         }
-        return ControllerMappingScreen.ID
+        return TitleScreen.ID
     }
 
     private void initializeLoaders() {

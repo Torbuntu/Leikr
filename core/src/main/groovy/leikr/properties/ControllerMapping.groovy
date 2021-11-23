@@ -28,6 +28,15 @@ class ControllerMapping {
         }
     }
 
+    ControllerMapping(String model){
+        if (new File("Data/Controllers/${model}.properties").exists()) {
+            println "Collecting mapping of known controller: ${model}"
+            getKnownControllerMapping(model)
+        } else {
+            println "Unmapped controller, please create mapping for: $model"
+        }
+    }
+
     void getKnownControllerMapping(modelName) {
         println "Data/Controllers/${modelName}.properties"
         Properties prop = new Properties()

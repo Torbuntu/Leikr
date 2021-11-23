@@ -128,11 +128,11 @@ class MenuScreen extends BasicGameScreen {
             sm.enterGameScreen(TerminalScreen.ID, null, null)
         }
 
-        if (Mdx.input.isKeyJustPressed(Keys.LEFT) && index > 0) {
+        if ((Mdx.input.isKeyJustPressed(Keys.LEFT) || runtime.getInputManager().button("LEFT")) && index > 0) {
             index--
             loadIcon()
         }
-        if (Mdx.input.isKeyJustPressed(Keys.RIGHT) && index < games.size() - 1) {
+        if ((Mdx.input.isKeyJustPressed(Keys.RIGHT) || runtime.getInputManager().button("RIGHT")) && index < games.size() - 1) {
             index++
             loadIcon()
         }

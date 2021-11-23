@@ -20,12 +20,15 @@ import leikr.controls.LeikrKeyboard
 import leikr.controls.LeikrMouse
 import org.mini2Dx.core.Mdx
 import org.mini2Dx.core.graphics.viewport.StretchViewport
+import org.mini2Dx.core.input.GamePad
+import org.mini2Dx.core.input.GamePadConnectionListener
 
 /**
  *
  * @author tor
  */
-class InputManager {
+// TODO: work out the hot-plugging to be a bit more robust
+class InputManager implements GamePadConnectionListener {
 
     private final LeikrKeyboard keyboard
     private final LeikrMouse mouse
@@ -35,9 +38,10 @@ class InputManager {
     InputManager() {
         keyboard = new LeikrKeyboard()
         mouse = new LeikrMouse()
+        Mdx.input.setGamePadConnectionListener(this, true)
     }
 
-    void createControllers(){
+    void createControllers() {
         controllerA = new LeikrController(0)
         controllerB = new LeikrController(1)
     }
@@ -47,11 +51,11 @@ class InputManager {
     }
 
     LeikrKeyboard getKeyboard() {
-        return keyboard
+        keyboard
     }
 
     LeikrMouse getMouse() {
-        return mouse
+        mouse
     }
 
     LeikrController getControllerA() {
@@ -62,12 +66,38 @@ class InputManager {
         controllerB
     }
 
-    boolean button(String key){
+    boolean button(String key) {
         controllerA.button(key)
     }
 
-    boolean button(String key, int playerId){
+    boolean button(String key, int playerId) {
         playerId == 1 ? controllerA.button(key) : controllerB.button(key)
     }
 
+    @Override
+    void onConnect(GamePad gamePad) {
+        println gamePad.getModelInfo()
+        if (Mdx.input.getGamePads().size() > 0 && controllerA?.getInstanceId() == 0) {
+            controllerA = new LeikrController(0, gamePad.getModelInfo())
+            Mdx.input.getGamePads().get(0).addListener(controllerA)
+            controllerA.setInstanceId(gamePad.getInstanceId())
+        }
+
+        if (Mdx.input.getGamePads().size() > 1 && controllerB?.getInstanceId() == 0) {
+            controllerB = new LeikrController(1, gamePad.getModelInfo())
+            Mdx.input.getGamePads().get(1).addListener(controllerB)
+            controllerB.setInstanceId(gamePad.getInstanceId())
+        }
+    }
+
+    @Override
+    void onDisconnect(GamePad gamePad) {
+        println "InstanceId: ${gamePad.getInstanceId()}"
+        if (controllerA.getInstanceId() != 0 && gamePad.getInstanceId() == controllerA.getInstanceId()) {
+            controllerA.setInstanceId(0)
+        }
+        if (controllerB.getInstanceId() != 0 && gamePad.getInstanceId() == controllerB.getInstanceId()) {
+            controllerB.setInstanceId(0)
+        }
+    }
 }
