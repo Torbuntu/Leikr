@@ -62,10 +62,10 @@ class MenuScreen extends BasicGameScreen {
     private void rebuildGamesList(){
         try {
             games = []
-
-            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream().forEach(game -> {
+            // Enforce name size of >= 3
+            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).findAll{it.nameWithoutExtension().size() > 2}.each {game ->
                 games.add(new ProgramProperties(runtime.getProgramsPath() + game.nameWithoutExtension()))
-            })
+            }
 
         } catch (IOException ex) {
             ex.printStackTrace()

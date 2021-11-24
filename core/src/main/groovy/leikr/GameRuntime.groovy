@@ -15,7 +15,6 @@
  */
 package leikr
 
-import leikr.properties.ControllerMapping
 import leikr.properties.SystemProperties
 import leikr.loaders.*
 import leikr.managers.*
@@ -77,6 +76,8 @@ class GameRuntime extends ScreenBasedGame {
     private SystemProperties systemProperties
     private boolean secure
 
+    final private def logger = Logger.getLogger(GameRuntime.class.getName())
+
     /**
      * Creates SystemProperties for detecting launch title.
      *
@@ -102,7 +103,7 @@ class GameRuntime extends ScreenBasedGame {
         } else if (systemProperties.getLaunchTitle().length() > 3) {
             directLaunch = true
             gameName = systemProperties.getLaunchTitle()
-            System.out.println("Game Title: " + gameName)
+            println "Game Title: " + gameName
         }
     }
 
@@ -116,10 +117,10 @@ class GameRuntime extends ScreenBasedGame {
 
             systemProperties = new SystemProperties()
             checkFileSystem()
-            Logger.getLogger(GameRuntime.class.getName()).log(Level.INFO, "Using custom Leikr home at: {0}", basePath)
+            logger.log(Level.INFO, "Using custom Leikr home at: {0}", basePath)
 
         } catch (IOException ignored) {
-            Logger.getLogger(GameRuntime.class.getName()).log(Level.WARNING, "Unable to use custom Leikr home: {0}", basePath)
+            logger.log(Level.WARNING, "Unable to use custom Leikr home: {0}", basePath)
         }
     }
 
@@ -130,7 +131,7 @@ class GameRuntime extends ScreenBasedGame {
         dataPath = "$leikrHome/Leikr/Data/"
         deployPath = "$leikrHome/Leikr/Deploy/"
         packagePath = "$leikrHome/Leikr/Packages/"
-        Logger.getLogger(GameRuntime.class.getName()).log(Level.INFO, "Using custom Leikr home at: {0}", basePath)
+        logger.log(Level.INFO, "Using custom Leikr home at: {0}", basePath)
     }
 
     private void defaultPathVariables() {
@@ -140,7 +141,7 @@ class GameRuntime extends ScreenBasedGame {
         dataPath = "$userHome/Leikr/Data/"
         deployPath = "$userHome/Leikr/Deploy/"
         packagePath = "$userHome/Leikr/Packages/"
-        Logger.getLogger(GameRuntime.class.getName()).log(Level.INFO, "Using default Leikr home at: {0}", basePath)
+        logger.log(Level.INFO, "Using default Leikr home at: {0}", basePath)
     }
 
     private void checkFileSystem() throws IOException {
@@ -169,7 +170,7 @@ class GameRuntime extends ScreenBasedGame {
         try {
             checkFileSystem()
         } catch (IOException ex) {
-            Logger.getLogger(GameRuntime.class.getName()).log(Level.WARNING, ex.getMessage(), ex)
+            logger.log(Level.WARNING, ex.getMessage(), ex)
         }
 
         assetManager = new AssetManager(new ExternalFileHandleResolver())
@@ -192,10 +193,7 @@ class GameRuntime extends ScreenBasedGame {
 
     @Override
     int getInitialScreenId() {
-        if (directLaunch) {
-            return LoadScreen.ID
-        }
-        return TitleScreen.ID
+        (directLaunch) ? LoadScreen.ID : TitleScreen.ID
     }
 
     private void initializeLoaders() {
@@ -238,15 +236,15 @@ class GameRuntime extends ScreenBasedGame {
     }
 
     boolean isDevMode() {
-        return systemProperties.isDevMode()
+        systemProperties.isDevMode()
     }
 
     boolean checkDirectLaunch() {
-        return directLaunch
+        directLaunch
     }
 
     boolean isSecure() {
-        return secure
+        secure
     }
 
     String getGamePath() {
@@ -266,11 +264,11 @@ class GameRuntime extends ScreenBasedGame {
     }
 
     boolean checkFileDropped() {
-        return (null != fileDroppedTitle && fileDroppedTitle.length() > 2)
+        (null != fileDroppedTitle && fileDroppedTitle.length() > 2)
     }
 
     String getFileDroppedTitle() {
-        return checkFileDropped() ? fileDroppedTitle : ""
+        checkFileDropped() ? fileDroppedTitle : ""
     }
 
     void clearFileDropped() {
@@ -278,7 +276,7 @@ class GameRuntime extends ScreenBasedGame {
     }
 
     CustomCursor getCursor() {
-        return cursor
+        cursor
     }
 
     /**
@@ -289,7 +287,7 @@ class GameRuntime extends ScreenBasedGame {
      * @return programsPath
      */
     String getProgramsPath() {
-        return programsPath
+        programsPath
     }
 
     /**
@@ -300,19 +298,19 @@ class GameRuntime extends ScreenBasedGame {
      * @return dataPath
      */
     String getDataPath() {
-        return dataPath
+        dataPath
     }
 
     String getDeployPath() {
-        return deployPath
+        deployPath
     }
 
     String getBasePath() {
-        return basePath
+        basePath
     }
 
     String getPackagePath() {
-        return packagePath
+        packagePath
     }
 
     InputManager getInputManager(){
