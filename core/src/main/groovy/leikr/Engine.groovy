@@ -15,6 +15,7 @@
  */
 package leikr
 
+import leikr.managers.InputManager
 
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -57,6 +58,7 @@ abstract class Engine implements InputProcessor{
     SystemManager lSystem
     AudioManager lAudio
     DataManager lData
+    InputManager lInput
 
     // <editor-fold desc="Field getters" defaultstate="collapsed">
 
@@ -124,6 +126,7 @@ abstract class Engine implements InputProcessor{
         lGraphics = managerDTO.graphicsManager
         lData = managerDTO.dataManager
         lSystem = managerDTO.systemManager
+        lInput = managerDTO.getInputManager()
 
         // reset the settings to apply to new game assets
         lAudio.resetAudioManager(path)
@@ -609,6 +612,14 @@ abstract class Engine implements InputProcessor{
     final void resumeAudio() {
         lAudio.resumeAudio()
     }
+    // Experimental
+    def listSounds(){
+        lAudio.listSounds()
+    }
+    def listMusic(){
+        lAudio.listMusic()
+    }
+
     // </editor-fold>
 
     // <editor-fold desc="Math api" defaultstate="collapsed">
@@ -678,11 +689,27 @@ abstract class Engine implements InputProcessor{
 
     // Default to controller A if no index given
     final boolean button(String key){
-        lControllerA.button(key)
+        lInput.button(key)
     }
 
-    final boolean button(String key, int playerIndex){
-        playerIndex == 1 ? lControllerA.button(key) : lControllerB.button(key)
+    final boolean button(String key, int playerId){
+        lInput.button(key, playerId)
+    }
+
+    final boolean buttonAny(){
+        lInput.buttonAny()
+    }
+
+    final boolean buttonAny(int playerId){
+        lInput.buttonAny(playerId)
+    }
+
+    final boolean buttonPress(String key){
+        lInput.buttonPress(key)
+    }
+
+    final boolean buttonPress(String key, int playerId){
+        lInput.buttonPress(key, playerId)
     }
 
     /**

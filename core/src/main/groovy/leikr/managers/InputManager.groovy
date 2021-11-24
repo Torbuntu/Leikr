@@ -41,9 +41,20 @@ class InputManager implements GamePadConnectionListener {
         Mdx.input.setGamePadConnectionListener(this, true)
     }
 
+    static boolean checkMappingExists() {
+        return Mdx.files.external("Data/Controllers/${Mdx.input.getGamePads().get(0).getModelInfo()}.properties").exists()
+    }
+
     void createControllers() {
         controllerA = new LeikrController(0)
         controllerB = new LeikrController(1)
+
+        if (Mdx.input.getGamePads().size() > 0) {
+            Mdx.input.getGamePads().get(0).addListener(controllerA)
+            if (Mdx.input.getGamePads().size() > 1) {
+                Mdx.input.getGamePads().get(1).addListener(controllerB)
+            }
+        }
     }
 
     void setMouseViewport(StretchViewport viewport) {
@@ -66,13 +77,54 @@ class InputManager implements GamePadConnectionListener {
         controllerB
     }
 
+    /**
+     * Checks if any button on any controller is pressed
+     * @return
+     */
+    boolean buttonAny() {
+        controllerA?.getButtons()?.containsValue(true)
+                || controllerB?.getButtons()?.containsValue(true)
+    }
+
+    /**
+     * Checks if the given controller ID has any pressed buttons
+     * @param id - either 1 or 2
+     * @return
+     */
+    boolean buttonAny(int id) {
+        id == 1 ? controllerA?.getButtons()?.containsValue(true)
+                : controllerB?.getButtons()?.containsValue(true)
+    }
+
     boolean button(String key) {
         controllerA.button(key)
+    }
+
+    boolean buttonPress(String key) {
+        if (controllerA.button(key)) {
+            controllerA.buttons.replace(key, false)
+            return true
+        }
+        return false
+    }
+
+    boolean buttonPressPlayerTwo(String key) {
+        if (controllerB.button(key)) {
+            controllerB.buttons.replace(key, false)
+            return true
+        }
+        return false
+    }
+
+    boolean buttonPress(String key, int playerId) {
+        playerId == 1 ? buttonPress(key) : buttonPressPlayerTwo(key)
     }
 
     boolean button(String key, int playerId) {
         playerId == 1 ? controllerA.button(key) : controllerB.button(key)
     }
+
+
 
     @Override
     void onConnect(GamePad gamePad) {

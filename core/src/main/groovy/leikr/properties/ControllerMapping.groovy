@@ -7,7 +7,8 @@ class ControllerMapping {
     def a, b, x, y, select, start, leftBumper, rightBumper, up, down, left, right, horizontalAxis, verticalAxis
     def model
 
-    ControllerMapping(){}
+    ControllerMapping() {}
+
     ControllerMapping(int id) {
         if (!(Mdx.input.getGamePads().size > id)) {
             println "No controller available for id: $id"
@@ -15,26 +16,49 @@ class ControllerMapping {
         }
         try {
             model = Mdx.input.getGamePads().get(id).getModelInfo()
+            if (model) {
+                if (new File("Data/Controllers/${model}.properties").exists()) {
+                    println "Collecting mapping of known controller: ${model}"
+                    getKnownControllerMapping(model)
+                } else {
+                    println "Unmapped controller, switching to default mapping. Please create mapping for: $model"
+                    getDefaults()
+                }
+            }
         } catch (Exception ex) {
             ex.printStackTrace()
         }
-        if (model) {
-            if (new File("Data/Controllers/${model}.properties").exists()) {
-                println "Collecting mapping of known controller: ${model}"
-                getKnownControllerMapping(model)
-            } else {
-                println "Unmapped controller, please create mapping for: $model"
-            }
-        }
     }
 
-    ControllerMapping(String model){
+    ControllerMapping(String model) {
         if (new File("Data/Controllers/${model}.properties").exists()) {
             println "Collecting mapping of known controller: ${model}"
             getKnownControllerMapping(model)
         } else {
-            println "Unmapped controller, please create mapping for: $model"
+            println "Unmapped controller, switching to default mapping. Please create mapping for: $model"
+            getDefaults()
         }
+    }
+
+    void getDefaults() {
+        x = 3
+        a = 1
+        b = 0
+        y = 2
+
+        leftBumper = 9
+        rightBumper = 10
+
+        select = 4
+        start = 6
+
+        up = -1
+        down = 1
+        left = -1
+        right = 1
+
+        horizontalAxis = 0
+        verticalAxis = 1
     }
 
     void getKnownControllerMapping(modelName) {
@@ -53,6 +77,7 @@ class ControllerMapping {
             select = Integer.parseInt(prop.getProperty("btn_select")) ?: 4
             start = Integer.parseInt(prop.getProperty("btn_start")) ?: 6
 
+            // default to analog stick directions
             up = Integer.parseInt(prop.getProperty("btn_up")) ?: -1
             down = Integer.parseInt(prop.getProperty("btn_down")) ?: 1
             left = Integer.parseInt(prop.getProperty("btn_left")) ?: -1

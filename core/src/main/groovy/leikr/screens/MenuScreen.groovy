@@ -68,7 +68,8 @@ class MenuScreen extends BasicGameScreen {
             })
 
         } catch (IOException ex) {
-            Logger.getLogger(MenuScreen.class.getName()).log(Level.SEVERE, null, ex)
+            ex.printStackTrace()
+            Logger.getLogger(MenuScreen.class.getName()).log(Level.SEVERE, ex.getMessage(), ex)
         }
         loadIcon()
     }
@@ -82,19 +83,6 @@ class MenuScreen extends BasicGameScreen {
     void preTransitionIn(Transition transition) {
         rebuildGamesList()
         framebuffer = Mdx.graphics.newFrameBuffer(runtime.WIDTH, runtime.HEIGHT)
-        if(Mdx.input.getGamePads().size() > 0){
-            println "Free listeners"
-            Mdx.input.getGamePads().each {
-                it.removeListener(runtime.getInputManager().getControllerA())
-                it.removeListener(runtime.getInputManager().getControllerB())
-            }
-            println "Adding Controller A"
-            Mdx.input.getGamePads().get(0).addListener(runtime.getInputManager().getControllerA())
-            if(Mdx.input.getGamePads().size() > 1){
-                println "Adding Controller B"
-                Mdx.input.getGamePads().get(1).addListener(runtime.getInputManager().getControllerB())
-            }
-        }
     }
 
     @Override
@@ -128,15 +116,15 @@ class MenuScreen extends BasicGameScreen {
             sm.enterGameScreen(TerminalScreen.ID, null, null)
         }
 
-        if ((Mdx.input.isKeyJustPressed(Keys.LEFT) || runtime.getInputManager().button("LEFT")) && index > 0) {
+        if ((Mdx.input.isKeyJustPressed(Keys.LEFT) || runtime.getInputManager().buttonPress("LEFT")) && index > 0) {
             index--
             loadIcon()
         }
-        if ((Mdx.input.isKeyJustPressed(Keys.RIGHT) || runtime.getInputManager().button("RIGHT")) && index < games.size() - 1) {
+        if ((Mdx.input.isKeyJustPressed(Keys.RIGHT) || runtime.getInputManager().buttonPress("RIGHT")) && index < games.size() - 1) {
             index++
             loadIcon()
         }
-        if (Mdx.input.isKeyJustPressed(Keys.ENTER)) {
+        if (Mdx.input.isKeyJustPressed(Keys.ENTER) || runtime.getInputManager().buttonPress("START")) {
             LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID)
             ls.setGameName(games.get(index).getTitle())
             runtime.setGameName(games.get(index).getTitle())
@@ -194,9 +182,9 @@ class MenuScreen extends BasicGameScreen {
             setColor(Colors.GREEN())
             drawLineSegment(0, 150, 240, 150)
 
-			setColor(Colors.YELLOW())
-            drawString("[ENTER/START] - Play", 0, 154, 240, Align.LEFT)
-            drawString("[T] - Enter Terminal", 0, 154, 240, Align.RIGHT)
+			setColor(Colors.WHITE())
+            drawString("[START] - Play", 0, 153, 240, Align.CENTER)
+//            drawString("[T] - Enter Terminal", 0, 154, 240, Align.RIGHT)
             flush()
         }
         framebuffer.end()

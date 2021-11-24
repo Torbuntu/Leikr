@@ -52,10 +52,10 @@ class ProgramProperties {
             TYPE = prop.getProperty("type") ?: "Program"
             AUTHOR = prop.getProperty("author") ?: "unknown"
             VERSION = prop.getProperty("version") ?: "0.1"
-            PLAYERS = Integer.parseInt(prop.getProperty("players")) ?: 1
+            PLAYERS = Integer.parseInt(prop?.getProperty("players")) ?: 1
             ABOUT = prop.getProperty("about") ?: "A Leikr Program."
         } catch (IOException | NumberFormatException ex) {
-            Logger.getLogger(ProgramProperties.class.getName()).log(Level.SEVERE, ex.getMessage())
+            Logger.getLogger(ProgramProperties.class.getName()).log(Level.WARNING, "Malformed program.properties file.")
         }
     }
 
@@ -75,9 +75,9 @@ class ProgramProperties {
 
                 store(stream, null)
             }
-
         } catch (IOException | NumberFormatException ex) {
-            Logger.getLogger(ProgramProperties.class.getName()).log(Level.SEVERE, ex.getMessage())
+
+            Logger.getLogger(ProgramProperties.class.getName()).log(Level.WARNING, "Malformed program.properties file.")
         }
     }
 

@@ -40,13 +40,20 @@ class LeikrController implements GamePadListener {
                 (controllerMapping.getSelect())     : "SELECT",
                 (controllerMapping.getStart())      : "START",
                 (controllerMapping.getLeftBumper()) : "LEFT_BUMPER",
-                (controllerMapping.getRightBumper()): "RIGHT_BUMPER",
+                (controllerMapping.getRightBumper()): "RIGHT_BUMPER"
         ]
         horizontalAxis = controllerMapping.getHorizontalAxis()
         verticalAxis = controllerMapping.getVerticalAxis()
+        if(horizontalAxis == 999 || verticalAxis == 999){
+            buttonLookup.putAll(
+                    (controllerMapping.getUp())         : "UP",
+                    (controllerMapping.getDown())       : "DOWN",
+                    (controllerMapping.getLeft())       : "LEFT",
+                    (controllerMapping.getRight())      : "RIGHT")
+        }
     }
 
-    LeikrController(int playerId, String model){
+    LeikrController(int playerId, String model) {
         this.playerId = playerId
         instanceId = 0
         controllerMapping = new ControllerMapping(model)
@@ -58,10 +65,17 @@ class LeikrController implements GamePadListener {
                 (controllerMapping.getSelect())     : "SELECT",
                 (controllerMapping.getStart())      : "START",
                 (controllerMapping.getLeftBumper()) : "LEFT_BUMPER",
-                (controllerMapping.getRightBumper()): "RIGHT_BUMPER",
+                (controllerMapping.getRightBumper()): "RIGHT_BUMPER"
         ]
         horizontalAxis = controllerMapping.getHorizontalAxis()
         verticalAxis = controllerMapping.getVerticalAxis()
+        if(horizontalAxis == 999 || verticalAxis == 999){
+            buttonLookup.putAll(
+                    (controllerMapping.getUp())         : "UP",
+                    (controllerMapping.getDown())       : "DOWN",
+                    (controllerMapping.getLeft())       : "LEFT",
+                    (controllerMapping.getRight())      : "RIGHT")
+        }
     }
 
     @Override
@@ -77,8 +91,7 @@ class LeikrController implements GamePadListener {
 
     @Override
     void onButtonDown(GamePad gamePad, int buttonCode) {
-        println "Press: $buttonCode"
-        println "Code: ${buttonLookup[buttonCode]}"
+        println "Code: $buttonCode, Set: ${buttonLookup[buttonCode]}"
         buttons.replace(buttonLookup.get(buttonCode) as String, true)
     }
 
@@ -101,18 +114,18 @@ class LeikrController implements GamePadListener {
             }
         }
         if (axisCode as int == horizontalAxis) {
-            if(axisValue as int == controllerMapping.getLeft()){
+            if (axisValue as int == controllerMapping.getLeft()) {
                 buttons.replace("LEFT", true)
             }
-            if(axisValue as int == controllerMapping.getRight()){
+            if (axisValue as int == controllerMapping.getRight()) {
                 buttons.replace("RIGHT", true)
             }
         }
         if (axisCode as int == verticalAxis) {
-            if(axisValue as int == controllerMapping.getUp()){
+            if (axisValue as int == controllerMapping.getUp()) {
                 buttons.replace("UP", true)
             }
-            if(axisValue as int == controllerMapping.getDown()){
+            if (axisValue as int == controllerMapping.getDown()) {
                 buttons.replace("DOWN", true)
             }
         }

@@ -19,8 +19,6 @@ import org.mini2Dx.core.util.Align
 import org.mini2Dx.gdx.math.Vector3
 
 // TODO: Make this page not ugly.
-// TODO: Make controller mapping persist.
-// TODO: Only initialize this page if a mapping for the connected device does not exist, or if user navigates here.
 class ControllerMappingScreen extends BasicGameScreen implements GamePadListener {
     public static int ID = 8
     def buttonMapping = [:]
@@ -30,6 +28,10 @@ class ControllerMappingScreen extends BasicGameScreen implements GamePadListener
     // We start with 0 and work towards a complete mapping of 8 buttons and then coordinate data.
     // directions are awkward because they can either be a directional pad or an analog stick.
     def progress = 0
+    // The controller ID to map. Default to 0 for first controller
+    def playerId = 0
+
+    def modelInfo
 
     ManagerDTO managerDTO
     private final FitViewport viewport
@@ -49,36 +51,43 @@ class ControllerMappingScreen extends BasicGameScreen implements GamePadListener
     @Override
     void postTransitionIn(Transition transitionIn) {
         framebuffer = Mdx.graphics.newFrameBuffer(runtime.WIDTH, runtime.HEIGHT)
-        Mdx.input.getGamePads().get(0).addListener(this)
+        setControllerInfo(0)
+    }
+
+    def setControllerInfo(int id) {
+        playerId = id
+        Mdx.input.getGamePads().get(playerId).addListener(this)
+        modelInfo = Mdx.input.getGamePads().get(playerId).getModelInfo()
     }
 
     @Override
     void preTransitionOut(Transition transition) {
         framebuffer.dispose()
-        Mdx.input.getGamePads().get(0).removeListener(this)
+        Mdx.input.getGamePads().get(playerId).removeListener(this)
     }
 
     @Override
     void initialise(GameContainer gc) {}
 
     def saveToProps() {
+        String filePath = "Data/Controllers/${modelInfo}.properties"
         Properties prop = new Properties()
-        if (!Mdx.files.external("Data/Controllers/${Mdx.input.getGamePads().get(0).getModelInfo()}.properties").exists()) {
-            println "File does not exist, creating new: Data/Controllers/${Mdx.input.getGamePads().get(0).getModelInfo()}.properties"
-            if(!Mdx.files.external("Data/Controllers/").exists()){
+        if (!Mdx.files.external(filePath).exists()) {
+            println "File does not exist, creating new: $filePath"
+            if (!Mdx.files.external("Data/Controllers/").exists()) {
                 if (new File("Data/Controllers/").mkdirs()) {
-                    println "Successfully created Controllers directory"
+                    println "Successfully created Data/Controllers directory"
                 }
             }
-            new File("Data/Controllers/${Mdx.input.getGamePads().get(0).getModelInfo()}.properties").createNewFile()
+            new File(filePath).createNewFile()
         }
-        try (InputStream instream = new FileInputStream(new File("Data/Controllers/${Mdx.input.getGamePads().get(0).getModelInfo()}.properties"))) {
-            prop.load(instream)
+        try (InputStream inputStream = new FileInputStream(new File(filePath))) {
+            prop.load(inputStream)
         } catch (Exception ex) {
             ex.printStackTrace()
             return false
         }
-        try (FileOutputStream stream = new FileOutputStream(new File("Data/Controllers/${Mdx.input.getGamePads().get(0).getModelInfo()}.properties"))) {
+        try (FileOutputStream outputStream = new FileOutputStream(new File(filePath))) {
             buttonMapping.each {
                 println "${it.value}, ${it.key}"
             }
@@ -96,9 +105,10 @@ class ControllerMappingScreen extends BasicGameScreen implements GamePadListener
             prop.setProperty("btn_down", controllerMapping.getDown() as String)
             prop.setProperty("btn_left", controllerMapping.getLeft() as String)
             prop.setProperty("btn_right", controllerMapping.getRight() as String)
-            prop.setProperty("axis_horizontal", controllerMapping.getHorizontalAxis() as String ?: "0")
-            prop.setProperty("axis_vertical", controllerMapping.getVerticalAxis() as String ?: "1")
-            prop.store(stream, "Saved from Leikr Controller Mapping Utility")
+
+            prop.setProperty("axis_horizontal", controllerMapping.getHorizontalAxis() as String ?: "999")
+            prop.setProperty("axis_vertical", controllerMapping.getVerticalAxis() as String ?: "999")
+            prop.store(outputStream, "Saved from Leikr Controller Mapping Utility")
         } catch (IOException | NumberFormatException ex) {
             println(ex.getMessage())
             return false
@@ -112,7 +122,17 @@ class ControllerMappingScreen extends BasicGameScreen implements GamePadListener
         if (progress == 12) {
             saveToProps()
             managerDTO.inputManager.createControllers()
-            screenManager.enterGameScreen(MenuScreen.ID, null, null)
+            if (Mdx.input.getGamePads().size() > 1 && playerId == 0) {
+                progress = 0
+                Mdx.input.getGamePads().get(0).removeListener(this)
+                setControllerInfo(1)
+            } else {
+                try{
+                    Mdx.input.getGamePads().get(0).removeListener(this)
+                    Mdx.input.getGamePads().get(1).removeListener(this)
+                }catch(Exception ignored){}
+                screenManager.enterGameScreen(MenuScreen.ID, null, null)
+            }
         }
     }
 
@@ -121,22 +141,24 @@ class ControllerMappingScreen extends BasicGameScreen implements GamePadListener
         stretchViewport.apply(g)
         framebuffer.begin()
         g.clearContext()
+        g.drawString("Mapping: ${modelInfo}", 0, 0, 240, Align.CENTER)
+
         if (processing) {
             switch (progress) {
-                case 0: g.drawString("Press: A", 0, 0, 240, Align.CENTER); break
-                case 1: g.drawString("Press: B", 0, 0, 240, Align.CENTER); break
-                case 2: g.drawString("Press: X", 0, 0, 240, Align.CENTER); break
-                case 3: g.drawString("Press: Y", 0, 0, 240, Align.CENTER); break
+                case 0: g.drawString("Press: A", 0, 40, 240, Align.CENTER); break
+                case 1: g.drawString("Press: B", 0, 40, 240, Align.CENTER); break
+                case 2: g.drawString("Press: X", 0, 40, 240, Align.CENTER); break
+                case 3: g.drawString("Press: Y", 0, 40, 240, Align.CENTER); break
 
-                case 4: g.drawString("Press: SELECT", 0, 0, 240, Align.CENTER); break
-                case 5: g.drawString("Press: START", 0, 0, 240, Align.CENTER); break
-                case 6: g.drawString("Press: LEFT_BUMPER", 0, 0, 240, Align.CENTER); break
-                case 7: g.drawString("Press: RIGHT_BUMPER", 0, 0, 240, Align.CENTER); break
+                case 4: g.drawString("Press: SELECT", 0, 40, 240, Align.CENTER); break
+                case 5: g.drawString("Press: START", 0, 40, 240, Align.CENTER); break
+                case 6: g.drawString("Press: LEFT_BUMPER", 0, 40, 240, Align.CENTER); break
+                case 7: g.drawString("Press: RIGHT_BUMPER", 0, 40, 240, Align.CENTER); break
 
-                case 8: g.drawString("Press: UP", 0, 0, 240, Align.CENTER); break
-                case 9: g.drawString("Press: DOWN", 0, 0, 240, Align.CENTER); break
-                case 10: g.drawString("Press: LEFT", 0, 0, 240, Align.CENTER); break
-                case 11: g.drawString("Press: RIGHT", 0, 0, 240, Align.CENTER); break
+                case 8: g.drawString("Press: UP", 0, 40, 240, Align.CENTER); break
+                case 9: g.drawString("Press: DOWN", 0, 40, 240, Align.CENTER); break
+                case 10: g.drawString("Press: LEFT", 0, 40, 240, Align.CENTER); break
+                case 11: g.drawString("Press: RIGHT", 0, 40, 240, Align.CENTER); break
             }
         }
         g.flush()

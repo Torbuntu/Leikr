@@ -38,7 +38,7 @@ class SystemProperties {
             debug = Boolean.valueOf(prop.getProperty("debug_mode")) ?: false
             devMode = Boolean.valueOf(prop.getProperty("dev_mode")) ?: false
         } catch (IOException | NumberFormatException ex) {
-            Logger.getLogger(SystemProperties.class.getName()).log(Level.SEVERE, null, ex)
+            Logger.getLogger(SystemProperties.class.getName()).log(Level.WARNING, null, ex)
         }
     }
 

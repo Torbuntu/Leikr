@@ -186,4 +186,16 @@ class AudioLoader {
         }
     }
 
+    // Experimental API
+    def listSounds(){
+        assetManager.getAll(Sound.class).collect {
+            it.key.substring(it.key.lastIndexOf('/')+1)
+        }
+    }
+    def listMusic(){
+        assetManager.getAll(Music.class).collect {
+            it.key.substring(it.key.lastIndexOf('/')+1)
+        }
+    }
+
 }

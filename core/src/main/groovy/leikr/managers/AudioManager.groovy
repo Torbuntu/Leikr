@@ -84,6 +84,14 @@ class AudioManager {
     }
     //END loaded audio methods
 
+    //Experimental
+    def listSounds(){
+        audioLoader.listSounds()
+    }
+    def listMusic(){
+        audioLoader.listMusic()
+    }
+
     //Engine methods
     void dispose() {
         audioLoader.disposeAudioLoader()

@@ -169,7 +169,7 @@ class GameRuntime extends ScreenBasedGame {
         try {
             checkFileSystem()
         } catch (IOException ex) {
-            Logger.getLogger(GameRuntime.class.getName()).log(Level.SEVERE, null, ex)
+            Logger.getLogger(GameRuntime.class.getName()).log(Level.WARNING, ex.getMessage(), ex)
         }
 
         assetManager = new AssetManager(new ExternalFileHandleResolver())

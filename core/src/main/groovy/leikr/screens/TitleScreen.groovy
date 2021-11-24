@@ -17,6 +17,7 @@ package leikr.screens
 
 import leikr.GameRuntime
 import leikr.managers.PixelManager
+import leikr.properties.ControllerMapping
 import org.mini2Dx.core.Graphics
 import org.mini2Dx.core.Mdx
 import org.mini2Dx.core.assets.AssetManager
@@ -28,10 +29,12 @@ import org.mini2Dx.core.screen.BasicGameScreen
 import org.mini2Dx.core.screen.GameScreen
 import org.mini2Dx.core.screen.ScreenManager
 import org.mini2Dx.core.screen.Transition
+import org.mini2Dx.core.util.Align
 import org.mini2Dx.gdx.Input.Keys
 
 import java.util.logging.Level
 import java.util.logging.Logger
+
 /**
  *
  * @author tor
@@ -40,7 +43,7 @@ class TitleScreen extends BasicGameScreen {
 
     public static final int ID = 2
 
-    boolean CREDITS = false
+    boolean credits = false, enterMapping = false
     private double red, blue, green
 
     private int timer = 0
@@ -64,8 +67,12 @@ class TitleScreen extends BasicGameScreen {
     }
 
     void checkInput(ScreenManager sm) {
-        if (Mdx.input.isKeyJustPressed(Keys.SPACE) || Mdx.input.isKeyJustPressed(Keys.ENTER) || CREDITS) {
-            CREDITS = false
+        if (enterMapping && runtime.getInputManager().buttonAny()) {
+            credits = false
+            sm.enterGameScreen(ControllerMappingScreen.ID, null, null)
+        }
+        if (Mdx.input.isKeyJustPressed(Keys.SPACE) || Mdx.input.isKeyJustPressed(Keys.ENTER) || credits) {
+            credits = false
             sm.enterGameScreen(MenuScreen.ID, null, null)
         }
         if (Mdx.input.isKeyJustPressed(Keys.ESCAPE)) {
@@ -75,8 +82,13 @@ class TitleScreen extends BasicGameScreen {
     }
 
     @Override
-    void preTransitionIn(Transition transition){
-        runtime.getInputManager().createControllers()
+    void preTransitionIn(Transition transition) {
+        if (Mdx.input.getGamePads().size() > 0) {
+            runtime.getInputManager().createControllers()
+            if (!runtime.getInputManager().checkMappingExists()) {
+                enterMapping = true
+            }
+        }
     }
 
     @Override
@@ -87,7 +99,7 @@ class TitleScreen extends BasicGameScreen {
     void initialise(GameContainer gc) {
         pixels = new ArrayList<>()
 
-        pixCount.times{i->
+        pixCount.times { i ->
             int x = (int) Math.floor(Math.random() * 8) + 91
             int height = (int) Math.floor(Math.random() * 7) + 4
             pixels.add(new TitleScreenPixel(x, 64, (i % 3) + 8, height, i * 5))
@@ -98,7 +110,7 @@ class TitleScreen extends BasicGameScreen {
     void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
         checkInput(sm)
         if (Mdx.input.justTouched() || timer > 300) {
-            CREDITS = true
+            credits = true
         }
         timer++
     }
@@ -113,6 +125,10 @@ class TitleScreen extends BasicGameScreen {
         renderExtraText(g, "Game System", 106, 73, (int) (timer / 2))
         g.drawTexture(assetManager.get(runtime.getDataPath() + "Images/leikr-logo.png", Texture.class), 90, 64, 48, 16)
         drawLogoSteam(pixelManager, g)
+
+        if (enterMapping) {
+            g.drawString("Unmapped controller detected. Press any button to enter mapping", 0, 130, 240, Align.CENTER)
+        }
     }
 
     private void renderExtraText(Graphics graphics, String text, int x, int y, int step) {
@@ -139,15 +155,15 @@ class TitleScreen extends BasicGameScreen {
         for (int p = 0; p < pixCount; p++) {
             TitleScreenPixel pix = pixels.get(p)
             switch (timer - pix.delay) {
-                case 0: screen.drawPixel(g, pix.color, pix.x, pix.y);break
-                case 1: screen.drawPixel(g, pix.color, pix.x, pix.y - 1);break
+                case 0: screen.drawPixel(g, pix.color, pix.x, pix.y); break
+                case 1: screen.drawPixel(g, pix.color, pix.x, pix.y - 1); break
                 case 2:
                     for (int i = 2; i < pix.height - 1; i++) {
                         screen.drawPixel(g, pix.color, pix.x, pix.y - i)
                     }
-					break
-                case 3: screen.drawPixel(g, pix.color, pix.x, pix.y - pix.height + 1);break
-                case 4: screen.drawPixel(g, pix.color, pix.x, pix.y - pix.height);break
+                    break
+                case 3: screen.drawPixel(g, pix.color, pix.x, pix.y - pix.height + 1); break
+                case 4: screen.drawPixel(g, pix.color, pix.x, pix.y - pix.height); break
             }
         }
     }
