@@ -25,32 +25,32 @@ import leikr.GameRuntime
  */
 class HomeCommand implements Command {
 
-    private final GameRuntime runtime
-    
-    HomeCommand(GameRuntime runtime){
-        this.runtime = runtime
-    }
+	private final GameRuntime runtime
 
-    @Override
-    String execute(String[] args) {
-        try {
-            System.setProperty("leikr.home", args[1])
-            runtime.setLeikrHome(System.getProperty("leikr.home"))
-        } catch (Exception ex) {
-            Logger.getLogger(HomeCommand.class.getName()).log(Level.SEVERE, null, ex)
-            return "[E] Unable to set LEIKR_HOME: "
-        }
-        return "[I] Set LEIKR_HOME to [${args[1]}]"
-    }
+	HomeCommand(GameRuntime runtime) {
+		this.runtime = runtime
+	}
 
-    @Override
-    String help() {
-        "home [path] \nSets the LEIKR_HOME property telling the host where Leikr's home directory should be."
-    }
+	@Override
+	String execute(String[] args) {
+		try {
+			System.setProperty("leikr.home", args[1])
+			runtime.setLeikrHome(System.getProperty("leikr.home"))
+		} catch (Exception ex) {
+			Logger.getLogger(HomeCommand.class.getName()).log(Level.SEVERE, null, ex)
+			return "[E] Unable to set LEIKR_HOME: "
+		}
+		return "[I] Set LEIKR_HOME to [${args[1]}]"
+	}
 
-    @Override
-    String getName() {
-        "home"
-    }
+	@Override
+	String help() {
+		"home [path] \nSets the LEIKR_HOME property telling the host where Leikr's home directory should be."
+	}
+
+	@Override
+	String getName() {
+		"home"
+	}
 
 }

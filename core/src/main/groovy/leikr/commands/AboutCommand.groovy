@@ -21,54 +21,55 @@ import org.mini2Dx.core.Mdx
 
 import java.util.logging.Level
 import java.util.logging.Logger
+
 /**
  *
  * @author tor
  */
 class AboutCommand implements Command {
 
-    private final GameRuntime runtime
+	private final GameRuntime runtime
 
-    AboutCommand(GameRuntime runtime) {
-        this.runtime = runtime
-    }
+	AboutCommand(GameRuntime runtime) {
+		this.runtime = runtime
+	}
 
-    @Override
-    String execute(String[] command) {
-        if (command.length <= 1) {
-            return "Pass a program name to get the program's about info."
-        }
-        if (!containsName(command[1])) {
-            return "Program [${command[1]}] does not exist in Programs directory."
-        }
-        try {
-            ProgramProperties cpp = new ProgramProperties(runtime.getProgramsPath() + command[1])
-            return "Title: ${cpp.TITLE} \nType: ${cpp.TYPE} \nPlayers: ${cpp.PLAYERS} \nAuthor: ${cpp.AUTHOR} \nAbout: ${cpp.ABOUT}"
-        } catch (Exception ex) {
-            Logger.getLogger(AboutCommand.class.getName()).log(Level.SEVERE, null, ex)
-            return "Failed to load property file for [${command[1]}]."
-        }
-    }
+	@Override
+	String execute(String[] command) {
+		if (command.length <= 1) {
+			return "Pass a program name to get the program's about info."
+		}
+		if (!containsName(command[1])) {
+			return "Program [${command[1]}] does not exist in Programs directory."
+		}
+		try {
+			ProgramProperties cpp = new ProgramProperties(runtime.getProgramsPath() + command[1])
+			return "Title: ${cpp.title} \nType: ${cpp.type} \nPlayers: ${cpp.players} \nAuthor: ${cpp.author} \nAbout: ${cpp.about}"
+		} catch (Exception ex) {
+			Logger.getLogger(AboutCommand.class.getName()).log(Level.SEVERE, null, ex)
+			return "Failed to load property file for [${command[1]}]."
+		}
+	}
 
-    boolean containsName(String name) {
-        try {
-            def names = []
-            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream().forEach(e -> names.add(e.nameWithoutExtension()))
-            return names.contains(name)
-        } catch (IOException ex) {
-            Logger.getLogger(AboutCommand.class.getName()).log(Level.SEVERE, null, ex)
-            return false
-        }
-    }
+	boolean containsName(String name) {
+		try {
+			def names = []
+			Mdx.files.external(runtime.getProgramsPath()).list().each(e -> names.add(e.nameWithoutExtension()))
+			return names.contains(name)
+		} catch (IOException ex) {
+			Logger.getLogger(AboutCommand.class.getName()).log(Level.SEVERE, null, ex)
+			return false
+		}
+	}
 
-    @Override
-    String help() {
-        ">about [name]\nReads the property file of the given program name."
-    }
+	@Override
+	String help() {
+		">about [name]\nReads the property file of the given program name."
+	}
 
-    @Override
-    String getName() {
-        "about"
-    }
+	@Override
+	String getName() {
+		"about"
+	}
 
 }

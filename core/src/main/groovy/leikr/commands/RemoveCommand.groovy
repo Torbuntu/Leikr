@@ -20,54 +20,57 @@ import org.mini2Dx.core.Mdx
 
 import java.util.logging.Level
 import java.util.logging.Logger
+
 /**
  *
  * @author Torbuntu
  */
 class RemoveCommand implements Command {
 
-    private final GameRuntime runtime
+	private final GameRuntime runtime
 
-    RemoveCommand(GameRuntime runtime) {
-        this.runtime = runtime
-    }
+	RemoveCommand(GameRuntime runtime) {
+		this.runtime = runtime
+	}
 
-    @Override
-    String execute(String[] command) {
-        if (command.length <= 1) {
-            return "[E] Missing - required program name."
-        }
-        if (!containsName(command[1])) {
-            return "[E] Program [${command[1]}] does not exist in Programs directory."
-        }
-        try {
-            Mdx.files.external(runtime.getProgramsPath() + command[1]).deleteDirectory()
-            return "[I] Program [${command[1]}] has been uninstalled."
-        } catch (IOException ex) {
-            Logger.getLogger(RemoveCommand.class.getName()).log(Level.SEVERE, null, ex)
-            return "[E] Could not uninstall [${command[1]}]"
-        }
+	@Override
+	String execute(String[] command) {
+		if (command.length <= 1) {
+			return "[E] Missing - required program name."
+		}
+		if (!containsName(command[1])) {
+			return "[E] Program [${command[1]}] does not exist in Programs directory."
+		}
+		try {
+			Mdx.files.external(runtime.getProgramsPath() + command[1]).deleteDirectory()
+			return "[I] Program [${command[1]}] has been uninstalled."
+		} catch (IOException ex) {
+			Logger.getLogger(RemoveCommand.class.getName()).log(Level.SEVERE, null, ex)
+			return "[E] Could not uninstall [${command[1]}]"
+		}
 
-    }
+	}
 
-    private boolean containsName(String name) {
-        try {
-            ArrayList<String> names = new ArrayList<>()
-            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream().forEach(e -> names.add(e.nameWithoutExtension()))
-            return names.contains(name)
-        } catch (IOException ex) {
-            Logger.getLogger(RemoveCommand.class.getName()).log(Level.SEVERE, null, ex)
-            return false
-        }
-    }
+	private boolean containsName(String name) {
+		try {
+			def names = []
+			Mdx.files.external(runtime.getProgramsPath()).list().each { e ->
+				names.add(e.nameWithoutExtension())
+			}
+			return names.contains(name)
+		} catch (IOException ex) {
+			Logger.getLogger(RemoveCommand.class.getName()).log(Level.SEVERE, null, ex)
+			return false
+		}
+	}
 
-    @Override
-    String help() {
-        ">uninstall [name] \nUninstalls a program in the Programs directory given the name."
-    }
+	@Override
+	String help() {
+		">uninstall [name] \nUninstalls a program in the Programs directory given the name."
+	}
 
-    @Override
-    String getName() {
-        "uninstall"
-    }
+	@Override
+	String getName() {
+		"uninstall"
+	}
 }

@@ -20,38 +20,39 @@ import leikr.GameRuntime
 import java.awt.Desktop
 import java.util.logging.Level
 import java.util.logging.Logger
+
 /**
  *
  * @author Torbuntu
  */
 class PrintWorkspaceCommand implements Command {
 
-    private final GameRuntime runtime
+	private final GameRuntime runtime
 
-    PrintWorkspaceCommand(GameRuntime runtime) {
-        this.runtime = runtime
-    }
+	PrintWorkspaceCommand(GameRuntime runtime) {
+		this.runtime = runtime
+	}
 
-    @Override
-    String execute(String[] args) {
-        try {
-            File f = new File(runtime.getProgramsPath())
-            Desktop.getDesktop().open(f)
-            return f.getAbsolutePath()
-        } catch (IOException ex) {
-            Logger.getLogger(PrintWorkspaceCommand.class.getName()).log(Level.SEVERE, null, ex)
-            return "[E] Could not find workspace directory."
-        }
-    }
+	@Override
+	String execute(String[] args) {
+		try {
+			File f = new File(runtime.getProgramsPath())
+			Desktop.getDesktop().open(f)
+			return f.getAbsolutePath()
+		} catch (IOException ex) {
+			Logger.getLogger(PrintWorkspaceCommand.class.getName()).log(Level.SEVERE, null, ex)
+			return "[E] Could not find workspace directory."
+		}
+	}
 
-    @Override
-    String help() {
-        ">pwd \nPrints the location fo the Programs directory. Attempts to open the directory in the host file manager."
-    }
+	@Override
+	String help() {
+		">pwd \nPrints the location fo the Programs directory. Attempts to open the directory in the host file manager."
+	}
 
-    @Override
-    String getName() {
-        "pwd"
-    }
+	@Override
+	String getName() {
+		"pwd"
+	}
 
 }

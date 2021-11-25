@@ -21,56 +21,58 @@ import org.mini2Dx.core.Mdx
 import java.awt.*
 import java.util.logging.Level
 import java.util.logging.Logger
+
 /**
  *
  * @author Torbuntu
  */
 class FindCommand implements Command {
 
-    private final GameRuntime runtime
+	private final GameRuntime runtime
 
-    FindCommand(GameRuntime runtime) {
-        this.runtime = runtime
-    }
+	FindCommand(GameRuntime runtime) {
+		this.runtime = runtime
+	}
 
-    @Override
-    String execute(String[] command) {
-        if (command.length <= 1) {
-            return "[E] Missing - required program name."
-        }
-        if (!containsName(command[1])) {
-            return "[E] Program [${command[1]}] does not exist in Programs directory."
-        }
-        try {
-            File f = new File(runtime.getProgramsPath() + command[1])
-            Desktop.getDesktop().open(f)
-            return f.getAbsolutePath()
-        } catch (IOException ex) {
-            Logger.getLogger(FindCommand.class.getName()).log(Level.SEVERE, null, ex)
-            return "[E] Could not find program directory for [${command[1]}]."
-        }
-    }
+	@Override
+	String execute(String[] command) {
+		if (command.length <= 1) {
+			return "[E] Missing - required program name."
+		}
+		if (!containsName(command[1])) {
+			return "[E] Program [${command[1]}] does not exist in Programs directory."
+		}
+		try {
+			File f = new File(runtime.getProgramsPath() + command[1])
+			Desktop.getDesktop().open(f)
+			return f.getAbsolutePath()
+		} catch (IOException ex) {
+			Logger.getLogger(FindCommand.class.getName()).log(Level.SEVERE, null, ex)
+			return "[E] Could not find program directory for [${command[1]}]."
+		}
+	}
 
-    private boolean containsName(String name) {
-        try {
-            def names = []
-            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream()
-                    .forEach(e -> names.add(e.nameWithoutExtension()))
-            return names.contains(name)
-        } catch (IOException ex) {
-            Logger.getLogger(FindCommand.class.getName()).log(Level.SEVERE, null, ex)
-            return false
-        }
-    }
+	private boolean containsName(String name) {
+		try {
+			def names = []
+			Mdx.files.external(runtime.getProgramsPath()).list().each { e ->
+				names.add(e.nameWithoutExtension())
+			}
+			return names.contains(name)
+		} catch (IOException ex) {
+			Logger.getLogger(FindCommand.class.getName()).log(Level.SEVERE, null, ex)
+			return false
+		}
+	}
 
-    @Override
-    String help() {
-        ">find [option] \nPrints the location of the given program name. Attempts to open the directory in the host file manager."
-    }
+	@Override
+	String help() {
+		">find [option] \nPrints the location of the given program name. Attempts to open the directory in the host file manager."
+	}
 
-    @Override
-    String getName() {
-        "find"
-    }
+	@Override
+	String getName() {
+		"find"
+	}
 
 }

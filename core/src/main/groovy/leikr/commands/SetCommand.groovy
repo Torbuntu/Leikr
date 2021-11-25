@@ -24,50 +24,50 @@ import leikr.properties.ProgramProperties
  */
 class SetCommand implements Command {
 
-    private final List<String> properties
-    private final GameRuntime runtime
+	private final List<String> properties
+	private final GameRuntime runtime
 
-    SetCommand(GameRuntime runtime) {
-        this.runtime = runtime
-        properties = [
-                "author",
-                "use_compiled",
-                "about",
-                "ver",
-                "version",
-                "compile_source"
-        ]
-    }
+	SetCommand(GameRuntime runtime) {
+		this.runtime = runtime
+		properties = [
+				"author",
+				"use_compiled",
+				"about",
+				"ver",
+				"version",
+				"compile_source"
+		]
+	}
 
-    @Override
-    String execute(String[] args) {
-        if (args.length < 3) {
-            return "[E] Not enough arguments."
-        }
-        if (!properties.contains(args[2])) {
-            return "[E] Property [${args[2]}] not found in Program [${args[1]}]"
-        }
-        ProgramProperties props = new ProgramProperties(runtime.getProgramsPath() + args[1])
-        switch (args[2].toLowerCase()) {
-            case "author": props.AUTHOR = args[3]; break
-            case "use_compiled": props.USE_COMPILED = Boolean.valueOf(args[3]); break
-            case "about": props.ABOUT = args[3]; break
-            case "ver": props.VERSION = args[3]; break
-            case "version": props.VERSION = args[3]; break
-            case "compile_source": props.COMPILE_SOURCE = Boolean.valueOf(args[3]); break
-        }
-        props.writeProperties(runtime.getProgramsPath() + args[1])
-        return "[I] Set property [${args[2]}] to [${args[3]}] for program [${args[1]}]"
-    }
+	@Override
+	String execute(String[] args) {
+		if (args.length < 3) {
+			return "[E] Not enough arguments."
+		}
+		if (!properties.contains(args[2])) {
+			return "[E] Property [${args[2]}] not found in Program [${args[1]}]"
+		}
+		ProgramProperties props = new ProgramProperties(runtime.getProgramsPath() + args[1])
+		switch (args[2].toLowerCase()) {
+			case "author": props.author = args[3]; break
+			case "use_compiled": props.useCompiled = Boolean.valueOf(args[3]); break
+			case "about": props.about = args[3]; break
+			case "ver": props.version = args[3]; break
+			case "version": props.version = args[3]; break
+			case "compile_source": props.compileSource = Boolean.valueOf(args[3]); break
+		}
+		props.writeProperties(runtime.getProgramsPath() + args[1])
+		return "[I] Set property [${args[2]}] to [${args[3]}] for program [${args[1]}]"
+	}
 
-    @Override
-    String help() {
-        ">set [Program] [Property] [Value] \nSets the given program's property to the given value."
-    }
+	@Override
+	String help() {
+		">set [Program] [Property] [Value] \nSets the given program's property to the given value."
+	}
 
-    @Override
-    String getName() {
-        "set"
-    }
+	@Override
+	String getName() {
+		"set"
+	}
 
 }

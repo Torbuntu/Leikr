@@ -23,32 +23,32 @@ import leikr.utilities.ExportTool
  */
 class PackageCommand implements Command {
 
-    private final ExportTool exportTool
+	private final ExportTool exportTool
 
-    PackageCommand(ExportTool exportTool) {
-        this.exportTool = exportTool
-    }
+	PackageCommand(ExportTool exportTool) {
+		this.exportTool = exportTool
+	}
 
-    @Override
-    String execute(String[] command) {
-        if (command.length <= 1) {
-            return "[E] Missing - required name argument."
-        }
-        if (command[1].equalsIgnoreCase("all")) {
-            return exportTool.exportAll()
-        } else {
-            return exportTool.export(command[1])
-        }
-    }
+	@Override
+	String execute(String[] command) {
+		if (command.length <= 1) {
+			return "[E] Missing - required name argument."
+		}
+		if (command[1].equalsIgnoreCase("all")) {
+			return exportTool.exportAll()
+		} else {
+			return exportTool.export(command[1])
+		}
+	}
 
-    @Override
-    String help() {
-        ">package [name] \nPackages a program by name into the Packages directory as .lkr package for sharing. Run with `all` argument to export all programs. See `install` command."
-    }
+	@Override
+	String help() {
+		">package [name] \nPackages a program by name into the Packages directory as .lkr package for sharing. Run with `all` argument to export all programs. See `install` command."
+	}
 
-    @Override
-    String getName() {
-        "package"
-    }
+	@Override
+	String getName() {
+		"package"
+	}
 
 }

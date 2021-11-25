@@ -21,22 +21,22 @@ package leikr.commands
  */
 class VersionCommand implements Command {
 
-    //TODO: Make sure to update prior to releases
-    private final String version = "Leikr-1.10.1"
+	//TODO: Make sure to update prior to releases
+	private final String version = "Leikr-1.10.1"
 
-    @Override
-    String execute(String[] command) {
-        version
-    }
+	@Override
+	String execute(String[] command) {
+		version
+	}
 
-    @Override
-    String help() {
-        ">version\nDisplays the current version of Leikr."
-    }
+	@Override
+	String help() {
+		">version\nDisplays the current version of Leikr."
+	}
 
-    @Override
-    String getName() {
-        "version"
-    }
+	@Override
+	String getName() {
+		"version"
+	}
 
 }

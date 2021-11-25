@@ -20,66 +20,69 @@ import org.mini2Dx.core.Mdx
 
 import java.util.logging.Level
 import java.util.logging.Logger
+
 /**
  *
  * @author tor
  */
 class PrintDirectoryCommand implements Command {
 
-    private String out
-    private final GameRuntime runtime
+	private String out
+	private final GameRuntime runtime
 
-    PrintDirectoryCommand(GameRuntime runtime) {
-        this.runtime = runtime
-    }
+	PrintDirectoryCommand(GameRuntime runtime) {
+		this.runtime = runtime
+	}
 
-    @Override
-    String execute(String[] param) {
-        return param.length > 1 ? runLs(param[1]) : runLsPrograms()
-    }
+	@Override
+	String execute(String[] param) {
+		return param.length > 1 ? runLs(param[1]) : runLsPrograms()
+	}
 
-    @Override
-    String help() {
-        ">ls [Directory] \nDisplays the contents of a given directory or the default directory Programs."
-    }
+	@Override
+	String help() {
+		">ls [Directory] \nDisplays the contents of a given directory or the default directory Programs."
+	}
 
-    private String runLsPrograms() {
-        try {
-            out = ""
-            List<String> titles = []
+	private String runLsPrograms() {
+		try {
+			out = ""
+			def titles = []
 
-            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list())
-                    .forEach(e -> titles.add(e.name()))
+			Mdx.files.external(runtime.getProgramsPath()).list().each { e ->
+				titles.add(e.name())
+			}
 
-            titles.stream().sorted().forEach(e -> {
-                out += Mdx.files.external(runtime.getProgramsPath() + "$e/Code/Compiled").exists()
-                        ? e + " *\n" : e + "\n"
-            })
-            return out
-        } catch (IOException ex) {
-            Logger.getLogger(PrintDirectoryCommand.class.getName()).log(Level.WARNING, null, ex)
-            return "[E] Failed to execute command [ ls ]"
-        }
-    }
+			titles.each(e -> {
+				out += Mdx.files.external(runtime.getProgramsPath() + "$e/Code/Compiled").exists()
+						? e + " *\n" : e + "\n"
+			})
+			return out
+		} catch (IOException ex) {
+			Logger.getLogger(PrintDirectoryCommand.class.getName()).log(Level.WARNING, null, ex)
+			return "[E] Failed to execute command [ ls ]"
+		}
+	}
 
-    private String runLs(String dir) {
-        try {
-            out = ""
-            def titles = []
-            Arrays.asList(Mdx.files.external(runtime.getProgramsPath() + dir).list())
-                    .forEach(e -> titles.add(e.name()))
+	private String runLs(String dir) {
+		try {
+			out = ""
+			def titles = []
+			Mdx.files.external(runtime.getProgramsPath() + dir).list().each { e ->
+				titles.add(e.name())
+			}
 
-            titles.stream().sorted().forEach(e -> out += e + "\n")
-            return out
-        } catch (IOException ex) {
-            Logger.getLogger(PrintDirectoryCommand.class.getName()).log(Level.WARNING, null, ex)
-            return "[E] Failed to execute command [ls]"
-        }
-    }
+			titles.each(e -> out += e + "\n")
+			return out
+		} catch (IOException ex) {
+			Logger.getLogger(PrintDirectoryCommand.class.getName()).log(Level.WARNING, null, ex)
+			return "[E] Failed to execute command [ls]"
+		}
+	}
 
-    @Override
-    String getName() {
-        "ls"
-    }
+	@Override
+	String getName() {
+		"ls"
+	}
 
 }

@@ -20,44 +20,45 @@ import org.mini2Dx.core.Mdx
 
 import java.util.logging.Level
 import java.util.logging.Logger
+
 /**
  *
  * @author tor
  */
 class PrintCommand implements Command {
 
-    private final GameRuntime runtime
+	private final GameRuntime runtime
 
-    PrintCommand(GameRuntime runtime) {
-        this.runtime = runtime
-    }
+	PrintCommand(GameRuntime runtime) {
+		this.runtime = runtime
+	}
 
-    @Override
-    String execute(String[] command) {
-        String adjustedPath = runtime.getProgramsPath() + command[1]
-        if (command.length <= 1) {
-            return "[E] Missing - required name argument."
-        }
-        if(!Mdx.files.external(adjustedPath).exists()){
-            return "[E] File [${command[1]}] not found."
-        }
-        try {
-            return Mdx.files.external(adjustedPath).readString()
-        } catch (IOException ex) {
-            Logger.getLogger(PrintCommand.class.getName()).log(Level.SEVERE, null, ex)
-            return "[E] Failed to print contents of file [${command[1]}]"
-        }
+	@Override
+	String execute(String[] command) {
+		String adjustedPath = runtime.getProgramsPath() + command[1]
+		if (command.length <= 1) {
+			return "[E] Missing - required name argument."
+		}
+		if (!Mdx.files.external(adjustedPath).exists()) {
+			return "[E] File [${command[1]}] not found."
+		}
+		try {
+			return Mdx.files.external(adjustedPath).readString()
+		} catch (IOException ex) {
+			Logger.getLogger(PrintCommand.class.getName()).log(Level.SEVERE, null, ex)
+			return "[E] Failed to print contents of file [${command[1]}]"
+		}
 
-    }
+	}
 
-    @Override
-    String help() {
-        ">cat [file] \nPrints the contents of a file to the terminal.\nTerminal does not currently scroll contents."
-    }
+	@Override
+	String help() {
+		">cat [file] \nPrints the contents of a file to the terminal.\nTerminal does not currently scroll contents."
+	}
 
-    @Override
-    String getName() {
-        "cat"
-    }
+	@Override
+	String getName() {
+		"cat"
+	}
 
 }

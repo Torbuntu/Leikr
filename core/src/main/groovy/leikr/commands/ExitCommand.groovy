@@ -23,23 +23,23 @@ import org.mini2Dx.core.Mdx
  */
 class ExitCommand implements Command {
 
-    ExitCommand() {
-    }
+	ExitCommand() {
+	}
 
-    @Override
-    String execute(String[] args) {
-        Mdx.platformUtils.exit(true)
-        return "Goodbye!"
-    }
+	@Override
+	String execute(String[] args) {
+		Mdx.platformUtils.exit(true)
+		return "Goodbye!"
+	}
 
-    @Override
-    String help() {
-        ">exit \nExits the Leikr Game system."
-    }
+	@Override
+	String help() {
+		">exit \nExits the Leikr Game system."
+	}
 
-    @Override
-    String getName() {
-        "exit"
-    }
+	@Override
+	String getName() {
+		"exit"
+	}
 
 }

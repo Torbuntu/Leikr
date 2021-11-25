@@ -21,9 +21,9 @@ package leikr.commands
  */
 interface Command {
 
-    String execute(String[] args)
+	String execute(String[] args)
 
-    String help()
-    
-    String getName()
+	String help()
+
+	String getName()
 }

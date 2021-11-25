@@ -21,69 +21,73 @@ import org.mini2Dx.core.Mdx
 
 import java.util.logging.Level
 import java.util.logging.Logger
+
 /**
  *
  * @author Torbuntu
  */
 class ToolCommand implements Command {
 
-    private String out
+	private String out
 
-    private final GameRuntime runtime
-    private final TerminalManager terminalManager
+	private final GameRuntime runtime
+	private final TerminalManager terminalManager
 
-    ToolCommand(GameRuntime runtime, TerminalManager terminalManager) {
-        this.runtime = runtime
-        this.terminalManager = terminalManager
-    }
+	ToolCommand(GameRuntime runtime, TerminalManager terminalManager) {
+		this.runtime = runtime
+		this.terminalManager = terminalManager
+	}
 
-    @Override
-    String execute(String[] command) {
-        if (command.length == 1) {
-            try {
-                out = ""
-                Arrays.asList(Mdx.files.external(runtime.getDataPath() + "Tools").list()).stream().forEach(e -> out += e.nameWithoutExtension() + "\n")
-                return out
-            } catch (IOException ex) {
-                Logger.getLogger(ToolCommand.class.getName()).log(Level.WARNING, null, ex)
-                return "[E] Failed to list tools."
-            }
-        } else {
-            try {
-                if (!containsName(command[1])) {
-                    return "[E] Tool [${command[1]}] does not exist in Data/Tools/ directory."
-                }
-                runtime.setGameName(command[1])
-                terminalManager.setToolRunning()
-                return "[I] Running tool [${command[1]}]."
-            } catch (Exception ex) {
-                Logger.getLogger(ToolCommand.class.getName()).log(Level.WARNING, null, ex)
-                return "[E] Failed to run tool with name [${command[1]}]"
-            }
+	@Override
+	String execute(String[] command) {
+		if (command.length == 1) {
+			try {
+				out = ""
+				Mdx.files.external(runtime.getDataPath() + "Tools").list().each { e ->
+					out += e.nameWithoutExtension() + "\n"
+				}
+				return out
+			} catch (IOException ex) {
+				Logger.getLogger(ToolCommand.class.getName()).log(Level.WARNING, null, ex)
+				return "[E] Failed to list tools."
+			}
+		} else {
+			try {
+				if (!containsName(command[1])) {
+					return "[E] Tool [${command[1]}] does not exist in Data/Tools/ directory."
+				}
+				runtime.setGameName(command[1])
+				terminalManager.setToolRunning()
+				return "[I] Running tool [${command[1]}]."
+			} catch (Exception ex) {
+				Logger.getLogger(ToolCommand.class.getName()).log(Level.WARNING, null, ex)
+				return "[E] Failed to run tool with name [${command[1]}]"
+			}
 
-        }
-    }
+		}
+	}
 
-    private boolean containsName(String name) {
-        try {
-            def names = []
-            Arrays.asList(Mdx.files.external(runtime.getDataPath() + "Tools").list()).stream()
-                    .forEach(e -> names.add(e.nameWithoutExtension()))
-            return names.contains(name)
-        } catch (IOException ex) {
-            Logger.getLogger(ToolCommand.class.getName()).log(Level.SEVERE, null, ex)
-            return false
-        }
-    }
+	private boolean containsName(String name) {
+		try {
+			def names = []
+			Mdx.files.external(runtime.getDataPath() + "Tools").list().each { e ->
+				names.add(e.nameWithoutExtension())
+			}
+			return names.contains(name)
+		} catch (IOException ex) {
+			Logger.getLogger(ToolCommand.class.getName()).log(Level.SEVERE, null, ex)
+			return false
+		}
+	}
 
-    @Override
-    String help() {
-        ">tool [option] \nLoads and Runs a tool given a name. If no arguments given then will display all installed tools."
-    }
+	@Override
+	String help() {
+		">tool [option] \nLoads and Runs a tool given a name. If no arguments given then will display all installed tools."
+	}
 
-    @Override
-    String getName() {
-        "tool"
-    }
+	@Override
+	String getName() {
+		"tool"
+	}
 
 }

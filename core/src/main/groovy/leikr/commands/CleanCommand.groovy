@@ -36,13 +36,13 @@ class CleanCommand implements Command {
             return "Package directory cleaned."
         } catch (IOException ex) {
             Logger.getLogger(CleanCommand.class.getName()).log(Level.SEVERE, null, ex)
-            return "Failed to clean package directory. Please check logs."
+            return "Failed to clean Package directory. Please check logs."
         }
     }
 
     @Override
     String help() {
-        ">clean \nRemoves all lkr packages from the Packages directory."
+        ">clean \nRemoves all .lkr packages from the Packages directory."
     }
 
     @Override

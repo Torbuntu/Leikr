@@ -24,34 +24,34 @@ import leikr.utilities.ExportTool
  */
 class InstallCommand implements Command {
 
-    private final ExportTool exportTool
-    private final GameRuntime runtime
+	private final ExportTool exportTool
+	private final GameRuntime runtime
 
-    InstallCommand(GameRuntime runtime, ExportTool exportTool) {
-        this.runtime = runtime
-        this.exportTool = exportTool
-    }
+	InstallCommand(GameRuntime runtime, ExportTool exportTool) {
+		this.runtime = runtime
+		this.exportTool = exportTool
+	}
 
-    @Override
-    String execute(String[] command) {
-        if (command.length <= 1) {
-            return "[E] Missing - required name argument."
-        }
-        if (command.length == 3) {
-            return exportTool.importProject(command[1], command[2])
-        } else {
-            return exportTool.importProject(command[1], runtime.getProgramsPath())
-        }
-    }
+	@Override
+	String execute(String[] command) {
+		if (command.length <= 1) {
+			return "[E] Missing - required name argument."
+		}
+		if (command.length == 3) {
+			return exportTool.importProject(command[1], command[2])
+		} else {
+			return exportTool.importProject(command[1], runtime.getProgramsPath())
+		}
+	}
 
-    @Override
-    String help() {
-        ">install [name] [option]\nInstalls a .lkr package from the Packages directory into the Programs directory. Can optionally direct where to install a project given a path."
-    }
+	@Override
+	String help() {
+		">install [name] [option]\nInstalls a .lkr package from the Packages directory into the Programs directory. Can optionally direct where to install a project given a path."
+	}
 
-    @Override
-    String getName() {
-        "install"
-    }
+	@Override
+	String getName() {
+		"install"
+	}
 
 }

@@ -22,56 +22,58 @@ import org.mini2Dx.core.Mdx
 
 import java.util.logging.Level
 import java.util.logging.Logger
+
 /**
  *
  * @author tor
  */
 class RunCommand implements Command {
 
-    private final GameRuntime runtime
-    private final TerminalManager terminalManager
-    private final EngineLoader engineLoader
+	private final GameRuntime runtime
+	private final TerminalManager terminalManager
+	private final EngineLoader engineLoader
 
-    RunCommand(GameRuntime runtime, TerminalManager terminalManager, EngineLoader engineLoader) {
-        this.runtime = runtime
-        this.terminalManager = terminalManager
-        this.engineLoader = engineLoader
-    }
+	RunCommand(GameRuntime runtime, TerminalManager terminalManager, EngineLoader engineLoader) {
+		this.runtime = runtime
+		this.terminalManager = terminalManager
+		this.engineLoader = engineLoader
+	}
 
-    @Override
-    String execute(String[] command) {
-        if (command.length == 1) {
-            return "[E] Missing - required program title."
-        }
-        try {
-            System.out.println(runtime.getProgramsPath())
-            def names = []
-            Arrays.asList(Mdx.files.external(runtime.getProgramsPath()).list()).stream()
-                    .forEach(e -> names.add(e.nameWithoutExtension()))
-            if (!names.contains(command[1])) {
-                return "[E] Program [${command[1]}] does not exist in Programs directory."
-            }
-            runtime.setGameName(command[1])
-            if (command.length > 2) {
-                String[] args = Arrays.copyOfRange(command, 2, command.length)
-                engineLoader.setEngineArgs(args)
-            }
-            terminalManager.setProgramRunning()
-            return "[I] Loading..."
-        } catch (IOException ex) {
-            Logger.getLogger(RunCommand.class.getName()).log(Level.WARNING, null, ex)
-            return "[E] Failed to run program with name [${command[1]}]"
-        }
-    }
+	@Override
+	String execute(String[] command) {
+		if (command.length == 1) {
+			return "[E] Missing - required program title."
+		}
+		try {
+			System.out.println(runtime.getProgramsPath())
+			def names = []
+			Mdx.files.external(runtime.getProgramsPath()).list().each { e ->
+				names.add(e.nameWithoutExtension())
+			}
+			if (!names.contains(command[1])) {
+				return "[E] Program [${command[1]}] does not exist in Programs directory."
+			}
+			runtime.setGameName(command[1])
+			if (command.length > 2) {
+				String[] args = command[2..-1]
+				engineLoader.setEngineArgs(args)
+			}
+			terminalManager.setProgramRunning()
+			return "[I] Loading..."
+		} catch (IOException ex) {
+			Logger.getLogger(RunCommand.class.getName()).log(Level.WARNING, null, ex)
+			return "[E] Failed to run program with name [${command[1]}]"
+		}
+	}
 
-    @Override
-    String help() {
-        ">run [option] [args...] \nLoads and Runs a program given a title. Optional args can be passed."
-    }
+	@Override
+	String help() {
+		">run [option] [args...] \nLoads and Runs a program given a title. Optional args can be passed."
+	}
 
-    @Override
-    String getName() {
-        "run"
-    }
+	@Override
+	String getName() {
+		"run"
+	}
 
 }
