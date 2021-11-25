@@ -115,7 +115,7 @@ class EngineScreen extends BasicGameScreen {
 	@Override
 	void preTransitionOut(Transition transition) {
 		Gdx.input.setCursorCatched(false)
-		runtime.getCursor().setVisible(false)
+		//runtime.getCursor().setVisible(false)
 	}
 
 	@Override
@@ -173,13 +173,13 @@ class EngineScreen extends BasicGameScreen {
 							Gdx.graphics.setWindowedMode(240 * 4, 160 * 4)
 						}
 					}
-					if (isKeyJustPressed(Keys.LEFT)) {
+					if (isKeyJustPressed(Keys.LEFT) || runtime.getInputManager().buttonPress("LEFT")) {
 						CONFIRM = true
 					}
-					if (isKeyJustPressed(Keys.RIGHT)) {
+					if (isKeyJustPressed(Keys.RIGHT) || runtime.getInputManager().buttonPress("RIGHT")) {
 						CONFIRM = false
 					}
-					if (isKeyJustPressed(Keys.ENTER) || isKeyJustPressed(Keys.K)) {
+					if (isKeyJustPressed(Keys.ENTER) || isKeyJustPressed(Keys.K) || runtime.getInputManager().buttonPress("START")) {
 						resume()
 					}
 				}
@@ -265,7 +265,7 @@ class EngineScreen extends BasicGameScreen {
 
 	private void pause() {
 		Gdx.input.setCursorCatched(false)
-		runtime.getCursor().setVisible(false)
+		//runtime.getCursor().setVisible(false)
 		engineState = EngineState.PAUSE
 		engine.pauseAudio()
 		engine.onPause()

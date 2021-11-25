@@ -29,7 +29,9 @@ import org.mini2Dx.core.screen.Transition
  * 
  * This is subject to change or removal in future releases pending any feedback.
  * I liked the idea of a graphical transition to selecting a game and into the 
- * loading screen. 
+ * loading screen.
+ *
+ * Edit: I kind of hate this now. Will most likely nuke it.
  *
  * @author tor
  */
@@ -68,7 +70,7 @@ class EnterTransition implements Transition {
 
     @Override
     boolean isFinished() {
-        return box > 80
+        box > 80
     }
 
 }

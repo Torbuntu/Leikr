@@ -24,35 +24,19 @@ import java.util.logging.Logger
  */
 class SystemProperties {
 
-    private static String launchTitle
+	static String launchTitle
 
-    private boolean debug
+	boolean debug, devMode
 
-    private boolean devMode
-
-    SystemProperties() {
-        Properties prop = new Properties()
-        try (InputStream stream = new FileInputStream(new File("Data/system.properties"))) {
-            prop.load(stream)
-            launchTitle = prop.getProperty("launch_title") ?: ""
-            debug = Boolean.valueOf(prop.getProperty("debug_mode")) ?: false
-            devMode = Boolean.valueOf(prop.getProperty("dev_mode")) ?: false
-        } catch (IOException | NumberFormatException ex) {
-            Logger.getLogger(SystemProperties.class.getName()).log(Level.WARNING, null, ex)
-        }
-    }
-
-    static String getLaunchTitle() {
-        launchTitle
-    }
-
-
-    boolean isDebug() {
-        debug
-    }
-
-    boolean isDevMode() {
-        devMode
-    }
-
+	SystemProperties() {
+		Properties prop = new Properties()
+		try (InputStream stream = new FileInputStream(new File("Data/system.properties"))) {
+			prop.load(stream)
+			launchTitle = prop.getProperty("launch_title") ?: ""
+			debug = Boolean.valueOf(prop.getProperty("debug_mode")) ?: false
+			devMode = Boolean.valueOf(prop.getProperty("dev_mode")) ?: false
+		} catch (IOException | NumberFormatException ex) {
+			Logger.getLogger(SystemProperties.class.getName()).log(Level.WARNING, null, ex)
+		}
+	}
 }

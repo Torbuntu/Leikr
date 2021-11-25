@@ -184,11 +184,14 @@ class GameRuntime extends ScreenBasedGame {
 		// Initialize screens
 		initializeScreens()
 
+		//TODO: This seems to cause a lot of confusion for users. I think I'll remove it since there are options
+		// for a custom cursor and the cursor can be "catched" in running programs.
 		//Transparent image to hide host system cursor.
-		Pixmap tmp = Mdx.graphics.newPixmap(Mdx.files.local("Internal/Cursor.png"))
-		cursor = Mdx.graphics.newCustomCursor(tmp, tmp, 0, 0)
-		tmp.dispose()
-		cursor.setVisible(false)
+//		Pixmap tmp = Mdx.graphics.newPixmap(Mdx.files.local("Internal/Cursor.png"))
+//		cursor = Mdx.graphics.newCustomCursor(tmp, tmp, 0, 0)
+//		tmp.dispose()
+//		cursor.setVisible(false)
+
 	}
 
 	@Override

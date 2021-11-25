@@ -46,7 +46,7 @@ class ProgramProperties {
 			type = prop.getProperty("type") ?: "Program"
 			author = prop.getProperty("author") ?: "unknown"
 			version = prop.getProperty("version") ?: "0.1"
-			players = Integer.parseInt(prop?.getProperty("players")) ?: 1
+			players = Integer.parseInt(prop?.getProperty("players"))
 			about = prop.getProperty("about") ?: "A Leikr Program."
 		} catch (IOException | NumberFormatException ex) {
 			Logger.getLogger(ProgramProperties.class.getName()).log(Level.WARNING, "Malformed program.properties file for $gameTitle: ${ex.getCause()}")
