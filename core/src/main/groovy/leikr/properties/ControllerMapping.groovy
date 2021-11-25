@@ -1,6 +1,5 @@
 package leikr.properties
 
-import leikr.screens.ControllerMappingScreen
 import org.mini2Dx.core.Mdx
 
 class ControllerMapping {
@@ -66,25 +65,25 @@ class ControllerMapping {
         Properties prop = new Properties()
         try (InputStream stream = new FileInputStream(new File("Data/Controllers/${modelName}.properties"))) {
             prop.load(stream)
-            x = Integer.parseInt(prop.getProperty("btn_x")) ?: 3
-            a = Integer.parseInt(prop.getProperty("btn_a")) ?: 1
-            b = Integer.parseInt(prop.getProperty("btn_b")) ?: 0
-            y = Integer.parseInt(prop.getProperty("btn_y")) ?: 2
+            x = Integer.parseInt(prop.getProperty("btn_x"))
+            a = Integer.parseInt(prop.getProperty("btn_a"))
+            b = Integer.parseInt(prop.getProperty("btn_b"))
+            y = Integer.parseInt(prop.getProperty("btn_y"))
 
-            leftBumper = Integer.parseInt(prop.getProperty("btn_lbumper")) ?: 9
-            rightBumper = Integer.parseInt(prop.getProperty("btn_rbumper")) ?: 10
+            leftBumper = Integer.parseInt(prop.getProperty("btn_lbumper"))
+            rightBumper = Integer.parseInt(prop.getProperty("btn_rbumper"))
 
-            select = Integer.parseInt(prop.getProperty("btn_select")) ?: 4
-            start = Integer.parseInt(prop.getProperty("btn_start")) ?: 6
+            select = Integer.parseInt(prop.getProperty("btn_select"))
+            start = Integer.parseInt(prop.getProperty("btn_start"))
 
             // default to analog stick directions
-            up = Integer.parseInt(prop.getProperty("btn_up")) ?: -1
-            down = Integer.parseInt(prop.getProperty("btn_down")) ?: 1
-            left = Integer.parseInt(prop.getProperty("btn_left")) ?: -1
-            right = Integer.parseInt(prop.getProperty("btn_right")) ?: 1
+            up = Integer.parseInt(prop.getProperty("btn_up"))
+            down = Integer.parseInt(prop.getProperty("btn_down"))
+            left = Integer.parseInt(prop.getProperty("btn_left"))
+            right = Integer.parseInt(prop.getProperty("btn_right"))
 
-            horizontalAxis = Integer.parseInt(prop.getProperty("axis_horizontal")) ?: 0
-            verticalAxis = Integer.parseInt(prop.getProperty("axis_vertical")) ?: 1
+            horizontalAxis = Integer.parseInt(prop.getProperty("axis_horizontal"))
+            verticalAxis = Integer.parseInt(prop.getProperty("axis_vertical"))
         } catch (Exception ex) {
             ex.printStackTrace()
         }

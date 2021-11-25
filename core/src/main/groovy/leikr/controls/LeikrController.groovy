@@ -51,6 +51,7 @@ class LeikrController implements GamePadListener {
 					(controllerMapping.getLeft()): "LEFT",
 					(controllerMapping.getRight()): "RIGHT")
 		}
+		println buttonLookup
 	}
 
 	LeikrController(int playerId, String model) {

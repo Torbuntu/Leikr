@@ -23,78 +23,69 @@ import org.mini2Dx.core.graphics.Colors
 import org.mini2Dx.core.graphics.viewport.FitViewport
 import org.mini2Dx.core.screen.BasicGameScreen
 import org.mini2Dx.core.screen.ScreenManager
-import org.mini2Dx.core.screen.Transition
 import org.mini2Dx.gdx.Input.Keys
+
 /**
  *
  * @author tor
  */
 class ErrorScreen extends BasicGameScreen {
 
-    public static int ID = 3
-    private boolean MENU = false
-    private String errorMessage
-    private final FitViewport viewport
-    private final GameRuntime runtime
+	public static int ID = 3
+	private boolean MENU = false
+	private String errorMessage
+	private final FitViewport viewport
+	private final GameRuntime runtime
 
-    ErrorScreen(FitViewport vp, GameRuntime runtime) {
-        viewport = vp
-        errorMessage = ""
-        this.runtime = runtime
-    }
+	ErrorScreen(FitViewport vp, GameRuntime runtime) {
+		viewport = vp
+		errorMessage = ""
+		this.runtime = runtime
+	}
 
-    void setErrorMessage(String message) {
-        errorMessage = message
-    }
+	void setErrorMessage(String message) {
+		errorMessage = message
+	}
 
-    static void reloadEngine(ScreenManager sm) {
-        sm.enterGameScreen(LoadScreen.ID, null, null)
-    }
+	static void reloadEngine(ScreenManager sm) {
+		sm.enterGameScreen(LoadScreen.ID, null, null)
+	}
 
-    @Override
-    void preTransitionIn(Transition transitionIn) {
-    }
+	@Override
+	void initialise(GameContainer gc) {
+	}
 
-    @Override
-    void preTransitionOut(Transition transitionOut) {
-    }
+	@Override
+	void update(GameContainer gc, ScreenManager sm, float f) {
+		if (MENU || Mdx.input.isKeyJustPressed(Keys.ESCAPE) || Mdx.input.isKeyJustPressed(Keys.ENTER)
+				|| Mdx.input.isKeyJustPressed(Keys.SPACE) || Mdx.input.isKeyJustPressed(Keys.Q)
+				|| runtime.getInputManager().buttonAny()
+		) {
+			MENU = false
+			sm.enterGameScreen(runtime.isDevMode() ? TerminalScreen.ID : MenuScreen.ID, null, null)
+		}
 
-    @Override
-    void initialise(GameContainer gc) {
-    }
+		if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyJustPressed(Keys.R) || Mdx.input.isKeyJustPressed(Keys.F5)) {
+			reloadEngine(sm)
+		}
 
-    @Override
-    void update(GameContainer gc, ScreenManager sm, float f) {
-        if (MENU || Mdx.input.isKeyJustPressed(Keys.ESCAPE) || Mdx.input.isKeyJustPressed(Keys.ENTER) || Mdx.input.isKeyJustPressed(Keys.SPACE) || Mdx.input.isKeyJustPressed(Keys.Q)) {
-            MENU = false
-            sm.enterGameScreen(runtime.isDevMode() ? TerminalScreen.ID : MenuScreen.ID, null, null)
-        }
+	}
 
-        if (Mdx.input.isKeyDown(Keys.CONTROL_LEFT) && Mdx.input.isKeyJustPressed(Keys.R) || Mdx.input.isKeyJustPressed(Keys.F5)) {
-            reloadEngine(sm)
-        }
-
-    }
-
-    @Override
-    void interpolate(GameContainer gc, float f) {
-    }
-
-    @Override
-    void render(GameContainer gc, Graphics g) {
-        viewport.apply(g)
-        g.with{
+	@Override
+	void render(GameContainer gc, Graphics g) {
+		viewport.apply(g)
+		g.with {
 			setColor(Colors.RED())
-            drawString("Message:  $errorMessage", 0, 0, 232)
-            setColor(Colors.BLACK())
-            drawRect(0, 152, runtime.WIDTH, 8)
-            setColor(Colors.GREEN())
-            drawString(":q to quit", 0, 152)
-        }
-    }
+			drawString("Message:  $errorMessage", 0, 0, 232)
+			setColor(Colors.BLACK())
+			drawRect(0, 152, runtime.WIDTH, 8)
+			setColor(Colors.GREEN())
+			drawString(":q to quit", 0, 152)
+		}
+	}
 
-    @Override
-    int getId() {
-        ID
-    }
+	@Override
+	int getId() {
+		ID
+	}
 }

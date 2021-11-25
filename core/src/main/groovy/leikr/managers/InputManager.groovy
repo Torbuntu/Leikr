@@ -50,15 +50,17 @@ class InputManager implements GamePadConnectionListener {
 		controllerB = new LeikrController(1)
 
 		if (Mdx.input.getGamePads().size() > 0) {
-			Mdx.input.getGamePads().get(0).addListener(controllerA)
+			Mdx.input.getGamePads().get(0).with {
+				removeListener(controllerA)
+				addListener(controllerA)
+			}
 			if (Mdx.input.getGamePads().size() > 1) {
-				Mdx.input.getGamePads().get(1).addListener(controllerB)
+				Mdx.input.getGamePads().get(1).with {
+					removeListener(controllerB)
+					addListener(controllerB)
+				}
 			}
 		}
-	}
-
-	void setMouseViewport(StretchViewport viewport) {
-		mouse.setViewport(viewport)
 	}
 
 	LeikrKeyboard getKeyboard() {
