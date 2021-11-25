@@ -4,9 +4,6 @@ buildscript {
         //jcenter()
         gradlePluginPortal()
     }
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:5.2.0'
-    }
 }
 
 allprojects {
@@ -32,16 +29,9 @@ allprojects {
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
 
     }
-    
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
-        }
-    }
 }
 
 project(":core") {
-    apply plugin: 'java'
     apply plugin: 'groovy'
 
     dependencies {

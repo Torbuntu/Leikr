@@ -1,64 +1,63 @@
 plugins {
-    id 'com.github.johnrengelman.shadow'
-    id "org.beryx.jlink" version "2.22.2"
+	id 'com.github.johnrengelman.shadow' version '7.1.0'
+	id "org.beryx.jlink" version "2.22.2"
 }
 
 targetCompatibility = 16
 sourceCompatibility = 16
 
 shadowJar {
-    // minimize() //I'd like to minimize, but it is too aggressive currently and requires older JDK
-    archiveBaseName = 'Leikr'
-    classifier = null
-    archiveVersion = null
-    //Exclude Asset directories from inside the jar.
-    exclude 'Data'
-    exclude 'Programs'
-    exclude 'Packages'
-    exclude 'Sys'
-    exclude 'Leikr'
-    exclude 'Leikr.bat'
+	//I'd like to minimize, but it is very aggressive and only saves 1M right now
+//	minimize{
+//		exclude(dependency('org.apache.groovy:.*:.*'))
+//	}
+	archiveBaseName = 'Leikr'
+	classifier = null
+	archiveVersion = null
+	//Exclude Asset directories from inside the jar.
+	exclude 'Data'
+	exclude 'Programs'
+	exclude 'Leikr'
+	exclude 'Leikr.bat'
 }
 
 task deployLeikr {
-    dependsOn shadowJar
-    doLast {
-        println "From $projectDir/../assets"
-        println "To $projectDir/../deploy"
-        copy {
-            from "$projectDir/build/libs"
-            into "$projectDir/../deploy"
-            exclude "desktop.jar"
-        }
-        copy {
-            from "$projectDir/../assets"
-            into "$projectDir/../deploy"
-            exclude "*gamecontrollerdb.txt*"
-            exclude "*Internal"
-        } 
-    }
+	dependsOn shadowJar
+	doLast {
+		println "From $projectDir/../assets"
+		println "To $projectDir/../deploy"
+		copy {
+			from "$projectDir/build/libs"
+			into "$projectDir/../deploy"
+			exclude "desktop.jar"
+		}
+		copy {
+			from "$projectDir/../assets"
+			into "$projectDir/../deploy"
+			exclude "*gamecontrollerdb.txt*"
+			exclude "*Internal"
+		}
+	}
 }
 
-sourceSets.main.groovy.srcDirs = [ "src/main/groovy" ]
-
 mainClassName = "leikr.desktop.DesktopLauncher"
-project.ext.assetsDir = new File("$projectDir/../assets");
+project.ext.assetsDir = new File("$projectDir/../assets")
 
 sourceSets.main.resources.srcDirs = [project.ext.assetsDir.getAbsolutePath()]
 
 task launchDesktop(dependsOn: classes, type: JavaExec) {
-    mainClass = project.mainClassName
-    classpath = sourceSets.main.runtimeClasspath
-    standardInput = System.in
-    workingDir = project.assetsDir
-    ignoreExitValue = true
-    //args 'insecure'//Security is now an opt-out feature
+	mainClass = project.mainClassName
+	classpath = sourceSets.main.runtimeClasspath
+	standardInput = System.in
+	workingDir = project.assetsDir
+	ignoreExitValue = true
+	//args 'insecure'//Security is now an opt-out feature
 }
 
 
 jlink {
-    launcher {
-        options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
-        name = 'Leikr'
-    }
+	launcher {
+		options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
+		name = 'Leikr'
+	}
 }
