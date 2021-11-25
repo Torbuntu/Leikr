@@ -27,56 +27,56 @@ import leikr.GameRuntime
  */
 class LeikrWindowListener implements Lwjgl3Mini2DxWindowListener {
 
-    private final GameRuntime runtime
+	private final GameRuntime runtime
 
-    LeikrWindowListener(GameRuntime runtime) {
-        this.runtime = runtime
-    }
+	LeikrWindowListener(GameRuntime runtime) {
+		this.runtime = runtime
+	}
 
-    @Override
-    void filesDropped(String[] files) {
-        runtime.setFileDroppedTitle(files[0].substring(files[0].lastIndexOf('/') + 1, files[0].length()))
-        log("New runtime title: " + runtime.getFileDroppedTitle())
-        Arrays.asList(files).stream().forEach(message -> log("Found file: $message"))
-    }
+	@Override
+	void filesDropped(String[] files) {
+		runtime.setFileDroppedTitle(files[0].substring(files[0].lastIndexOf('/') + 1, files[0].length()))
+		log("New runtime title: " + runtime.getFileDroppedTitle())
+		files.each(message -> log("Found file: $message"))
+	}
 
-    private static void log(String message) {
-        Logger.getLogger(LeikrWindowListener.class.getName()).log(Level.INFO, message)
-    }
+	private static void log(String message) {
+		Logger.getLogger(LeikrWindowListener.class.getName()).log(Level.INFO, message)
+	}
 
-    @Override
-    boolean closeRequested() {
-        return true
-    }
+	@Override
+	boolean closeRequested() {
+		return true
+	}
 
-    @Override
-    void created(Lwjgl3Mini2DxWindow lmdw) {
-    }
+	@Override
+	void created(Lwjgl3Mini2DxWindow lmdw) {
+	}
 
-    @Override
-    void resized(Lwjgl3Mini2DxWindow lmdw) {
-    }
+	@Override
+	void resized(Lwjgl3Mini2DxWindow lmdw) {
+	}
 
-    @Override
-    void iconified(boolean bln) {
-    }
+	@Override
+	void iconified(boolean bln) {
+	}
 
-    @Override
-    void maximized(boolean bln) {
-    }
+	@Override
+	void maximized(boolean bln) {
+	}
 
-    @Override
-    void focusLost() {
-        log("[I] Focus lost")
-    }
+	@Override
+	void focusLost() {
+		log("[I] Focus lost")
+	}
 
-    @Override
-    void focusGained() {
-        log("[I] Window focused")
-    }
+	@Override
+	void focusGained() {
+		log("[I] Window focused")
+	}
 
-    @Override
-    void refreshRequested() {
-    }
+	@Override
+	void refreshRequested() {
+	}
 
 }

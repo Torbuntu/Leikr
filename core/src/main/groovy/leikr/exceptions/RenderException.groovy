@@ -21,7 +21,7 @@ package leikr.exceptions
  */
 class RenderException extends RuntimeException {
 
-    RenderException(String message) {
-        super(message)
-    }
+	RenderException(String message) {
+		super(message)
+	}
 }

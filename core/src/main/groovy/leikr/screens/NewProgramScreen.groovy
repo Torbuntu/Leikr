@@ -32,176 +32,180 @@ import org.mini2Dx.gdx.InputProcessor
 
 import java.util.logging.Level
 import java.util.logging.Logger
+
 /**
  *
  * @author tor
  */
 class NewProgramScreen extends BasicGameScreen {
 
-    static int ID = 5
-    private static GeneratorStep generatorStep
-    String prompt, name, template, errorMessage
-    private String newLocation
-    private final FitViewport viewport
-    private final NewProgramGenerator generator
+	static int ID = 5
+	private static GeneratorStep generatorStep
+	String prompt, name, template, errorMessage
+	private String newLocation
+	private final FitViewport viewport
+	private NewProgramGenerator generator
+	private GameRuntime runtime
 
-    NewProgramScreen(FitViewport vp, GameRuntime runtime) {
-        viewport = vp
-        generator = new NewProgramGenerator(runtime)
-    }
+	NewProgramScreen(FitViewport vp, GameRuntime runtime) {
+		this.runtime = runtime
+		viewport = vp
+	}
 
-    @Override
-    void initialise(GameContainer gc) {
-    }
+	@Override
+	void initialise(GameContainer gc) {
+	}
 
-    @Override
-    void preTransitionOut(Transition transOut) {
+	@Override
+	void preTransitionOut(Transition transOut) {
 
-    }
+	}
 
-    @Override
-    void preTransitionIn(Transition trns) {
-        prompt = ""
-        name = ""
-        template = ""
-        generatorStep = GeneratorStep.TEMPLATE
-        Mdx.input.setInputProcessor(new InputProcessor() {
-            @Override
-            boolean keyDown(int i) {
-                if (generatorStep == GeneratorStep.FINISHED) {
-                    if (i == Keys.Q || i == Keys.SPACE) {
-                        generatorStep = GeneratorStep.BACK
-                    }
-                }
-                if (i == Keys.ESCAPE) {
-                    generatorStep = GeneratorStep.BACK
-                }
-                if (i == Keys.ENTER) {
-                    progressStep()
-                }
-                if (i == Keys.BACKSPACE && prompt.length() > 0) {
-                    prompt = prompt.substring(0, prompt.length() - 1)
-                }
-                return false
-            }
+	@Override
+	void preTransitionIn(Transition trns) {
+		prompt = ""
+		name = ""
+		template = ""
+		generator = new NewProgramGenerator(runtime)
+		generatorStep = GeneratorStep.TEMPLATE
+		Mdx.input.setInputProcessor(new InputProcessor() {
+			@Override
+			boolean keyDown(int i) {
+				if (generatorStep == GeneratorStep.FINISHED) {
+					if (i == Keys.Q || i == Keys.SPACE) {
+						generatorStep = GeneratorStep.BACK
+					}
+				}
+				if (i == Keys.ESCAPE) {
+					generatorStep = GeneratorStep.BACK
+				}
+				if (i == Keys.ENTER) {
+					progressStep()
+				}
+				if (i == Keys.BACKSPACE && prompt.length() > 0) {
+					prompt = prompt.substring(0, prompt.length() - 1)
+				}
+				return false
+			}
 
-            @Override
-            boolean keyTyped(char c) {
-                if (generatorStep != GeneratorStep.FINISHED) {
-                    if ((int) c >= 32 && (int) c < 127) {
-                        prompt = prompt + c
-                    }
-                }
-                return true
-            }
+			@Override
+			boolean keyTyped(char c) {
+				if (generatorStep != GeneratorStep.FINISHED) {
+					if ((int) c >= 32 && (int) c < 127) {
+						prompt = prompt + c
+					}
+				}
+				return true
+			}
 
-            @Override
-            boolean keyUp(int keycode) {
-                return false
-            }
+			@Override
+			boolean keyUp(int keycode) {
+				return false
+			}
 
-            @Override
-            boolean touchDown(int screenX, int screenY, int pointer, int button) {
-                return false
-            }
+			@Override
+			boolean touchDown(int screenX, int screenY, int pointer, int button) {
+				return false
+			}
 
-            @Override
-            boolean touchUp(int screenX, int screenY, int pointer, int button) {
-                return false
-            }
+			@Override
+			boolean touchUp(int screenX, int screenY, int pointer, int button) {
+				return false
+			}
 
-            @Override
-            boolean touchDragged(int screenX, int screenY, int pointer) {
-                return false
-            }
+			@Override
+			boolean touchDragged(int screenX, int screenY, int pointer) {
+				return false
+			}
 
-            @Override
-            boolean mouseMoved(int screenX, int screenY) {
-                return false
-            }
+			@Override
+			boolean mouseMoved(int screenX, int screenY) {
+				return false
+			}
 
-            @Override
-            boolean scrolled(float amount, float i) {
-                return false
-            }
-        })
+			@Override
+			boolean scrolled(float amount, float i) {
+				return false
+			}
+		})
 
-    }
+	}
 
-    @Override
-    void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
-        switch (generatorStep) {
-            case GeneratorStep.BACK:
-				sm.enterGameScreen(TerminalScreen.ID, null, null)
+	@Override
+	void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
+		switch (generatorStep) {
+			case GeneratorStep.BACK:
+				// Be GUI default, return to main menu
+				sm.enterGameScreen(MenuScreen.ID, null, null)
 				break
-            case GeneratorStep.CREATE:
-                try {
-                    newLocation = generator.setNewProgramFileName(name, template)
-                    generator.writeProperties(name)
-                    generatorStep = GeneratorStep.FINISHED
-                } catch (IOException ex) {
-                    Logger.getLogger(NewProgramScreen.class.getName()).log(Level.SEVERE, null, ex)
-                    ErrorScreen es = (ErrorScreen) sm.getGameScreen(ErrorScreen.ID)
-                    es.setErrorMessage(ex.getMessage())
-                    sm.enterGameScreen(ErrorScreen.ID, null, null)
-                }
+			case GeneratorStep.CREATE:
+				try {
+					newLocation = generator.setNewProgramFileName(name, template)
+					generator.writeProperties(name)
+					generatorStep = GeneratorStep.FINISHED
+				} catch (IOException ex) {
+					Logger.getLogger(NewProgramScreen.class.getName()).log(Level.SEVERE, null, ex)
+					ErrorScreen es = (ErrorScreen) sm.getGameScreen(ErrorScreen.ID)
+					es.setErrorMessage(ex.getMessage())
+					sm.enterGameScreen(ErrorScreen.ID, null, null)
+				}
 				break
-            case GeneratorStep.ERROR:
-                ErrorScreen es = (ErrorScreen) sm.getGameScreen(ErrorScreen.ID)
-                es.setErrorMessage(errorMessage)
-                sm.enterGameScreen(ErrorScreen.ID, null, null)
+			case GeneratorStep.ERROR:
+				ErrorScreen es = (ErrorScreen) sm.getGameScreen(ErrorScreen.ID)
+				es.setErrorMessage(errorMessage)
+				sm.enterGameScreen(ErrorScreen.ID, null, null)
 				break
-        }
-    }
+		}
+	}
 
-    @Override
-    void interpolate(GameContainer gc, float f) {
-    }
+	@Override
+	void interpolate(GameContainer gc, float f) {
+	}
 
-    @Override
-    void render(GameContainer gc, Graphics g) {
-        viewport.apply(g)
-        renderSteps(g)
-    }
+	@Override
+	void render(GameContainer gc, Graphics g) {
+		viewport.apply(g)
+		renderSteps(g)
+	}
 
-    void renderSteps(Graphics g) {
-        g.setColor(Colors.GREEN())
-        switch (generatorStep) {
-            case GeneratorStep.TEMPLATE:
-                g.drawString("Enter Template (Default): ", 0, 0)
+	void renderSteps(Graphics g) {
+		g.setColor(Colors.GREEN())
+		switch (generatorStep) {
+			case GeneratorStep.TEMPLATE:
+				g.drawString("Enter Template (Default): ", 0, 0)
 				break
-            case GeneratorStep.NAME:
-                g.drawString("Enter New Program Name: ", 0, 0)
+			case GeneratorStep.NAME:
+				g.drawString("Enter New Program Name: ", 0, 0)
 				break
-            case GeneratorStep.TITLE:
-                g.drawString("Enter Title (unknown): ", 0, 0)
+			case GeneratorStep.TITLE:
+				g.drawString("Enter Title (unknown): ", 0, 0)
 				break
-            case GeneratorStep.TYPE:
-                g.drawString("Enter Type (Program): ", 0, 0)
+			case GeneratorStep.TYPE:
+				g.drawString("Enter Type (Program): ", 0, 0)
 				break
-            case GeneratorStep.AUTHOR:
-                g.drawString("Enter Author (unknown): ", 0, 0)
+			case GeneratorStep.AUTHOR:
+				g.drawString("Enter Author (unknown): ", 0, 0)
 				break
-            case GeneratorStep.VERSION:
-                g.drawString("Enter Version (0.1): ", 0, 0)
+			case GeneratorStep.VERSION:
+				g.drawString("Enter Version (0.1): ", 0, 0)
 				break
-            case GeneratorStep.PLAYERS:
-                g.drawString("Enter Players (1): ", 0, 0)
+			case GeneratorStep.PLAYERS:
+				g.drawString("Enter Players (1): ", 0, 0)
 				break
-            case GeneratorStep.ABOUT:
-                g.drawString("Enter About (A Leikr Program.): ", 0, 0)
+			case GeneratorStep.ABOUT:
+				g.drawString("Enter About (A Leikr Program.): ", 0, 0)
 				break
-            case GeneratorStep.MAX_SPRITES:
-                g.drawString("Enter Max Sprites (128): ", 0, 0)
+			case GeneratorStep.MAX_SPRITES:
+				g.drawString("Enter Max Sprites (128): ", 0, 0)
 				break
-            case GeneratorStep.COMPILE_SOURCE:
-                g.drawString("Enter Compile Source (false): ", 0, 0)
+			case GeneratorStep.COMPILE_SOURCE:
+				g.drawString("Enter Compile Source (false): ", 0, 0)
 				break
-            case GeneratorStep.USE_COMPILED:
-                g.drawString("Enter Use Compiled (false): ", 0, 0)
+			case GeneratorStep.USE_COMPILED:
+				g.drawString("Enter Use Compiled (false): ", 0, 0)
 				break
-            case GeneratorStep.FINISHED:
-				g.with{
+			case GeneratorStep.FINISHED:
+				g.with {
 					drawString(newLocation, 0, 0, 232)
 					setColor(Colors.BLACK())
 					drawRect(0, 152, 240, 8)
@@ -209,18 +213,18 @@ class NewProgramScreen extends BasicGameScreen {
 					drawString(":q to quit", 0, 152)
 				}
 				break
-        }
-        g.drawString(prompt, 0, 12, 232)
-    }
+		}
+		g.drawString(prompt, 0, 12, 232)
+	}
 
-    void progressStep() {
-        switch (generatorStep) {
-            case GeneratorStep.TEMPLATE: 
-                template = prompt.length() == 0 ? "Default" : prompt
-                generatorStep = GeneratorStep.NAME
+	void progressStep() {
+		switch (generatorStep) {
+			case GeneratorStep.TEMPLATE:
+				template = prompt.length() == 0 ? "Default" : prompt
+				generatorStep = GeneratorStep.NAME
 				break
-            case GeneratorStep.NAME: 
-                if (prompt.length() > 0) {
+			case GeneratorStep.NAME:
+				if (prompt.length() > 0) {
 					try {
 						for (FileHandle pn : Mdx.files.local("Programs").list()) {
 							if (pn.name().equalsIgnoreCase(prompt)) {
@@ -237,69 +241,70 @@ class NewProgramScreen extends BasicGameScreen {
 					name = prompt
 					generatorStep = GeneratorStep.TITLE
 				}
-            
-				break
-            case GeneratorStep.TITLE: 
-                generator.setTitle(prompt.length() == 0 ? "unknown" : prompt)
-                generatorStep = GeneratorStep.TYPE
-				 break
-            case GeneratorStep.TYPE: 
-                generator.setType(prompt.length() == 0 ? "Program" : prompt)
-                generatorStep = GeneratorStep.AUTHOR
-				break
-            case GeneratorStep.AUTHOR: 
-                generator.setAuthor(prompt.length() == 0 ? "unknown" : prompt)
-                generatorStep = GeneratorStep.VERSION
-				break
-            case GeneratorStep.VERSION: 
-                generator.setVersion(prompt.length() == 0 ? "0.1" : prompt)
-                generatorStep = GeneratorStep.PLAYERS
-				break
-            case GeneratorStep.PLAYERS: 
-                generator.setPlayers(prompt.length() == 0 ? "1" : prompt)
-                generatorStep = GeneratorStep.ABOUT
-				break
-            case GeneratorStep.ABOUT: 
-                generator.setAbout(prompt.length() == 0 ? "A Leikr Program." : prompt)
-                generatorStep = GeneratorStep.MAX_SPRITES
-				break
-            case GeneratorStep.MAX_SPRITES: 
-                generator.setMaxSprites(prompt.length() == 0 ? "128" : prompt)
-                generatorStep = GeneratorStep.COMPILE_SOURCE
-				break
-            case GeneratorStep.COMPILE_SOURCE:
-                generator.setCompileSource(prompt.length() == 0 ? "false" : prompt)
-                generatorStep = GeneratorStep.USE_COMPILED
-				break
-            case GeneratorStep.USE_COMPILED: 
-                generator.setUseCompiled(prompt.length() == 0 ? "false" : prompt)
-                generatorStep = GeneratorStep.CREATE
-				break
-        }
-        prompt = ""
 
-    }
+				break
+			case GeneratorStep.TITLE:
+				generator.setTitle(prompt.length() == 0 ? "unknown" : prompt)
+				generatorStep = GeneratorStep.TYPE
+				break
+			case GeneratorStep.TYPE:
+				generator.setType(prompt.length() == 0 ? "Program" : prompt)
+				generatorStep = GeneratorStep.AUTHOR
+				break
+			case GeneratorStep.AUTHOR:
+				generator.setAuthor(prompt.length() == 0 ? "unknown" : prompt)
+				generatorStep = GeneratorStep.VERSION
+				break
+			case GeneratorStep.VERSION:
+				generator.setVersion(prompt.length() == 0 ? "0.1" : prompt)
+				generatorStep = GeneratorStep.PLAYERS
+				break
+			case GeneratorStep.PLAYERS:
+				generator.setPlayers(prompt.length() == 0 ? "1" : prompt)
+				generatorStep = GeneratorStep.ABOUT
+				break
+			case GeneratorStep.ABOUT:
+				generator.setAbout(prompt.length() == 0 ? "A Leikr Program." : prompt)
+				generatorStep = GeneratorStep.MAX_SPRITES
+				break
+			case GeneratorStep.MAX_SPRITES:
+				generator.setMaxSprites(prompt.length() == 0 ? "128" : prompt)
+				generatorStep = GeneratorStep.COMPILE_SOURCE
+				break
+			case GeneratorStep.COMPILE_SOURCE:
+				generator.setCompileSource(prompt.length() == 0 ? "false" : prompt)
+				generatorStep = GeneratorStep.USE_COMPILED
+				break
+			case GeneratorStep.USE_COMPILED:
+				generator.setUseCompiled(prompt.length() == 0 ? "false" : prompt)
+				generatorStep = GeneratorStep.CREATE
+				break
+		}
+		prompt = ""
 
-    @Override
-    int getId() {
-        ID
-    }
-    protected enum GeneratorStep {
-        NAME,
-        TEMPLATE,
-        TITLE,
-        TYPE,
-        AUTHOR,
-        VERSION,
-        PLAYERS,
-        ABOUT,
-        MAX_SPRITES,
-        COMPILE_SOURCE,
-        USE_COMPILED,
-        CREATE,
-        FINISHED,
-        BACK,
-        ERROR
-    }
+	}
+
+	@Override
+	int getId() {
+		ID
+	}
+
+	protected enum GeneratorStep {
+		NAME,
+		TEMPLATE,
+		TITLE,
+		TYPE,
+		AUTHOR,
+		VERSION,
+		PLAYERS,
+		ABOUT,
+		MAX_SPRITES,
+		COMPILE_SOURCE,
+		USE_COMPILED,
+		CREATE,
+		FINISHED,
+		BACK,
+		ERROR
+	}
 
 }

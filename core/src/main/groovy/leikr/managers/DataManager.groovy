@@ -80,9 +80,9 @@ class DataManager {
         try {
             String json = Mdx.files.external( "$gamePath/$path").readString()
             json = json.replaceAll("[{\"}]", "")
-            data = Arrays.asList(json.split(",")).stream()
-                    .map(s -> s.split(":"))
-                    .collect(Collectors.toMap(e -> e[0], e -> (Object) e[1]))
+            data = json.split(",")
+                    .collect(s -> s.split(":"))
+                    .collectEntries(e -> [e[0], (Object) e[1]])
         } catch (IOException ex) {
             Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, null, ex)
         }

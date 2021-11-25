@@ -30,126 +30,125 @@ import org.mini2Dx.core.input.GamePadConnectionListener
 // TODO: work out the hot-plugging to be a bit more robust
 class InputManager implements GamePadConnectionListener {
 
-    private final LeikrKeyboard keyboard
-    private final LeikrMouse mouse
-    private LeikrController controllerA
-    private LeikrController controllerB
+	private final LeikrKeyboard keyboard
+	private final LeikrMouse mouse
+	private LeikrController controllerA
+	private LeikrController controllerB
 
-    InputManager() {
-        keyboard = new LeikrKeyboard()
-        mouse = new LeikrMouse()
-        Mdx.input.setGamePadConnectionListener(this, true)
-    }
+	InputManager() {
+		keyboard = new LeikrKeyboard()
+		mouse = new LeikrMouse()
+		Mdx.input.setGamePadConnectionListener(this, true)
+	}
 
-    static boolean checkMappingExists() {
-        return Mdx.files.external("Data/Controllers/${Mdx.input.getGamePads().get(0).getModelInfo()}.properties").exists()
-    }
+	static boolean checkMappingExists() {
+		return Mdx.files.external("Data/Controllers/${Mdx.input.getGamePads().get(0).getModelInfo()}.properties").exists()
+	}
 
-    void createControllers() {
-        controllerA = new LeikrController(0)
-        controllerB = new LeikrController(1)
+	void createControllers() {
+		controllerA = new LeikrController(0)
+		controllerB = new LeikrController(1)
 
-        if (Mdx.input.getGamePads().size() > 0) {
-            Mdx.input.getGamePads().get(0).addListener(controllerA)
-            if (Mdx.input.getGamePads().size() > 1) {
-                Mdx.input.getGamePads().get(1).addListener(controllerB)
-            }
-        }
-    }
+		if (Mdx.input.getGamePads().size() > 0) {
+			Mdx.input.getGamePads().get(0).addListener(controllerA)
+			if (Mdx.input.getGamePads().size() > 1) {
+				Mdx.input.getGamePads().get(1).addListener(controllerB)
+			}
+		}
+	}
 
-    void setMouseViewport(StretchViewport viewport) {
-        mouse.setViewport(viewport)
-    }
+	void setMouseViewport(StretchViewport viewport) {
+		mouse.setViewport(viewport)
+	}
 
-    LeikrKeyboard getKeyboard() {
-        keyboard
-    }
+	LeikrKeyboard getKeyboard() {
+		keyboard
+	}
 
-    LeikrMouse getMouse() {
-        mouse
-    }
+	LeikrMouse getMouse() {
+		mouse
+	}
 
-    LeikrController getControllerA() {
-        controllerA
-    }
+	LeikrController getControllerA() {
+		controllerA
+	}
 
-    LeikrController getControllerB() {
-        controllerB
-    }
+	LeikrController getControllerB() {
+		controllerB
+	}
 
-    /**
-     * Checks if any button on any controller is pressed
-     * @return
-     */
-    boolean buttonAny() {
-        controllerA?.getButtons()?.containsValue(true)
-                || controllerB?.getButtons()?.containsValue(true)
-    }
+	/**
+	 * Checks if any button on any controller is pressed
+	 * @return
+	 */
+	boolean buttonAny() {
+		controllerA?.getButtons()?.containsValue(true)
+				|| controllerB?.getButtons()?.containsValue(true)
+	}
 
-    /**
-     * Checks if the given controller ID has any pressed buttons
-     * @param id - either 1 or 2
-     * @return
-     */
-    boolean buttonAny(int id) {
-        id == 1 ? controllerA?.getButtons()?.containsValue(true)
-                : controllerB?.getButtons()?.containsValue(true)
-    }
+	/**
+	 * Checks if the given controller ID has any pressed buttons
+	 * @param id - either 1 or 2
+	 * @return
+	 */
+	boolean buttonAny(int id) {
+		id == 1 ? controllerA?.getButtons()?.containsValue(true)
+				: controllerB?.getButtons()?.containsValue(true)
+	}
 
-    boolean button(String key) {
-        controllerA.button(key)
-    }
+	boolean button(String key) {
+		controllerA?.button(key)
+	}
 
-    boolean buttonPress(String key) {
-        if (controllerA.button(key)) {
-            controllerA.buttons.replace(key, false)
-            return true
-        }
-        return false
-    }
+	boolean buttonPress(String key) {
+		if (controllerA?.button(key)) {
+			controllerA?.buttons?.replace(key, false)
+			return true
+		}
+		return false
+	}
 
-    boolean buttonPressPlayerTwo(String key) {
-        if (controllerB.button(key)) {
-            controllerB.buttons.replace(key, false)
-            return true
-        }
-        return false
-    }
+	boolean buttonPressPlayerTwo(String key) {
+		if (controllerB.button(key)) {
+			controllerB.buttons.replace(key, false)
+			return true
+		}
+		return false
+	}
 
-    boolean buttonPress(String key, int playerId) {
-        playerId == 1 ? buttonPress(key) : buttonPressPlayerTwo(key)
-    }
+	boolean buttonPress(String key, int playerId) {
+		playerId == 1 ? buttonPress(key) : buttonPressPlayerTwo(key)
+	}
 
-    boolean button(String key, int playerId) {
-        playerId == 1 ? controllerA.button(key) : controllerB.button(key)
-    }
+	boolean button(String key, int playerId) {
+		playerId == 1 ? controllerA.button(key) : controllerB.button(key)
+	}
 
 
+	@Override
+	void onConnect(GamePad gamePad) {
+		println gamePad.getModelInfo()
+		if (Mdx.input.getGamePads().size() > 0 && controllerA?.getInstanceId() == 0) {
+			controllerA = new LeikrController(0, gamePad.getModelInfo())
+			Mdx.input.getGamePads().get(0).addListener(controllerA)
+			controllerA.setInstanceId(gamePad.getInstanceId())
+		}
 
-    @Override
-    void onConnect(GamePad gamePad) {
-        println gamePad.getModelInfo()
-        if (Mdx.input.getGamePads().size() > 0 && controllerA?.getInstanceId() == 0) {
-            controllerA = new LeikrController(0, gamePad.getModelInfo())
-            Mdx.input.getGamePads().get(0).addListener(controllerA)
-            controllerA.setInstanceId(gamePad.getInstanceId())
-        }
+		if (Mdx.input.getGamePads().size() > 1 && controllerB?.getInstanceId() == 0) {
+			controllerB = new LeikrController(1, gamePad.getModelInfo())
+			Mdx.input.getGamePads().get(1).addListener(controllerB)
+			controllerB.setInstanceId(gamePad.getInstanceId())
+		}
+	}
 
-        if (Mdx.input.getGamePads().size() > 1 && controllerB?.getInstanceId() == 0) {
-            controllerB = new LeikrController(1, gamePad.getModelInfo())
-            Mdx.input.getGamePads().get(1).addListener(controllerB)
-            controllerB.setInstanceId(gamePad.getInstanceId())
-        }
-    }
-
-    @Override
-    void onDisconnect(GamePad gamePad) {
-        println "InstanceId: ${gamePad.getInstanceId()}"
-        if (controllerA.getInstanceId() != 0 && gamePad.getInstanceId() == controllerA.getInstanceId()) {
-            controllerA.setInstanceId(0)
-        }
-        if (controllerB.getInstanceId() != 0 && gamePad.getInstanceId() == controllerB.getInstanceId()) {
-            controllerB.setInstanceId(0)
-        }
-    }
+	@Override
+	void onDisconnect(GamePad gamePad) {
+		println "InstanceId: ${gamePad.getInstanceId()}"
+		if (controllerA.getInstanceId() != 0 && gamePad.getInstanceId() == controllerA.getInstanceId()) {
+			controllerA.setInstanceId(0)
+		}
+		if (controllerB.getInstanceId() != 0 && gamePad.getInstanceId() == controllerB.getInstanceId()) {
+			controllerB.setInstanceId(0)
+		}
+	}
 }

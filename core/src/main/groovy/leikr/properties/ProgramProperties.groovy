@@ -24,69 +24,54 @@ import java.util.logging.Logger
  */
 class ProgramProperties {
 
-    int MAX_SPRITES = 128
-    boolean USE_COMPILED = false
-    boolean COMPILE_SOURCE = false
-    String TITLE = "unknown"
-    String TYPE = "Program"
-    String AUTHOR = "unknown"
-    String VERSION = "0"
-    int PLAYERS = 1
-    String ABOUT = "A Leikr Program."
-    private String GAME_TITLE = ""
+	int maxSprites = 128, players = 1
+	boolean useCompiled = false, compileSource = false
+	String title = "unknown", type = "Program", author = "unknown",
+			version = "0", about = "A Leikr Program.", gameTitle = ""
 
-    ProgramProperties(String gamePath) {
-        GAME_TITLE = gamePath.substring(gamePath.lastIndexOf("/") + 1)
-        Properties prop = new Properties()
-        try ( InputStream stream = new FileInputStream(new File(gamePath + "/program.properties"))) {
-            prop.load(stream)
+	ProgramProperties(String gamePath) {
+		gameTitle = gamePath.substring(gamePath.lastIndexOf("/") + 1)
+		Properties prop = new Properties()
+		try (InputStream stream = new FileInputStream(new File("$gamePath/program.properties"))) {
+			prop.load(stream)
 
-            MAX_SPRITES = Integer.parseInt(prop.getProperty("max_sprites")) ?: 128
-            if (MAX_SPRITES > 128) {
-                MAX_SPRITES = 128
-            }
-            USE_COMPILED = Boolean.valueOf(prop.getProperty("use_compiled")) ?: false
-            COMPILE_SOURCE = Boolean.valueOf(prop.getProperty("compile_source")) ?: false
+			maxSprites = Integer.parseInt(prop.getProperty("max_sprites")) ?: 128
+			if (maxSprites > 128) {
+				maxSprites = 128
+			}
+			useCompiled = Boolean.valueOf(prop.getProperty("use_compiled")) ?: false
+			compileSource = Boolean.valueOf(prop.getProperty("compile_source")) ?: false
 
-            TITLE = prop.getProperty("title") ?: "unknown"
-            TYPE = prop.getProperty("type") ?: "Program"
-            AUTHOR = prop.getProperty("author") ?: "unknown"
-            VERSION = prop.getProperty("version") ?: "0.1"
-            PLAYERS = Integer.parseInt(prop?.getProperty("players")) ?: 1
-            ABOUT = prop.getProperty("about") ?: "A Leikr Program."
-        } catch (IOException | NumberFormatException ex) {
-            Logger.getLogger(ProgramProperties.class.getName()).log(Level.WARNING, "Malformed program.properties file.")
-        }
-    }
+			title = prop.getProperty("title") ?: "unknown"
+			type = prop.getProperty("type") ?: "Program"
+			author = prop.getProperty("author") ?: "unknown"
+			version = prop.getProperty("version") ?: "0.1"
+			players = Integer.parseInt(prop?.getProperty("players")) ?: 1
+			about = prop.getProperty("about") ?: "A Leikr Program."
+		} catch (IOException | NumberFormatException ex) {
+			Logger.getLogger(ProgramProperties.class.getName()).log(Level.WARNING, "Malformed program.properties file for $gameTitle: ${ex.getCause()}")
+		}
+	}
 
-    static void writeProperties(String gamePath) {
-        try ( FileOutputStream stream = new FileOutputStream(new File(gamePath + "/program.properties"))) {
-            Properties prop = new Properties()
-            prop.with {
-                setProperty("max_sprites", String.valueOf(MAX_SPRITES))
-                setProperty("use_compiled", String.valueOf(USE_COMPILED))
-                setProperty("compile_source", String.valueOf(COMPILE_SOURCE))
-                setProperty("title", TITLE)
-                setProperty("type", TYPE)
-                setProperty("author", AUTHOR)
-                setProperty("version", VERSION)
-                setProperty("players", String.valueOf(PLAYERS))
-                setProperty("about", ABOUT)
+	void writeProperties(String gamePath) {
+		try (FileOutputStream stream = new FileOutputStream(new File( "$gamePath/program.properties"))) {
+			Properties prop = new Properties()
+			prop.with {
+				setProperty("max_sprites", String.valueOf(this.maxSprites))
+				setProperty("use_compiled", String.valueOf(this.useCompiled))
+				setProperty("compile_source", String.valueOf(this.compileSource))
+				setProperty("title", this.title)
+				setProperty("type", this.type)
+				setProperty("author", this.author)
+				setProperty("version", this.version)
+				setProperty("players", String.valueOf(this.players))
+				setProperty("about", this.about)
 
-                store(stream, null)
-            }
-        } catch (IOException | NumberFormatException ex) {
-
-            Logger.getLogger(ProgramProperties.class.getName()).log(Level.WARNING, "Malformed program.properties file.")
-        }
-    }
-
-    boolean getUseCompiled() {
-        USE_COMPILED
-    }
-
-    String getTitle() {
-        GAME_TITLE
-    }
+				store(stream, null)
+			}
+		} catch (IOException | NumberFormatException ex) {
+			Logger.getLogger(ProgramProperties.class.getName()).log(Level.WARNING, "Malformed program.properties file for $gameTitle: ${ex.getCause()}")
+		}
+	}
 
 }

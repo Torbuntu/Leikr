@@ -23,179 +23,181 @@ import org.mini2Dx.core.files.ExternalFileHandleResolver
 
 import java.util.logging.Level
 import java.util.logging.Logger
+
 /**
  *
  * @author tor
  */
 class AudioLoader {
 
-    private String musicRootPath
-    private String soundRootPath
+	private String musicRootPath
+	private String soundRootPath
 
-    private AssetManager assetManager
+	private AssetManager assetManager
 
-    AudioLoader() {
-    }
+	AudioLoader() {
+	}
 
-    void resetAudioLoader(String path) {
-        assetManager = new AssetManager(new ExternalFileHandleResolver())
-        musicRootPath = "$path/Audio/Music/"
-        soundRootPath = "$path/Audio/Sound/"
+	void resetAudioLoader(String path) {
+		assetManager = new AssetManager(new ExternalFileHandleResolver())
+		musicRootPath = "$path/Audio/Music/"
+		soundRootPath = "$path/Audio/Sound/"
 
-        loadAudio()
-    }
+		loadAudio()
+	}
 
-    private void loadAudio() {
-        try {
-            Arrays.asList(Mdx.files.external(soundRootPath).list()).stream()
-                    .filter(file -> !file.isDirectory() && (file.extension().toLowerCase() in ["wav", "mp3", "ogg"]))
-                    .forEach(f -> assetManager.load(soundRootPath + f.name(), Sound.class))
-        } catch (Exception ex) {
-            Logger.getLogger(AudioLoader.class.getName()).log(Level.WARNING, "Sound load error: {0}", ex.getMessage())
-        }
+	private void loadAudio() {
+		try {
+			Mdx.files.external(soundRootPath).list()
+					.findAll(file -> !file.isDirectory() && (file.extension().toLowerCase() in ["wav", "mp3", "ogg"]))
+					.each(f -> assetManager.load(soundRootPath + f.name(), Sound.class))
+		} catch (Exception ex) {
+			Logger.getLogger(AudioLoader.class.getName()).log(Level.WARNING, "Sound load error: {0}", ex.getMessage())
+		}
 
-        try {
-            Arrays.asList(Mdx.files.external(musicRootPath).list()).stream()
-                    .filter(file -> !file.isDirectory() && (file.extension().toLowerCase() in ["wav", "mp3", "ogg"]))
-                    .forEach(f -> assetManager.load(musicRootPath + f.name(), Music.class))
-        } catch (Exception ex) {
-            Logger.getLogger(AudioLoader.class.getName()).log(Level.WARNING, "Music load error: {0}", ex.getMessage())
-        }
-        load()
-    }
+		try {
+			Mdx.files.external(musicRootPath).list()
+					.findAll(file -> !file.isDirectory() && (file.extension().toLowerCase() in ["wav", "mp3", "ogg"]))
+					.each(f -> assetManager.load(musicRootPath + f.name(), Music.class))
+		} catch (Exception ex) {
+			Logger.getLogger(AudioLoader.class.getName()).log(Level.WARNING, "Music load error: {0}", ex.getMessage())
+		}
+		load()
+	}
 
-    private void load() {
-        assetManager.finishLoading()
-    }
+	private void load() {
+		assetManager.finishLoading()
+	}
 
-    /**
-     * Returns the Sound object by name.
-     *
-     * Getting the Sound object itself is useful for having more control over
-     * the Sound object in the game code.
-     *
-     * @param fileName the name of the Sound file to get
-     * @return the Sound object
-     */
-    Sound getSound(String fileName) {
-        return assetManager.get(soundRootPath + fileName, Sound.class)
-    }
+	/**
+	 * Returns the Sound object by name.
+	 *
+	 * Getting the Sound object itself is useful for having more control over
+	 * the Sound object in the game code.
+	 *
+	 * @param fileName the name of the Sound file to get
+	 * @return the Sound object
+	 */
+	Sound getSound(String fileName) {
+		return assetManager.get(soundRootPath + fileName, Sound.class)
+	}
 
-    void playSound(String fileName) {
-        assetManager.get(soundRootPath + fileName, Sound.class).play()
-    }
+	void playSound(String fileName) {
+		assetManager.get(soundRootPath + fileName, Sound.class).play()
+	}
 
-    /**
-     * Plays a sound with the given parameters applied.
-     *
-     * @param fileName the name of the sound file to play, including the
-     * extension (wav, ogg, mp3)
-     * @param volume the volume to play this sound at, range 0 to 1
-     * @param pitch the pitch shift value, between 0.5 and 2.0
-     * @param pan the left/right pan value, between -1.0 and 1.0
-     */
-    void playSound(String fileName, Number volume, Number pitch, Number pan) {
-        assetManager.get(soundRootPath + fileName, Sound.class).play(volume.floatValue(), pitch.floatValue(), pan.floatValue())
-    }
+	/**
+	 * Plays a sound with the given parameters applied.
+	 *
+	 * @param fileName the name of the sound file to play, including the
+	 * extension (wav, ogg, mp3)
+	 * @param volume the volume to play this sound at, range 0 to 1
+	 * @param pitch the pitch shift value, between 0.5 and 2.0
+	 * @param pan the left/right pan value, between -1.0 and 1.0
+	 */
+	void playSound(String fileName, Number volume, Number pitch, Number pan) {
+		assetManager.get(soundRootPath + fileName, Sound.class).play(volume.floatValue(), pitch.floatValue(), pan.floatValue())
+	}
 
-    /**
-     * Stops all Sounds from playing.
-     */
-    void stopSound() {
-        for (Sound s : assetManager.getAll(Sound.class).values()) {
-            s.stop()
-        }
-    }
+	/**
+	 * Stops all Sounds from playing.
+	 */
+	void stopSound() {
+		assetManager.getAll(Sound.class).values().each { Sound s ->
+			s.stop()
+		}
+	}
 
-    void stopSound(String fileName) {
-        assetManager.get(soundRootPath + fileName, Sound.class).stop()
-    }
+	void stopSound(String fileName) {
+		assetManager.get(soundRootPath + fileName, Sound.class).stop()
+	}
 
-    /**
-     * Returns the Music object by name.
-     *
-     * Useful for having more manual control of the Music object in game code.
-     *
-     * @param fileName the name of the Music file.
-     * @return the Music object
-     */
-    Music getMusic(String fileName) {
-        return assetManager.get(musicRootPath + fileName, Music.class)
-    }
+	/**
+	 * Returns the Music object by name.
+	 *
+	 * Useful for having more manual control of the Music object in game code.
+	 *
+	 * @param fileName the name of the Music file.
+	 * @return the Music object
+	 */
+	Music getMusic(String fileName) {
+		return assetManager.get(musicRootPath + fileName, Music.class)
+	}
 
-    void playMusic(String fileName) {
-        assetManager.get(musicRootPath + fileName, Music.class).play()
-    }
+	void playMusic(String fileName) {
+		assetManager.get(musicRootPath + fileName, Music.class).play()
+	}
 
-    void playMusic(String fileName, boolean loop) {
-        Music mPlayer = assetManager.get(musicRootPath + fileName, Music.class)
-        mPlayer.setLooping(loop)
-        mPlayer.play()
-    }
+	void playMusic(String fileName, boolean loop) {
+		Music mPlayer = assetManager.get(musicRootPath + fileName, Music.class)
+		mPlayer.setLooping(loop)
+		mPlayer.play()
+	}
 
-    void stopMusic() {
-        for (Music m : assetManager.getAll(Music.class).values()) {
-            m.stop()
-        }
-    }
+	void stopMusic() {
+		assetManager.getAll(Music.class).values().each { Music m ->
+			m.stop()
+		}
+	}
 
-    void stopMusic(String fileName) {
-        assetManager.get(musicRootPath + fileName, Music.class).stop()
-    }
+	void stopMusic(String fileName) {
+		assetManager.get(musicRootPath + fileName, Music.class).stop()
+	}
 
-    /**
-     * Pauses all audio from playing.
-     *
-     */
-    void pauseAudio() {
-        for (Music m : assetManager.getAll(Music.class).values()) {
-            m.pause()
-        }
-        for (Sound s : assetManager.getAll(Sound.class).values()) {
-            s.pause()
-        }
-    }
+	/**
+	 * Pauses all audio from playing.
+	 *
+	 */
+	void pauseAudio() {
+		assetManager.getAll(Music.class).values().each { Music m ->
+			m.pause()
+		}
+		assetManager.getAll(Sound.class).values().each { Sound s ->
+			s.pause()
+		}
+	}
 
-    /**
-     * Resumes the last playing song.
-     *
-     * Note: Sometimes Sound objects are not resumed. Not sure why.
-     */
-    void resumeAudio() {
-        for (Music m : assetManager.getAll(Music.class).values()) {
-            m.play()
-        }
-        for (Sound s : assetManager.getAll(Sound.class).values()) {
-            s.resume()
-        }
-    }
+	/**
+	 * Resumes the last playing song.
+	 *
+	 * Note: Sometimes Sound objects are not resumed. Not sure why.
+	 */
+	void resumeAudio() {
+		assetManager.getAll(Music.class).values().each { Music m ->
+			m.play()
+		}
+		assetManager.getAll(Sound.class).values().each { Sound s ->
+			s.resume()
+		}
+	}
 
-    /**
-     * Stops all audio from playing and disposes the assets.
-     */
-    void disposeAudioLoader() {
-        if (null != assetManager) {
-            for (Sound s : assetManager.getAll(Sound.class).values()) {
-                s.stop()
-            }
-            for (Music m : assetManager.getAll(Music.class).values()) {
-                m.stop()
-            }
-            assetManager.clearAssetLoaders()
-            assetManager.dispose()
-        }
-    }
+	/**
+	 * Stops all audio from playing and disposes the assets.
+	 */
+	void disposeAudioLoader() {
+		if (null != assetManager) {
+			assetManager.getAll(Sound.class).values().each { Sound s ->
+				s.stop()
+			}
+			assetManager.getAll(Music.class).values().each { Music m ->
+				m.stop()
+			}
+			assetManager.clearAssetLoaders()
+			assetManager.dispose()
+		}
+	}
 
-    // Experimental API
-    def listSounds(){
-        assetManager.getAll(Sound.class).collect {
-            it.key.substring(it.key.lastIndexOf('/')+1)
-        }
-    }
-    def listMusic(){
-        assetManager.getAll(Music.class).collect {
-            it.key.substring(it.key.lastIndexOf('/')+1)
-        }
-    }
+	// Experimental API
+	def listSounds() {
+		assetManager.getAll(Sound.class).collect {
+			it.key.substring(it.key.lastIndexOf('/') + 1)
+		}
+	}
+
+	def listMusic() {
+		assetManager.getAll(Music.class).collect {
+			it.key.substring(it.key.lastIndexOf('/') + 1)
+		}
+	}
 
 }

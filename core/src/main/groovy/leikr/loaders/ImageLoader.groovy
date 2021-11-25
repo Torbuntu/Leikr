@@ -22,50 +22,51 @@ import org.mini2Dx.core.graphics.Texture
 
 import java.util.logging.Level
 import java.util.logging.Logger
+
 /**
  *
  * @author tor
  */
 class ImageLoader {
 
-    private String rootPath
+	private String rootPath
 
-    private AssetManager assetManager
+	private AssetManager assetManager
 
-    ImageLoader() {
-    }
+	ImageLoader() {
+	}
 
-    void reloadImageLoader(String path) {
-        disposeImages()
-        assetManager = new AssetManager(new ExternalFileHandleResolver())
-        rootPath = "$path/Art/"
-        try {
-            Arrays.asList(Mdx.files.external(rootPath).list()).stream()
-                    .filter(file -> !file.isDirectory() && (file.extension().toLowerCase() in ["png", "jpg", "bmp"]))
-                    .forEach(p -> {
-                        assetManager.load(rootPath + p.name(), Texture.class)
-                    })
-            assetManager.finishLoading()
-        } catch (IOException ex) {
-            Logger.getLogger(ImageLoader.class.getName()).log(Level.SEVERE, null, ex)
-        }
-    }
+	void reloadImageLoader(String path) {
+		disposeImages()
+		assetManager = new AssetManager(new ExternalFileHandleResolver())
+		rootPath = "$path/Art/"
+		try {
+			Mdx.files.external(rootPath).list()
+					.findAll(file -> !file.isDirectory() && (file.extension().toLowerCase() in ["png", "jpg", "bmp"]))
+					.each(p -> {
+						assetManager.load(rootPath + p.name(), Texture.class)
+					})
+			assetManager.finishLoading()
+		} catch (IOException ex) {
+			Logger.getLogger(ImageLoader.class.getName()).log(Level.SEVERE, null, ex)
+		}
+	}
 
-    void load() {
-        //just to make sure we are done before calling getImage
-        assetManager.finishLoading()
-    }
+	void load() {
+		//just to make sure we are done before calling getImage
+		assetManager.finishLoading()
+	}
 
-    Texture getImage(String fileName) {
-        return assetManager.get(rootPath + fileName, Texture.class)
+	Texture getImage(String fileName) {
+		return assetManager.get(rootPath + fileName, Texture.class)
 
-    }
+	}
 
-    void disposeImages() {
-        if (null != assetManager) {
-            assetManager.clearAssetLoaders()
-            assetManager.dispose()
-        }
-    }
+	void disposeImages() {
+		if (assetManager) {
+			assetManager.clearAssetLoaders()
+			assetManager.dispose()
+		}
+	}
 
 }

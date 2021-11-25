@@ -25,39 +25,39 @@ import org.mini2Dx.gdx.Input.Keys
  */
 class LeikrKeyboard {
 
-    /**
-     * Checks if given value is pressed.
-     *
-     * Examples: Z, X, Escape, Space, Left 
-     *
-     * Notice values are Title cases.
-     *
-     * @param key
-     * @return
-     */
-    static boolean key(String key) {
-        Mdx.input.isKeyDown(Keys.valueOf(key))
-    }
+	/**
+	 * Checks if given value is pressed.
+	 *
+	 * Examples: Z, X, Escape, Space, Left
+	 *
+	 * Notice values are Title cases.
+	 *
+	 * @param key
+	 * @return
+	 */
+	static boolean key(String key) {
+		Mdx.input.isKeyDown(Keys.valueOf(key))
+	}
 
-    /**
-     * Checks if given key is not pressed
-     *
-     * @param key
-     * @return
-     */
-    static boolean keyUp(String key) {
-        Mdx.input.isKeyUp(Keys.valueOf(key))
-    }
+	/**
+	 * Checks if given key is not pressed
+	 *
+	 * @param key
+	 * @return
+	 */
+	static boolean keyUp(String key) {
+		Mdx.input.isKeyUp(Keys.valueOf(key))
+	}
 
-    /**
-     * Checks if the given value has been pressed once.
-     * For checking if a key is pressed and held, @see #key(java.lang.String)
-     *
-     * @see #key(java.lang.String) Examples: "K", "Enter", "Left Shift"
-     * @param key
-     * @return
-     */
-    static boolean keyPress(String key) {
-        Mdx.input.isKeyJustPressed(Keys.valueOf(key))
-    }
+	/**
+	 * Checks if the given value has been pressed once.
+	 * For checking if a key is pressed and held, @see #key(java.lang.String)
+	 *
+	 * @see #key(java.lang.String) Examples: "K", "Enter", "Left Shift"
+	 * @param key
+	 * @return
+	 */
+	static boolean keyPress(String key) {
+		Mdx.input.isKeyJustPressed(Keys.valueOf(key))
+	}
 }
