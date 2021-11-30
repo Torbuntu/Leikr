@@ -15,13 +15,12 @@
  */
 package leikr.managers
 
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
 import org.mini2Dx.core.Mdx
-import org.mini2Dx.core.exception.SerializationException
-import org.mini2Dx.core.serialization.annotation.Field
 
 import java.util.logging.Level
 import java.util.logging.Logger
-import java.util.stream.Collectors
 /**
  *
  * @author tor
@@ -29,12 +28,13 @@ import java.util.stream.Collectors
 class DataManager {
 
     private String gamePath
+    private final JsonSlurper jsonSlurper
 
-    @Field
-    public def data
+    public Map data
 
     DataManager() {
         data = [:]
+        jsonSlurper = new JsonSlurper()
     }
 
     void resetData(String path) {
@@ -57,34 +57,31 @@ class DataManager {
         data.clear()
     }
 
-    void saveData(String path) {
+    void writeData(String path){
         try {
-			Mdx.files.with{
-				String dir = "${gamePath}/${path}"
-				if (!external(dir).exists()) {
-					external(dir).delete()
+            Mdx.files.with{
+                String dir = "${gamePath}/${path}"
+                if (external(dir).exists()) {
+                    external(dir).delete()
                 }
-				external(dir).writeString(Mdx.json.toJson(data), false)
+                external(dir).writeString(JsonOutput.toJson(data), false)
             }
-        } catch (IOException | SerializationException ex) {
-            Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, String.format("Failed saving data to %s", "$gamePath/$path"), ex)
+        } catch (Exception ex) {
+            Logger.getLogger(DataManager.class.getName()).log(Level.WARNING, "Failed saving data to: $gamePath/$path", ex)
         }
     }
 
-    void saveData(String path, Map<String, Object> data) {
+    void writeData(String path, Map data){
         this.data = data
-        saveData(path)
+        writeData(path)
     }
 
-    Map<String, Object> readData(String path) {
+    Map readData(String path) {
         try {
             String json = Mdx.files.external( "$gamePath/$path").readString()
-            json = json.replaceAll("[{\"}]", "")
-            data = json.split(",")
-                    .collect(s -> s.split(":"))
-                    .collectEntries(e -> [e[0], (Object) e[1]])
-        } catch (IOException ex) {
-            Logger.getLogger(DataManager.class.getName()).log(Level.SEVERE, null, ex)
+            data = jsonSlurper.parseText(json) as Map
+        } catch (Exception ex) {
+            Logger.getLogger(DataManager.class.getName()).log(Level.WARNING, "Problem trying to read data from: $path", ex)
         }
         return data
     }

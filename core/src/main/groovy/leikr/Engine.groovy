@@ -783,15 +783,15 @@ abstract class Engine implements InputProcessor{
         lData.clearData()
     }
 
-    void saveData(String path) {
-        lData.saveData(path)
+    void writeData(String path) {
+        lData.writeData(path)
     }
 
-    void saveData(String path, Map<String, Object> dat) {
-        lData.saveData(path, dat)
+    void writeData(String path, Map dat) {
+        lData.writeData(path, dat)
     }
 
-    Map<String, Object> readData(String path) {
+    Map readData(String path) {
         lData.readData(path)
     }
     // </editor-fold>
