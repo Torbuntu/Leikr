@@ -86,8 +86,9 @@ Then when you run Leikr and `run Java` it should load! Super neat.
 
 # [Example using Kotlin](#example-using-kotlin)
 #### Assumes you have Kotlin installed
+
 ```kotlin
-import java.math.BigDecimal;
+import java.math.BigDecimal
 open class Kotlin : leikr.Engine() {
 
 	var x = Array<Int>(10){0}
@@ -397,7 +398,7 @@ import org.python.util.PythonInterpreter
 import org.python.core.*
 
 class Python extends leikr.Engine{
-	def interp = new PythonInterpreter();
+	def interp = new PythonInterpreter()
 	def cre, upd, ren
 	
 	PyFloat pf
@@ -594,7 +595,7 @@ class Lua extends leikr.Engine {
 Since we want to use a create, update, render combo we need to set those up to translate between Lua and Groovy. We also need a `Globals` object to manage all of this.
 
 ```Groovy
-        Globals globals = JsePlatform.standardGlobals();
+        Globals globals = JsePlatform.standardGlobals()
 	
 	LuaValue c
 	LuaValue u
@@ -605,7 +606,7 @@ Since we want to use a create, update, render combo we need to set those up to t
 	LuaFunction re
 	
 	void create(){
-		globals.load(new FileInputStream("Programs/Lua/Code/Compiled/Code.lua"), "@main.lua", "t", globals).call();
+		globals.load(new FileInputStream("Programs/Lua/Code/Compiled/Code.lua"), "@main.lua", "t", globals).call()
 		
 		c = globals.get("create")
 		u = globals.get("update")
@@ -657,7 +658,7 @@ Simply starting with the `drawRect` method.
 
 ```Groovy
     private class DrawRect extends VarArgFunction{
-    	public Varargs invoke(Varargs args){
+    	Varargs invoke(Varargs args){
     		int c = args.arg(1).checkint()
     		int x = args.arg(2).checkint()
     		int y = args.arg(3).checkint()
@@ -703,7 +704,7 @@ import org.luaj.vm2.lib.jse.*
 
 class Lua extends leikr.Engine {
 
-	Globals globals = JsePlatform.standardGlobals();
+	Globals globals = JsePlatform.standardGlobals()
 	
 	LuaValue c
 	LuaValue u
@@ -722,7 +723,7 @@ class Lua extends leikr.Engine {
 		globals.set("drawRect", new DrawRect())
 		globals.set("sprite", new DrawSprite())
 	
-		globals.load(new FileInputStream("Programs/Lua/Code/Compiled/Code.lua"), "@main.lua", "t", globals).call();
+		globals.load(new FileInputStream("Programs/Lua/Code/Compiled/Code.lua"), "@main.lua", "t", globals).call()
 		
 		c = globals.get("create")
 		u = globals.get("update")
@@ -745,13 +746,13 @@ class Lua extends leikr.Engine {
     }
         
     private class Rand extends TwoArgFunction {
-    	public LuaValue call(LuaValue min, LuaValue max){
+    	LuaValue call(LuaValue min, LuaValue max){
     		return valueOf(Lua.this.randInt(min.checkint(), max.checkint()))
     	}
     }
     
     private class DrawRect extends VarArgFunction{
-    	public Varargs invoke(Varargs args){
+    	Varargs invoke(Varargs args){
     		int c = args.arg(1).checkint()
     		int x = args.arg(2).checkint()
     		int y = args.arg(3).checkint()
