@@ -39,7 +39,7 @@ class DesktopLauncher {
 		def config = new Lwjgl3Mini2DxConfig(runtime.getGAME_IDENTIFIER())
 
 		config.with {
-			setTitle("Leikr")
+			setTitle(runtime.checkDirectLaunch() ? runtime.getGameName() : "Leikr")
 			setWindowedMode(720, 480)
 			useVsync(true)
 			setWindowIcon(Files.FileType.Internal, "Data/Logo/logo-16x16.png", "Data/Logo/logo-32x32.png")
