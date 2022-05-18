@@ -43,22 +43,22 @@ import java.util.logging.Logger
  */
 class MenuScreen extends BasicGameScreen {
 
-	public static int ID = 7
-	private int index = 0
-	private String isCompiled = ""
+	public static final int ID = 7
+	int index = 0
+	String isCompiled = ""
 
-	private List<ProgramProperties> games
+	List<ProgramProperties> games
 
-	private final FitViewport fitViewport
-	private final StretchViewport stretchViewport
-	private final GameRuntime runtime
-	private final InputManager inputManager
-	private Texture icon
-	private FrameBuffer framebuffer
-	private Menu currentMenu = Menu.PROGRAMS
+	final FitViewport fitViewport
+	final StretchViewport stretchViewport
+	final GameRuntime runtime
+	final InputManager inputManager
+	Texture icon
+	FrameBuffer framebuffer
+	Menu currentMenu = Menu.PROGRAMS
 
-	private int popupTimer = 0
-	private String popupText = ""
+	int popupTimer = 0
+	String popupText = ""
 
 	MenuScreen(FitViewport vp, GameRuntime runtime) {
 		this.runtime = runtime

@@ -30,22 +30,22 @@ import org.mini2Dx.tiled.TiledMap
 class MapLoader {
 
 	//TODO: Add handlers for object layers and collisions.
-	private String rootPath
+	String rootPath
 
-	private TiledMap tiledMap
+	TiledMap map
 
-	private final SystemProperties systemProperties
+	final SystemProperties systemProperties
 
 	MapLoader(SystemProperties systemProperties) {
 		this.systemProperties = systemProperties
 	}
 
 	void loadMap(String name) {
-		if (tiledMap) {
-			tiledMap.dispose()
+		if (map) {
+			map.dispose()
 		}
-		tiledMap = new TiledMap(Mdx.files.external(rootPath + "${name}.tmx"))
-		tiledMap.loadTilesetTextures()
+		map = new TiledMap(Mdx.files.external("$rootPath${name}.tmx"))
+		map.loadTilesetTextures()
 	}
 
 	void resetMapLoader(String path) {
@@ -53,15 +53,11 @@ class MapLoader {
 		rootPath = "$path/Maps/"
 	}
 
-	TiledMap getMap() {
-		return tiledMap
-	}
-
 	private boolean checkMap() {
-		if (tiledMap == null) {
+		if (map == null) {
 			throw new RenderException("Error in program `render` method. `drawMap()` called with null map. Load a map with `loadMap(String name)`")
 		}
-		if (tiledMap.isTilesetTexturesLoaded(true)) {
+		if (map.isTilesetTexturesLoaded(true)) {
 			return true
 		} else {
 			throw new RenderException("Error in program `render` method. `drawMap()` called before tileset loaded.")
@@ -70,25 +66,25 @@ class MapLoader {
 
 	void drawMap(Graphics g, int x = 0, int y = 0) {
 		if (checkMap()) {
-			tiledMap.draw(g, x, y)
+			map.draw(g, x, y)
 		}
 	}
 
 	void drawMap(Graphics g, int x, int y, int layer) {
 		if (checkMap()) {
-			tiledMap.draw(g, x, y, layer)
+			map.draw(g, x, y, layer)
 		}
 	}
 
 	void drawMap(Graphics g, int x, int y, int sx, int sy, int w, int h) {
 		if (checkMap()) {
-			tiledMap.draw(g, x, y, sx, sy, w, h)
+			map.draw(g, x, y, sx, sy, w, h)
 		}
 	}
 
 	void drawMap(Graphics g, int x, int y, int sx, int sy, int w, int h, int layer) {
 		if (checkMap()) {
-			tiledMap.draw(g, x, y, sx, sy, w, h, layer)
+			map.draw(g, x, y, sx, sy, w, h, layer)
 		}
 	}
 
@@ -101,7 +97,7 @@ class MapLoader {
 	 */
 	int getMapTile(int x, int y, int layer = 0) {
 		try {
-			return tiledMap.getTile(x, y, layer).getTileId(1)
+			return map.getTile(x, y, layer).getTileId(1)
 		} catch (Exception ex) {
 			if (systemProperties.isDebug()) {
 				Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex)
@@ -112,7 +108,7 @@ class MapLoader {
 
 	void setMapTile(int id, int x, int y, int layer = 0) {
 		try {
-			tiledMap.getTileLayer(layer).setTileId(x, y, id)
+			map.getTileLayer(layer).setTileId(x, y, id)
 		} catch (Exception ex) {
 			if (systemProperties.isDebug()) {
 				Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex)
@@ -122,7 +118,7 @@ class MapLoader {
 
 	void removeMapTile(int x, int y, int layer = 0) {
 		try {
-			tiledMap.getTileLayer(layer).setTileId(x, y, -1)
+			map.getTileLayer(layer).setTileId(x, y, -1)
 		} catch (Exception ex) {
 			if (systemProperties.isDebug()) {
 				Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex)
@@ -131,8 +127,8 @@ class MapLoader {
 	}
 
 	void disposeMap() {
-		if (tiledMap) {
-			tiledMap.dispose()
+		if (map) {
+			map.dispose()
 		}
 	}
 

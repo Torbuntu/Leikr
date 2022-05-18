@@ -39,13 +39,13 @@ import java.util.logging.Logger
  */
 class NewProgramScreen extends BasicGameScreen {
 
-	static int ID = 5
-	private static GeneratorStep generatorStep
+	public static final int ID = 5
+	static GeneratorStep generatorStep
 	String prompt, name, template, errorMessage
-	private String newLocation
-	private final FitViewport viewport
-	private NewProgramGenerator generator
-	private GameRuntime runtime
+	String newLocation
+	final FitViewport viewport
+	NewProgramGenerator generator
+	GameRuntime runtime
 
 	NewProgramScreen(FitViewport vp, GameRuntime runtime) {
 		this.runtime = runtime
@@ -62,7 +62,7 @@ class NewProgramScreen extends BasicGameScreen {
 	}
 
 	@Override
-	void preTransitionIn(Transition trns) {
+	void preTransitionIn(Transition transition) {
 		prompt = ""
 		name = ""
 		template = ""

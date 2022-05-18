@@ -22,15 +22,15 @@ Powered by [Mini2Dx](https://mini2dx.org/).
 Once you've mastered Leikr and feel the need to expand into bigger waters, you can take your knowledge and move up to Mini2Dx itself.
 
 
-| Preview |
-|----|
+| Preview                             |
+|-------------------------------------|
 | ![](showcase/showcase.gif?raw=true) |
 
 ## Running from release
 
 #### note: If downloading from itch.io, make sure to document where the install path is for accessing the files.
 
-A release is a folder which contains everything required to run the Leikr Game System. Releases can be found from one of the distribution sources (Currently: [itch.io](https://torbuntu.itch.io/leikr) or [github](https://github.com/torbuntu/leikr/releases))
+A release is a folder which contains everything required to run the Leikr Game System. Releases can be found from one of the distribution sources (Currently: [flathub.org](https://flathub.org/apps/details/io.github.torbuntu.Leikr), [itch.io](https://torbuntu.itch.io/leikr) or [github](https://github.com/torbuntu/leikr/releases))
 
 Inside this folder should look something like this:
 
@@ -115,23 +115,22 @@ Programs/
 
 In order for your game to be runnable, the main class file should be similar to the following template:
 
-```java
-//extend the engine to get the API 
+```Groovy
+// Extend the engine to get the API 
 class MyGame extends leikr.Engine{
 
   void create(){
-      //Initialize classes and variables here. Run on first load
+      //Initialize classes and variables here. Runs on first load.
   }
   
   void update(float delta){
-      //Run every frame. Used for updating variables and game state
+      // Runs every frame. Used for updating variables and game state.
   }
   
   void render(){
-      //Draws to the screen after update.
+      // Draws to the screen after update.
   }
 }
-
 ```
 
 note however that all three of the main methods (create, update and render) are optional. You can make smaller graphic demos just using the `render` method.
@@ -139,17 +138,12 @@ note however that all three of the main methods (create, update and render) are 
 
 ## Specs: 
 
-| Spec |      |
-|----|----|
-| Resolution | 240x160 |
-| Sprites    | 128 max draw calls per frame. Sprites.png gets split into 8x8, 16x16, 32x32 and 64x64 pixel sprites. |
-| Art | Can load images to be used as backgrounds or however else you wish. |
-| Maps | .tmx maps loadabled from `Maps` directory. (Animated tiles are supported) |
-| Audio | 16bit .WAV, .OGG, or MP3 files loaded from `Audio/Sound` and `Audio/Music` |
-| Controls | Primary: Keyboard, Mouse. Secondary: USB Controllers (snes layout). Tested using SNES style controllers on Linux. Note: The controllers are configurable using the Program `Controllers` which comes with the system. It maps inputs to the file `Data/system.properties` |
+| Spec       |                                                                                                                                                                                                                                                                           |
+|------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Resolution | 240x160                                                                                                                                                                                                                                                                   |
+| Sprites    | 128 max draw calls per frame. Sprites.png gets split into 8x8, 16x16, 32x32 and 64x64 pixel sprites.                                                                                                                                                                      |
+| Art        | Can load images to be used as backgrounds or however else you wish.                                                                                                                                                                                                       |
+| Maps       | .tmx maps loadabled from `Maps` directory. (Animated tiles are supported)                                                                                                                                                                                                 |
+| Audio      | 16bit .WAV, .OGG, or MP3 files loaded from `Audio/Sound` and `Audio/Music`                                                                                                                                                                                                |
+| Controls   | Primary: Keyboard, Mouse. Secondary: USB Controllers (snes layout). Tested using SNES style controllers on Linux. Note: The controllers are configurable using the Program `Controllers` which comes with the system. It maps inputs to the file `Data/system.properties` |
 
-
-#### Note on ARM builds:
-The primary target will eventually be ARM devices (such as Raspberry Pi, Pine devices like Pinebook Pro and Pinetab, etc...)
-
-if you plan to use the raspberry pi or other SBC, it works best to have compiled the projects on a faster computer beforehand. Compiling projects live on the pi can take a while depending on the size/complexity of your project. 

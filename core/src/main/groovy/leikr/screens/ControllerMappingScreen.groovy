@@ -20,7 +20,7 @@ import org.mini2Dx.gdx.math.Vector3
 
 // TODO: Make this page not ugly.
 class ControllerMappingScreen extends BasicGameScreen implements GamePadListener {
-	public static int ID = 8
+	public static final int ID = 8
 	def buttonMapping = [:]
 
 	// while not complete, we add new button codes and proceed
@@ -34,9 +34,9 @@ class ControllerMappingScreen extends BasicGameScreen implements GamePadListener
 	def modelInfo
 
 	ManagerDTO managerDTO
-	private final FitViewport viewport
-	private final StretchViewport stretchViewport
-	private FrameBuffer framebuffer
+	final FitViewport viewport
+	final StretchViewport stretchViewport
+	FrameBuffer framebuffer
 	GameRuntime runtime
 	ControllerMapping controllerMapping
 

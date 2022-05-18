@@ -43,18 +43,18 @@ class TitleScreen extends BasicGameScreen {
 	public static final int ID = 2
 
 	boolean credits = false, enterMapping = false
-	private double red, blue, green
+	double red, blue, green
 
-	private int timer = 0
-	private final int pixCount = 75
-	private final int cycleLength = 25
+	int timer = 0
+	final int pixCount = 75
+	final int cycleLength = 25
 
-	private ArrayList<TitleScreenPixel> pixels
+	ArrayList<TitleScreenPixel> pixels
 
-	private final AssetManager assetManager
-	private final FitViewport viewport
-	private final PixelManager pixelManager
-	private final GameRuntime runtime
+	final AssetManager assetManager
+	final FitViewport viewport
+	final PixelManager pixelManager
+	final GameRuntime runtime
 
 	TitleScreen(AssetManager assetManager, FitViewport vp, PixelManager pixelManager, GameRuntime runtime) {
 		this.assetManager = assetManager
@@ -101,12 +101,12 @@ class TitleScreen extends BasicGameScreen {
 		pixCount.times { i ->
 			int x = (int) Math.floor(Math.random() * 8) + 91
 			int height = (int) Math.floor(Math.random() * 7) + 4
-			pixels.add(new TitleScreenPixel(x, 64, (i % 3) + 8, height, i * 5))
+			pixels.add(new TitleScreenPixel(x: x, y: 64, color: (i % 3) + 8,height: height, delay: i * 5))
 		}
 	}
 
 	@Override
-	void update(GameContainer gc, ScreenManager<? extends GameScreen> sm, float f) {
+	void update(GameContainer gc, ScreenManager sm, float f) {
 		checkInput(sm)
 		if (Mdx.input.justTouched() || timer > 300) {
 			credits = true

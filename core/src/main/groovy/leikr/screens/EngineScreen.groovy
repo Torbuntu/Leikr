@@ -41,22 +41,22 @@ import org.mini2Dx.gdx.Input.Keys
  */
 class EngineScreen extends BasicGameScreen {
 
-	static int ID = 1
+	public static final int ID = 1
 
 	String errorMessage
-	private boolean CONFIRM = false
-	private String path
+	boolean CONFIRM = false
+	String path
 
-	private Engine engine
-	private FrameBuffer frameBuffer
-	private final EngineLoader engineLoader
-	private final FitViewport mainViewport
-	private final GameRuntime runtime
-	private final SystemManager systemManager
-	private final StretchViewport fboViewport
-	private final ManagerDTO managerDTO
+	Engine engine
+	FrameBuffer frameBuffer
+	final EngineLoader engineLoader
+	final FitViewport mainViewport
+	final GameRuntime runtime
+	final SystemManager systemManager
+	final StretchViewport fboViewport
+	final ManagerDTO managerDTO
 
-	private EngineState engineState
+	EngineState engineState
 
 	EngineScreen(FitViewport vp, ManagerDTO managerDTO, EngineLoader engineLoader, GameRuntime runtime) {
 		fboViewport = new StretchViewport(runtime.WIDTH, runtime.HEIGHT)

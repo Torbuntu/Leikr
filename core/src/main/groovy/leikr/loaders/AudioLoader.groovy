@@ -30,13 +30,10 @@ import java.util.logging.Logger
  */
 class AudioLoader {
 
-	private String musicRootPath
-	private String soundRootPath
+	String musicRootPath
+	String soundRootPath
 
-	private AssetManager assetManager
-
-	AudioLoader() {
-	}
+	AssetManager assetManager
 
 	void resetAudioLoader(String path) {
 		assetManager = new AssetManager(new ExternalFileHandleResolver())
@@ -79,7 +76,7 @@ class AudioLoader {
 	 * @return the Sound object
 	 */
 	Sound getSound(String fileName) {
-		return assetManager.get(soundRootPath + fileName, Sound.class)
+		assetManager.get(soundRootPath + fileName, Sound.class)
 	}
 
 	void playSound(String fileName) {

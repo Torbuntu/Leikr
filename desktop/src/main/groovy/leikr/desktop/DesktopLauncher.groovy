@@ -36,7 +36,7 @@ class DesktopLauncher {
 			Logger.getLogger(Security.class.getName()).log(Level.WARNING, "Leikr is running without security.")
 		}
 
-		def config = new Lwjgl3Mini2DxConfig(runtime.getGAME_IDENTIFIER())
+		def config = new Lwjgl3Mini2DxConfig(runtime.getGameIdentifier())
 
 		config.with {
 			setTitle(runtime.checkDirectLaunch() ? runtime.getGameName() : "Leikr")

@@ -28,7 +28,7 @@ import org.mini2Dx.core.graphics.Texture
  */
 class FontLoader {
 
-    private final MonospaceGameFont defaultFont
+    final MonospaceGameFont defaultFont
 
     FontLoader(AssetManager manager) {
         manager.load("./Data/Images/Fonts/ultra_compact_6x4.png", Texture.class)
@@ -40,10 +40,6 @@ class FontLoader {
 			frameHeight: 6
 		)
         defaultFont = new MonospaceGameFont(params)
-    }
-
-    MonospaceGameFont getDefaultFont() {
-        return defaultFont
     }
 
     static MonospaceGameFont getCustomFont(AssetManager manager, String fontPath, int spacing, int width, int height) {

@@ -32,49 +32,49 @@ import java.util.logging.Logger
 
 class GameRuntime extends ScreenBasedGame {
 
-	String GAME_IDENTIFIER = "torbuntu.leikr"
+	String gameIdentifier = "torbuntu.leikr"
 	String fileDroppedTitle
 
 	static int WIDTH = 240
 	static int HEIGHT = 160
-	private boolean directLaunch
-	private String gameName
+	boolean directLaunch
+	String gameName
 
-	private String programsPath
-	private String basePath
-	private String dataPath
-	private String deployPath
-	private String packagePath
+	String programsPath
+	String basePath
+	String dataPath
+	String deployPath
+	String packagePath
 
-	private FitViewport viewport
-	private AssetManager assetManager
+	FitViewport viewport
+	AssetManager assetManager
 
 	// Loaders
-	private FontLoader primaryFontLoader
-	private AudioLoader audioLoader
-	private EngineLoader engineLoader
-	private ImageLoader imageLoader
-	private MapLoader mapLoader
-	private SpriteLoader spriteLoader
-	private TerminalManager terminalManager
+	FontLoader primaryFontLoader
+	AudioLoader audioLoader
+	EngineLoader engineLoader
+	ImageLoader imageLoader
+	MapLoader mapLoader
+	SpriteLoader spriteLoader
+	TerminalManager terminalManager
 
 	// Managers
-	private AudioManager audioManager
-	private DataManager dataManager
-	private PixelManager pixelManager
-	private GraphicsManager graphicsManager
-	private InputManager inputManager
-	private SystemManager systemManager
+	AudioManager audioManager
+	DataManager dataManager
+	PixelManager pixelManager
+	GraphicsManager graphicsManager
+	InputManager inputManager
+	SystemManager systemManager
 
 	/**
 	 * DTO for passing managers to lower systems
 	 */
-	private ManagerDTO managerDTO
+	ManagerDTO managerDTO
 
-	private CustomCursor cursor
+	CustomCursor cursor
 
-	private SystemProperties systemProperties
-	private boolean secure
+	SystemProperties systemProperties
+	boolean secure
 
 	final private def logger = Logger.getLogger(GameRuntime.class.getName())
 
@@ -183,15 +183,6 @@ class GameRuntime extends ScreenBasedGame {
 
 		// Initialize screens
 		initializeScreens()
-
-		//TODO: This seems to cause a lot of confusion for users. I think I'll remove it since there are options
-		// for a custom cursor and the cursor can be "catched" in running programs.
-		//Transparent image to hide host system cursor.
-//		Pixmap tmp = Mdx.graphics.newPixmap(Mdx.files.local("Internal/Cursor.png"))
-//		cursor = Mdx.graphics.newCustomCursor(tmp, tmp, 0, 0)
-//		tmp.dispose()
-//		cursor.setVisible(false)
-
 	}
 
 	@Override
@@ -254,18 +245,6 @@ class GameRuntime extends ScreenBasedGame {
 		programsPath + getGameName()
 	}
 
-	String getGameName() {
-		gameName
-	}
-
-	void setGameName(String GAME_NAME) {
-		this.gameName = GAME_NAME
-	}
-
-	void setFileDroppedTitle(String title) {
-		this.fileDroppedTitle = title
-	}
-
 	boolean checkFileDropped() {
 		(null != fileDroppedTitle && fileDroppedTitle.length() > 2)
 	}
@@ -276,48 +255,6 @@ class GameRuntime extends ScreenBasedGame {
 
 	void clearFileDropped() {
 		fileDroppedTitle = ""
-	}
-
-	CustomCursor getCursor() {
-		cursor
-	}
-
-	/**
-	 * Returns the full path to Leikr's Programs directory.
-	 *
-	 * Note: This includes a trailing `/`
-	 *
-	 * @return programsPath
-	 */
-	String getProgramsPath() {
-		programsPath
-	}
-
-	/**
-	 * Returns the full path to Leikr's Data directory.
-	 *
-	 * Note: This includes a trailing `/`
-	 *
-	 * @return dataPath
-	 */
-	String getDataPath() {
-		dataPath
-	}
-
-	String getDeployPath() {
-		deployPath
-	}
-
-	String getBasePath() {
-		basePath
-	}
-
-	String getPackagePath() {
-		packagePath
-	}
-
-	InputManager getInputManager() {
-		inputManager
 	}
 
 }

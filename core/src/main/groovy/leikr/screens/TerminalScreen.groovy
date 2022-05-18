@@ -34,14 +34,14 @@ import org.mini2Dx.gdx.Input.Keys
  */
 class TerminalScreen extends BasicGameScreen {
 
-    static final int ID = 6
+    public static final int ID = 6
 
-    private int blink = 0
+    int blink = 0
 
-    private final TerminalManager terminalManager
-    private final FitViewport viewport
-    private final GameRuntime runtime
-    private final ExportTool exportTool
+    final TerminalManager terminalManager
+    final FitViewport viewport
+    final GameRuntime runtime
+    final ExportTool exportTool
 
     TerminalScreen(FitViewport vp, TerminalManager terminalManager, GameRuntime runtime) {
         this.runtime = runtime

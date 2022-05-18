@@ -35,13 +35,13 @@ import java.util.logging.Logger
  */
 class EngineLoader implements Callable<Engine> {
 
-	private String rootPath
-	private String[] engineArgs
+	String rootPath
+	String[] engineArgs
 
-	private ProgramProperties cp
-	private GroovyClassLoader gcl
-	private GroovyShell sh
-	private GameRuntime runtime
+	ProgramProperties cp
+	GroovyClassLoader gcl
+	GroovyShell sh
+	GameRuntime runtime
 
 	EngineLoader(GameRuntime runtime) {
 		this.runtime = runtime
@@ -118,14 +118,6 @@ class EngineLoader implements Callable<Engine> {
 		destroy()
 		rootPath = "$path/Code/"
 		cp = new ProgramProperties(path)
-	}
-
-	void setEngineArgs(String[] args) {
-		engineArgs = args
-	}
-
-	String[] getEngineArgs() {
-		engineArgs
 	}
 
 	int getMaxSprite() {

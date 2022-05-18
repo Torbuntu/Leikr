@@ -31,11 +31,11 @@ import org.mini2Dx.gdx.Input.Keys
  */
 class ErrorScreen extends BasicGameScreen {
 
-	public static int ID = 3
-	private boolean MENU = false
-	private String errorMessage
-	private final FitViewport viewport
-	private final GameRuntime runtime
+	public static final int ID = 3
+	boolean enterMenu = false
+	String errorMessage
+	final FitViewport viewport
+	final GameRuntime runtime
 
 	ErrorScreen(FitViewport vp, GameRuntime runtime) {
 		viewport = vp
@@ -57,11 +57,11 @@ class ErrorScreen extends BasicGameScreen {
 
 	@Override
 	void update(GameContainer gc, ScreenManager sm, float f) {
-		if (MENU || Mdx.input.isKeyJustPressed(Keys.ESCAPE) || Mdx.input.isKeyJustPressed(Keys.ENTER)
+		if (enterMenu || Mdx.input.isKeyJustPressed(Keys.ESCAPE) || Mdx.input.isKeyJustPressed(Keys.ENTER)
 				|| Mdx.input.isKeyJustPressed(Keys.SPACE) || Mdx.input.isKeyJustPressed(Keys.Q)
 				|| runtime.getInputManager().buttonAny()
 		) {
-			MENU = false
+			enterMenu = false
 			sm.enterGameScreen(runtime.isDevMode() ? TerminalScreen.ID : MenuScreen.ID, null, null)
 		}
 

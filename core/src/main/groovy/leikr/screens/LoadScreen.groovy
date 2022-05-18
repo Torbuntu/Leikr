@@ -41,20 +41,20 @@ import java.util.logging.Logger
  */
 class LoadScreen extends BasicGameScreen {
 
-    public static int ID = 4
+    public static final int ID = 4
 
-    private int frame = 0
-    private String loadPhrase = "Loading "
-    private String gameName
-    private final ArrayList<Integer> barItems
+    int frame = 0
+    String loadPhrase = "Loading "
+    String gameName
+    final ArrayList<Integer> barItems
 
-    private final FitViewport viewport
-    private final EngineLoader engineLoader
-    private ExecutorService service
-    private Future<Engine> engineGetter
+    final FitViewport viewport
+    final EngineLoader engineLoader
+    ExecutorService service
+    Future<Engine> engineGetter
 
-    private final AssetManager assetManager
-    private final GameRuntime runtime
+    final AssetManager assetManager
+    final GameRuntime runtime
 
     LoadScreen(GameRuntime runtime, AssetManager assetManager, FitViewport vp, EngineLoader engineLoader, String gameName) {
         this.runtime = runtime

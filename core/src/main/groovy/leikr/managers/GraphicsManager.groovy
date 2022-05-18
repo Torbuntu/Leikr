@@ -39,7 +39,7 @@ class GraphicsManager {
      *
      * @see #getPixels(java.lang.String)
      */
-    private String path
+    String path
 
     /**
      * Properties set by Custom Properties
@@ -48,17 +48,17 @@ class GraphicsManager {
      * {@link leikr.properties.ProgramProperties} more custom
      * experience.
      */
-    private int maxSprites
-    private int usedSprites
+    int maxSprites
+    int usedSprites
 
     /**
      * Loaders
      *
      * The loaders are used to load the custom assets for a game at startup.
      */
-    private final SpriteLoader spriteLoader
-    private final ImageLoader imageLoader
-    private final MapLoader mapLoader
+    final SpriteLoader spriteLoader
+    final ImageLoader imageLoader
+    final MapLoader mapLoader
 
     /**
      * Color objects. pixels are the indexed Color pixels which are used for the
@@ -66,12 +66,12 @@ class GraphicsManager {
      * use. bgColor is what {@link #preRender} uses to clear the background.
      *
      */
-    private Color bgColor
-    private final PixelManager pixelManager
+    Color bgColor
+    final PixelManager pixelManager
 
-    private Graphics g
-    private Viewport viewport
-    private FrameBuffer frameBuffer
+    Graphics g
+    Viewport viewport
+    FrameBuffer frameBuffer
 
     /**
      *

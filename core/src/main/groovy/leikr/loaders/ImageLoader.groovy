@@ -29,12 +29,9 @@ import java.util.logging.Logger
  */
 class ImageLoader {
 
-	private String rootPath
+	String rootPath
 
-	private AssetManager assetManager
-
-	ImageLoader() {
-	}
+	AssetManager assetManager
 
 	void reloadImageLoader(String path) {
 		disposeImages()
@@ -58,8 +55,7 @@ class ImageLoader {
 	}
 
 	Texture getImage(String fileName) {
-		return assetManager.get(rootPath + fileName, Texture.class)
-
+		assetManager.get(rootPath + fileName, Texture.class)
 	}
 
 	void disposeImages() {

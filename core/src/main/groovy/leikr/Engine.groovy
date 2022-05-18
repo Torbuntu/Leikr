@@ -38,7 +38,7 @@ import org.mini2Dx.gdx.InputProcessor
  *
  * @author tor
  */
-abstract class Engine implements InputProcessor{
+abstract class Engine implements InputProcessor {
 
     /**
      * Used by {@link leikr.screens.EngineScreen} to determine if the game
@@ -67,14 +67,14 @@ abstract class Engine implements InputProcessor{
      * @return lKeyboard
      */
     LeikrKeyboard getKeyboard() {
-        return lKeyboard
+        lKeyboard
     }
 
     /**
      * @return lMouse
      */
     LeikrMouse getMouse() {
-        return lMouse
+        lMouse
     }
 
     /**
@@ -82,7 +82,7 @@ abstract class Engine implements InputProcessor{
      * @return lGraphics
      */
     GraphicsManager getGraphics() {
-        return lGraphics
+        lGraphics
     }
 
     /**
@@ -90,7 +90,7 @@ abstract class Engine implements InputProcessor{
      * @return lSystem
      */
     SystemManager getSystem() {
-        return lSystem
+        lSystem
     }
 
     /**
@@ -98,7 +98,7 @@ abstract class Engine implements InputProcessor{
      * @return lAudio
      */
     AudioManager getAudio() {
-        return lAudio
+        lAudio
     }
 
     /**
@@ -106,7 +106,7 @@ abstract class Engine implements InputProcessor{
      * @return lData
      */
     DataManager getData() {
-        return lData
+        lData
     }
     // </editor-fold>
 
@@ -265,7 +265,7 @@ abstract class Engine implements InputProcessor{
 
     /**
      * Uses a variable to determine if Leikr should pause.
-     * 
+     *
      * @param shouldPause if we should pause Leikr
      */
     void pause(boolean shouldPause) {
@@ -347,11 +347,11 @@ abstract class Engine implements InputProcessor{
     }
 
     final Color getColor(int color) {
-        return lGraphics.getColor(color)
+        lGraphics.getColor(color)
     }
 
     final Color getColor(String color) {
-        return lGraphics.getColor(color)
+        lGraphics.getColor(color)
     }
     // </editor-fold>
 
@@ -613,19 +613,21 @@ abstract class Engine implements InputProcessor{
         lAudio.resumeAudio()
     }
     // Experimental
-    def listSounds(){
+    def listSounds() {
         lAudio.listSounds()
     }
-    def listMusic(){
+
+    def listMusic() {
         lAudio.listMusic()
     }
 
     // </editor-fold>
 
     // <editor-fold desc="Math api" defaultstate="collapsed">
-    float abs(Number value){
+    float abs(Number value) {
         lSystem.abs(value)
     }
+
     float cos(Number radians) {
         lSystem.cos(radians)
     }
@@ -688,27 +690,27 @@ abstract class Engine implements InputProcessor{
     }
 
     // Default to controller A if no index given
-    final boolean button(String key){
+    final boolean button(String key) {
         lInput.button(key)
     }
 
-    final boolean button(String key, int playerId){
+    final boolean button(String key, int playerId) {
         lInput.button(key, playerId)
     }
 
-    final boolean buttonAny(){
+    final boolean buttonAny() {
         lInput.buttonAny()
     }
 
-    final boolean buttonAny(int playerId){
+    final boolean buttonAny(int playerId) {
         lInput.buttonAny(playerId)
     }
 
-    final boolean buttonPress(String key){
+    final boolean buttonPress(String key) {
         lInput.buttonPress(key)
     }
 
-    final boolean buttonPress(String key, int playerId){
+    final boolean buttonPress(String key, int playerId) {
         lInput.buttonPress(key, playerId)
     }
 

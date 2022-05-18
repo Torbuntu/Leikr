@@ -33,16 +33,16 @@ import org.mini2Dx.core.graphics.Texture
  */
 class SpriteLoader {
 
-	private String rootPath
+	String rootPath
 
-	private AssetManager assetManager
-	private TextureLoader assetLoader
+	AssetManager assetManager
+	TextureLoader assetLoader
 
-	private SpriteSheet spriteBank
-	private SpriteSheet spriteBank16
-	private SpriteSheet spriteBank32
-	private SpriteSheet spriteBank64
-	private final GameRuntime runtime
+	SpriteSheet spriteBank
+	SpriteSheet spriteBank16
+	SpriteSheet spriteBank32
+	SpriteSheet spriteBank64
+	final GameRuntime runtime
 
 	SpriteLoader(GameRuntime runtime) {
 		this.runtime = runtime
