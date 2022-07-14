@@ -1,7 +1,6 @@
 buildscript {
     repositories {
         mavenCentral()
-        //jcenter()
         gradlePluginPortal()
     }
 }
@@ -11,21 +10,18 @@ allprojects {
     ext {
         appName = 'Leikr'
         
-        mini2DxVersion = '2.0.0-alpha.97'
-        groovyVersion = '4.0.2'
-        gdxVersion = '1.10.0'
+        mini2DxVersion = '2.0.0-alpha.98'
+        groovyVersion = '4.0.3'
+        gdxVersion = '1.11.0'
         lwjglVersion = '3.3.1'
         lwjglNatives32 = 'natives-linux-arm32'
         lwjglNatives64 = 'natives-linux-arm64'
-        
     }
 
     repositories {
         mavenCentral()
-        //jcenter()
         gradlePluginPortal()
         maven { url "https://jitpack.io" }
-        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
 
     }

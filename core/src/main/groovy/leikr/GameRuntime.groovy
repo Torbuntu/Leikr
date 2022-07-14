@@ -23,8 +23,6 @@ import org.mini2Dx.core.Mdx
 import org.mini2Dx.core.assets.AssetManager
 import org.mini2Dx.core.files.ExternalFileHandleResolver
 import org.mini2Dx.core.game.ScreenBasedGame
-import org.mini2Dx.core.graphics.CustomCursor
-import org.mini2Dx.core.graphics.Pixmap
 import org.mini2Dx.core.graphics.viewport.FitViewport
 
 import java.util.logging.Level
@@ -70,8 +68,6 @@ class GameRuntime extends ScreenBasedGame {
 	 * DTO for passing managers to lower systems
 	 */
 	ManagerDTO managerDTO
-
-	CustomCursor cursor
 
 	SystemProperties systemProperties
 	boolean secure
