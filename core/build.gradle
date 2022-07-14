@@ -1,6 +1,6 @@
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-targetCompatibility = 16
-sourceCompatibility = 16
+targetCompatibility = 17
+sourceCompatibility = 17
 
 
 test {

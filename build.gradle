@@ -31,6 +31,8 @@ project(":core") {
     apply plugin: 'groovy'
 
     dependencies {
+        // Groovy 4.0.3 is throwing class not found for JavaParser. This is temporary to work around that.
+        implementation 'com.github.javaparser:javaparser-core:3.24.2'
 
         implementation "org.mini2Dx:mini2dx-libgdx-desktop-lwjgl3:$mini2DxVersion"
 

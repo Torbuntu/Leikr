@@ -3,8 +3,8 @@ plugins {
 	id "org.beryx.jlink" version "2.22.2"
 }
 
-targetCompatibility = 16
-sourceCompatibility = 16
+targetCompatibility = 17
+sourceCompatibility = 17
 
 shadowJar {
 	//I'd like to minimize, but it is very aggressive and only saves 1M right now
