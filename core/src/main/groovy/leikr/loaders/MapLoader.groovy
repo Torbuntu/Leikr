@@ -40,11 +40,18 @@ class MapLoader {
 		this.systemProperties = systemProperties
 	}
 
+	/**
+	 * If a map instance exists before loading a new one, this will dispose
+	 * of that instance without disposing the loaded internal Tileset.
+	 *
+	 * @param - name of the map to load without the .tmx suffix
+	 */
 	void loadMap(String name) {
-		if (map) {
-			map.dispose()
+		if (null != map) {
+			map.dispose(false)
 		}
 		map = new TiledMap(Mdx.files.external("$rootPath${name}.tmx"))
+		println "loading map: [${name}.tmx]"
 		map.loadTilesetTextures()
 	}
 
