@@ -10,7 +10,7 @@ allprojects {
     ext {
         appName = 'Leikr'
         
-        mini2DxVersion = '2.0.0-beta.1'
+        mini2DxVersion = '2.0.0-beta.2'
         groovyVersion = '4.0.4'
         lwjglVersion = '3.3.1'
         lwjglNatives32 = 'natives-linux-arm32'

@@ -1,10 +1,10 @@
 plugins {
 	id 'com.github.johnrengelman.shadow' version '7.1.0'
-	id "org.beryx.jlink" version "2.22.2"
+	id "org.beryx.jlink" version "2.25.0"
 }
 
-targetCompatibility = 17
-sourceCompatibility = 17
+targetCompatibility = JavaVersion.VERSION_17
+sourceCompatibility = JavaVersion.VERSION_17
 
 shadowJar {
 	//I'd like to minimize, but it is very aggressive and only saves 1M right now
@@ -12,8 +12,6 @@ shadowJar {
 //		exclude(dependency('org.apache.groovy:.*:.*'))
 //	}
 	archiveBaseName = 'Leikr'
-	classifier = null
-	archiveVersion = null
 	//Exclude Asset directories from inside the jar.
 	exclude 'Data'
 	exclude 'Programs'
@@ -53,7 +51,6 @@ task launchDesktop(dependsOn: classes, type: JavaExec) {
 	ignoreExitValue = true
 	//args 'insecure'//Security is now an opt-out feature
 }
-
 
 jlink {
 	launcher {
