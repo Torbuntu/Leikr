@@ -34,6 +34,9 @@ import org.mini2Dx.core.graphics.FrameBuffer
 import org.mini2Dx.core.graphics.viewport.StretchViewport
 import org.mini2Dx.gdx.InputProcessor
 
+import static java.util.logging.Level.SEVERE
+import static java.util.logging.Logger.getLogger
+
 /**
  *
  * @author tor
@@ -143,7 +146,7 @@ abstract class Engine implements InputProcessor {
         try {
             Mdx.input.setInputProcessor(this)
         } catch (Exception ex) {
-            Logger.getLogger(Engine.class.getName()).log(Level.SEVERE, "Input processor not set: {0}", ex.getMessage())
+            getLogger(Engine.getName()).log(SEVERE, "Input processor not set: {0}", ex.getMessage())
         }
 
         active = true

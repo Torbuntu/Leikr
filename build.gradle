@@ -10,7 +10,7 @@ allprojects {
     ext {
         appName = 'Leikr'
         
-        mini2DxVersion = '2.0.0-beta.2'
+        mini2DxVersion = '2.0.0-beta.3'
         groovyVersion = '4.0.4'
         lwjglVersion = '3.3.1'
         lwjglNatives32 = 'natives-linux-arm32'
@@ -30,7 +30,7 @@ project(":core") {
     apply plugin: 'groovy'
 
     dependencies {
-        // Groovy 4.0.3 is throwing class not found for JavaParser. This is temporary to work around that.
+        // Groovy 4.0.3 and 4.0.4 are throwing class not found for JavaParser. This is temporary to work around that.
         implementation 'com.github.javaparser:javaparser-core:3.24.2'
 
         implementation "org.mini2Dx:mini2dx-libgdx-desktop-lwjgl3:$mini2DxVersion"
