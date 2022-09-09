@@ -15,16 +15,10 @@
  */
 package leikr
 
-import leikr.managers.InputManager
-
-import java.util.logging.Level
-import java.util.logging.Logger
-import leikr.controls.*
-import leikr.managers.AudioManager
-import leikr.managers.DataManager
-import leikr.managers.GraphicsManager
-import leikr.managers.ManagerDTO
-import leikr.managers.SystemManager
+import leikr.controls.LeikrController
+import leikr.controls.LeikrKeyboard
+import leikr.controls.LeikrMouse
+import leikr.managers.*
 import org.mini2Dx.core.Graphics
 import org.mini2Dx.core.Mdx
 import org.mini2Dx.core.audio.Music
@@ -36,7 +30,6 @@ import org.mini2Dx.gdx.InputProcessor
 
 import static java.util.logging.Level.SEVERE
 import static java.util.logging.Logger.getLogger
-
 /**
  *
  * @author tor
