@@ -15,16 +15,15 @@
  */
 package leikr.commands
 
+import groovy.util.logging.Log4j2
 import leikr.GameRuntime
 import org.mini2Dx.core.Mdx
-
-import java.util.logging.Level
-import java.util.logging.Logger
 
 /**
  *
  * @author tor
  */
+@Log4j2
 class PrintCommand implements Command {
 
 	private final GameRuntime runtime
@@ -45,7 +44,7 @@ class PrintCommand implements Command {
 		try {
 			return Mdx.files.external(adjustedPath).readString()
 		} catch (IOException ex) {
-			Logger.getLogger(PrintCommand.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 			return "[E] Failed to print contents of file [${command[1]}]"
 		}
 

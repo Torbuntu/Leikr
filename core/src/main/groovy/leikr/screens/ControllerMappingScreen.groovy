@@ -1,5 +1,6 @@
 package leikr.screens
 
+import groovy.util.logging.Log4j2
 import leikr.GameRuntime
 import leikr.managers.ManagerDTO
 import leikr.properties.ControllerMapping
@@ -19,9 +20,13 @@ import org.mini2Dx.core.util.Align
 import org.mini2Dx.gdx.math.Vector3
 
 // TODO: Make this page not ugly.
+@Log4j2
 class ControllerMappingScreen extends BasicGameScreen implements GamePadListener {
 	public static final int ID = 8
 	def buttonMapping = [:]
+
+	def stepText = ["Press: A", "Press: B", "Press: X", "Press: Y", "Press: SELECT", "Press: START",
+					"Press: LEFT_BUMPER", "Press: RIGHT_BUMPER", "Press: UP", "Press: DOWN", "Press: LEFT", "Press: RIGHT"]
 
 	// while not complete, we add new button codes and proceed
 	def processing = true
@@ -77,10 +82,10 @@ class ControllerMappingScreen extends BasicGameScreen implements GamePadListener
 		String filePath = "Data/Controllers/${modelInfo}.properties"
 		Properties prop = new Properties()
 		if (!Mdx.files.external(filePath).exists()) {
-			println "File does not exist, creating new: $filePath"
+			log.warn("File does not exist, creating new: $filePath")
 			if (!Mdx.files.external("Data/Controllers/").exists()) {
 				if (new File("Data/Controllers/").mkdirs()) {
-					println "Successfully created Data/Controllers directory"
+					log.info("Successfully created Data/Controllers directory")
 				}
 			}
 			new File(filePath).createNewFile()
@@ -88,13 +93,14 @@ class ControllerMappingScreen extends BasicGameScreen implements GamePadListener
 		try (InputStream inputStream = new FileInputStream(new File(filePath))) {
 			prop.load(inputStream)
 		} catch (Exception ex) {
-			ex.printStackTrace()
+			log.error(ex)
 			return false
 		}
 		try (FileOutputStream outputStream = new FileOutputStream(new File(filePath))) {
 			buttonMapping.each {
-				println "${it.value}, ${it.key}"
+				log.debug("${it.value}, ${it.key}")
 			}
+
 			prop.setProperty("btn_x", controllerMapping.getX() as String)
 			prop.setProperty("btn_a", controllerMapping.getA() as String)
 			prop.setProperty("btn_b", controllerMapping.getB() as String)
@@ -114,10 +120,10 @@ class ControllerMappingScreen extends BasicGameScreen implements GamePadListener
 			prop.setProperty("axis_vertical", controllerMapping.getVerticalAxis() as String ?: "999")
 			prop.store(outputStream, "Saved from Leikr Controller Mapping Utility")
 		} catch (IOException | NumberFormatException ex) {
-			println(ex.getMessage())
+			log.error(ex)
 			return false
 		}
-		println "Save was successful"
+		log.info("Save was successful")
 		return true
 	}
 
@@ -148,22 +154,7 @@ class ControllerMappingScreen extends BasicGameScreen implements GamePadListener
 		g.drawString("Mapping: ${modelInfo}", 0, 0, 240, Align.CENTER)
 
 		if (processing) {
-			switch (progress) {
-				case 0: g.drawString("Press: A", 0, 40, 240, Align.CENTER); break
-				case 1: g.drawString("Press: B", 0, 40, 240, Align.CENTER); break
-				case 2: g.drawString("Press: X", 0, 40, 240, Align.CENTER); break
-				case 3: g.drawString("Press: Y", 0, 40, 240, Align.CENTER); break
-
-				case 4: g.drawString("Press: SELECT", 0, 40, 240, Align.CENTER); break
-				case 5: g.drawString("Press: START", 0, 40, 240, Align.CENTER); break
-				case 6: g.drawString("Press: LEFT_BUMPER", 0, 40, 240, Align.CENTER); break
-				case 7: g.drawString("Press: RIGHT_BUMPER", 0, 40, 240, Align.CENTER); break
-
-				case 8: g.drawString("Press: UP", 0, 40, 240, Align.CENTER); break
-				case 9: g.drawString("Press: DOWN", 0, 40, 240, Align.CENTER); break
-				case 10: g.drawString("Press: LEFT", 0, 40, 240, Align.CENTER); break
-				case 11: g.drawString("Press: RIGHT", 0, 40, 240, Align.CENTER); break
-			}
+			g.drawString(stepText[progress], 0, 40, 240, Align.CENTER)
 		}
 		g.flush()
 		framebuffer.end()
@@ -214,7 +205,7 @@ class ControllerMappingScreen extends BasicGameScreen implements GamePadListener
 
 	@Override
 	void onAxisChanged(GamePad gamePad, int axisCode, float axisValue) {
-		println "code: ${axisCode} , value: ${axisValue}"
+		log.debug("code: ${axisCode} , value: ${axisValue}")
 		if (axisValue as int == 0) return
 
 		switch (progress) {
@@ -227,6 +218,6 @@ class ControllerMappingScreen extends BasicGameScreen implements GamePadListener
 
 	@Override
 	void onAccelerometerChanged(GamePad gamePad, int accelerometerCode, Vector3 value) {
-
+		// We don't use Accelerometer
 	}
 }

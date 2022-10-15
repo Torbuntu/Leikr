@@ -15,6 +15,7 @@
  */
 package leikr.screens
 
+import groovy.util.logging.Log4j2
 import leikr.GameRuntime
 import leikr.managers.InputManager
 import leikr.properties.ProgramProperties
@@ -34,13 +35,11 @@ import org.mini2Dx.core.screen.Transition
 import org.mini2Dx.core.util.Align
 import org.mini2Dx.gdx.Input.Keys
 
-import java.util.logging.Level
-import java.util.logging.Logger
-
 /**
  *
  * @author tor
  */
+@Log4j2
 class MenuScreen extends BasicGameScreen {
 
 	public static final int ID = 7
@@ -78,8 +77,7 @@ class MenuScreen extends BasicGameScreen {
 					}
 
 		} catch (IOException ex) {
-			ex.printStackTrace()
-			Logger.getLogger(MenuScreen.class.getName()).log(Level.SEVERE, ex.getMessage(), ex)
+			log.error(ex)
 		}
 		loadIcon()
 	}
@@ -115,7 +113,7 @@ class MenuScreen extends BasicGameScreen {
 			}
 		} catch (Exception ignored) {
 			icon = Mdx.graphics.newTexture(Mdx.files.external(runtime.getDataPath() + "Logo/logo-32x32.png"))
-			Logger.getLogger(MenuScreen.class.getName()).log(Level.WARNING, "No icon file for: {0}", games.get(index).getGameTitle())
+			log.warn("No icon file for: {}", games.get(index).getGameTitle())
 		}
 	}
 

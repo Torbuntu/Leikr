@@ -15,17 +15,16 @@
  */
 package leikr.commands
 
+import groovy.util.logging.Log4j2
 import leikr.GameRuntime
 import leikr.managers.TerminalManager
 import org.mini2Dx.core.Mdx
-
-import java.util.logging.Level
-import java.util.logging.Logger
 
 /**
  *
  * @author Torbuntu
  */
+@Log4j2
 class ToolCommand implements Command {
 
 	private String out
@@ -48,7 +47,7 @@ class ToolCommand implements Command {
 				}
 				return out
 			} catch (IOException ex) {
-				Logger.getLogger(ToolCommand.class.getName()).log(Level.WARNING, null, ex)
+				log.warn(ex)
 				return "[E] Failed to list tools."
 			}
 		} else {
@@ -60,7 +59,7 @@ class ToolCommand implements Command {
 				terminalManager.setToolRunning()
 				return "[I] Running tool [${command[1]}]."
 			} catch (Exception ex) {
-				Logger.getLogger(ToolCommand.class.getName()).log(Level.WARNING, null, ex)
+				log.warn(ex)
 				return "[E] Failed to run tool with name [${command[1]}]"
 			}
 
@@ -75,7 +74,7 @@ class ToolCommand implements Command {
 			}
 			return names.contains(name)
 		} catch (IOException ex) {
-			Logger.getLogger(ToolCommand.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 			return false
 		}
 	}

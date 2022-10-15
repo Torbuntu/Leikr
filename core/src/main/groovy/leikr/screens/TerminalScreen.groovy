@@ -28,97 +28,97 @@ import org.mini2Dx.core.screen.BasicGameScreen
 import org.mini2Dx.core.screen.ScreenManager
 import org.mini2Dx.core.screen.Transition
 import org.mini2Dx.gdx.Input.Keys
+
 /**
  *
  * @author Torbuntu
  */
 class TerminalScreen extends BasicGameScreen {
 
-    public static final int ID = 6
+	public static final int ID = 6
 
-    int blink = 0
+	int blink = 0
 
-    final TerminalManager terminalManager
-    final FitViewport viewport
-    final GameRuntime runtime
-    final ExportTool exportTool
+	final TerminalManager terminalManager
+	final FitViewport viewport
+	final GameRuntime runtime
+	final ExportTool exportTool
 
-    TerminalScreen(FitViewport vp, TerminalManager terminalManager, GameRuntime runtime) {
-        this.runtime = runtime
-        this.terminalManager = terminalManager
-        viewport = vp
-        exportTool = new ExportTool(runtime)
-    }
+	TerminalScreen(FitViewport vp, TerminalManager terminalManager, GameRuntime runtime) {
+		this.runtime = runtime
+		this.terminalManager = terminalManager
+		viewport = vp
+		exportTool = new ExportTool(runtime)
+	}
 
-    @Override
-    void initialise(GameContainer gc) {
-    }
+	@Override
+	void initialise(GameContainer gc) {
+	}
 
-    @Override
-    void preTransitionIn(Transition transition) {
-        terminalManager.init()
-        Mdx.input.setInputProcessor(terminalManager)
-    }
+	@Override
+	void preTransitionIn(Transition transition) {
+		terminalManager.init()
+		Mdx.input.setInputProcessor(terminalManager)
+	}
 
-    @Override
-    void update(GameContainer gc, ScreenManager sm, float delta) {
-        terminalManager.update()
-        if (runtime.checkFileDropped()) {
-            if (runtime.getFileDroppedTitle().endsWith(".lkr")) {
-                terminalManager.setState(TerminalState.INSTALLING)
-            } else {
-                LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID)
-                ls.setGameName(runtime.getFileDroppedTitle())
-                runtime.setGameName(runtime.getFileDroppedTitle())
-                runtime.clearFileDropped()
-                sm.enterGameScreen(LoadScreen.ID, null, null)
-            }
-        }
+	@Override
+	void update(GameContainer gc, ScreenManager sm, float delta) {
+		terminalManager.update()
+		if (runtime.checkFileDropped()) {
+			if (runtime.getFileDroppedTitle().endsWithIgnoreCase(".lkr")) {
+				terminalManager.setState(TerminalState.INSTALLING)
+			} else {
+				LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID)
+				ls.setGameName(runtime.getFileDroppedTitle())
+				runtime.setGameName(runtime.getFileDroppedTitle())
+				runtime.clearFileDropped()
+				sm.enterGameScreen(LoadScreen.ID, null, null)
+			}
+		}
 
-        switch (terminalManager.getState()) {
-            case TerminalState.INSTALLING:
-                if (Mdx.input.isKeyJustPressed(Keys.Y)) {
-                    String title = runtime.getFileDroppedTitle().substring(0, runtime.getFileDroppedTitle().lastIndexOf('.'))
-                    String success = exportTool.importProject(title, runtime.getProgramsPath())
-                    if (!success.startsWith("[E]")) {
-
-                        LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID)
-                        ls.setGameName(title)
-                        runtime.setGameName(title)
-                        runtime.clearFileDropped()
-                        sm.enterGameScreen(LoadScreen.ID, null, null)
-                    }
-                }
-                if (Mdx.input.isKeyJustPressed(Keys.N)) {
-                    runtime.clearFileDropped()
-                    terminalManager.setState(TerminalState.PROCESSING)
-                }
+		switch (terminalManager.getState()) {
+			case TerminalState.INSTALLING:
+				if (Mdx.input.isKeyJustPressed(Keys.Y)) {
+					String title = runtime.getFileDroppedTitle().substring(0, runtime.getFileDroppedTitle().lastIndexOf('.'))
+					String success = exportTool.importProject(title, runtime.getProgramsPath())
+					if (!success.startsWith("[E]")) {
+						LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID)
+						ls.setGameName(title)
+						runtime.setGameName(title)
+						runtime.clearFileDropped()
+						sm.enterGameScreen(LoadScreen.ID, null, null)
+					}
+				}
+				if (Mdx.input.isKeyJustPressed(Keys.N)) {
+					runtime.clearFileDropped()
+					terminalManager.setState(TerminalState.PROCESSING)
+				}
 				break
-            case TerminalState.RUN_PROGRAM:
-                LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID)
-                ls.setGameName(runtime.getGameName())
-                sm.enterGameScreen(LoadScreen.ID, null, null)
+			case TerminalState.RUN_PROGRAM:
+				LoadScreen ls = (LoadScreen) sm.getGameScreen(LoadScreen.ID)
+				ls.setGameName(runtime.getGameName())
+				sm.enterGameScreen(LoadScreen.ID, null, null)
 				break
-            case TerminalState.NEW_PROGRAM:
-                sm.enterGameScreen(NewProgramScreen.ID, null, null)
+			case TerminalState.NEW_PROGRAM:
+				sm.enterGameScreen(NewProgramScreen.ID, null, null)
 				break
-        }
+		}
 
-        blink++
-        if (blink > 60) {
-            blink = 0
-        }
-    }
+		blink++
+		if (blink > 60) {
+			blink = 0
+		}
+	}
 
-    @Override
-    void render(GameContainer gc, Graphics g) {
-        viewport.apply(g)
-        g.setColor(Colors.GREEN())
+	@Override
+	void render(GameContainer gc, Graphics g) {
+		viewport.apply(g)
+		g.setColor(Colors.GREEN())
 
-        if(terminalManager.getState()==TerminalState.INSTALLING){
+		if (terminalManager.getState() == TerminalState.INSTALLING) {
 			g.drawString("Install and run program [${runtime.getFileDroppedTitle()}]? [Y/N]", 0, 60, runtime.WIDTH, 1)
-		}else{
-			g.with{
+		} else {
+			g.with {
 				drawString(terminalManager.getHistoryText(), 0, 0, 240)
 				setColor(Colors.BLACK())
 				fillRect(0, 152, runtime.WIDTH, runtime.HEIGHT)
@@ -130,13 +130,13 @@ class TerminalScreen extends BasicGameScreen {
 					drawString("Ctrl", 0, 146, runtime.WIDTH, 1)
 				}
 			}
-        }
+		}
 
-    }
+	}
 
-    @Override
-    int getId() {
-        ID
-    }
+	@Override
+	int getId() {
+		ID
+	}
 
 }

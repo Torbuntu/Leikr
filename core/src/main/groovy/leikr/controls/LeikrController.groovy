@@ -1,11 +1,12 @@
 package leikr.controls
 
+import groovy.util.logging.Log4j2
 import leikr.properties.ControllerMapping
 import org.mini2Dx.core.input.GamePad
 import org.mini2Dx.core.input.GamePadListener
 import org.mini2Dx.gdx.math.Vector3
 
-
+@Log4j2
 class LeikrController implements GamePadListener {
 	def playerId, instanceId
 	def buttons = [
@@ -51,7 +52,7 @@ class LeikrController implements GamePadListener {
 					(controllerMapping.getLeft()): "LEFT",
 					(controllerMapping.getRight()): "RIGHT")
 		}
-		println buttonLookup
+		log.debug(buttonLookup)
 	}
 
 	LeikrController(int playerId, String model) {
@@ -81,18 +82,18 @@ class LeikrController implements GamePadListener {
 
 	@Override
 	void onConnect(GamePad gamePad) {
-		println "Connection: ${gamePad.getModelInfo()}, ${gamePad.getInstanceId()}, ${gamePad.getPlayerIndex()}, ${gamePad.getGamePadType()}"
+		log.debug("Connection: ${gamePad.getModelInfo()}, ${gamePad.getInstanceId()}, ${gamePad.getPlayerIndex()}, ${gamePad.getGamePadType()}")
 	}
 
 	@Override
 	void onDisconnect(GamePad gamePad) {
-		println "Where am I going?! Ah!..."
-		println "Connection: ${gamePad.getModelInfo()}, ${gamePad.getInstanceId()}, ${gamePad.getPlayerIndex()}, ${gamePad.getGamePadType()}"
+		log.warn("Where am I going?! Ah!...")
+		log.warn("Connection: ${gamePad.getModelInfo()}, ${gamePad.getInstanceId()}, ${gamePad.getPlayerIndex()}, ${gamePad.getGamePadType()}")
 	}
 
 	@Override
 	void onButtonDown(GamePad gamePad, int buttonCode) {
-		println "Code: $buttonCode, Set: ${buttonLookup[buttonCode]}"
+		log.debug("Code: $buttonCode, Set: ${buttonLookup[buttonCode]}")
 		buttons.replace(buttonLookup.get(buttonCode) as String, true)
 	}
 
@@ -103,7 +104,7 @@ class LeikrController implements GamePadListener {
 
 	@Override
 	void onAxisChanged(GamePad gamePad, int axisCode, float axisValue) {
-		println "${axisCode} : ${axisValue}"
+		log.debug("${axisCode} : ${axisValue}")
 		if (axisValue as int == 0) {
 			if (axisCode as int == horizontalAxis) {
 				buttons.replace("LEFT", false)
@@ -134,7 +135,7 @@ class LeikrController implements GamePadListener {
 
 	@Override
 	void onAccelerometerChanged(GamePad gamePad, int accelerometerCode, Vector3 value) {
-		println accelerometerCode
+		log.debug(accelerometerCode)
 	}
 
 	boolean button(String key) {

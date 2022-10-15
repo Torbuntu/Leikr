@@ -16,8 +16,8 @@
 package leikr.screens
 
 import com.badlogic.gdx.Gdx
-import java.util.logging.Level
-import java.util.logging.Logger
+import groovy.util.logging.Log4j2
+
 import leikr.Engine
 import leikr.GameRuntime
 import leikr.managers.ManagerDTO
@@ -39,6 +39,7 @@ import org.mini2Dx.gdx.Input.Keys
  *
  * @author tor
  */
+@Log4j2
 class EngineScreen extends BasicGameScreen {
 
 	public static final int ID = 1
@@ -83,7 +84,7 @@ class EngineScreen extends BasicGameScreen {
 		}
 		frameBuffer.dispose()
 		// Reset args to an empty array.
-		Logger.getLogger(EngineScreen.class.getName()).log(Level.INFO, "Engine classes disposed.")
+		log.info("Engine classes disposed.")
 	}
 
 	@Override
@@ -108,7 +109,7 @@ class EngineScreen extends BasicGameScreen {
 		} catch (Exception ex) {
 			engineState = EngineState.ERROR
 			errorMessage = "Error in program `create` method. " + ex.getLocalizedMessage()
-			Logger.getLogger(EngineScreen.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 		}
 	}
 
@@ -154,7 +155,7 @@ class EngineScreen extends BasicGameScreen {
 				} catch (Exception ex) {
 					engineState = EngineState.ERROR
 					errorMessage = "Error in program `update` method. ${ex.getLocalizedMessage()}"
-					Logger.getLogger(EngineScreen.class.getName()).log(Level.SEVERE, null, ex)
+					log.error(ex)
 				}
 				break
 			case EngineState.PAUSE:
@@ -188,7 +189,7 @@ class EngineScreen extends BasicGameScreen {
 
 		if (!systemManager.update(sm)) {
 			systemManager.resetFont()
-			Logger.getLogger(EngineScreen.class.getName()).log(Level.WARNING, "Transition initiated from running program.")
+			log.warn("Transition initiated from running program.")
 		}
 	}
 
@@ -240,7 +241,7 @@ class EngineScreen extends BasicGameScreen {
 		} catch (Exception ex) {
 			engineState = EngineState.ERROR
 			errorMessage = "Error in program `render` method. ${ex.getLocalizedMessage()}"
-			Logger.getLogger(EngineScreen.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 		}
 	}
 

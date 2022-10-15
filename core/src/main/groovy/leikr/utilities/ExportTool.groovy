@@ -15,6 +15,7 @@
  */
 package leikr.utilities
 
+import groovy.util.logging.Log4j2
 import leikr.GameRuntime
 import org.mini2Dx.core.Mdx
 
@@ -23,8 +24,6 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.SimpleFileVisitor
 import java.nio.file.attribute.BasicFileAttributes
-import java.util.logging.Level
-import java.util.logging.Logger
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
 import java.util.zip.ZipOutputStream
@@ -33,6 +32,7 @@ import java.util.zip.ZipOutputStream
  *
  * @author tor
  */
+@Log4j2
 class ExportTool {
 
 	private final GameRuntime runtime
@@ -48,7 +48,7 @@ class ExportTool {
 			}
 			return "Projects exported."
 		} catch (IOException ex) {
-			Logger.getLogger(ExportTool.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 		}
 		return "[E] Failed to export all projects."
 	}
@@ -58,7 +58,7 @@ class ExportTool {
 			zip(project)
 			return "Package [$project] exported successfully. Check Packages directory."
 		} catch (Exception ex) {
-			Logger.getLogger(ExportTool.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 		}
 		return "Failure to export Package. Please check logs."
 	}
@@ -68,7 +68,7 @@ class ExportTool {
 			unzip(project, location)
 			return "Package [$project] installed successfully. Check [$location]."
 		} catch (Exception ex) {
-			Logger.getLogger(ExportTool.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 		}
 		return "[E] Failure to install Package. Please check logs."
 	}
@@ -101,7 +101,7 @@ class ExportTool {
 				}
 			})
 		} catch (Exception ex) {
-			Logger.getLogger(ExportTool.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 		}
 	}
 
@@ -137,7 +137,7 @@ class ExportTool {
 			fileInStream.close()
 
 		} catch (IOException ex) {
-			Logger.getLogger(ExportTool.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 		}
 	}
 

@@ -15,13 +15,13 @@
  */
 package leikr.properties
 
-import java.util.logging.Level
-import java.util.logging.Logger
+import groovy.util.logging.Log4j2
 
 /**
  *
  * @author tor
  */
+@Log4j2
 class SystemProperties {
 
 	static String launchTitle
@@ -36,7 +36,7 @@ class SystemProperties {
 			debug = Boolean.valueOf(prop.getProperty("debug_mode")) ?: false
 			devMode = Boolean.valueOf(prop.getProperty("dev_mode")) ?: false
 		} catch (IOException | NumberFormatException ex) {
-			Logger.getLogger(SystemProperties.class.getName()).log(Level.WARNING, null, ex)
+			log.warn(ex)
 		}
 	}
 }

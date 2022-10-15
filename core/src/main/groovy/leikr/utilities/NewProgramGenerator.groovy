@@ -15,32 +15,32 @@
  */
 package leikr.utilities
 
+import groovy.util.logging.Log4j2
 import leikr.GameRuntime
 import org.mini2Dx.core.Mdx
 import org.mini2Dx.core.files.FileHandle
 
 import java.nio.file.Files
 import java.nio.file.Path
-import java.util.logging.Level
-import java.util.logging.Logger
 
 /**
  *
  * @author Torbuntu
  */
+@Log4j2
 class NewProgramGenerator {
 
-	private final String NEW_LOCATION = "New Program template generated at: /Programs/"
+	final String NEW_LOCATION = "New Program template generated at: /Programs/"
 
-	private String maxSprites = "2048"
-	private String useCompiled = "false"
-	private String compileSource = "false"
-	private String title = "unknown"
-	private String type = "Program"
-	private String author = "unknown"
-	private String version = "0.0.0"
-	private String players = "1"
-	private String about = "A Leikr Program."
+	String maxSprites = "2048"
+	String useCompiled = "false"
+	String compileSource = "false"
+	String title = "unknown"
+	String type = "Program"
+	String author = "unknown"
+	String version = "0.0.0"
+	String players = "1"
+	String about = "A Leikr Program."
 
 	private final GameRuntime runtime
 
@@ -63,26 +63,28 @@ class NewProgramGenerator {
 	}
 
 	private String copyTemplate(String newProject, String template) throws IOException {
-		if (!Mdx.files.external(runtime.getDataPath() + "Templates/" + template).exists()) {
+		if (!Mdx.files.external("${runtime.getDataPath()}Templates/$template").exists()) {
 			throw new IOException("Templates: [$template] does not exist")
 		}
 		Mdx.files.external(runtime.getProgramsPath() + newProject).mkdirs()
-		for (FileHandle file : Mdx.files.external(runtime.getDataPath() + "Templates/" + template).list()) {
-			Mdx.files.external(runtime.getDataPath() + "Templates/" + template + "/" + file.name()).copyTo(Mdx.files.external(runtime.getProgramsPath() + newProject))
+		Mdx.files.external("${runtime.getDataPath()}Templates/$template").list().each { FileHandle file ->
+			Mdx.files.external("${runtime.getDataPath()}Templates/$template/${file.name()}")
+					.copyTo(Mdx.files.external(runtime.getProgramsPath() + newProject))
 		}
-		Mdx.files.external(runtime.getProgramsPath() + newProject + "/Code/main.groovy").moveTo(Mdx.files.external(runtime.getProgramsPath() + newProject + "/Code/" + newProject + ".groovy"))
+		Mdx.files.external(runtime.getProgramsPath() + newProject + "/Code/main.groovy")
+				.moveTo(Mdx.files.external("${runtime.getProgramsPath()}$newProject/Code/${newProject}.groovy"))
 		return NEW_LOCATION + newProject + "/"
 	}
 
 	private void setNewProgramClassName(String newProject) throws IOException {
-		Path nfPath = new File(Mdx.files.external(runtime.getProgramsPath() + newProject + "/Code/" + newProject + ".groovy").path()).toPath()
+		Path nfPath = new File(Mdx.files.external("${runtime.getProgramsPath()}$newProject/Code/${newProject}.groovy").path()).toPath()
 		String newFile = Files.readString(nfPath)
 		String replace = newFile.replace("NewProgram", newProject)
 		Files.writeString(nfPath, replace)
 	}
 
 	void writePropertyName(String name) {
-		String propPath = Mdx.files.external(runtime.getProgramsPath() + name + "/program.properties").path()
+		String propPath = Mdx.files.external("${runtime.getProgramsPath()}$name/program.properties").path()
 		try (FileOutputStream fos = new FileOutputStream(propPath)) {
 			Properties props = new Properties()
 			props.setProperty("title", name)
@@ -98,12 +100,12 @@ class NewProgramGenerator {
 			props.store(fos, "Program generated with Leikr Program Generator")
 
 		} catch (Exception ex) {
-			Logger.getLogger(NewProgramGenerator.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 		}
 	}
 
 	void writeProperties(String name) {
-		String propPath = Mdx.files.external(runtime.getProgramsPath() + name + "/program.properties").path()
+		String propPath = Mdx.files.external("${runtime.getProgramsPath()}$name/program.properties").path()
 		try (FileOutputStream fos = new FileOutputStream(propPath)) {
 			Properties props = new Properties()
 			props.with {
@@ -120,80 +122,7 @@ class NewProgramGenerator {
 				store(fos, "Program generated with Leikr Program Generator")
 			}
 		} catch (Exception ex) {
-			Logger.getLogger(NewProgramGenerator.class.getName()).log(Level.WARNING, "Writing properties for $name had a problem: ", ex)
+			log.warn("Writing properties for $name had a problem: ", ex)
 		}
 	}
-
-	String getMaxSprites() {
-		return maxSprites
-	}
-
-	void setMaxSprites(String maxSprites) {
-		this.maxSprites = maxSprites
-	}
-
-	String getUseCompiled() {
-		return useCompiled
-	}
-
-	void setUseCompiled(String useCompiled) {
-		this.useCompiled = useCompiled
-	}
-
-	String getCompileSource() {
-		return compileSource
-	}
-
-	void setCompileSource(String compileSource) {
-		this.compileSource = compileSource
-	}
-
-	String getTitle() {
-		return title
-	}
-
-	void setTitle(String title) {
-		this.title = title
-	}
-
-	String getType() {
-		return type
-	}
-
-	void setType(String type) {
-		this.type = type
-	}
-
-	String getAuthor() {
-		return author
-	}
-
-	void setAuthor(String author) {
-		this.author = author
-	}
-
-	String getVersion() {
-		return version
-	}
-
-	void setVersion(String version) {
-		this.version = version
-	}
-
-	String getPlayers() {
-		return players
-	}
-
-	void setPlayers(String players) {
-		this.players = players
-	}
-
-	String getAbout() {
-		return about
-	}
-
-	void setAbout(String about) {
-		this.about = about
-	}
-
 }

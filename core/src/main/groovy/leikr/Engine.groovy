@@ -15,6 +15,7 @@
  */
 package leikr
 
+import groovy.util.logging.Log4j2
 import leikr.controls.LeikrController
 import leikr.controls.LeikrKeyboard
 import leikr.controls.LeikrMouse
@@ -28,12 +29,11 @@ import org.mini2Dx.core.graphics.FrameBuffer
 import org.mini2Dx.core.graphics.viewport.StretchViewport
 import org.mini2Dx.gdx.InputProcessor
 
-import static java.util.logging.Level.SEVERE
-import static java.util.logging.Logger.getLogger
 /**
  *
  * @author tor
  */
+@Log4j2
 abstract class Engine implements InputProcessor {
 
     /**
@@ -139,7 +139,7 @@ abstract class Engine implements InputProcessor {
         try {
             Mdx.input.setInputProcessor(this)
         } catch (Exception ex) {
-            getLogger(Engine.getName()).log(SEVERE, "Input processor not set: {0}", ex.getMessage())
+			log.error("Input processor not set: {}", ex.getMessage())
         }
 
         active = true

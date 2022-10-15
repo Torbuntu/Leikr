@@ -15,18 +15,17 @@
  */
 package leikr.loaders
 
+import groovy.util.logging.Log4j2
 import org.mini2Dx.core.Mdx
 import org.mini2Dx.core.assets.AssetManager
 import org.mini2Dx.core.files.ExternalFileHandleResolver
 import org.mini2Dx.core.graphics.Texture
 
-import java.util.logging.Level
-import java.util.logging.Logger
-
 /**
  *
  * @author tor
  */
+@Log4j2
 class ImageLoader {
 
 	String rootPath
@@ -45,7 +44,7 @@ class ImageLoader {
 					})
 			assetManager.finishLoading()
 		} catch (IOException ex) {
-			Logger.getLogger(ImageLoader.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 		}
 	}
 

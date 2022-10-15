@@ -34,11 +34,7 @@ class PackageCommand implements Command {
 		if (command.length <= 1) {
 			return "[E] Missing - required name argument."
 		}
-		if (command[1].equalsIgnoreCase("all")) {
-			return exportTool.exportAll()
-		} else {
-			return exportTool.export(command[1])
-		}
+		return command[1].equalsIgnoreCase("all") ? exportTool.exportAll() : exportTool.export(command[1])
 	}
 
 	@Override

@@ -15,16 +15,15 @@
  */
 package leikr.commands
 
+import groovy.util.logging.Log4j2
 import leikr.GameRuntime
 import org.mini2Dx.core.Mdx
-
-import java.util.logging.Level
-import java.util.logging.Logger
 
 /**
  *
  * @author tor
  */
+@Log4j2
 class PrintDirectoryCommand implements Command {
 
 	private String out
@@ -59,7 +58,7 @@ class PrintDirectoryCommand implements Command {
 			})
 			return out
 		} catch (IOException ex) {
-			Logger.getLogger(PrintDirectoryCommand.class.getName()).log(Level.WARNING, null, ex)
+			log.warn(ex)
 			return "[E] Failed to execute command [ ls ]"
 		}
 	}
@@ -75,7 +74,7 @@ class PrintDirectoryCommand implements Command {
 			titles.each(e -> out += e + "\n")
 			return out
 		} catch (IOException ex) {
-			Logger.getLogger(PrintDirectoryCommand.class.getName()).log(Level.WARNING, null, ex)
+			log.warn(ex)
 			return "[E] Failed to execute command [ls]"
 		}
 	}

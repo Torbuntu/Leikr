@@ -17,14 +17,14 @@ package leikr.managers
 
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
+import groovy.util.logging.Log4j2
 import org.mini2Dx.core.Mdx
 
-import java.util.logging.Level
-import java.util.logging.Logger
 /**
  *
  * @author tor
  */
+@Log4j2
 class DataManager {
 
     private String gamePath
@@ -67,7 +67,7 @@ class DataManager {
                 external(dir).writeString(JsonOutput.toJson(data), false)
             }
         } catch (Exception ex) {
-            Logger.getLogger(DataManager.class.getName()).log(Level.WARNING, "Failed saving data to: $gamePath/$path", ex)
+            log.warn("Failed saving data to: $gamePath/$path", ex)
         }
     }
 
@@ -81,7 +81,7 @@ class DataManager {
             String json = Mdx.files.external( "$gamePath/$path").readString()
             data = jsonSlurper.parseText(json) as Map
         } catch (Exception ex) {
-            Logger.getLogger(DataManager.class.getName()).log(Level.WARNING, "Problem trying to read data from: $path", ex)
+            log.warn("Problem trying to read data from: $path", ex)
         }
         return data
     }

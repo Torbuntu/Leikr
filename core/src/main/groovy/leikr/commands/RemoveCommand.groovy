@@ -15,16 +15,15 @@
  */
 package leikr.commands
 
+import groovy.util.logging.Log4j2
 import leikr.GameRuntime
 import org.mini2Dx.core.Mdx
-
-import java.util.logging.Level
-import java.util.logging.Logger
 
 /**
  *
  * @author Torbuntu
  */
+@Log4j2
 class RemoveCommand implements Command {
 
 	private final GameRuntime runtime
@@ -45,7 +44,7 @@ class RemoveCommand implements Command {
 			Mdx.files.external(runtime.getProgramsPath() + command[1]).deleteDirectory()
 			return "[I] Program [${command[1]}] has been uninstalled."
 		} catch (IOException ex) {
-			Logger.getLogger(RemoveCommand.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 			return "[E] Could not uninstall [${command[1]}]"
 		}
 
@@ -59,7 +58,7 @@ class RemoveCommand implements Command {
 			}
 			return names.contains(name)
 		} catch (IOException ex) {
-			Logger.getLogger(RemoveCommand.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 			return false
 		}
 	}

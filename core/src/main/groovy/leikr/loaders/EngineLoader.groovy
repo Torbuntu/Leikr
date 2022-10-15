@@ -15,6 +15,7 @@
  */
 package leikr.loaders
 
+import groovy.util.logging.Log4j2
 import leikr.Engine
 import leikr.GameRuntime
 import leikr.properties.ProgramProperties
@@ -26,13 +27,12 @@ import org.mini2Dx.core.files.FileHandle
 
 import java.lang.reflect.InvocationTargetException
 import java.util.concurrent.Callable
-import java.util.logging.Level
-import java.util.logging.Logger
 
 /**
  *
  * @author tor
  */
+@Log4j2
 class EngineLoader implements Callable<Engine> {
 
 	String rootPath
@@ -150,7 +150,7 @@ class EngineLoader implements Callable<Engine> {
 			gcl.addClasspath(Mdx.files.external(runtime.getGamePath() + "/" + url).path())
 			return gcl.parseClass(new File(Mdx.files.external(runtime.getGamePath() + "/" + path + ".groovy").path())).getDeclaredConstructors()[0].newInstance()
 		} catch (CompilationFailedException | IOException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-			Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 		}
 		return -1
 	}
@@ -169,8 +169,8 @@ class EngineLoader implements Callable<Engine> {
 
 		String codePath = runtime.getGamePath() + "/" + path
 
-		System.out.println("IN: " + codePath)
-		System.out.println("OUT: " + COMPILED)
+		log.debug("IN: " + codePath)
+		log.debug("OUT: " + COMPILED)
 
 		CompilerConfiguration cc = new CompilerConfiguration()
 		cc.setClasspath(codePath)
@@ -192,7 +192,7 @@ class EngineLoader implements Callable<Engine> {
 
 			compiler.compile(fileNames)
 		} catch (IOException ex) {
-			Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 		}
 	}
 
@@ -220,7 +220,7 @@ class EngineLoader implements Callable<Engine> {
 		try {
 			return gcl.loadClass(name).getDeclaredConstructors()[0].newInstance()
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
-			Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 		}
 		return -1
 	}
@@ -235,7 +235,7 @@ class EngineLoader implements Callable<Engine> {
 		try {
 			return sh.evaluate(code)
 		} catch (CompilationFailedException ex) {
-			Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 		}
 		return -1
 	}
@@ -244,7 +244,7 @@ class EngineLoader implements Callable<Engine> {
 		try {
 			return sh.parse(code)
 		} catch (CompilationFailedException ex) {
-			Logger.getLogger(EngineLoader.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 		}
 		return -1
 	}

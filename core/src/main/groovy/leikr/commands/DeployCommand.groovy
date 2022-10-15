@@ -15,17 +15,16 @@
  */
 package leikr.commands
 
+import groovy.util.logging.Log4j2
 import leikr.GameRuntime
 import leikr.utilities.ExportTool
 import org.mini2Dx.core.Mdx
-
-import java.util.logging.Level
-import java.util.logging.Logger
 
 /**
  *
  * @author tor
  */
+@Log4j2
 class DeployCommand implements Command {
 
 	private final ExportTool exportTool
@@ -54,11 +53,11 @@ class DeployCommand implements Command {
 
 				def setExec = new File(external(runtime.getDeployPath() + "$programName/Leikr").path()).setExecutable(true, false)
 				def setBatExec = new File(external(runtime.getDeployPath() + "$programName/Leikr.bat").path()).setExecutable(true, false)
-				println("[I] Set executable success: $setExec")
-				println("[I] Set bat executable success: $setBatExec")
+				log.info("[I] Set executable success: $setExec")
+				log.info("[I] Set bat executable success: $setBatExec")
 			}
 		} catch (Exception ex) {
-			Logger.getLogger(DeployCommand.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 			return "[E] Failed to package and deploy project [$programName]"
 		}
 		Properties outProp = new Properties()
@@ -88,7 +87,7 @@ class DeployCommand implements Command {
 		try (FileOutputStream stream = new FileOutputStream(new File(runtime.getDeployPath() + "$programName/Data/system.properties"))) {
 			outProp.store(stream, "Packaged from Leikr.")
 		} catch (Exception ex) {
-			Logger.getLogger(DeployCommand.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 			return "[E] Failed to package and deploy project [$programName]"
 		}
 

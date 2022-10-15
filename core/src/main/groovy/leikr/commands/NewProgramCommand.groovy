@@ -15,17 +15,16 @@
  */
 package leikr.commands
 
+import groovy.util.logging.Log4j2
 import leikr.GameRuntime
 import leikr.managers.TerminalManager
 import leikr.utilities.NewProgramGenerator
-
-import java.util.logging.Level
-import java.util.logging.Logger
 
 /**
  *
  * @author tor
  */
+@Log4j2
 class NewProgramCommand implements Command {
 
 	private final TerminalManager terminalManager
@@ -44,7 +43,7 @@ class NewProgramCommand implements Command {
 				newProgramGenerator.writePropertyName(command[1])
 				return message
 			} catch (IOException ex) {
-				Logger.getLogger(NewProgramCommand.class.getName()).log(Level.SEVERE, null, ex)
+				log.error(ex)
 				return "[E] New program with name [${command[1]}] failed to generate."
 			}
 		}

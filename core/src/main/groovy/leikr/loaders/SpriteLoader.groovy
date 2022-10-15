@@ -15,8 +15,7 @@
  */
 package leikr.loaders
 
-import java.util.logging.Level
-import java.util.logging.Logger
+import groovy.util.logging.Log4j2
 import leikr.GameRuntime
 import leikr.exceptions.RenderException
 import org.mini2Dx.core.Mdx
@@ -31,6 +30,7 @@ import org.mini2Dx.core.graphics.Texture
  *
  * @author tor
  */
+@Log4j2
 class SpriteLoader {
 
 	String rootPath
@@ -60,7 +60,7 @@ class SpriteLoader {
 			loadSpriteSheets()
 			addSpritesToSpriteBank()
 		} else {
-			Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "No sprites found for: {0}", path)
+			log.warn( "No sprites found for: {}", path)
 		}
 
 	}
@@ -96,7 +96,7 @@ class SpriteLoader {
 		try {
 			return [spriteBank, spriteBank16, spriteBank32, spriteBank64][size].getSprite(id)
 		} catch (Exception ex) {
-			Logger.getLogger(SpriteLoader.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 			throw new RenderException("Error in program `render` method. Sprite index out of bounds. " + (ex.getLocalizedMessage() != null ? ex.getLocalizedMessage() : ""))
 		}
 	}
@@ -105,15 +105,15 @@ class SpriteLoader {
 //        resetSpriteLoader();
 		rootPath = runtime.getProgramsPath() + "${programName}/Sprites/Sprites.png"
 		if (!Mdx.files.external(rootPath).exists()) {
-			Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "No sprites found for: {0}", rootPath)
+			log.warn( "No sprites found for: {}", rootPath)
 			return
 		}
 		try {
 			loadSpriteSheets()
 			addSpritesToSpriteBank()
 		} catch (Exception ex) {
-			Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "Manual Sprite sheet not loadable for: {0}", rootPath)
-			Logger.getLogger(SpriteLoader.class.getName()).log(Level.WARNING, "Sprite sheet load failure: ", ex)
+			log.warn( "Manual Sprite sheet not loadable for: {}", rootPath)
+			log.warn( "Sprite sheet load failure: ", ex)
 		}
 	}
 

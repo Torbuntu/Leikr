@@ -15,17 +15,17 @@
  */
 package leikr.commands
 
+import groovy.util.logging.Log4j2
 import leikr.GameRuntime
 import org.mini2Dx.core.Mdx
 
 import java.awt.*
-import java.util.logging.Level
-import java.util.logging.Logger
 
 /**
  *
  * @author Torbuntu
  */
+@Log4j2
 class FindCommand implements Command {
 
 	private final GameRuntime runtime
@@ -47,7 +47,7 @@ class FindCommand implements Command {
 			Desktop.getDesktop().open(f)
 			return f.getAbsolutePath()
 		} catch (IOException ex) {
-			Logger.getLogger(FindCommand.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 			return "[E] Could not find program directory for [${command[1]}]."
 		}
 	}
@@ -60,7 +60,7 @@ class FindCommand implements Command {
 			}
 			return names.contains(name)
 		} catch (IOException ex) {
-			Logger.getLogger(FindCommand.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 			return false
 		}
 	}

@@ -15,6 +15,7 @@
  */
 package leikr.screens
 
+import groovy.util.logging.Log4j2
 import leikr.GameRuntime
 import leikr.managers.PixelManager
 import org.mini2Dx.core.Graphics
@@ -25,19 +26,16 @@ import org.mini2Dx.core.graphics.Colors
 import org.mini2Dx.core.graphics.Texture
 import org.mini2Dx.core.graphics.viewport.FitViewport
 import org.mini2Dx.core.screen.BasicGameScreen
-import org.mini2Dx.core.screen.GameScreen
 import org.mini2Dx.core.screen.ScreenManager
 import org.mini2Dx.core.screen.Transition
 import org.mini2Dx.core.util.Align
 import org.mini2Dx.gdx.Input.Keys
 
-import java.util.logging.Level
-import java.util.logging.Logger
-
 /**
  *
  * @author tor
  */
+@Log4j2
 class TitleScreen extends BasicGameScreen {
 
 	public static final int ID = 2
@@ -75,7 +73,7 @@ class TitleScreen extends BasicGameScreen {
 			sm.enterGameScreen(MenuScreen.ID, null, null)
 		}
 		if (Mdx.input.isKeyJustPressed(Keys.ESCAPE)) {
-			Logger.getLogger(TitleScreen.class.getName()).log(Level.INFO, "Goodbye!")
+			log.info("Goodbye!")
 			Mdx.platformUtils.exit(true)
 		}
 	}
@@ -101,7 +99,7 @@ class TitleScreen extends BasicGameScreen {
 		pixCount.times { i ->
 			int x = (int) Math.floor(Math.random() * 8) + 91
 			int height = (int) Math.floor(Math.random() * 7) + 4
-			pixels.add(new TitleScreenPixel(x: x, y: 64, color: (i % 3) + 8,height: height, delay: i * 5))
+			pixels.add(new TitleScreenPixel(x: x, y: 64, color: (i % 3) + 8, height: height, delay: i * 5))
 		}
 	}
 

@@ -15,14 +15,15 @@
  */
 package leikr.commands
 
+import groovy.util.logging.Log4j2
+
 import java.awt.Desktop
-import java.util.logging.Level
-import java.util.logging.Logger
 
 /**
  *
  * @author Torbuntu
  */
+@Log4j2
 class WikiCommand implements Command {
 
 	WikiCommand() {
@@ -37,7 +38,7 @@ class WikiCommand implements Command {
 		try {
 			Desktop.getDesktop().browse(new URI(wiki))
 		} catch (IOException | URISyntaxException ex) {
-			Logger.getLogger(WikiCommand.class.getName()).log(Level.WARNING, null, ex)
+			log.warn(ex)
 			return "[E] Host browser inaccessible."
 		}
 		return "[I] Opening [$wiki] in host browser."

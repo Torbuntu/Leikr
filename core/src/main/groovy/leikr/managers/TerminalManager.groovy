@@ -16,6 +16,7 @@
 package leikr.managers
 
 import com.badlogic.gdx.Gdx
+import groovy.util.logging.Log4j2
 import leikr.GameRuntime
 import leikr.commands.*
 import leikr.loaders.EngineLoader
@@ -24,13 +25,11 @@ import org.mini2Dx.core.Mdx
 import org.mini2Dx.gdx.Input.Keys
 import org.mini2Dx.gdx.InputProcessor
 
-import java.util.logging.Level
-import java.util.logging.Logger
-
 /**
  *
  * @author tor
  */
+@Log4j2
 class TerminalManager implements InputProcessor {
 
 	private String prompt = ""
@@ -70,7 +69,7 @@ class TerminalManager implements InputProcessor {
 				programIndex = programList.size()
 			}
 		} catch (Exception ex) {
-			Logger.getLogger(TerminalManager.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 		}
 		commandList["about"] = new AboutCommand(runtime)
 		commandList["cat"] = new PrintCommand(runtime)
@@ -196,7 +195,7 @@ class TerminalManager implements InputProcessor {
 			Command c = commandList.get(command[0])
 			return c.execute(command)
 		} catch (Exception ex) {
-			Logger.getLogger(TerminalManager.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 			return "[E] ${command[0]} failed with exception: ${ex.getMessage()}"
 		}
 	}

@@ -15,18 +15,17 @@
  */
 package leikr.commands
 
+import groovy.util.logging.Log4j2
 import leikr.GameRuntime
 import leikr.loaders.EngineLoader
 import leikr.managers.TerminalManager
 import org.mini2Dx.core.Mdx
 
-import java.util.logging.Level
-import java.util.logging.Logger
-
 /**
  *
  * @author tor
  */
+@Log4j2
 class RunCommand implements Command {
 
 	private final GameRuntime runtime
@@ -45,7 +44,7 @@ class RunCommand implements Command {
 			return "[E] Missing - required program title."
 		}
 		try {
-			System.out.println(runtime.getProgramsPath())
+			log.debug(runtime.getProgramsPath())
 			def names = []
 			Mdx.files.external(runtime.getProgramsPath()).list().each { e ->
 				names.add(e.nameWithoutExtension())
@@ -61,7 +60,7 @@ class RunCommand implements Command {
 			terminalManager.setProgramRunning()
 			return "[I] Loading..."
 		} catch (IOException ex) {
-			Logger.getLogger(RunCommand.class.getName()).log(Level.WARNING, null, ex)
+			log.warn(ex)
 			return "[E] Failed to run program with name [${command[1]}]"
 		}
 	}

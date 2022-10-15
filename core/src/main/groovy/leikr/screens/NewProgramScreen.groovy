@@ -15,6 +15,7 @@
  */
 package leikr.screens
 
+import groovy.util.logging.Log4j2
 import leikr.GameRuntime
 import leikr.utilities.NewProgramGenerator
 import org.mini2Dx.core.Graphics
@@ -30,13 +31,11 @@ import org.mini2Dx.core.screen.Transition
 import org.mini2Dx.gdx.Input.Keys
 import org.mini2Dx.gdx.InputProcessor
 
-import java.util.logging.Level
-import java.util.logging.Logger
-
 /**
  *
  * @author tor
  */
+@Log4j2
 class NewProgramScreen extends BasicGameScreen {
 
 	public static final int ID = 5
@@ -144,7 +143,7 @@ class NewProgramScreen extends BasicGameScreen {
 					generator.writeProperties(name)
 					generatorStep = GeneratorStep.FINISHED
 				} catch (IOException ex) {
-					Logger.getLogger(NewProgramScreen.class.getName()).log(Level.SEVERE, null, ex)
+					log.error(ex)
 					ErrorScreen es = (ErrorScreen) sm.getGameScreen(ErrorScreen.ID)
 					es.setErrorMessage(ex.getMessage())
 					sm.enterGameScreen(ErrorScreen.ID, null, null)
@@ -234,7 +233,7 @@ class NewProgramScreen extends BasicGameScreen {
 							}
 						}
 					} catch (IOException ex) {
-						Logger.getLogger(NewProgramScreen.class.getName()).log(Level.SEVERE, null, ex)
+						log.error(ex)
 						errorMessage = ex.getMessage()
 						generatorStep = GeneratorStep.ERROR
 					}

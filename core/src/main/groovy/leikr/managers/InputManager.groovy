@@ -15,11 +15,11 @@
  */
 package leikr.managers
 
+import groovy.util.logging.Log4j2
 import leikr.controls.LeikrController
 import leikr.controls.LeikrKeyboard
 import leikr.controls.LeikrMouse
 import org.mini2Dx.core.Mdx
-import org.mini2Dx.core.graphics.viewport.StretchViewport
 import org.mini2Dx.core.input.GamePad
 import org.mini2Dx.core.input.GamePadConnectionListener
 
@@ -28,6 +28,7 @@ import org.mini2Dx.core.input.GamePadConnectionListener
  * @author tor
  */
 // TODO: work out the hot-plugging to be a bit more robust
+@Log4j2
 class InputManager implements GamePadConnectionListener {
 
 	private final LeikrKeyboard keyboard
@@ -129,7 +130,7 @@ class InputManager implements GamePadConnectionListener {
 
 	@Override
 	void onConnect(GamePad gamePad) {
-		println gamePad.getModelInfo()
+		log.debug(gamePad.getModelInfo())
 		if (Mdx.input.getGamePads().size() > 0 && controllerA?.getInstanceId() == 0) {
 			controllerA = new LeikrController(0, gamePad.getModelInfo())
 			Mdx.input.getGamePads().get(0).addListener(controllerA)
@@ -145,7 +146,7 @@ class InputManager implements GamePadConnectionListener {
 
 	@Override
 	void onDisconnect(GamePad gamePad) {
-		println "InstanceId: ${gamePad.getInstanceId()}"
+		log.debug("InstanceId: ${gamePad.getInstanceId()}")
 		if (controllerA.getInstanceId() != 0 && gamePad.getInstanceId() == controllerA.getInstanceId()) {
 			controllerA.setInstanceId(0)
 		}

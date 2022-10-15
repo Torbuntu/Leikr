@@ -15,14 +15,13 @@
  */
 package leikr.commands
 
+import groovy.util.logging.Log4j2
 import org.mini2Dx.core.Mdx
-
-import java.util.logging.Level
-import java.util.logging.Logger
 /**
  *
  * @author Torbuntu
  */
+@Log4j2
 class CleanCommand implements Command {
 
     CleanCommand() {
@@ -35,7 +34,7 @@ class CleanCommand implements Command {
             Mdx.files.external(System.getProperty("user.home") + "/Leikr/Packages").mkdirs()
             return "Package directory cleaned."
         } catch (IOException ex) {
-            Logger.getLogger(CleanCommand.class.getName()).log(Level.SEVERE, null, ex)
+            log.error(ex)
             return "Failed to clean Package directory. Please check logs."
         }
     }

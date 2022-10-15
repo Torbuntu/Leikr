@@ -15,19 +15,19 @@
  */
 package leikr.properties
 
-import java.util.logging.Level
-import java.util.logging.Logger
+import groovy.util.logging.Log4j2
 
 /**
  *
  * @author tor
  */
+@Log4j2
 class ProgramProperties {
 
 	int maxSprites = 128, players = 1
 	boolean useCompiled = false, compileSource = false
 	String title = "unknown", type = "Program", author = "unknown",
-			version = "0", about = "A Leikr Program.", gameTitle = ""
+		   version = "0", about = "A Leikr Program.", gameTitle = ""
 
 	ProgramProperties(String gamePath) {
 		gameTitle = gamePath.substring(gamePath.lastIndexOf("/") + 1)
@@ -49,12 +49,12 @@ class ProgramProperties {
 			players = Integer.parseInt(prop?.getProperty("players"))
 			about = prop.getProperty("about") ?: "A Leikr Program."
 		} catch (IOException | NumberFormatException ex) {
-			Logger.getLogger(ProgramProperties.class.getName()).log(Level.WARNING, "Malformed program.properties file for $gameTitle: ${ex.getCause()}")
+			log.warn("Malformed program.properties file for $gameTitle: ${ex.getMessage()}")
 		}
 	}
 
 	void writeProperties(String gamePath) {
-		try (FileOutputStream stream = new FileOutputStream(new File( "$gamePath/program.properties"))) {
+		try (FileOutputStream stream = new FileOutputStream(new File("$gamePath/program.properties"))) {
 			Properties prop = new Properties()
 			prop.with {
 				setProperty("max_sprites", String.valueOf(this.maxSprites))
@@ -70,7 +70,7 @@ class ProgramProperties {
 				store(stream, null)
 			}
 		} catch (IOException | NumberFormatException ex) {
-			Logger.getLogger(ProgramProperties.class.getName()).log(Level.WARNING, "Malformed program.properties file for $gameTitle: ${ex.getCause()}")
+			log.warn("Malformed program.properties file for $gameTitle: ${ex.getMessage()}")
 		}
 	}
 

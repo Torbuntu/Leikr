@@ -28,29 +28,29 @@ import org.mini2Dx.core.graphics.Texture
  */
 class FontLoader {
 
-    final MonospaceGameFont defaultFont
+	final MonospaceGameFont defaultFont
 
-    FontLoader(AssetManager manager) {
-        manager.load("./Data/Images/Fonts/ultra_compact_6x4.png", Texture.class)
-        manager.finishLoading()
-        FontParameters params = new FontParameters(
-			texturePath: "./Data/Images/Fonts/ultra_compact_6x4.png",
-			spacing: 0,
-			frameWidth: 4,
-			frameHeight: 6
+	FontLoader(AssetManager manager) {
+		manager.load("./Data/Images/Fonts/ultra_compact_6x4.png", Texture.class)
+		manager.finishLoading()
+		FontParameters params = new FontParameters(
+				texturePath: "./Data/Images/Fonts/ultra_compact_6x4.png",
+				spacing: 0,
+				frameWidth: 4,
+				frameHeight: 6
 		)
-        defaultFont = new MonospaceGameFont(params)
-    }
+		defaultFont = new MonospaceGameFont(params)
+	}
 
-    static MonospaceGameFont getCustomFont(AssetManager manager, String fontPath, int spacing, int width, int height) {
-        manager.load(fontPath, Texture.class)
-        manager.finishLoading()
-        FontParameters params = new FontParameters(
-			texturePath: fontPath,
-			spacing: spacing,
-			frameWidth: width,
-			frameHeight: height
+	static MonospaceGameFont getCustomFont(AssetManager manager, String fontPath, int spacing, int width, int height) {
+		manager.load(fontPath, Texture.class)
+		manager.finishLoading()
+		FontParameters params = new FontParameters(
+				texturePath: fontPath,
+				spacing: spacing,
+				frameWidth: width,
+				frameHeight: height
 		)
-        return new MonospaceGameFont(params)
-    }
+		return new MonospaceGameFont(params)
+	}
 }

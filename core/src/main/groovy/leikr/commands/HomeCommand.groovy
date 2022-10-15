@@ -15,14 +15,15 @@
  */
 package leikr.commands
 
-import java.util.logging.Level
-import java.util.logging.Logger
+import groovy.util.logging.Log4j2
+
 import leikr.GameRuntime
 
 /**
  *
  * @author tor
  */
+@Log4j2
 class HomeCommand implements Command {
 
 	private final GameRuntime runtime
@@ -37,7 +38,7 @@ class HomeCommand implements Command {
 			System.setProperty("leikr.home", args[1])
 			runtime.setLeikrHome(System.getProperty("leikr.home"))
 		} catch (Exception ex) {
-			Logger.getLogger(HomeCommand.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 			return "[E] Unable to set LEIKR_HOME: "
 		}
 		return "[I] Set LEIKR_HOME to [${args[1]}]"

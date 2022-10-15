@@ -26,7 +26,7 @@ import org.mini2Dx.core.screen.Transition
 
 /**
  * Trial class for implementing a custom Transition.
- * 
+ *
  * This is subject to change or removal in future releases pending any feedback.
  * I liked the idea of a graphical transition to selecting a game and into the 
  * loading screen.
@@ -37,40 +37,40 @@ import org.mini2Dx.core.screen.Transition
  */
 class EnterTransition implements Transition {
 
-    float box
-    private final AssetManager assetManager
-    private final GameRuntime runtime
+	float box
+	private final AssetManager assetManager
+	private final GameRuntime runtime
 
-    EnterTransition(GameRuntime runtime) {
-        super()
-        this.runtime = runtime
-        this.assetManager = new AssetManager(new ExternalFileHandleResolver())
-        box = 0
-        assetManager.load(runtime.getDataPath() + "Images/EnterCart.png", Texture.class)
-        assetManager.finishLoading()
-    }
+	EnterTransition(GameRuntime runtime) {
+		super()
+		this.runtime = runtime
+		this.assetManager = new AssetManager(new ExternalFileHandleResolver())
+		box = 0
+		assetManager.load(runtime.getDataPath() + "Images/EnterCart.png", Texture.class)
+		assetManager.finishLoading()
+	}
 
-    @Override
-    void initialise(GameScreen gs, GameScreen gs1) {
-    }
+	@Override
+	void initialise(GameScreen gs, GameScreen gs1) {
+	}
 
-    @Override
-    void update(GameContainer gc, float f) {
-        box+=2
-    }
+	@Override
+	void update(GameContainer gc, float f) {
+		box += 2
+	}
 
-    @Override
-    void preRender(GameContainer gc, Graphics graphics) {
-    }
+	@Override
+	void preRender(GameContainer gc, Graphics graphics) {
+	}
 
-    @Override
-    void postRender(GameContainer gc, Graphics graphics) {
-        graphics.drawTexture(assetManager.get(runtime.getDataPath()+"Images/EnterCart.png", Texture.class), 100, box)
-    }
+	@Override
+	void postRender(GameContainer gc, Graphics graphics) {
+		graphics.drawTexture(assetManager.get(runtime.getDataPath() + "Images/EnterCart.png", Texture.class), 100, box)
+	}
 
-    @Override
-    boolean isFinished() {
-        box > 80
-    }
+	@Override
+	boolean isFinished() {
+		box > 80
+	}
 
 }

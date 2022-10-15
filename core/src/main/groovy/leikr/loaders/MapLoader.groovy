@@ -15,8 +15,8 @@
  */
 package leikr.loaders
 
-import java.util.logging.Level
-import java.util.logging.Logger
+import groovy.util.logging.Log4j2
+
 import leikr.properties.SystemProperties
 import leikr.exceptions.RenderException
 import org.mini2Dx.core.Graphics
@@ -27,6 +27,7 @@ import org.mini2Dx.tiled.TiledMap
  *
  * @author tor
  */
+@Log4j2
 class MapLoader {
 
 	//TODO: Add handlers for object layers and collisions.
@@ -51,7 +52,7 @@ class MapLoader {
 			map.dispose(false)
 		}
 		map = new TiledMap(Mdx.files.external("$rootPath${name}.tmx"))
-		println "loading map: [${name}.tmx]"
+		log.debug("loading map: [${name}.tmx]")
 		map.loadTilesetTextures()
 	}
 
@@ -107,7 +108,7 @@ class MapLoader {
 			return map.getTile(x, y, layer).getTileId(1)
 		} catch (Exception ex) {
 			if (systemProperties.isDebug()) {
-				Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex)
+				log.info(ex)
 			}
 			return -1
 		}
@@ -118,7 +119,7 @@ class MapLoader {
 			map.getTileLayer(layer).setTileId(x, y, id)
 		} catch (Exception ex) {
 			if (systemProperties.isDebug()) {
-				Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex)
+				log.info(ex)
 			}
 		}
 	}
@@ -128,7 +129,7 @@ class MapLoader {
 			map.getTileLayer(layer).setTileId(x, y, -1)
 		} catch (Exception ex) {
 			if (systemProperties.isDebug()) {
-				Logger.getLogger(MapLoader.class.getName()).log(Level.INFO, null, ex)
+				log.info(ex)
 			}
 		}
 	}

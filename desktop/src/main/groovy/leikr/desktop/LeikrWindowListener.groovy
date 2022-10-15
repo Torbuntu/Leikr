@@ -17,14 +17,15 @@ package leikr.desktop
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Mini2DxWindow
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Mini2DxWindowListener
-import java.util.logging.Level
-import java.util.logging.Logger
+import groovy.util.logging.Log4j2
+
 import leikr.GameRuntime
 
 /**
  *
  * @author tor
  */
+@Log4j2
 class LeikrWindowListener implements Lwjgl3Mini2DxWindowListener {
 
 	private final GameRuntime runtime
@@ -36,12 +37,8 @@ class LeikrWindowListener implements Lwjgl3Mini2DxWindowListener {
 	@Override
 	void filesDropped(String[] files) {
 		runtime.setFileDroppedTitle(files[0].substring(files[0].lastIndexOf('/') + 1, files[0].length()))
-		log("New runtime title: " + runtime.getFileDroppedTitle())
-		files.each(message -> log("Found file: $message"))
-	}
-
-	private static void log(String message) {
-		Logger.getLogger(LeikrWindowListener.class.getName()).log(Level.INFO, message)
+		log.info("New runtime title: " + runtime.getFileDroppedTitle())
+		files.each(message -> log.info("Found file: $message"))
 	}
 
 	@Override
@@ -67,12 +64,12 @@ class LeikrWindowListener implements Lwjgl3Mini2DxWindowListener {
 
 	@Override
 	void focusLost() {
-		log("[I] Focus lost")
+		log.info("[I] Focus lost")
 	}
 
 	@Override
 	void focusGained() {
-		log("[I] Window focused")
+		log.info("[I] Window focused")
 	}
 
 	@Override

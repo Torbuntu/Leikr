@@ -18,22 +18,22 @@ package leikr.desktop
 import com.badlogic.gdx.Files
 import com.badlogic.gdx.backends.lwjgl3.DesktopMini2DxGame
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Mini2DxConfig
-import java.security.Security
-import java.util.logging.Level
-import java.util.logging.Logger
+import groovy.util.logging.Log4j2
+
 import leikr.GameRuntime
 
 /**
  *
  * @author tor
  */
+@Log4j2
 class DesktopLauncher {
 
 	static void main(String[] args) {
 		GameRuntime runtime = new GameRuntime(args, !args.contains("insecure"))
 
 		if (args.contains("insecure")) {
-			Logger.getLogger(Security.class.getName()).log(Level.WARNING, "Leikr is running without security.")
+			log.warn("Leikr is running without security.")
 		}
 
 		def config = new Lwjgl3Mini2DxConfig(runtime.getGameIdentifier())

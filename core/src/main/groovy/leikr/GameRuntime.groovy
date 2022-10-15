@@ -15,6 +15,7 @@
  */
 package leikr
 
+import groovy.util.logging.Log4j2
 import leikr.properties.SystemProperties
 import leikr.loaders.*
 import leikr.managers.*
@@ -25,9 +26,7 @@ import org.mini2Dx.core.files.ExternalFileHandleResolver
 import org.mini2Dx.core.game.ScreenBasedGame
 import org.mini2Dx.core.graphics.viewport.FitViewport
 
-import java.util.logging.Level
-import java.util.logging.Logger
-
+@Log4j2
 class GameRuntime extends ScreenBasedGame {
 
 	String gameIdentifier = "torbuntu.leikr"
@@ -72,8 +71,6 @@ class GameRuntime extends ScreenBasedGame {
 	SystemProperties systemProperties
 	boolean secure
 
-	final private def logger = Logger.getLogger(GameRuntime.class.getName())
-
 	/**
 	 * Creates SystemProperties for detecting launch title.
 	 *
@@ -99,7 +96,7 @@ class GameRuntime extends ScreenBasedGame {
 		} else if (systemProperties.getLaunchTitle().length() > 3) {
 			directLaunch = true
 			gameName = systemProperties.getLaunchTitle()
-			println "Game Title: " + gameName
+			log.info("Game Title: $gameName")
 		}
 	}
 
@@ -113,10 +110,10 @@ class GameRuntime extends ScreenBasedGame {
 
 			systemProperties = new SystemProperties()
 			checkFileSystem()
-			logger.log(Level.INFO, "Using custom Leikr home at: {0}", basePath)
+			log.info("Using custom Leikr home at: {}", basePath)
 
 		} catch (IOException ignored) {
-			logger.log(Level.WARNING, "Unable to use custom Leikr home: {0}", basePath)
+			log.warn("Unable to use custom Leikr home: {}", basePath)
 		}
 	}
 
@@ -127,7 +124,7 @@ class GameRuntime extends ScreenBasedGame {
 		dataPath = "$leikrHome/Leikr/Data/"
 		deployPath = "$leikrHome/Leikr/Deploy/"
 		packagePath = "$leikrHome/Leikr/Packages/"
-		logger.log(Level.INFO, "Using custom Leikr home at: {0}", basePath)
+		log.info("Using custom Leikr home at: {}", basePath)
 	}
 
 	private void defaultPathVariables() {
@@ -137,7 +134,7 @@ class GameRuntime extends ScreenBasedGame {
 		dataPath = "$userHome/Leikr/Data/"
 		deployPath = "$userHome/Leikr/Deploy/"
 		packagePath = "$userHome/Leikr/Packages/"
-		logger.log(Level.INFO, "Using default Leikr home at: {0}", basePath)
+		log.info("Using default Leikr home at: {}", basePath)
 	}
 
 	private void checkFileSystem() throws IOException {
@@ -166,7 +163,7 @@ class GameRuntime extends ScreenBasedGame {
 		try {
 			checkFileSystem()
 		} catch (IOException ex) {
-			logger.log(Level.WARNING, ex.getMessage(), ex)
+			log.warn(ex)
 		}
 
 		assetManager = new AssetManager(new ExternalFileHandleResolver())

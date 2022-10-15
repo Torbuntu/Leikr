@@ -15,17 +15,16 @@
  */
 package leikr.commands
 
+import groovy.util.logging.Log4j2
 import leikr.GameRuntime
 import leikr.properties.ProgramProperties
 import org.mini2Dx.core.Mdx
-
-import java.util.logging.Level
-import java.util.logging.Logger
 
 /**
  *
  * @author tor
  */
+@Log4j2
 class AboutCommand implements Command {
 
 	private final GameRuntime runtime
@@ -46,7 +45,7 @@ class AboutCommand implements Command {
 			ProgramProperties cpp = new ProgramProperties(runtime.getProgramsPath() + command[1])
 			return "Title: ${cpp.title} \nType: ${cpp.type} \nPlayers: ${cpp.players} \nAuthor: ${cpp.author} \nAbout: ${cpp.about}"
 		} catch (Exception ex) {
-			Logger.getLogger(AboutCommand.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 			return "Failed to load property file for [${command[1]}]."
 		}
 	}
@@ -57,7 +56,7 @@ class AboutCommand implements Command {
 			Mdx.files.external(runtime.getProgramsPath()).list().each(e -> names.add(e.nameWithoutExtension()))
 			return names.contains(name)
 		} catch (IOException ex) {
-			Logger.getLogger(AboutCommand.class.getName()).log(Level.SEVERE, null, ex)
+			log.error(ex)
 			return false
 		}
 	}

@@ -15,19 +15,18 @@
  */
 package leikr.loaders
 
+import groovy.util.logging.Log4j2
 import org.mini2Dx.core.Mdx
 import org.mini2Dx.core.assets.AssetManager
 import org.mini2Dx.core.audio.Music
 import org.mini2Dx.core.audio.Sound
 import org.mini2Dx.core.files.ExternalFileHandleResolver
 
-import java.util.logging.Level
-import java.util.logging.Logger
-
 /**
  *
  * @author tor
  */
+@Log4j2
 class AudioLoader {
 
 	String musicRootPath
@@ -49,7 +48,7 @@ class AudioLoader {
 					.findAll(file -> !file.isDirectory() && (file.extension().toLowerCase() in ["wav", "mp3", "ogg"]))
 					.each(f -> assetManager.load(soundRootPath + f.name(), Sound.class))
 		} catch (Exception ex) {
-			Logger.getLogger(AudioLoader.class.getName()).log(Level.WARNING, "Sound load error: {0}", ex.getMessage())
+			log.warn("Sound load error: {}", ex.getMessage())
 		}
 
 		try {
@@ -57,7 +56,7 @@ class AudioLoader {
 					.findAll(file -> !file.isDirectory() && (file.extension().toLowerCase() in ["wav", "mp3", "ogg"]))
 					.each(f -> assetManager.load(musicRootPath + f.name(), Music.class))
 		} catch (Exception ex) {
-			Logger.getLogger(AudioLoader.class.getName()).log(Level.WARNING, "Music load error: {0}", ex.getMessage())
+			log.warn( "Music load error: {}", ex.getMessage())
 		}
 		load()
 	}

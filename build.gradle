@@ -10,11 +10,13 @@ allprojects {
     ext {
         appName = 'Leikr'
         
-        mini2DxVersion = '2.0.0-beta.6'
+        mini2DxVersion = '2.0.0-beta.8'
         groovyVersion = '4.0.5'
         lwjglVersion = '3.3.1'
         lwjglNatives32 = 'natives-linux-arm32'
         lwjglNatives64 = 'natives-linux-arm64'
+
+        log4jVersion = '2.19.0'
     }
 
     repositories {
@@ -30,6 +32,10 @@ project(":core") {
     apply plugin: 'groovy'
 
     dependencies {
+        // Logging
+        implementation "org.apache.logging.log4j:log4j-api:$log4jVersion"
+        implementation "org.apache.logging.log4j:log4j-core:$log4jVersion"
+
         // Groovy 4.0.3 and 4.0.4 are throwing class not found for JavaParser. This is temporary to work around that.
         implementation 'com.github.javaparser:javaparser-core:3.24.2'
 
@@ -67,7 +73,8 @@ project(":desktop") {
 
     dependencies {
         implementation project(":core")
-
+        implementation "org.apache.logging.log4j:log4j-api:$log4jVersion"
+        implementation "org.apache.logging.log4j:log4j-core:$log4jVersion"
         implementation "org.apache.groovy:groovy:$groovyVersion"
 //        implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         implementation "org.mini2Dx:mini2dx-libgdx-desktop-lwjgl3:$mini2DxVersion"

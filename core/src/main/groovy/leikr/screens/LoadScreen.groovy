@@ -15,6 +15,7 @@
  */
 package leikr.screens
 
+import groovy.util.logging.Log4j2
 import leikr.Engine
 import leikr.GameRuntime
 import leikr.loaders.EngineLoader
@@ -33,12 +34,12 @@ import java.util.concurrent.ExecutionException
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
-import java.util.logging.Level
-import java.util.logging.Logger
+
 /**
  *
  * @author tor, pixelbath
  */
+@Log4j2
 class LoadScreen extends BasicGameScreen {
 
     public static final int ID = 4
@@ -95,7 +96,7 @@ class LoadScreen extends BasicGameScreen {
                 sm.enterGameScreen(EngineScreen.ID, null, null)
             } catch (InterruptedException | ExecutionException ex) {
                 service.shutdownNow()
-                Logger.getLogger(LoadScreen.class.getName()).log(Level.SEVERE, "Failed to get Engine", ex)
+                log.error("Failed to get Engine", ex)
 
                 ErrorScreen es = (ErrorScreen) sm.getGameScreen(ErrorScreen.ID)
                 String error = "Error loading engine: " + ex.getMessage()
