@@ -32,17 +32,17 @@ import org.mini2Dx.gdx.InputProcessor
 @Log4j2
 class TerminalManager implements InputProcessor {
 
-	private String prompt = ""
-	private String historyText = ""
+	String prompt = ""
+	String historyText = ""
 
-	private Map<String, Command> commandList
-	private ArrayList<String> history
-	private ArrayList<String> programList
+	Map<String, Command> commandList
+	ArrayList<String> history
+	ArrayList<String> programList
 
-	private int index
-	private int programIndex
+	int index
+	int programIndex
 
-	private TerminalState terminalState
+	TerminalState terminalState
 
 	private final GameRuntime runtime
 	private final ExportTool exportTool
@@ -90,17 +90,8 @@ class TerminalManager implements InputProcessor {
 		commandList["get"] = new GetCommand(runtime)
 		commandList["set"] = new SetCommand(runtime)
 		commandList["home"] = new HomeCommand(runtime)
-		commandList["version"] = new VersionCommand()
 
 		this.runtime = runtime
-	}
-
-	String getPrompt() {
-		prompt
-	}
-
-	String getHistoryText() {
-		historyText
 	}
 
 	void setToolRunning() {

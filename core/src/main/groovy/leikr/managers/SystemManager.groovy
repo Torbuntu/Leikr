@@ -34,167 +34,167 @@ import org.mini2Dx.gdx.math.MathUtils
  */
 class SystemManager {
 
-    private boolean loadProgram = false
-    private boolean running = true
-    private boolean pause = false
+	private boolean loadProgram = false
+	private boolean running = true
+	private boolean pause = false
 
-    private final AssetManager manager
-    private final EngineLoader engineLoader
-    private final FontLoader fontLoader
-    private final SpriteLoader spriteLoader
-    private final GameRuntime runtime
-    private MonospaceGameFont font
+	private final AssetManager manager
+	private final EngineLoader engineLoader
+	private final FontLoader fontLoader
+	private final SpriteLoader spriteLoader
+	private final GameRuntime runtime
+	private MonospaceGameFont font
 
-    SystemManager(EngineLoader engineLoader, FontLoader fontLoader, SpriteLoader spriteLoader, GameRuntime runtime) {
-        this.manager = new AssetManager(new ExternalFileHandleResolver())
-        this.engineLoader = engineLoader
-        this.fontLoader = fontLoader
-        this.spriteLoader = spriteLoader
-        this.runtime = runtime
-        font = fontLoader.getDefaultFont()
-    }
+	SystemManager(EngineLoader engineLoader, FontLoader fontLoader, SpriteLoader spriteLoader, GameRuntime runtime) {
+		this.manager = new AssetManager(new ExternalFileHandleResolver())
+		this.engineLoader = engineLoader
+		this.fontLoader = fontLoader
+		this.spriteLoader = spriteLoader
+		this.runtime = runtime
+		font = fontLoader.getDefaultFont()
+	}
 
-    void reset() {
-        pause = false
-        manager.clearAssetLoaders()
-    }
+	void reset() {
+		pause = false
+		manager.clearAssetLoaders()
+	}
 
-    // <editor-fold desc="Helper methods" defaultstate="collapsed"> 
-    String getProgramPath() {
-        runtime.getProgramsPath()
-    }
+	// <editor-fold desc="Helper methods" defaultstate="collapsed">
+	String getProgramPath() {
+		runtime.getProgramsPath()
+	}
 
-    String getDataPath() {
-        runtime.getDataPath()
-    }
+	String getDataPath() {
+		runtime.getDataPath()
+	}
 
-    /**
-     * After a program is finished running, this should be called to reset the
-     * font to the default loaded system font.
-     */
-    void resetFont() {
-        font = fontLoader.getDefaultFont()
-    }
+	/**
+	 * After a program is finished running, this should be called to reset the
+	 * font to the default loaded system font.
+	 */
+	void resetFont() {
+		font = fontLoader.getDefaultFont()
+	}
 
-    void setCustomFont(String fontPath, int spacing, int width, int height) {
-        font = fontLoader.getCustomFont(manager, fontPath, spacing, width, height)
-    }
+	void setCustomFont(String fontPath, int spacing, int width, int height) {
+		font = fontLoader.getCustomFont(manager, fontPath, spacing, width, height)
+	}
 
-    void loadProgram(String name) {
-        runtime.setFileDroppedTitle(name)
-        loadProgram = true
-    }
+	void loadProgram(String name) {
+		runtime.setFileDroppedTitle(name)
+		loadProgram = true
+	}
 
-    void loadSpriteSheet(String sheetName) {
-        spriteLoader.loadManualSpriteSheets(sheetName)
-    }
+	void loadSpriteSheet(String sheetName) {
+		spriteLoader.loadManualSpriteSheets(sheetName)
+	}
 
-    void pause() {
-        pause = true
-    }
+	void pause() {
+		pause = true
+	}
 
-    void pause(boolean shouldPause) {
-        pause = shouldPause
-    }
-    // </editor-fold>
+	void pause(boolean shouldPause) {
+		pause = shouldPause
+	}
+	// </editor-fold>
 
-    // <editor-fold desc="Math api" defaultstate="collapsed"> 
-    static float abs(Number value) {
-        Math.abs(value.floatValue())
-    }
+	// <editor-fold desc="Math api" defaultstate="collapsed">
+	static float abs(Number value) {
+		Math.abs(value.floatValue())
+	}
 
-    static float cos(Number radians) {
-        MathUtils.cos(radians.floatValue())
-    }
+	static float cos(Number radians) {
+		MathUtils.cos(radians.floatValue())
+	}
 
-    static float cosDeg(Number deg) {
-        MathUtils.cosDeg(deg.floatValue())
-    }
+	static float cosDeg(Number deg) {
+		MathUtils.cosDeg(deg.floatValue())
+	}
 
-    static float sin(Number radians) {
-        MathUtils.sin(radians.floatValue())
-    }
+	static float sin(Number radians) {
+		MathUtils.sin(radians.floatValue())
+	}
 
-    static float sinDeg(Number deg) {
-        MathUtils.sinDeg(deg.floatValue())
-    }
+	static float sinDeg(Number deg) {
+		MathUtils.sinDeg(deg.floatValue())
+	}
 
-    static int ceil(Number value) {
-        MathUtils.ceil(value.floatValue())
-    }
+	static int ceil(Number value) {
+		MathUtils.ceil(value.floatValue())
+	}
 
-    static int floor(Number value) {
-        MathUtils.floor(value.floatValue())
-    }
+	static int floor(Number value) {
+		MathUtils.floor(value.floatValue())
+	}
 
-    static int randInt(Number range) {
-        MathUtils.random(range.intValue())
-    }
+	static int randInt(Number range) {
+		MathUtils.random(range.intValue())
+	}
 
-    static int randInt(Number start, Number end) {
-        MathUtils.random(start.intValue(), end.intValue())
-    }
+	static int randInt(Number start, Number end) {
+		MathUtils.random(start.intValue(), end.intValue())
+	}
 
-    static float randFloat(Number range) {
-        MathUtils.random(range.floatValue())
-    }
+	static float randFloat(Number range) {
+		MathUtils.random(range.floatValue())
+	}
 
-    static float randFloat(Number start, Number end) {
-        MathUtils.random(start.floatValue(), end.floatValue())
-    }
+	static float randFloat(Number start, Number end) {
+		MathUtils.random(start.floatValue(), end.floatValue())
+	}
 
-    static int round(Number number) {
-        MathUtils.round(number.floatValue())
-    }
-    // </editor-fold>
+	static int round(Number number) {
+		MathUtils.round(number.floatValue())
+	}
+	// </editor-fold>
 
-    // <editor-fold desc="Engine loader api" defaultstate="collapsed"> 
-    Object compile(String path) {
-        engineLoader.compile(path)
-    }
+	// <editor-fold desc="Engine loader api" defaultstate="collapsed">
+	Object compile(String path) {
+		engineLoader.compile(path)
+	}
 
-    void compile(String path, String out) {
-        engineLoader.compile(path, out)
-    }
+	void compile(String path, String out) {
+		engineLoader.compile(path, out)
+	}
 
-    Object eval(String code) {
-        engineLoader.eval(code)
-    }
+	Object eval(String code) {
+		engineLoader.eval(code)
+	}
 
-    Object parse(String code) {
-        engineLoader.parse(code)
-    }
+	Object parse(String code) {
+		engineLoader.parse(code)
+	}
 
-    void loadLib(String path) {
-        engineLoader.loadLib(path)
-    }
+	void loadLib(String path) {
+		engineLoader.loadLib(path)
+	}
 
-    Object newInstance(String name) {
-        engineLoader.newInstance(name)
-    }
-    // </editor-fold>
+	Object newInstance(String name) {
+		engineLoader.newInstance(name)
+	}
+	// </editor-fold>
 
-    // <editor-fold desc="Game loop methods ran from Engine Screen" defaultstate="collapsed"> 
-    final boolean update(ScreenManager sm) {
-        if (loadProgram) {
-            loadProgram = false
-            running = false
-            sm.enterGameScreen(LoadScreen.ID, null, null)
-        }
-        font.load(manager)
-        return running
-    }
+	// <editor-fold desc="Game loop methods ran from Engine Screen" defaultstate="collapsed">
+	final boolean update(ScreenManager sm) {
+		if (loadProgram) {
+			loadProgram = false
+			running = false
+			sm.enterGameScreen(LoadScreen.ID, null, null)
+		}
+		font.load(manager)
+		return running
+	}
 
-    final boolean checkShouldPause() {
-        pause
-    }
+	final boolean checkShouldPause() {
+		pause
+	}
 
-    final void preRender(Graphics g) {
-        g.setFont(font)
-    }
+	final void preRender(Graphics g) {
+		g.setFont(font)
+	}
 
-    void setRunning(boolean run) {
-        running = run
-    }
-    // </editor-fold>
+	void setRunning(boolean run) {
+		running = run
+	}
+	// </editor-fold>
 }

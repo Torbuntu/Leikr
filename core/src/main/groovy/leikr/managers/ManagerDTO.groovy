@@ -21,11 +21,11 @@ package leikr.managers
  */
 class ManagerDTO {
 
-    AudioManager audioManager
-    DataManager dataManager
-    PixelManager pixelManager
-    GraphicsManager graphicsManager
-    SystemManager systemManager
-    InputManager inputManager
+	AudioManager audioManager
+	DataManager dataManager
+	PixelManager pixelManager
+	GraphicsManager graphicsManager
+	SystemManager systemManager
+	InputManager inputManager
 
 }

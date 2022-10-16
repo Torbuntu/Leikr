@@ -285,11 +285,11 @@ class EngineLoader implements Callable<Engine> {
 		Class<?> loadClass(String name) throws ClassNotFoundException {
 
 			if (disallowedClasses.contains(name)) {
-				throw new RuntimeException(String.format("Leikr does not allow use of %s", name))
+				throw new RuntimeException("Leikr does not allow use of $name")
 			}
 			disallowedPackages.forEach(pk -> {
 				if (name.startsWith(pk)) {
-					throw new RuntimeException(String.format("Leikr does not allow use of %s", name))
+					throw new RuntimeException("Leikr does not allow use of $name")
 				}
 			})
 			return super.loadClass(name)

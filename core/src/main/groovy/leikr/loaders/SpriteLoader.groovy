@@ -60,7 +60,7 @@ class SpriteLoader {
 			loadSpriteSheets()
 			addSpritesToSpriteBank()
 		} else {
-			log.warn( "No sprites found for: {}", path)
+			log.warn("No sprites found for: {}", path)
 		}
 
 	}
@@ -105,15 +105,15 @@ class SpriteLoader {
 //        resetSpriteLoader();
 		rootPath = runtime.getProgramsPath() + "${programName}/Sprites/Sprites.png"
 		if (!Mdx.files.external(rootPath).exists()) {
-			log.warn( "No sprites found for: {}", rootPath)
+			log.warn("No sprites found for: {}", rootPath)
 			return
 		}
 		try {
 			loadSpriteSheets()
 			addSpritesToSpriteBank()
 		} catch (Exception ex) {
-			log.warn( "Manual Sprite sheet not loadable for: {}", rootPath)
-			log.warn( "Sprite sheet load failure: ", ex)
+			log.warn("Manual Sprite sheet not loadable for: {}", rootPath)
+			log.warn("Sprite sheet load failure: ", ex)
 		}
 	}
 

@@ -17,6 +17,7 @@ package leikr.commands
 
 import groovy.util.logging.Log4j2
 import org.mini2Dx.core.Mdx
+
 /**
  *
  * @author Torbuntu
@@ -24,29 +25,29 @@ import org.mini2Dx.core.Mdx
 @Log4j2
 class CleanCommand implements Command {
 
-    CleanCommand() {
-    }
+	CleanCommand() {
+	}
 
-    @Override
-    String execute(String[] args) {
-        try {
-            Mdx.files.external(System.getProperty("user.home") + "/Leikr/Packages/").deleteDirectory()
-            Mdx.files.external(System.getProperty("user.home") + "/Leikr/Packages").mkdirs()
-            return "Package directory cleaned."
-        } catch (IOException ex) {
-            log.error(ex)
-            return "Failed to clean Package directory. Please check logs."
-        }
-    }
+	@Override
+	String execute(String[] args) {
+		try {
+			Mdx.files.external(System.getProperty("user.home") + "/Leikr/Packages/").deleteDirectory()
+			Mdx.files.external(System.getProperty("user.home") + "/Leikr/Packages").mkdirs()
+			return "Package directory cleaned."
+		} catch (IOException ex) {
+			log.error(ex)
+			return "Failed to clean Package directory. Please check logs."
+		}
+	}
 
-    @Override
-    String help() {
-        ">clean \nRemoves all .lkr packages from the Packages directory."
-    }
+	@Override
+	String help() {
+		">clean \nRemoves all .lkr packages from the Packages directory."
+	}
 
-    @Override
-    String getName() {
-        "clean"
-    }
+	@Override
+	String getName() {
+		"clean"
+	}
 
 }

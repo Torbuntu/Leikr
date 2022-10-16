@@ -27,63 +27,63 @@ import org.mini2Dx.core.Mdx
 @Log4j2
 class DataManager {
 
-    private String gamePath
-    private final JsonSlurper jsonSlurper
+	private String gamePath
+	private final JsonSlurper jsonSlurper
 
-    public Map data
+	public Map data
 
-    DataManager() {
-        data = [:]
-        jsonSlurper = new JsonSlurper()
-    }
+	DataManager() {
+		data = [:]
+		jsonSlurper = new JsonSlurper()
+	}
 
-    void resetData(String path) {
-        setGamePath(path)
-    }
+	void resetData(String path) {
+		setGamePath(path)
+	}
 
-    private void setGamePath(String path) {
-        gamePath = path
-    }
+	private void setGamePath(String path) {
+		gamePath = path
+	}
 
-    void addData(String key, Object value) {
-        data.put(key, value)
-    }
+	void addData(String key, Object value) {
+		data.put(key, value)
+	}
 
-    void deleteData(String key) {
-        data.remove(key)
-    }
+	void deleteData(String key) {
+		data.remove(key)
+	}
 
-    void clearData() {
-        data.clear()
-    }
+	void clearData() {
+		data.clear()
+	}
 
-    void writeData(String path){
-        try {
-            Mdx.files.with{
-                String dir = "${gamePath}/${path}"
-                if (external(dir).exists()) {
-                    external(dir).delete()
-                }
-                external(dir).writeString(JsonOutput.toJson(data), false)
-            }
-        } catch (Exception ex) {
-            log.warn("Failed saving data to: $gamePath/$path", ex)
-        }
-    }
+	void writeData(String path) {
+		try {
+			Mdx.files.with {
+				String dir = "${gamePath}/${path}"
+				if (external(dir).exists()) {
+					external(dir).delete()
+				}
+				external(dir).writeString(JsonOutput.toJson(data), false)
+			}
+		} catch (Exception ex) {
+			log.warn("Failed saving data to: $gamePath/$path", ex)
+		}
+	}
 
-    void writeData(String path, Map data){
-        this.data = data
-        writeData(path)
-    }
+	void writeData(String path, Map data) {
+		this.data = data
+		writeData(path)
+	}
 
-    Map readData(String path) {
-        try {
-            String json = Mdx.files.external( "$gamePath/$path").readString()
-            data = jsonSlurper.parseText(json) as Map
-        } catch (Exception ex) {
-            log.warn("Problem trying to read data from: $path", ex)
-        }
-        return data
-    }
+	Map readData(String path) {
+		try {
+			String json = Mdx.files.external("$gamePath/$path").readString()
+			data = jsonSlurper.parseText(json) as Map
+		} catch (Exception ex) {
+			log.warn("Problem trying to read data from: $path", ex)
+		}
+		return data
+	}
 
 }

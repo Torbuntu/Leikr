@@ -17,9 +17,9 @@ package leikr.screens
 
 class TitleScreenPixel {
 
-    int x = 0, y = 0
-    int color = 1
-    int height = 5
-    int delay = 0
+	int x = 0, y = 0
+	int color = 1
+	int height = 5
+	int delay = 0
 
 }

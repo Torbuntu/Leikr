@@ -200,7 +200,6 @@ class ControllerMappingScreen extends BasicGameScreen implements GamePadListener
 
 	@Override
 	void onButtonUp(GamePad gamePad, int buttonCode) {
-
 	}
 
 	@Override

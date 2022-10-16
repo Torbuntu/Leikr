@@ -56,7 +56,7 @@ class AudioLoader {
 					.findAll(file -> !file.isDirectory() && (file.extension().toLowerCase() in ["wav", "mp3", "ogg"]))
 					.each(f -> assetManager.load(musicRootPath + f.name(), Music.class))
 		} catch (Exception ex) {
-			log.warn( "Music load error: {}", ex.getMessage())
+			log.warn("Music load error: {}", ex.getMessage())
 		}
 		load()
 	}
