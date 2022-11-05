@@ -142,7 +142,4 @@ class LeikrController implements GamePadListener {
 		buttons.get(key)
 	}
 
-	boolean left() {
-		buttons.get("LEFT")
-	}
 }

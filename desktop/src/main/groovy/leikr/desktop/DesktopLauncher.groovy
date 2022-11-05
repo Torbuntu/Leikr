@@ -44,7 +44,8 @@ class DesktopLauncher {
 			useVsync(true)
 			setWindowIcon(Files.FileType.Internal, "Data/Logo/logo-16x16.png", "Data/Logo/logo-32x32.png")
 		}
-		// http://www.groovy-lang.org/operators.html - use of .@ forces usage of the field instead of the getter
+		// http://www.groovy-lang.org/operators.html#_direct_field_access_operator
+		// use of .@ forces usage of the field instead of the getter
 		config.@targetFPS = 60
 		config.@foregroundFPS = 60
 
