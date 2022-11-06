@@ -84,24 +84,23 @@ class EngineLoader implements Callable<Engine> {
 		gcl.clearCache()
 		gcl.addClasspath(rootPath)
 		//loads the game code
-		return (Engine) gcl.parseClass(new File(Mdx.files.external(rootPath + runtime.getGameName() + ".groovy").path())).getDeclaredConstructors()[0].newInstance()
+		return (Engine) gcl.parseClass(new File(Mdx.files.external("${rootPath}${runtime.getGameName()}.groovy").path())).getDeclaredConstructors()[0].newInstance()
 	}
 
 	private Engine getCompiledEngine() throws MalformedURLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IOException {
-		String COMPILED = rootPath + "Compiled/"
-		gcl.addClasspath(COMPILED)
+		gcl.addClasspath("${rootPath}Compiled/")
 		return (Engine) gcl.loadClass(runtime.getGameName()).getConstructors()[0].newInstance()
 	}
 
 	private void compileEngine() throws IOException {
-		String COMPILED = rootPath + "Compiled/"
+		String compiledOutput = "${rootPath}Compiled/"
 		CompilerConfiguration cc = new CompilerConfiguration()
 		cc.setClasspath(rootPath)
-		if (!Mdx.files.external(COMPILED).exists()) {
-			Mdx.files.external(COMPILED).mkdirs()
+		if (!Mdx.files.external(compiledOutput).exists()) {
+			Mdx.files.external(compiledOutput).mkdirs()
 		}
 
-		cc.setTargetDirectory(COMPILED)
+		cc.setTargetDirectory(compiledOutput)
 		Compiler compiler = new Compiler(cc)
 
 		def files = []
@@ -197,17 +196,16 @@ class EngineLoader implements Callable<Engine> {
 	}
 
 	/**
-	 * Adds a URL to the groovy class loader for the @newInstance(String name)
+	 * Adds a URL to the groovy class loader for the newInstance(String)
 	 * method to work
 	 *
 	 * @param path
 	 */
 	void loadLib(String path) {
 		if (path.contains("..")) {
-			throw new RuntimeException(String.format("Attempt to exit project denied: %s", path))
+			throw new RuntimeException("Attempt to exit project denied: $path")
 		}
-		String COMPILED = "${runtime.getGamePath()}/${path}/"
-		gcl.addClasspath(Mdx.files.external(COMPILED).path())
+		gcl.addClasspath(Mdx.files.external("${runtime.getGamePath()}/${path}/").path())
 	}
 
 	/**
