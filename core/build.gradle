@@ -1,12 +1,3 @@
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 targetCompatibility = JavaVersion.VERSION_17
 sourceCompatibility = JavaVersion.VERSION_17
-
-test {
-    println new File("$projectDir/../assets")
-    workingDir = new File("$projectDir/../assets")
-    useJUnitPlatform()
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
-}

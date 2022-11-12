@@ -11,7 +11,7 @@ shadowJar {
 //	minimize{
 //		exclude(dependency('org.apache.groovy:.*:.*'))
 //	}
-	archiveBaseName = 'Leikr'
+	archiveFileName = 'Leikr.jar'
 	//Exclude Asset directories from inside the jar.
 	exclude 'Data'
 	exclude 'Programs'
@@ -50,11 +50,4 @@ task launchDesktop(dependsOn: classes, type: JavaExec) {
 	workingDir = project.assetsDir
 	ignoreExitValue = true
 	//args 'insecure'//Security is now an opt-out feature
-}
-
-jlink {
-	launcher {
-		options = ['--strip-debug', '--compress', '2', '--no-header-files', '--no-man-pages']
-		name = 'Leikr'
-	}
 }
